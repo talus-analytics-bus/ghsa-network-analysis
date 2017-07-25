@@ -1,0 +1,447 @@
+'use strict'
+//Depends on version of datamaps w/ country code conversion in handleArcs (http://datamaps.github.io)
+
+var data_dict = {};
+var map = new Datamap({
+  element: document.getElementById('container'),
+  // projection: 'mercator',
+  arcConfig: {
+    strokeWidth: 2,
+    animationSpeed: 1200,
+  },
+  done: function(datamap) {
+      datamap.svg.selectAll('.datamaps-subunit').on('click', countryClicked);
+  },
+  geographyConfig: {
+    popupTemplate: function(geo, data) { // This function should just return a string
+      return '<div class="hoverinfo">' +
+               '<h3>' + geo.properties.name + '</h3>' +
+               'Amount given: $' + data_dict[geo.id]["given"] +
+             '</div>';
+    }
+  }
+});
+
+var usa = {
+  id: "USA",
+  destination_countries: [
+    {
+      id:"ALB",
+      amount_given:297711
+    },
+    {
+      id:"AFG",
+	  amount_given:71421886
+    },
+	{
+	  id:"AGO",
+	  amount_given:43531837
+	}, 
+    {
+	  id:"ATG",
+	  amount_given:3780
+	},
+	{
+	  id:"ARM",
+	  amount_given:3752654
+	},
+	{
+	  id:"ASN",
+	  amount_given:8056544
+	},
+	{
+	  id:"BGD",
+	  amount_given:91567573
+	},
+	{
+	  id:"BRB",
+	  amount_given:4593
+	},
+	{
+	  id:"BLZ",
+	  amount_given:1258162
+	},
+	{
+	  id:"BEN",
+	  amount_given:23070427
+	},
+	{
+	  id:"BWA",
+	  amount_given:13507566
+	},
+	{
+	  id:"BFA",
+	  amount_given:2519722
+	},
+	{
+	  id:"MMR",
+	  amount_given:21514817
+	},
+	{
+	  id:"BDI",
+	  amount_given:22789793
+	},
+	{
+	  id:"CPV",
+	  amount_given:3003913
+	},
+	{
+	  id:"KHM",
+	  amount_given:40987533
+	},
+	{
+	  id:"CMR",
+	  amount_given:22712035
+	},
+	{
+	  id:"COD",
+	  amount_given:102253241
+	}, 
+	{
+	  id:"COL",
+	  amount_given:2861
+	},
+	{
+	  id:"CIV",
+	  amount_given:26680429
+	},
+	{
+	  id:"DJI",
+	  amount_given:1377725
+	},
+	{
+	  id:"EGY",
+	  amount_given:17333150
+	},
+	{
+	  id:"ECU",
+	  amount_given:857418
+	},
+	{
+	  id:"GNQ",
+	  amount_given:5171
+	},
+	{
+	  id:"ETH",
+	  amount_given:178766198
+	},
+	{
+	  id:"FJI",
+	  amount_given:650255
+	}, 
+	{
+	  id:"GAB",
+	  amount_given:41318
+	}, 
+	{
+	  id:"GMB",
+	  amount_given:41318
+	}, 
+	{
+	  id:"GEO",
+	  amount_given:1515547
+	}, 
+	{
+	  id:"GHA",
+	  amount_given:1515547
+	}, 
+	{
+	  id:"GTM",
+	  amount_given:33190810
+	}, 
+	{
+	  id:"GIN",
+	  amount_given:29542977
+	}, 
+	{
+	  id:"GNB",
+	  amount_given:2956445
+	}, 
+	{
+	  id:"GUY",
+	  amount_given:2051656
+	}, 
+	{
+	  id:"HTI",
+	  amount_given:107094887
+	}, 
+	{
+	  id:"HNG",
+	  amount_given:4973542
+	}, 
+	{
+	  id:"IND",
+	  amount_given:50831175
+	}, 
+	{
+	  id:"IDN",
+	  amount_given:50526132
+	}, 
+	{
+	  id:"ISR",
+	  amount_given:2629412
+	},
+	{
+	  id:"JAM",
+	  amount_given:2641014
+	},
+	{
+	  id:"JOR",
+	  amount_given:46248790
+	}, 
+	{
+	  id:"KAZ",
+	  amount_given:103602
+	},
+	{
+	  id:"DOM",
+	  amount_given:6774365
+	},
+	{
+	  id:"KEN",
+	  amount_given:265864479
+	}, 
+	{
+	  id:"KOR",
+	  amount_given:15
+	}, 
+	{
+	  id:"PKR",
+	  amount_given:6026
+	}, 
+	{
+	  id:"KGZ",
+	  amount_given:6308950
+	}, 
+	{
+	  id:"LAO",
+	  amount_given:12161273
+	}, 
+	{
+	  id:"LBN",
+	  amount_given:14193753
+	},{
+	  id:"LBR",
+	  amount_given:51006538
+	},
+	{
+	  id:"MDG",
+	  amount_given:52536624
+	}, 
+	{
+	  id:"MWI",
+	  amount_given:100050265
+	},
+	{
+	  id:"MLI",
+	  amount_given:61459325
+	}, 
+	{
+	  id:"MEX",
+	  amount_given:555271
+	},
+	{
+	  id:"FSM",
+	  amount_given:153230
+	},
+	{
+	  id:"MDA",
+	  amount_given:453683
+	},
+	{
+	  id:"MNG",
+	  amount_given:292108
+	},
+	{
+	  id:"MOZ",
+	  amount_given:144647824
+	},
+	{
+	  id:"NAM",
+	  amount_given:19477547
+	},
+	{
+	  id:"NPL",
+	  amount_given:46727551
+	},
+	{
+	  id:"NIC",
+	  amount_given:8737978
+	},
+	{
+	  id:"NER",
+	  amount_given:1150724
+	},
+	{
+	  id:"NGA",
+	  amount_given:233164259
+	},
+	{
+	  id:"PAK",
+	  amount_given:114044556
+
+	},
+	{
+	  id:"PAN",
+	  amount_given:1064424
+	},
+	{
+	  id:"PNG",
+	  amount_given:4834781
+	},
+	{
+	  id:"PRY",
+	  amount_given:1377086
+	},
+	{
+	  id:"PER",
+	  amount_given:3915338
+	},
+	{
+	  id:"PHL",
+	  amount_given:3915338
+	},
+	{
+	  id:"POL",
+	  amount_given:6345
+	},
+	{
+	  id:"QAT",
+	  amount_given:19334
+	},
+	{
+	  id:"RUS",
+	  amount_given:22867
+	},
+	{
+	  id:"RWA",
+	  amount_given:60402868
+	},
+	{
+	  id:"WSM",
+	  amount_given:335704
+	},
+	{
+	  id:"SEN",
+	  amount_given:55880953
+	},
+	{
+	  id:"SLE",
+	  amount_given:20321601
+	},
+	{
+	  id:"SOM",
+	  amount_given:366611
+	},
+	{
+	  id:"ZAF",
+	  amount_given:245723942
+	},
+	{
+	  id:"SSD",
+	  amount_given:38245044
+	}, 
+	{
+	  id:"LKA",
+	  amount_given:144057
+	},
+	{
+	  id:"SDF",
+	  amount_given:344989
+	},
+	{
+	  id:"SWZ",
+	  amount_given:31303330
+	},
+	{
+	  id:"TJK",
+	  amount_given:6019705
+	},
+	{
+	  id:"TZA",
+	  amount_given:205860920
+	},
+	{
+	  id:"THA",
+	  amount_given:139414
+	},
+	{
+	  id:"TLS",
+	  amount_given:2788938
+	},
+	{
+	  id:"TGO",
+	  amount_given:883366
+	},
+	{
+	  id:"TKM",
+	  amount_given:252479
+	},
+	{
+	  id:"UKR",
+	  amount_given:21754488
+	},
+	{
+	  id:"UZB",
+	  amount_given:3570549
+	},
+	{
+	  id:"VUT",
+	  amount_given:1038951
+	},
+	{
+	  id:"VNM",
+	  amount_given:15674056
+	},
+	{
+	  id:"PSE",
+	  amount_given:60370661
+	},
+	{
+	  id:"WLD",
+	  amount_given:60370661
+	},
+	{
+	  id:"YEM",
+	  amount_given:765585
+	},
+	{
+	  id:"ZMB",
+	  amount_given:142695546
+	},
+	{
+	  id:"ZWE",
+	  amount_given:74234140
+	},
+  ]
+};
+
+var countries = {};
+countries[usa.id] = usa;
+loadCountry("USA");
+console.log(map);
+console.log(countries);
+
+function loadCountry(country) {
+  var country = countries[country];
+  if (country == undefined) return;
+  var data = [];
+  data_dict = {};
+  
+  map.arc(data);
+  for (var j in country.destination_countries) {
+    var destination_country = country.destination_countries[j];
+    var link = {
+      origin: country.id,
+      destination: destination_country.id
+    };
+    link.given = destination_country.amount_given != undefined ? destination_country.amount_given : 100;
+    data.push(link);
+    data_dict[destination_country.id] = link;
+  }
+  map.arc(data);
+}
+
+function countryClicked(geo) {
+  loadCountry(geo.id);
+}
