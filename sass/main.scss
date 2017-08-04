@@ -3,30 +3,8 @@
 @import 'helpers/mixins';
 @import 'helpers/vendors';
 
-@import 'components/charts';
-@import 'components/filters';
-@import 'components/footer';
-@import 'components/images';
-@import 'components/infographics';
-@import 'components/maps';
-@import 'components/navbar';
-@import 'components/search';
-@import 'components/sliders';
-@import 'components/tabs';
-@import 'components/tooltips';
-
-@import 'pages/call';
-@import 'pages/calls';
-@import 'pages/center';
-@import 'pages/client';
-@import 'pages/demographics';
-@import 'pages/home';
+@import 'pages/map';
 @import 'pages/login';
-@import 'pages/outcome';
-@import 'pages/overview';
-@import 'pages/program';
-@import 'pages/reason';
-
 
 body { 
 	font-family: 'Open Sans', sans-serif;
@@ -35,76 +13,4 @@ body {
 #page-content {
 	position: relative;
 	z-index: 10;
-}
-.link {
-	cursor: pointer;
-	&:hover { text-decoration: underline; }
-}
-.radio {
-	display: inline-block;
-	margin-bottom: 5px;
-}
-
-// underline for date
-.pd-date,
-.cw-date,
-.pw-date,
-.pw-date-minus-1,
-.ppw-date {
-	border-bottom: 1px solid #333;
-	border-bottom-style: dashed;
-	/*text-decoration: underline;
-	text-decoration-style: dashed;*/
-	cursor: default;
-}
-
-.overview-unspecified-warning {
-	.cw-date,
-	.pw-date,
-	.pd-date
-	 {
-		border-bottom: 1px solid #c91414;
-		border-bottom-style: dashed;
-	}
-}
-
-// re-color for bootstrap buttons
-.btn-primary {
-	background-color: $light-blue;
-	border-color: darken($light-blue, 8%);
-	&:hover {
-		background-color: darken($light-blue, 5%);
-		border-color: darken($light-blue, 16%);
-	}
-}
-.btn-warning {
-	background-color: $dark-orange;
-	border-color: darken($dark-orange, 8%);
-	&:hover {
-		background-color: darken($dark-orange, 5%);
-		border-color: darken($dark-orange, 16%);
-	}
-}
-select.form-control { width: auto; }
-.container { position: relative; }
-
-// notional data warnings
-.notional-warning {
-	color: #c91414;
-	font-weight: 600;
-}
-
-// re-style for bootstrap multiselect
-.btn b.caret { margin-left: 3px; }
-.multiselect-container label { @include noselect; }
-.multiselect {
-	background-color: $light-blue;
-	border-color: #666;
-	color: white;
-}
-
-.unspecified-warning {
-	font-weight: bold;
-	color: #c91414;
-	fill: #c91414;
 }
