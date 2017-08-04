@@ -1,68 +1,121 @@
 <html>
-  <title>Country Aid</title>
-  <!-- toggle switch -->
 
-<style>
-	.onoffswitch {
-    position: relative; bottom: 200px; left: 65px; width: 90px;
-    -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-}
-.onoffswitch-checkbox {
-    display: none;
-}
-.onoffswitch-label {
-    display: block; overflow: hidden; cursor: pointer;
-    border: 2px solid #E0DCDC; border-radius: 14px;
-}
-.onoffswitch-inner {
-    display: block; width: 200%; margin-left: -100%;
-    transition: margin 0.3s ease-in 0s;
-}
-.onoffswitch-inner:before, .onoffswitch-inner:after {
-    display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
-    font-size: 12px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-    box-sizing: border-box;
-}
-.onoffswitch-inner:before {
-    content: "Sent";
-    padding-left: 5px;
-    background-color: #F5F5F5; color: #A30D0D;
-}
-.onoffswitch-inner:after {
-    content: " Received";
-    padding-right: 5px;
-    background-color: #EEEEEE; color: #0A166E;
-    text-align: right;
-}
-.onoffswitch-switch {
-    display: block; width: 16px; margin: 7px;
-    background: #FFFFFF;
-    position: absolute; top: 0; bottom: 0;
-    right: 56px;
-    border: 2px solid #E0DCDC; border-radius: 14px;
-    transition: all 0.3s ease-in 0s; 
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-    margin-left: 0;
-}
-.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-    right: 0px; 
-}</style>
-  <head>
+<head>
+    <title>Country Aid</title>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:600,400' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:600,400" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/nprogress.css" rel="stylesheet">
+    <!-- TODO move below styles to scss -->
+    <style> 
+     .onoffswitch {
+        position: relative; bottom: 200px; left: 65px; width: 90px;
+        -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+    }
+    .onoffswitch-checkbox {
+        display: none;
+    }
+    .onoffswitch-label {
+        display: block; overflow: hidden; cursor: pointer;
+        border: 2px solid #E0DCDC; border-radius: 14px;
+    }
+    .onoffswitch-inner {
+        display: block; width: 200%; margin-left: -100%;
+        transition: margin 0.3s ease-in 0s;
+    }
+    .onoffswitch-inner:before, .onoffswitch-inner:after {
+        display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+        font-size: 12px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+        box-sizing: border-box;
+    }
+    .onoffswitch-inner:before {
+        content: "Sent";
+        padding-left: 5px;
+        background-color: #F5F5F5; color: #A30D0D;
+    }
+    .onoffswitch-inner:after {
+        content: " Received";
+        padding-right: 5px;
+        background-color: #EEEEEE; color: #0A166E;
+        text-align: right;
+    }
+    .onoffswitch-switch {
+        display: block; width: 16px; margin: 7px;
+        background: #FFFFFF;
+        position: absolute; top: 0; bottom: 0;
+        right: 56px;
+        border: 2px solid #E0DCDC; border-radius: 14px;
+        transition: all 0.3s ease-in 0s; 
+    }
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+        margin-left: 0;
+    }
+    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+        right: 0px; 
+    }</style>
+</head>
+<body>
+    <div id="page-content"></div>
+
+    <!-- TEMPLATES -->
+    <!-- Login page -->
+    <script id="login-template" type="text/x-handlebars-template">
+        <div class="login-container container">
+            <div class="login-box">
+                <div class="login-input-container">
+                    <div class="login-input-label">Username</div>
+                    <input class="username-input login-input form-control">
+                </div>
+                <div class="login-input-container">
+                    <div class="login-input-label">Password</div>
+                    <input type="password" class="password-input login-input form-control">
+                </div>
+                <div class="login-button btn btn-primary">Login</div>
+            </div>
+        </div>
+    </script>
+
+    <!-- Network analysis map page -->
+    <script id="map-template" type="text/x-handlebars-template">
+        <div id="container" style="position: relative; width: 100%; height: 100%;"></div> <!-- holds map -->
+        <div class="onoffswitch">
+            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
+            <label class="onoffswitch-label" for="myonoffswitch">
+                <span class="onoffswitch-inner"></span>
+                <span class="onoffswitch-switch"></span>
+            </label>
+        </div>
+    </script>
+
+    <!-- General Libraries -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+    <script src="lib/jquery-3.1.1.min.js"></script>
+    <script src="lib/underscore-min.js"></script>
+
+    <!-- Routing Libraries -->
+    <script src="lib/signals.min.js"></script>
+    <script src="lib/crossroads.min.js"></script>
+    <script src="lib/hasher.min.js"></script>
+    <script src="lib/handlebars-v3.0.0.js"></script>
+
+    <!-- Mapping Libraries -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
-    <script src="./datamaps.world.js"></script>
+    <script src="lib/datamaps.world.js"></script>
     <!-- useful reading: https://github.com/markmarkoh/datamaps/blob/master/README.md#getting-started -->
-    <div id="container" style="position: relative; width: 100%; height: 100%;"></div>
-    <script src="./map.js"></script>
-	
-<div class="onoffswitch">
-    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
-    <label class="onoffswitch-label" for="myonoffswitch">
-        <span class="onoffswitch-inner"></span>
-        <span class="onoffswitch-switch"></span>
-    </label>
-</div>
 
+    <!-- Other -->
+    <script src="lib/nprogress.min.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+    <script src="lib/jquery.noty.packaged.min.js"></script>
 
+    <!-- Project-specific Files -->
+    <script src="js/utility.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/pages/map.js"></script>
+    <script src="js/pages/login.js"></script>
+    <script src="js/routing.js"></script>
+    <script src="js/init.js"></script>
+
+</body>
 </html>
