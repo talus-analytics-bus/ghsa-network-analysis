@@ -1,4 +1,6 @@
 branch-defaults:
+  add-login-page:
+    environment: ghsa-network-analysis-internal-test
   master:
     environment: ghsa-network-analysis-dev
     group_suffix: null
