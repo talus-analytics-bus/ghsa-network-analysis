@@ -7,7 +7,7 @@ const App = {};
 	};
 
 	/* --- Misc --- */
-	App.disableLoginCheck = true;
+	App.disableLoginCheck = false;
 	App.logout = () => { $.get('php/logout.php'); };
 
 })();
