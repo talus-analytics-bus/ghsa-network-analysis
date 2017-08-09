@@ -1,0 +1,509 @@
+---
+title: "GHSA Data Processing"
+author: "Steph Eaneff\nTalus Analytics"
+date: "8/9/2017"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+## do you want to save csvs when you run this Rmd file?
+csv_flag <- TRUE
+```
+
+```{r, warning = FALSE, message = FALSE}
+library(dplyr); library(plyr) ## restructure/aggregate data
+library(reshape2) ## reshape data
+library(DT) ## print pretty datatables
+```
+
+# Datasets (Initial Data)
+
+## CRS
+
+CRS data are not currently being used to generate the mock dataset, as the online CRS data exporter tool does not function as expected, and returns partial data plus an error message. Once exported, the data include only net disbursements, but not commitments. An error message is generated.
+
+## GAVI
+
+### Details
+
+**Source:** GAVI Vaccine Alliance  
+**Dataset:** Commitments and Dispersements for All Countries for 2001-2017 (TOTAL COMMITMENTS - Inception to June 30, 2017)  
+**Brief description:** GAVI provides information regarding all of its funding commitments and dispersements for vaccine-related initiatives.   
+**Level of aggregation:** Funder (always GAVI), Recipient, Program, Year  
+**Location:** http://www.gavi.org/results/disbursements/  
+**Data Obtained Date:** 8/8/2017  
+
+```{r gavi_data}
+## note that filepaths have to be relative to .Rmd file in order to work
+
+## two seperate files have to be read in because they were saved as different tabs in Excel format
+## will merge them later
+## gavic = committed funds 
+gavic <- read.table("../data/gavi/raw/gavi_commitments.csv", 
+                 stringsAsFactors = FALSE, sep = "\t", header = TRUE)
+
+## gavid = dispersed funds
+gavid <- read.table("../data/gavi/raw/gavi_disbursements.csv", 
+                 stringsAsFactors = FALSE, sep = "\t", header = TRUE)
+```
+
+### Data Processing 
+
+* Exclude Total Counts and only look at item-level information (avoid double counting)  
+* Populate empty fields caused by merges in Microsoft Excel  
+* Format dollars to appear as numers (exclude commas)  
+* Add "GAVI" as data source  
+* Add "GAVI" as channel
+* Add "Immunization" as core capability
+
+```{r}
+## exclude total counts
+gavid <- gavid[-which(grepl("Total", gavid$Country)),]
+gavic <- gavic[-which(grepl("Total", gavic$Country)),]
+```
+
+```{r}
+## define function that carries down values for empty fields
+## (address merged fields in excel that disappear when files read/saved as csv or tsv files)
+## https://stackoverflow.com/questions/10554741/r-fill-in-data-frame-with-values-from-rows-above
+filldownF <- function(x) {
+  for(i in seq_along(x)[-1]) {
+    if(is.na(x[i]) | x[i] == "") x[i] <- x[i-1]
+  }
+  x
+}
+
+## filldown to fill blanks on selected data fields
+## note: eventually could modify to use apply here, but would need to deal with indexing
+gavic$Country <- filldownF(gavic$Country)
+gavic$Region <- filldownF(gavic$Region)
+gavic$High.Level.Category <- filldownF(gavic$High.Level.Category)
+
+gavid$Country <- filldownF(gavid$Country)
+gavid$Region <- filldownF(gavid$Region)
+gavid$Programme.Category <- filldownF(gavid$Programme.Category)
+```
+
+```{r, warning = FALSE}
+## format numbers without commas, NA value when no data exist
+## warning: NAs introduced by coercion is okay
+gavic[,which(names(gavic) %in% c(paste("X", 2001:2021, sep = ""), "Grand.Total"))] <- apply(
+      X = gavic[,which(names(gavic) %in% c(paste("X", 2001:2021, sep = ""), "Grand.Total"))],
+      MARGIN = 2,
+      FUN = function(x) {as.numeric(as.character(gsub(",", "", x)))}
+)
+
+gavid[,which(names(gavid) %in% c(paste("X", 2001:2017, sep = ""), "Grand.Total"))] <- apply(
+      X = gavid[,which(names(gavid) %in% c(paste("X", 2001:2017, sep = ""), "Grand.Total"))],
+      MARGIN = 2,
+      FUN = function(x) {as.numeric(as.character(gsub(",", "", x)))}
+)
+```
+
+```{r}
+## melt data from wide to long, 
+## so that there's one row per year instead of one column per year
+gavic_restructured <- melt(gavic[,-which(names(gavic) == "Grand.Total")],
+     id.vars = c("Country", "Region", "High.Level.Category", "Sub.category"),
+     value.name = "amount_committed",
+     variable.name = "year")
+
+gavid_restructured <- melt(gavid[,-which(names(gavid) == "Grand.Total")],
+     id.vars = c("Country", "Region", "Programme.Category", "Programme"),
+     value.name = "amount_dispersed",
+     variable.name = "year")
+
+## remove X before year
+gavic_restructured$year <- gsub("X", "", gavic_restructured$year)
+gavid_restructured$year <- gsub("X", "", gavid_restructured$year)
+
+## exclude rows with missing amount values
+## (years that no funds were committed for that item, for dispersed, years that no funds were dispersed)
+gavic_restructured <- gavic_restructured[-which(is.na(gavic_restructured$amount_committed) |
+                                                gavic_restructured$amount_committed == 0),]
+gavid_restructured <- gavid_restructured[-which(is.na(gavid_restructured$amount_dispersed) |
+                                                  gavid_restructured$amount_dispersed == 0),]
+```
+
+```{r}
+## join committed and dispersed datasets, which were separated because they
+## were stored as separate tabs in Excel
+gavi_full <- full_join(gavic_restructured, gavid_restructured,
+                  by = c("Country" = "Country",
+                         "Region" = "Region",
+                         "High.Level.Category" = "Programme.Category",
+                         "Sub.category" = "Programme",
+                         "year" = "year"))
+```
+
+```{r}
+gavi_full$funder <- "GAVI"
+gavi_full$channel <- "GAVI"
+gavi_full$data_source <- "GAVI"
+gavi_full$core_capability <- "Immunization"
+```
+
+```{r}
+## reorder fields so they are sensibly ordered
+gavi_full <- gavi_full[,c("Country", "Region", "High.Level.Category", "Sub.category", "year", 
+                          "funder", "channel", "amount_committed", "amount_dispersed", "data_source")]
+```
+
+```{r}
+## save processed data 
+## save data if csv_flag is true
+## don't print rownames in csv
+if(csv_flag == TRUE){
+  write.csv(gavi_full,
+            file = "../data/gavi/processed/gavi_processed.csv", 
+            row.names = FALSE)
+}
+```
+
+## G-Finder
+
+### Details
+
+**Source:** Policy Cures G-Finder
+**Dataset:** Neglected Disease Funding for all diseases - all products for FYI 2015
+**Brief description:** The G-Finder database provides information on funding for 35 neglected diseases across 142 product areas including drugs, vaccines, diagnostics, microbicides, and vector control products. Data are collected by survey and manually collated and reviewed by the Policy Cures team.
+**Level of aggregation:** Disease, Secondary-level Disease, Product, Funder, Funding Type, Recipeint, Year
+**Location:** https://gfinder.policycuresresearch.org/PublicSearchTool/
+**Data Obtained Date:** 8/8/2017
+**Note:** It's possible to export data for long periods than just one year, but selecting especially long time periods caused the data exporter tool to return an error and no data.
+
+```{r gfinder_data}
+## note that filepaths have to be relative to .Rmd file in order to work
+gfinder <- read.csv("../data/gfinder/raw/Public Search Tool 2017-08-09.csv", 
+                 stringsAsFactors = FALSE)
+```
+
+### Data Processing 
+
+* Format dollars to appear as numers (exclude commas)  
+* Remove the string "FY"" from the beginning of printed years  
+* Add "G-Finder" as data source  
+
+```{r}
+## remove commas from dollar amounts
+gfinder$Amount..US.. <- gsub(",", "", gfinder$Amount..US..)
+
+## remove "FY" from the beginning of printed years
+gfinder$Year.description <- as.numeric(as.character(gsub("FY ", "", gfinder$Year.description)))
+
+gfinder$data_source <- "G-Finder"
+
+## save processed data (that was easy!)
+## save data if csv_flag is true
+## don't print rownames in csv
+if(csv_flag == TRUE){
+  write.csv(gfinder,
+            file = "../data/gfinder/processed/gfinder_processed.csv", 
+            row.names = FALSE)
+}
+```
+
+## IHME
+
+### Details
+
+**Source:** IHME (Institute for Health Metrics and Evaluation, University of Washington)  
+**Dataset:** Development Assistance for Health Database 1990-2016  
+**Brief description:** Information on global health assistance during the timeframe specified, based on data obtained from project databases, financial statements, annual reports, IRS 990s, and correspondence with agencies.  
+**Level of aggregation:** Funder, country, geographic region, health focus area  
+**Location:** http://ghdx.healthdata.org/record/development-assistance-health-database-1990-2016  
+**Data Obtained Date:** 8/7/2017
+
+```{r ihme_data}
+## note that filepaths have to be relative to .Rmd file in order to work
+ihme <- read.csv("../data/ihme/raw/IHME_DAH_DATABASE_1990_2016_Y2017M04D19.CSV", 
+                 stringsAsFactors = FALSE)
+```
+
+### Data Processing 
+
+* Exclude preliminary estimates and duplicated entries that could cause double-counting  
+* Add "IHME" as data source  
+
+```{r}
+ihme_selected <- ihme[which(## exclude to avoid double counting
+                            ihme$elim_ch >= 0 & 
+                            ## exclude preliminary estimates
+                            ihme$prelim_est == 0) 
+                      ,]
+```
+
+*  Restructure dataset from wide to long, so that we have one row per year-funder-recipient-purpose, as opposed to the original structure of one row per year-funder-recipient with individual columns corresponding to purpose. 
+
+```{r}
+## read in file specifying fields of interest
+selected_ihme_fieldnames <- read.csv("../data/ihme/relevant_fields.csv", stringsAsFactors = FALSE)
+
+## vector of indices corresponding to the fieldnames we care about
+selected_ihme_fieldnum <- which(names(ihme_selected) %in% selected_ihme_fieldnames$fieldname)
+
+## use the fields that we specified above,
+## plus other selected fields including year (1), source (2), and channel (3),
+## recipient_country (5)
+## then melt the data from wide to long, such that there is one row per
+## year-funder-recipient-purpose
+ihme_restructured <- melt(ihme_selected[,c(1,2,3,5, selected_ihme_fieldnum)],
+     id.vars = c("year", "source", "channel", "recipient_country"),
+     value.name = "amount",
+     variable.name = "intial_variable_name_ihme")
+
+## exclude rows corresponding to no funding (amount = 0)
+## do this only if at least one row has amount = 0
+if(any(ihme_restructured$amount == 0)){
+  ihme_restructured <- ihme_restructured[-which(ihme_restructured$amount == 0),]
+}
+
+## merge this restructured data with data mapping "purpose" field (initial colnames of the dataset)
+## to relevant descriptive data based on information provided in the IHME codebook
+ihme_restructured_full <- merge(ihme_restructured, selected_ihme_fieldnames,
+                                by.x = "intial_variable_name_ihme", by.y = "fieldname",
+                                all.x = TRUE)
+
+## add field indicating that these data came from IHME
+ihme_restructured_full <- cbind.data.frame(ihme_restructured_full, 
+                                           data_source = "IHME")
+
+## reorder fields so that dataframe is shown in a logical order from "left" to "right"
+ihme_restructured_full <- ihme_restructured_full[,c(2,3,5,4,6,7,8,9,1)]
+```
+
+```{r}
+## save data if csv_flag is true
+## don't print rownames in csv
+if(csv_flag == TRUE){
+  write.csv(ihme_restructured_full,
+            file = "../data/ihme/processed/ihme_processed.csv", 
+            row.names = FALSE)
+}
+```
+
+## OIE
+
+### Details
+
+**Source:** OIE (World Organization for Animal Health)  
+**Dataset:** OIE Procurement Contracts, Grants and Sub-Grants awarded by the OIE with funding by the European Union (EU)  
+**Brief description:** All active contribution agreements signed between the OIE and the EU in support of OIE programs, project, and activities. EU Only.  
+**Level of aggregation:** Funder (always EU), Recipient, Program, Year  
+**Location:** http://www.oie.int/fileadmin/Home/eng/Support_to_OIE_Members/pdf/EU_Procurement-contracts-and-Grants-published_SEP-2016_01.pdf  
+**Data Obtained Date:** 8/8/2017  
+**Note:** Data manually extracted from pdf 
+
+```{r oie_data}
+## note that filepaths have to be relative to .Rmd file in order to work
+oie <- read.table("../data/oie/raw/eu_contracts.csv", 
+                 stringsAsFactors = FALSE, sep = ",", header = TRUE)
+```
+
+### Data Processing
+
+* Extract year from field Date.of.Signature.of.Contract
+* Add "EU" as funder
+  + Note that while these funds were distributed by OIE, they were provided to OIE by the EU
+* Add "OIE" as channel
+* Add "OIE" as data source  
+
+```{r}
+## format field date of signature as a date
+oie$Date.of.Signature.of.Contract <- as.Date(oie$Date.of.Signature.of.Contract, format = "%d/%m/%Y")
+
+## extract year of date of contract signature
+oie$Year.of.Signature.of.Contract <- as.numeric(as.character(format(oie$Date.of.Signature.of.Contract, format = "%Y")))
+
+oie$Funder <- "EU"
+oie$channel <- "OIE"
+oie$data_source = "OIE"
+```
+
+```{r}
+## save data if csv_flag is true
+## don't print rownames in csv
+if(csv_flag == TRUE){
+  write.csv(oie,
+            file = "../data/oie/processed/oie_processed.csv", 
+            row.names = FALSE)
+}
+```
+
+# Aggregate Data
+
+## Map Equivalent Fields Together
+
+Since each dataset (GAVI, G-Finder, OIE, and IHME) each had unique data structures and variable ("field") names, it was necessary to develop a mapping of equivalent fields. The datatable printed below shows the way in which fields in each datasource were mapped to a standardized data ontology including broad categories like year, amount, funder, and disease.  
+Across sources, data are reported at varying levels of resolution. For instance, G-Finder reports disease information at a much higher level of resolution (e.g. "Strongyloidiasis & other intestinal roundworms") than IHME (e.g. "infectious disease"). 
+
+```{r}
+field_mapping <- read.table("../data/field_mapping.txt", stringsAsFactors = FALSE, 
+                            sep = "\t", header = TRUE)
+```
+
+```{r}
+## exclude notes section for now
+datatable(field_mapping[,-which(names(field_mapping) %in% c("notes", "subdirectory", "filename")),],
+          rownames = FALSE)
+```
+
+```{r}
+## GAVI data
+## okay here that warnings are turned off, flag is about factors and characters being converted
+
+## generate dataset that includes the core data elements included in GAVI,
+## as specified in the field_mapping guide printed above
+gavi_core_data <- gavi_full[which(names(gavi_full) %in% field_mapping$fieldname[
+                                which(field_mapping$source == "GAVI" &
+                                      complete.cases(field_mapping$standard_fieldname))])]
+
+## rename core data elements of GAVI
+
+## first create temporary dataframe that merges names of core data to standard_fieldnames specified in field_mapping guide
+temp_names <- suppressWarnings(inner_join(data.frame(fieldname = names(gavi_core_data)), 
+                   field_mapping[which(field_mapping$source == "GAVI"),],
+                   by = "fieldname"))
+
+## then update gavi_core_data fieldnames
+names(gavi_core_data) <- temp_names$standard_fieldname; rm(temp_names)
+```
+
+```{r}
+## G-FINDER DATA
+## okay here that warnings are turned off, flag is about factors and characters being converted
+
+## generate dataset that includes the core data elements included in G-Finder,
+## as specified in the field_mapping guide printed above
+gfinder_core_data <- gfinder[which(names(gfinder) %in% field_mapping$fieldname[
+                                which(field_mapping$source == "G-Finder" &
+                                      complete.cases(field_mapping$standard_fieldname))])]
+
+## rename core data elements of G-Finder
+
+## first create temporary dataframe that merges names of core data to standard_fieldnames specified in field_mapping guide
+temp_names <- suppressWarnings(inner_join(data.frame(fieldname = names(gfinder_core_data)), 
+                   field_mapping[which(field_mapping$source == "G-Finder"),],
+                   by = "fieldname"))
+
+## then update gfinder_core_data fieldnames
+names(gfinder_core_data) <- temp_names$standard_fieldname; rm(temp_names)
+```
+
+```{r}
+## IHME DATA
+## okay here that warnings are turned off, flag is about factors and characters being converted
+
+## generate dataset that includes the core data elements included in IHME DATA,
+## as specified in the field_mapping guide printed above
+ihme_core_data <- ihme_restructured_full[which(names(ihme_restructured_full) %in% field_mapping$fieldname[
+                                which(field_mapping$source == "IHME" &
+                                      complete.cases(field_mapping$standard_fieldname))])]
+
+## rename core data elements of IHME data
+
+## first create temporary dataframe that merges names of core data to standard_fieldnames specified in field_mapping guide
+temp_names <- suppressWarnings(inner_join(data.frame(fieldname = names(ihme_core_data)), 
+                   field_mapping[which(field_mapping$source == "IHME"),],
+                   by = "fieldname"))
+
+## then update ihme_core_data fieldnames
+names(ihme_core_data) <- temp_names$standard_fieldname; rm(temp_names)
+```
+
+```{r}
+## OIE DATA
+## okay here that warnings are turned off, flag is about factors and characters being converted
+
+## generate dataset that includes the core data elements included in OIE data,
+## as specified in the field_mapping guide printed above
+oie_core_data <- oie[which(names(oie) %in% field_mapping$fieldname[
+                          which(field_mapping$source == "OIE" &
+                                complete.cases(field_mapping$standard_fieldname))])]
+
+## rename core data elements of OIE data
+
+## first create temporary dataframe that merges names of core data to standard_fieldnames specified in field_mapping guide
+temp_names <- suppressWarnings(inner_join(data.frame(fieldname = names(oie_core_data)), 
+                   field_mapping[which(field_mapping$source == "OIE"),],
+                   by = "fieldname"))
+
+## then update oie_core_data fieldnames
+names(oie_core_data) <- temp_names$standard_fieldname; rm(temp_names)
+```
+
+
+```{r}
+## UNION ALL (rbind) data together for OIE, IHME, and G-Finder, plus match fieldnames
+core_data <- plyr::rbind.fill(gavi_core_data,
+                              gfinder_core_data,
+                              ihme_core_data,
+                              oie_core_data)
+
+## recorder fields so that they seem somewhat sensible when we save/print them
+core_data <- core_data[,c("project_name", "application_area", "core_capability",
+             "funder", "funder_type", "funder_country",
+             "channel", 
+             "recipient", "recipient_type", "recipient_country",
+             "amount_committed", "amount_dispersed",
+             "year",
+             "data_source")]
+```
+
+```{r}
+## assign unique ID to each row
+core_data$row_id <- 1:nrow(core_data)
+```
+
+```{r}
+## Generate Random Sample of Data for Development
+
+core_data$in_sample <- FALSE
+
+## was initially going to sample randomly, starting out a bit more manually to make sure
+## I have coverage where I'm most concerned about having coverage
+oie_indices <- which(core_data$data_source == "OIE")
+set.seed(1202); ihme_indices <- base::sample(which(core_data$data_source == "IHME"), size = 100)
+set.seed(0311); gfinder_indices <- base::sample(which(core_data$data_source == "G-Finder"), size = 100)
+set.seed(0311); gavi_indices <- base::sample(which(core_data$data_source == "GAVI"), size = 100)
+
+core_data$in_sample[c(oie_indices,
+                      ihme_indices,
+                      gfinder_indices,
+                      gavi_indices)] <- TRUE
+```
+
+
+```{r}
+## save data if csv_flag is true
+## don't print rownames in csv
+if(csv_flag == TRUE){
+  
+  ## save full dataset
+  write.csv(core_data,
+            file = "../data/aggregate/mock_ghsa_data_full.csv", 
+            row.names = FALSE)
+  
+  ## save development dataset
+    write.csv(core_data[which(core_data$in_sample == TRUE),],
+            file = "../data/aggregate/mock_ghsa_data_sampled.csv", 
+            row.names = FALSE)
+  
+}
+```
+
+```{r}
+table(core_data$data_source)
+table(core_data[which(core_data$in_sample == TRUE &
+                      core_data$data_source == "GAVI"),]$core_capability)
+
+```
+
+
