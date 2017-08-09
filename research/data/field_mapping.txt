@@ -1,15 +1,15 @@
-source	subdirectory	filename	fieldname	standard_fieldname	currency	variable description	notes
+source	subdirectory	filename	fieldname	standard_fieldname	currency	variable_description	notes
 IHME	ihme/processed	ihme_processed.csv	year	year		Disbursement year	
 IHME	ihme/processed	ihme_processed.csv	source	funder_country		Country of funder	
 IHME	ihme/processed	ihme_processed.csv	recipient_country	recipient_country		Country of recipient	"This field takes the value ""Global"" for funding tied to global efforts."
 IHME	ihme/processed	ihme_processed.csv	channel	channel		"Funding channel (e.g. NGO, UNICEF, WHO, etc)"	Unclear about the relationship between funder and funding channel; look into this
 IHME	ihme/processed	ihme_processed.csv	amount	amount_dispersed	2015 USD	Amount Dispersed	In 2015 USD
-IHME	ihme/processed	ihme_processed.csv	disease	application_area		"Disease or application area (e.g. malaria, newborn and child health, etc))"	Only selected application areas relevant to GHS were extracted from full IHME funding database
-IHME	ihme/processed	ihme_processed.csv	product	product		"Product being developed (e.g. vaccines, diagnostics, treatments)"	This field will need to be recoded; product categories were taken from fieldnames of initial IHME data export
+IHME	ihme/processed	ihme_processed.csv	disease	application_area		"Disease or application area (e.g. malaria, newborn and child health, etc)"	Only selected application areas relevant to GHS were extracted from full IHME funding database
+IHME	ihme/processed	ihme_processed.csv	product	core_capability		"Product being developed (e.g. vaccines, diagnostics, treatments)"	This field will need to be recoded; product categories were taken from fieldnames of initial IHME data export
 IHME	ihme/processed	ihme_processed.csv	data_source	data_source		Data Source (always IHME)	
 G-Finder	gfinder/processed	gfinder_processed.csv	Disease	application_area		"Disease Category (e.g. TB, Leprosy,  Helminths, Filoviral diseases, etc)"	"This field is more specific than the information exported by the IHME tool, far higher level of resolution, but still represents disease categories"
 G-Finder	gfinder/processed	gfinder_processed.csv	Secondary.level.disease	NA		More specific disease information 	"As an example, if disease is Filoviral diseases, secondary level disease could be Ebola)"
-G-Finder	gfinder/processed	gfinder_processed.csv	Product	product		"Product being developed (e.g. basic research, diagnostics)"	
+G-Finder	gfinder/processed	gfinder_processed.csv	Product	core_capability		"Product being developed (e.g. basic research, diagnostics)"	
 G-Finder	gfinder/processed	gfinder_processed.csv	Funder	funder		Agency of funder	
 G-Finder	gfinder/processed	gfinder_processed.csv	Type.of.Funder	funder_type		"Type of funder (e.g. Philanthropic, Private sector, Public sector - Governments)"	
 G-Finder	gfinder/processed	gfinder_processed.csv	Funder.country	funder_country		Country of funder	
@@ -30,13 +30,15 @@ OIE	oie/proessed	oie_processed.csv	EU.Contribution.in.EUR	amount_dispersed	EUR	A
 OIE	oie/proessed	oie_processed.csv	channel	channel		Channel for funding distribution (always OIE)	
 OIE	oie/proessed	oie_processed.csv	Funder	funder		OIE data only available for EU funded initiatives; funder always EU	
 OIE	oie/proessed	oie_processed.csv	data_source	data_source		Data source (always OIE)	
+OIE	oie/proessed	oie_processed.csv	core_capability	core_capability		Determined based on manual review	
+OIE	oie/proessed	oie_processed.csv	application_area	application_area		Determined based on manual review	
 GAVI	gavi/processed	gavi_processed	Country	recipient_country		Country of recipient	
 GAVI	gavi/processed	gavi_processed	Region	NA		Region of the Recipient Country	
-GAVI	gavi/processed	gavi_processed	High.Level.Category	NA		Type of vaccine-related initiative	
+GAVI	gavi/processed	gavi_processed	core_capability	core_capability		Type of vaccine-related initiative	
 GAVI	gavi/processed	gavi_processed	year	year		Program year	
 GAVI	gavi/processed	gavi_processed	channel	channel		Channel of funnding (always GAVI)	
 GAVI	gavi/processed	gavi_processed	funder	funder		Agency of funder (always GAVI)	
 GAVI	gavi/processed	gavi_processed	amount_committed	amount_committed	USD	Amount committed	
 GAVI	gavi/processed	gavi_processed	amount_dispersed	amount_dispersed	USD	Amount Dispersed	
 GAVI	gavi/processed	gavi_processed	data_source	data_source		Data Source (always GAVI)	
-GAVI	gavi/processed	gavi_processed	product	product		"Product being developed, since all GAVI work is vaccine-related, will always be ""vaccines"" for now"	
+GAVI	gavi/processed	gavi_processed	Sub.category	application_area		Project category or application area	
