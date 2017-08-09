@@ -17,39 +17,151 @@ knitr::opts_chunk$set(echo = FALSE)
 csv_flag <- TRUE
 ```
 
-
 ```{r, warning = FALSE, message = FALSE}
-library(dplyr) ## restructure/aggregate data
+library(dplyr); library(plyr) ## restructure/aggregate data
 library(reshape2) ## reshape data
 library(DT) ## print pretty datatables
 ```
 
-# Data
+# Initial Data 
 
 ## CRS
 
-CRS data are not currently being used because data exporter tool does not function as expected, and returns partial data plus an error message (only reports net disbursements, but not commitments, and returns an error at the bottom of a large, but partial csv file)
+CRS data are not currently being used to generate the mock dataset, as the online CRS data exporter tool does not function as expected, and returns partial data plus an error message. Once exported, the data include only net disbursements, but not commitments. An error message is generated.
 
-**Source:** OECD CRS (Organization for Economic Cooperation and Development Creditor Reporting System)  
-**Dataset:** custom export using CRS Query Wizard  
-**Dataset details:** Recipient (Developing Countries, Total); Sector (13 Sectors from Health and Agriculture, additional detail providerd in subdirectory readme); Channel (All Channels); Flow Type (Commitments and Dispersements); Type of Aid (All Types, Total); Amount Type (Constant Prices); Unit (US Dollar, Millions, 2015)  
-**Brief description:** Health and agricultural funding provided to developing countries from 102 unique donors including countries and organizations from 2010-2015  
-**Level of aggregation:** Funder, Flow Type (Disbursements vs. Commitments) country, geographic region, health focus area  
-**General Location:** https://stats.oecd.org/Index.aspx?DataSetCode=CRS1  
-**Specific Location** (using "query wizard"): http://stats.oecd.org/qwids/#?x=5,1,2,3&y=6&f=4:1,7:1,9:85,8:85&q=4:1+7:1+9:85+8:85+5:3,4+1:3,4,5,6,58,7,8,9,10,11,59,60,12,13,14,61,15,16,17,18,62,19,63,75,20,21,22,23,24,36,209,195,197,169,190,70,204,176,170,171,172,173,174,175,191,69,67,205,64,76,211,47,212,213,30,31,214,32,33,215,43,44,34,202,35,179,216,203,72,48,206,68,49,73,194,50,51,52,181,53,55,74,217,218,41,42,45,219,199,196,177,200,71,37,38,198,39,40,178,193,77,78+2:2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,189,25,27,28,31,29,30,32,33,34,35,36,37,38,39,41,42,43,44,45,46,47,89,40,49,50,51,53,54,55,56,57,59,273,63,62,64,65,66,67,68,69,70,71,72,73,74,75,76,78,79,81,82,83,84,85,86,87,88,90,274,91,92,93,95,96,97,98,100,101,102,103,104,105,106,107,108,109,110,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,135,136,137,138,139,141,144,159,160,161,162,145,146,147,148,149,150,151,152,154,155,156,157,275,158,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,190,134,191,192,193+3:21,22,23,24,26,27,28,29,30,31,32,33,137+6:2010,2011,2012,2013,2014,2015&lock=CRS1
-**Data Obtained Date:** 8/8/2017
+## GAVI
 
-```{r crs_data, eval = FALSE}
+**Source:** GAVI Vaccine Alliance  
+**Dataset:** Commitments and Dispersements for All Countries for 2001-2017 (TOTAL COMMITMENTS - Inception to June 30, 2017)  
+**Brief description:** GAVI provides information regarding all of its funding commitments and dispersements for vaccine-related initiatives.   
+**Level of aggregation:** Funder (always GAVI), Recipient, Program, Year  
+**Location:** http://www.gavi.org/results/disbursements/  
+**Data Obtained Date:** 8/8/2017  
+
+```{r gavi_data}
 ## note that filepaths have to be relative to .Rmd file in order to work
-## ignore the first four rows (headers appear on multiple rows) and specify colnames in R
-## ignore the 5th column, as well as 12th and 13th column (they're empty)
-## WARNING: if you change the data, or the order of the fields, UPDATE THIS PIECE OF CODE
-crs <- read.csv("../data/crs/results.csv", 
-                stringsAsFactors = FALSE)[-c(1:4),-c(5, 12:13)]
 
-names(crs) <- c("flow_type", "donor", "recipient", "sector",
-                "year2010", "year2011", "year2012", "year2013", "year2014", "year2015")
+## two seperate files have to be read in because they were saved as different tabs in Excel format
+## will merge them later
+## gavic = committed funds 
+gavic <- read.table("../data/gavi/raw/gavi_commitments.csv", 
+                 stringsAsFactors = FALSE, sep = "\t", header = TRUE)
 
+## gavid = dispersed funds
+gavid <- read.table("../data/gavi/raw/gavi_disbursements.csv", 
+                 stringsAsFactors = FALSE, sep = "\t", header = TRUE)
+```
+
+### Data Processing 
+
+* Exclude Total Counts and only look at item-level information (avoid double counting)  
+* Populate empty fields caused by merges in Microsoft Excel  
+* Format dollars to appear as numers (exclude commas)  
+* Add "GAVI" as data source  
+* Add "GAVI" as channel
+* Add "vaccines" as product (may look to update this later, since GAVI also funds health systems)
+
+```{r}
+## exclude total counts
+gavid <- gavid[-which(grepl("Total", gavid$Country)),]
+gavic <- gavic[-which(grepl("Total", gavic$Country)),]
+```
+
+```{r}
+## define function that carries down values for empty fields
+## (address merged fields in excel that disappear when files read/saved as csv or tsv files)
+## https://stackoverflow.com/questions/10554741/r-fill-in-data-frame-with-values-from-rows-above
+filldownF <- function(x) {
+  for(i in seq_along(x)[-1]) {
+    if(is.na(x[i]) | x[i] == "") x[i] <- x[i-1]
+  }
+  x
+}
+
+## filldown to fill blanks on selected data fields
+## note: eventually could modify to use apply here, but would need to deal with indexing
+gavic$Country <- filldownF(gavic$Country)
+gavic$Region <- filldownF(gavic$Region)
+gavic$High.Level.Category <- filldownF(gavic$High.Level.Category)
+
+gavid$Country <- filldownF(gavid$Country)
+gavid$Region <- filldownF(gavid$Region)
+gavid$Programme.Category <- filldownF(gavid$Programme.Category)
+```
+
+```{r, warning = FALSE}
+## format numbers without commas, NA value when no data exist
+## warning: NAs introduced by coercion is okay
+gavic[,which(names(gavic) %in% c(paste("X", 2001:2021, sep = ""), "Grand.Total"))] <- apply(
+      X = gavic[,which(names(gavic) %in% c(paste("X", 2001:2021, sep = ""), "Grand.Total"))],
+      MARGIN = 2,
+      FUN = function(x) {as.numeric(as.character(gsub(",", "", x)))}
+)
+
+gavid[,which(names(gavid) %in% c(paste("X", 2001:2017, sep = ""), "Grand.Total"))] <- apply(
+      X = gavid[,which(names(gavid) %in% c(paste("X", 2001:2017, sep = ""), "Grand.Total"))],
+      MARGIN = 2,
+      FUN = function(x) {as.numeric(as.character(gsub(",", "", x)))}
+)
+```
+
+```{r}
+## melt data from wide to long, 
+## so that there's one row per year instead of one column per year
+gavic_restructured <- melt(gavic[,-which(names(gavic) == "Grand.Total")],
+     id.vars = c("Country", "Region", "High.Level.Category", "Sub.category"),
+     value.name = "amount_committed",
+     variable.name = "year")
+
+gavid_restructured <- melt(gavid[,-which(names(gavid) == "Grand.Total")],
+     id.vars = c("Country", "Region", "Programme.Category", "Programme"),
+     value.name = "amount_dispersed",
+     variable.name = "year")
+
+## remove X before year
+gavic_restructured$year <- gsub("X", "", gavic_restructured$year)
+gavid_restructured$year <- gsub("X", "", gavid_restructured$year)
+
+## exclude rows with missing amount values
+## (years that no funds were committed for that item, for dispersed, years that no funds were dispersed)
+gavic_restructured <- gavic_restructured[-which(is.na(gavic_restructured$amount_committed)),]
+gavid_restructured <- gavid_restructured[-which(is.na(gavid_restructured$amount_dispersed)),]
+```
+
+```{r}
+## join committed and dispersed datasets, which were separated because they
+## were stored as separate tabs in Excel
+gavi_full <- full_join(gavic_restructured, gavid_restructured,
+                  by = c("Country" = "Country",
+                         "Region" = "Region",
+                         "High.Level.Category" = "Programme.Category",
+                         "Sub.category" = "Programme",
+                         "year" = "year"))
+```
+
+```{r}
+gavi_full$funder <- "GAVI"
+gavi_full$channel <- "GAVI"
+gavi_full$data_source <- "GAVI"
+gavi_full$product <- "vaccines"
+```
+
+```{r}
+## reorder fields so they are sensibly ordered
+gavi_full <- gavi_full[,c("Country", "Region", "High.Level.Category", "Sub.category", "year", 
+                          "funder", "channel", "product",
+                          "amount_committed", "amount_dispersed", "data_source")]
+```
+
+```{r}
+## save processed data 
+## save data if csv_flag is true
+## don't print rownames in csv
+if(csv_flag == TRUE){
+  write.csv(gavi_full,
+            file = "../data/gavi/processed/gavi_processed.csv", 
+            row.names = FALSE)
+}
 ```
 
 ## G-Finder
@@ -70,7 +182,9 @@ gfinder <- read.csv("../data/gfinder/raw/Public Search Tool 2017-08-09.csv",
 
 ### Data Processing 
 
-Format dollars to appear as numers (exclude commas) and remove FY from the beginning of printed years. Add G-Finder as data source.
+* Format dollars to appear as numers (exclude commas)  
+* Remove the string "FY"" from the beginning of printed years  
+* Add "G-Finder" as data source  
 
 ```{r}
 ## remove commas from dollar amounts
@@ -109,7 +223,9 @@ ihme <- read.csv("../data/ihme/raw/IHME_DAH_DATABASE_1990_2016_Y2017M04D19.CSV",
 
 ### Data Processing 
 
-Exclude preliominary estimates and duplicated entries that could cause double-counting.
+* Exclude preliminary estimates and duplicated entries that could cause double-counting  
+* Add "IHME" as data source  
+
 
 ```{r}
 ihme_selected <- ihme[which(## exclude to avoid double counting
@@ -119,20 +235,19 @@ ihme_selected <- ihme[which(## exclude to avoid double counting
                       ,]
 ```
 
-Restructure dataset from wide to long, so that we have one row per year-funder-recipient-purpose, as opposed to the original structure of one row per year-funder-recipient with individual columns corresponding to purpose. Only restructure specific fields of interest:  
-**ch_cnv_dah_15:** funds for health dispursed from source to channel to recipient country for newborn and child health, disaggregated by vaccines;  
-**oid_hhs_dah_15:** funds for health dispursed from source to channel to recipient country for infectious diseases, disaggregated by health system support;  
-**oid_other_dah_15:** funds for health dispursed from source to channel to recipient country for infectious diseases, disaggregated by everything other than health system support;  
-**mal_con_nets_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by bednets;  
-**mal_con_diag_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by diagnosis;  
-**mal_con_irs_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by indoor spraying;  
-**mal_treat_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by treatment;  
-**mal_hhs_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by health system support;  
-**mal_unid_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by unspecified function;  
-**tb_hhs_dah_15:** funds for health dispursed from source to channel to recipient country for Tuberculosis, disaggregated by health system support;  
-**tb_other_dah_15:** funds for health dispursed from source to channel to recipient country for Tuberculosis, disaggregated by everything other than health system support
-
-These fields, and associated descriptive information, are specified in the file relevant_fields in the data/ihme subdirectory.
+*  Restructure dataset from wide to long, so that we have one row per year-funder-recipient-purpose, as opposed to the original structure of one row per year-funder-recipient with individual columns corresponding to purpose. 
+  + Only restructure specific fields of interest:  
+  + **ch_cnv_dah_15:** funds for health dispursed from source to channel to recipient country for newborn and child health, disaggregated by vaccines;  
+  + **oid_hhs_dah_15:** funds for health dispursed from source to channel to recipient country for infectious diseases, disaggregated by health system support;  
+  + **oid_other_dah_15:** funds for health dispursed from source to channel to recipient country for infectious diseases, disaggregated by everything other than health system support;  
+  + **mal_con_nets_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by bednets;  
+  + **mal_con_diag_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by diagnosis;  
+  + **mal_con_irs_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by indoor spraying;  
+  + **mal_treat_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by treatment;  
+  + **mal_hhs_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by health system support;  
+  + **mal_unid_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by unspecified function;  
+  + **tb_hhs_dah_15:** funds for health dispursed from source to channel to recipient country for Tuberculosis, disaggregated by health system support;  
+  + **tb_other_dah_15:** funds for health dispursed from source to channel to recipient country for Tuberculosis, disaggregated by everything other than health system support
 
 ```{r}
 ## read in file specifying fields of interest
@@ -199,7 +314,11 @@ oie <- read.table("../data/oie/raw/eu_contracts.csv",
 
 ### Data Processing
 
-Extract year from field Date.of.Signature.of.Contract, add OIE as funder.
+* Extract year from field Date.of.Signature.of.Contract
+* Add "EU" as funder
+  + Note that while these funds were distributed by OIE, they were provided to OIE by the EU
+* Add "OIE" as channel
+* Add "OIE" as data source  
 
 ```{r}
 ## format field date of signature as a date
@@ -208,7 +327,8 @@ oie$Date.of.Signature.of.Contract <- as.Date(oie$Date.of.Signature.of.Contract, 
 ## extract year of date of contract signature
 oie$Year.of.Signature.of.Contract <- as.numeric(as.character(format(oie$Date.of.Signature.of.Contract, format = "%Y")))
 
-oie$Funder <- "OIE"
+oie$Funder <- "EU"
+oie$channel <- "OIE"
 oie$data_source = "OIE"
 ```
 
@@ -222,4 +342,128 @@ if(csv_flag == TRUE){
 }
 ```
 
+# Merge Datasets
 
+## Map Equivalent Fields Together
+
+```{r}
+field_mapping <- read.table("../data/field_mapping.txt", stringsAsFactors = FALSE, 
+                            sep = "\t", header = TRUE)
+```
+
+```{r}
+datatable(field_mapping,
+          rownames = FALSE)
+```
+
+```{r}
+## GAVI data
+## okay here that warnings are turned off, flag is about factors and characters being converted
+
+## generate dataset that includes the core data elements included in GAVI,
+## as specified in the field_mapping guide printed above
+gavi_core_data <- gavi_full[which(names(gavi_full) %in% field_mapping$fieldname[
+                                which(field_mapping$source == "GAVI" &
+                                      complete.cases(field_mapping$standard_fieldname))])]
+
+## rename core data elements of GAVI
+
+## first create temporary dataframe that merges names of core data to standard_fieldnames specified in field_mapping guide
+temp_names <- suppressWarnings(inner_join(data.frame(fieldname = names(gavi_core_data)), 
+                   field_mapping[which(field_mapping$source == "GAVI"),],
+                   by = "fieldname"))
+
+## then update gavi_core_data fieldnames
+names(gavi_core_data) <- temp_names$standard_fieldname; rm(temp_names)
+```
+
+```{r}
+## G-FINDER DATA
+## okay here that warnings are turned off, flag is about factors and characters being converted
+
+## generate dataset that includes the core data elements included in G-Finder,
+## as specified in the field_mapping guide printed above
+gfinder_core_data <- gfinder[which(names(gfinder) %in% field_mapping$fieldname[
+                                which(field_mapping$source == "G-Finder" &
+                                      complete.cases(field_mapping$standard_fieldname))])]
+
+## rename core data elements of G-Finder
+
+## first create temporary dataframe that merges names of core data to standard_fieldnames specified in field_mapping guide
+temp_names <- suppressWarnings(inner_join(data.frame(fieldname = names(gfinder_core_data)), 
+                   field_mapping[which(field_mapping$source == "G-Finder"),],
+                   by = "fieldname"))
+
+## then update gfinder_core_data fieldnames
+names(gfinder_core_data) <- temp_names$standard_fieldname; rm(temp_names)
+```
+
+```{r}
+## IHME DATA
+## okay here that warnings are turned off, flag is about factors and characters being converted
+
+## generate dataset that includes the core data elements included in IHME DATA,
+## as specified in the field_mapping guide printed above
+ihme_core_data <- ihme_restructured_full[which(names(ihme_restructured_full) %in% field_mapping$fieldname[
+                                which(field_mapping$source == "IHME" &
+                                      complete.cases(field_mapping$standard_fieldname))])]
+
+## rename core data elements of IHME data
+
+## first create temporary dataframe that merges names of core data to standard_fieldnames specified in field_mapping guide
+temp_names <- suppressWarnings(inner_join(data.frame(fieldname = names(ihme_core_data)), 
+                   field_mapping[which(field_mapping$source == "IHME"),],
+                   by = "fieldname"))
+
+## then update ihme_core_data fieldnames
+names(ihme_core_data) <- temp_names$standard_fieldname; rm(temp_names)
+```
+
+```{r}
+## OIE DATA
+## okay here that warnings are turned off, flag is about factors and characters being converted
+
+## generate dataset that includes the core data elements included in OIE data,
+## as specified in the field_mapping guide printed above
+oie_core_data <- oie[which(names(oie) %in% field_mapping$fieldname[
+                          which(field_mapping$source == "OIE" &
+                                complete.cases(field_mapping$standard_fieldname))])]
+
+## rename core data elements of OIE data
+
+## first create temporary dataframe that merges names of core data to standard_fieldnames specified in field_mapping guide
+temp_names <- suppressWarnings(inner_join(data.frame(fieldname = names(oie_core_data)), 
+                   field_mapping[which(field_mapping$source == "OIE"),],
+                   by = "fieldname"))
+
+## then update oie_core_data fieldnames
+names(oie_core_data) <- temp_names$standard_fieldname; rm(temp_names)
+```
+
+
+```{r}
+## UNION ALL (rbind) data together for OIE, IHME, and G-Finder, plus match fieldnames
+core_data <- plyr::rbind.fill(gavi_core_data,
+                              gfinder_core_data,
+                              ihme_core_data,
+                              oie_core_data)
+
+## recorder fields so that they seem somewhat sensible when we save/print them
+core_data <- core_data[,c("project_name", "application_area", "product",
+             "funder", "funder_type", "funder_country",
+             "channel", 
+             "recipient", "recipient_type", "recipient_country",
+             "amount_committed", "amount_dispersed",
+             "year",
+             "data_source")]
+```
+
+```{r}
+## save data if csv_flag is true
+## don't print rownames in csv
+if(csv_flag == TRUE){
+  write.csv(core_data,
+            file = "../data/aggregate/mock_ghsa_data_wide.csv", 
+            row.names = FALSE)
+}
+```
