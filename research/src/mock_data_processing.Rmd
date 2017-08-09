@@ -1,11 +1,11 @@
 ---
 title: "GHSA Data Processing"
-author: "Steph Eaneff"
-date: "8/7/2017"
+author: "Steph Eaneff\nTalus Analytics"
+date: "8/9/2017"
 output:
   html_document:
     toc: true
-    toc_depth: 2
+    toc_depth: 3
 ---
 
 ```{r setup, include = FALSE}
@@ -23,13 +23,15 @@ library(reshape2) ## reshape data
 library(DT) ## print pretty datatables
 ```
 
-# Initial Data 
+# Datasets (Initial Data)
 
 ## CRS
 
 CRS data are not currently being used to generate the mock dataset, as the online CRS data exporter tool does not function as expected, and returns partial data plus an error message. Once exported, the data include only net disbursements, but not commitments. An error message is generated.
 
 ## GAVI
+
+### Details
 
 **Source:** GAVI Vaccine Alliance  
 **Dataset:** Commitments and Dispersements for All Countries for 2001-2017 (TOTAL COMMITMENTS - Inception to June 30, 2017)  
@@ -59,7 +61,7 @@ gavid <- read.table("../data/gavi/raw/gavi_disbursements.csv",
 * Format dollars to appear as numers (exclude commas)  
 * Add "GAVI" as data source  
 * Add "GAVI" as channel
-* Add "vaccines" as product (may look to update this later, since GAVI also funds health systems)
+* Add "Immunization" as core capability
 
 ```{r}
 ## exclude total counts
@@ -124,8 +126,10 @@ gavid_restructured$year <- gsub("X", "", gavid_restructured$year)
 
 ## exclude rows with missing amount values
 ## (years that no funds were committed for that item, for dispersed, years that no funds were dispersed)
-gavic_restructured <- gavic_restructured[-which(is.na(gavic_restructured$amount_committed)),]
-gavid_restructured <- gavid_restructured[-which(is.na(gavid_restructured$amount_dispersed)),]
+gavic_restructured <- gavic_restructured[-which(is.na(gavic_restructured$amount_committed) |
+                                                gavic_restructured$amount_committed == 0),]
+gavid_restructured <- gavid_restructured[-which(is.na(gavid_restructured$amount_dispersed) |
+                                                  gavid_restructured$amount_dispersed == 0),]
 ```
 
 ```{r}
@@ -143,14 +147,13 @@ gavi_full <- full_join(gavic_restructured, gavid_restructured,
 gavi_full$funder <- "GAVI"
 gavi_full$channel <- "GAVI"
 gavi_full$data_source <- "GAVI"
-gavi_full$product <- "vaccines"
+gavi_full$core_capability <- "Immunization"
 ```
 
 ```{r}
 ## reorder fields so they are sensibly ordered
 gavi_full <- gavi_full[,c("Country", "Region", "High.Level.Category", "Sub.category", "year", 
-                          "funder", "channel", "product",
-                          "amount_committed", "amount_dispersed", "data_source")]
+                          "funder", "channel", "amount_committed", "amount_dispersed", "data_source")]
 ```
 
 ```{r}
@@ -165,6 +168,8 @@ if(csv_flag == TRUE){
 ```
 
 ## G-Finder
+
+### Details
 
 **Source:** Policy Cures G-Finder
 **Dataset:** Neglected Disease Funding for all diseases - all products for FYI 2015
@@ -205,8 +210,9 @@ if(csv_flag == TRUE){
 }
 ```
 
-
 ## IHME
+
+### Details
 
 **Source:** IHME (Institute for Health Metrics and Evaluation, University of Washington)  
 **Dataset:** Development Assistance for Health Database 1990-2016  
@@ -226,7 +232,6 @@ ihme <- read.csv("../data/ihme/raw/IHME_DAH_DATABASE_1990_2016_Y2017M04D19.CSV",
 * Exclude preliminary estimates and duplicated entries that could cause double-counting  
 * Add "IHME" as data source  
 
-
 ```{r}
 ihme_selected <- ihme[which(## exclude to avoid double counting
                             ihme$elim_ch >= 0 & 
@@ -236,18 +241,6 @@ ihme_selected <- ihme[which(## exclude to avoid double counting
 ```
 
 *  Restructure dataset from wide to long, so that we have one row per year-funder-recipient-purpose, as opposed to the original structure of one row per year-funder-recipient with individual columns corresponding to purpose. 
-  + Only restructure specific fields of interest:  
-  + **ch_cnv_dah_15:** funds for health dispursed from source to channel to recipient country for newborn and child health, disaggregated by vaccines;  
-  + **oid_hhs_dah_15:** funds for health dispursed from source to channel to recipient country for infectious diseases, disaggregated by health system support;  
-  + **oid_other_dah_15:** funds for health dispursed from source to channel to recipient country for infectious diseases, disaggregated by everything other than health system support;  
-  + **mal_con_nets_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by bednets;  
-  + **mal_con_diag_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by diagnosis;  
-  + **mal_con_irs_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by indoor spraying;  
-  + **mal_treat_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by treatment;  
-  + **mal_hhs_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by health system support;  
-  + **mal_unid_dah_15:** funds for health dispursed from source to channel to recipient country for malaria, disaggregated by unspecified function;  
-  + **tb_hhs_dah_15:** funds for health dispursed from source to channel to recipient country for Tuberculosis, disaggregated by health system support;  
-  + **tb_other_dah_15:** funds for health dispursed from source to channel to recipient country for Tuberculosis, disaggregated by everything other than health system support
 
 ```{r}
 ## read in file specifying fields of interest
@@ -298,6 +291,8 @@ if(csv_flag == TRUE){
 
 ## OIE
 
+### Details
+
 **Source:** OIE (World Organization for Animal Health)  
 **Dataset:** OIE Procurement Contracts, Grants and Sub-Grants awarded by the OIE with funding by the European Union (EU)  
 **Brief description:** All active contribution agreements signed between the OIE and the EU in support of OIE programs, project, and activities. EU Only.  
@@ -309,7 +304,7 @@ if(csv_flag == TRUE){
 ```{r oie_data}
 ## note that filepaths have to be relative to .Rmd file in order to work
 oie <- read.table("../data/oie/raw/eu_contracts.csv", 
-                 stringsAsFactors = FALSE, sep = "\t", header = TRUE)
+                 stringsAsFactors = FALSE, sep = ",", header = TRUE)
 ```
 
 ### Data Processing
@@ -342,9 +337,12 @@ if(csv_flag == TRUE){
 }
 ```
 
-# Merge Datasets
+# Aggregate Data
 
 ## Map Equivalent Fields Together
+
+Since each dataset (GAVI, G-Finder, OIE, and IHME) each had unique data structures and variable ("field") names, it was necessary to develop a mapping of equivalent fields. The datatable printed below shows the way in which fields in each datasource were mapped to a standardized data ontology including broad categories like year, amount, funder, and disease.  
+Across sources, data are reported at varying levels of resolution. For instance, G-Finder reports disease information at a much higher level of resolution (e.g. "Strongyloidiasis & other intestinal roundworms") than IHME (e.g. "infectious disease"). 
 
 ```{r}
 field_mapping <- read.table("../data/field_mapping.txt", stringsAsFactors = FALSE, 
@@ -352,7 +350,8 @@ field_mapping <- read.table("../data/field_mapping.txt", stringsAsFactors = FALS
 ```
 
 ```{r}
-datatable(field_mapping,
+## exclude notes section for now
+datatable(field_mapping[,-which(names(field_mapping) %in% c("notes", "subdirectory", "filename")),],
           rownames = FALSE)
 ```
 
@@ -449,7 +448,7 @@ core_data <- plyr::rbind.fill(gavi_core_data,
                               oie_core_data)
 
 ## recorder fields so that they seem somewhat sensible when we save/print them
-core_data <- core_data[,c("project_name", "application_area", "product",
+core_data <- core_data[,c("project_name", "application_area", "core_capability",
              "funder", "funder_type", "funder_country",
              "channel", 
              "recipient", "recipient_type", "recipient_country",
@@ -459,11 +458,52 @@ core_data <- core_data[,c("project_name", "application_area", "product",
 ```
 
 ```{r}
+## assign unique ID to each row
+core_data$row_id <- 1:nrow(core_data)
+```
+
+```{r}
+## Generate Random Sample of Data for Development
+
+core_data$in_sample <- FALSE
+
+## was initially going to sample randomly, starting out a bit more manually to make sure
+## I have coverage where I'm most concerned about having coverage
+oie_indices <- which(core_data$data_source == "OIE")
+set.seed(1202); ihme_indices <- base::sample(which(core_data$data_source == "IHME"), size = 100)
+set.seed(0311); gfinder_indices <- base::sample(which(core_data$data_source == "G-Finder"), size = 100)
+set.seed(0311); gavi_indices <- base::sample(which(core_data$data_source == "GAVI"), size = 100)
+
+core_data$in_sample[c(oie_indices,
+                      ihme_indices,
+                      gfinder_indices,
+                      gavi_indices)] <- TRUE
+```
+
+
+```{r}
 ## save data if csv_flag is true
 ## don't print rownames in csv
 if(csv_flag == TRUE){
+  
+  ## save full dataset
   write.csv(core_data,
-            file = "../data/aggregate/mock_ghsa_data_wide.csv", 
+            file = "../data/aggregate/mock_ghsa_data_full.csv", 
             row.names = FALSE)
+  
+  ## save development dataset
+    write.csv(core_data[which(core_data$in_sample == TRUE),],
+            file = "../data/aggregate/mock_ghsa_data_sampled.csv", 
+            row.names = FALSE)
+  
 }
 ```
+
+```{r}
+table(core_data$data_source)
+table(core_data[which(core_data$in_sample == TRUE &
+                      core_data$data_source == "GAVI"),]$core_capability)
+
+```
+
+
