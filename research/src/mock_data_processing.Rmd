@@ -480,6 +480,9 @@ if(csv_flag == TRUE){
             row.names = FALSE)
   
 }
+
+## numbers as numbers
+core_data$amount_dispersed <- as.numeric(core_data$amount_dispersed)
 ```
 
 ```{r}
@@ -611,7 +614,6 @@ demo_data_actual[which(demo_data_actual$core_capability_notes %in%
   c("Drugs", "Vaccines (Therapeutic)")),]$core_capability <- "nonspecific"
 ```
 
-
 ## Simulated Data
 
 ```{r, eval = FALSE}
@@ -622,60 +624,100 @@ demo_data_sim <- read.table(file = "../data/simulated_data.tsv", sep = "\t", hea
 ```{r, eval = FALSE}
 
 ## Adjust levels of relative funding
+## sample from 25th-60th quantile
 demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Prevent")] <- 
-  rnorm(n = sum(demo_data_sim$core_element == "Prevent"),
-        mean = 50000, sd = 4000)
+  sample(core_data$amount_dispersed[
+    which(core_data$amount_dispersed >= quantile(core_data$amount_dispersed, 0.1, na.rm = TRUE) &
+          core_data$amount_dispersed <= quantile(core_data$amount_dispersed, 0.8, na.rm = TRUE))], 
+        size = sum(demo_data_sim$core_element == "Prevent"))
 
 demo_data_sim$amount_dispersed[which(demo_data_sim$core_element == "Prevent")] <- 
   rnorm(n = sum(demo_data_sim$core_element == "Prevent"),
-        mean = 0.9, sd = 0.005) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Prevent")]
+        mean = 0.8, sd = 0.1) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Prevent")]
 
+## sample from 20th-40th quantile
 demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Detect")] <- 
-  rnorm(n = sum(demo_data_sim$core_element == "Detect"),
-        mean = 60000, sd = 6000)
+  sample(core_data$amount_dispersed[
+    which(core_data$amount_dispersed >= quantile(core_data$amount_dispersed, 0.1, na.rm = TRUE) &
+          core_data$amount_dispersed <= quantile(core_data$amount_dispersed, 0.4, na.rm = TRUE))], 
+        size = sum(demo_data_sim$core_element == "Detect"))
 
 demo_data_sim$amount_dispersed[which(demo_data_sim$core_element == "Detect")] <- 
   rnorm(n = sum(demo_data_sim$core_element == "Detect"),
-        mean = 0.98, sd = 0.001) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Detect")]
+        mean = 0.9, sd = 0.1) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Detect")]
 
+## sample from 30th-70th quantile
 demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Respond")] <- 
-  rnorm(n = sum(demo_data_sim$core_element == "Respond"),
-        mean = 70000, sd = 10000)
+  sample(core_data$amount_dispersed[
+    which(core_data$amount_dispersed >= quantile(core_data$amount_dispersed, 0.3, na.rm = TRUE) &
+          core_data$amount_dispersed <= quantile(core_data$amount_dispersed, 0.8, na.rm = TRUE))], 
+        size = sum(demo_data_sim$core_element == "Respond"))
 
 demo_data_sim$amount_dispersed[which(demo_data_sim$core_element == "Respond")] <- 
   rnorm(n = sum(demo_data_sim$core_element == "Respond"),
-        mean = 1.2, sd = 0.1) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Respond")]
+        mean = 1.1, sd = 0.2) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Respond")]
 
+## sample from 10th-40th quantile
 demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Other")] <- 
-  rnorm(n = sum(demo_data_sim$core_element == "Other"),
-        mean = 40000, sd = 9000)
+  sample(core_data$amount_dispersed[
+    which(core_data$amount_dispersed >= quantile(core_data$amount_dispersed, 0.1, na.rm = TRUE) &
+          core_data$amount_dispersed <= quantile(core_data$amount_dispersed, 0.5, na.rm = TRUE))], 
+        size = sum(demo_data_sim$core_element == "Other"))
 
 demo_data_sim$amount_dispersed[which(demo_data_sim$core_element == "Other")] <- 
   rnorm(n = sum(demo_data_sim$core_element == "Other"),
-        mean = 1, sd = 0.07) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Other")]
+        mean = 1, sd = 0.01) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Other")]
 
-write.table(demo_data_sim, file = "../data/simulated_data.tsv", 
-            quote = FALSE, sep = '\t', col.names = TRUE, row.names = FALSE)
-
+if(csv_flag == TRUE){
+  write.table(demo_data_sim, file = "../data/simulated_data.tsv", 
+              quote = FALSE, sep = '\t', col.names = TRUE, row.names = FALSE)
+}
 ```
 
 ```{r}
-## Adjust by application area
+## read in simulated dataset
+demo_data_sim <- read.table(file = "../data/simulated_data.tsv", sep = "\t", header = TRUE)
+```
 
+```{r}
+## merge actual and notional data
+demo_data <- plyr::rbind.fill(demo_data_actual[,-which(names(demo_data_actual) %in% 
+                                                               c("application_area_notes",
+                                                                "core_capability_notes"))],
+                              demo_data_sim)
 
 ```
 
 # Analysis
 
-```{r, eval = FALSE}
-ggplot(demo_data_sim, aes(amount_committed, fill = core_element)) +
-  geom_histogram(binwidth = 500)
-```
+## Data Source
+
+Ensure that simulated notional data isn't too far out of line.
 
 ```{r}
-ggplot(demo_data_sim, aes(amount_committed, fill = funder_country)) +
-  geom_histogram(binwidth = 500)
+## still needs legend
+ggplot(demo_data, aes(log(amount_dispersed), fill = data_source)) +
+    geom_histogram(bins = 25) +
+  ylab("Number of Dispers") +
+  xlab("Log Amount Dispersed") +
+  ggtitle("Disperal Amount by Data Source") 
 ```
+
+## Amount Dispersed
+
+```{r}
+## still needs legend
+ggplot(demo_data, aes(log(amount_dispersed))) +
+    geom_histogram(data = subset(demo_data, core_element == 'Prevent'), fill = "red", alpha = 0.2) +
+    geom_histogram(data = subset(demo_data, core_element == 'Detect'), fill = "blue", alpha = 0.2) +
+    geom_histogram(data = subset(demo_data, core_element == 'Respond'), fill = "green", alpha = 0.2) +
+    geom_histogram(data = subset(demo_data, core_element == 'Other'), fill = "orange", alpha = 0.2) +
+  ylab("Number of Disperals") +
+  xlab("Amount Dispersed") +
+  ggtitle("Disperal Amount by JEE Core Element") 
+```
+
+
 
 
 
