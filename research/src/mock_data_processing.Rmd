@@ -21,6 +21,7 @@ csv_flag <- TRUE
 library(dplyr); library(plyr) ## restructure/aggregate data
 library(reshape2) ## reshape data
 library(DT) ## print pretty datatables
+library(ggplot2) ## plotting
 ```
 
 # Datasets (Initial Data)
@@ -64,7 +65,7 @@ gavid <- read.table("../data/gavi/raw/gavi_disbursements.tsv",
 * Add "Immunization" as core capability
 * Add "Multilaterals (Public, Private)" as funder type
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 ## exclude total counts
 gavid <- gavid[-which(grepl("Total", gavid$Country)),]
 gavic <- gavic[-which(grepl("Total", gavic$Country)),]
@@ -291,10 +292,6 @@ if(csv_flag == TRUE){
 }
 ```
 
-### Country -> Channel -> Country Recode
-
-Instead of coding the data as flowing from country to country through a channel, consider coding the data as flowing fro country to channel to country. This has not yet been completed (or even started).
-
 ## OIE
 
 ### Details
@@ -345,9 +342,9 @@ if(csv_flag == TRUE){
 }
 ```
 
-# Aggregate Data
+## Aggregate Data
 
-## Map Equivalent Fields Together
+### Map Equivalent Fields Together
 
 Since each dataset (GAVI, G-Finder, OIE, and IHME) each had unique data structures and variable ("field") names, it was necessary to develop a mapping of equivalent fields. The datatable printed below shows the way in which fields in each datasource were mapped to a standardized data ontology including broad categories like year, amount, funder, and disease.  
 
@@ -463,18 +460,9 @@ core_data <- core_data[,c("project_name", "application_area", "core_capability",
              "recipient", "recipient_type", "recipient_country",
              "amount_committed", "amount_dispersed",
              "year",
-             "data_source")]
+             "data_source",
+             "core_capability_notes", "application_area_notes")]
 ```
-
-## Additional Data Processing
-
-Exclude data from debt repayments.
-
-```{r}
-## remove rows corresponding to funder_country == "Debt_repayments"
-core_data <- core_data[-which(core_data$funder_country == "Debt_repayments"),]
-```
-
 
 ```{r}
 ## assign unique ID to each row
@@ -501,4 +489,193 @@ paste("Full dataset has",
       file.size("../data/aggregate/mock_ghsa_data_full.csv")/1000000,
       "MB")
 ```
+
+# Demo Data 
+
+## Sampled Actual Data
+
+The sampled dataset used as part of the demo dataset will include data from the following sources:  
+  * GAVI (random sample of 100 recipient-application pairs form years 2012-2015)
+  * OIE (all data from 2012-2015)
+  * G-Finder (random sample of 100 data committed funds from 2015 only)
+
+```{r}
+set.seed(1202)
+## store the indices of the GAVI data elements we want to include, in case we want to reference them later
+gavi_sample_indices <- sample(which(core_data$year %in% c(2012:2015) &
+                                    core_data$data_source == "GAVI"), size = 100)
+
+## store the indices of the OIE data elements we want to include, in case we want to reference them later
+oie_sample_indices <- which(core_data$year %in% c(2012:2015) &
+                            core_data$data_source == "OIE")
+
+set.seed(1202)
+## store the indices of the OIE data elements we want to include, in case we want to reference them later
+gfinder_sample_indices <- sample(which(core_data$data_source == "G-Finder"), size = 100)
+
+## demo data combining selected data elements, identified in the notes above
+demo_data_actual <- plyr::rbind.fill(core_data[gavi_sample_indices,],
+                                     core_data[gfinder_sample_indices,],
+                                     core_data[oie_sample_indices,])
+
+## create core element data field
+demo_data_actual$core_element <- NA
+
+## recode numbers as numbers
+demo_data_actual$amount_dispersed <- as.numeric(demo_data_actual$amount_dispersed)
+demo_data_actual$amount_committed <- as.numeric(demo_data_actual$amount_committed)
+```
+
+### Manual Recoding
+
+#### Application Area/Disease
+
+```{r}
+## where can we directly port over from application area notes to application area?
+temp <- which(demo_data_actual$application_area_notes %in%
+                c("HIV/AIDS",
+                  "Malaria",
+                  "Tuberculosis",
+                  "Measles and/or Rubella"))
+
+demo_data_actual[temp,]$application_area <- demo_data_actual[temp,]$application_area_notes
+rm(temp)
+  
+demo_data_actual[which(demo_data_actual$application_area_notes %in%
+  c("Can not be allocated to one disease Core funding of a multi-disease R&D organisation",
+    "Can not be allocated to one disease General diagnostic platforms",
+    "Can not be allocated to one disease Other R&D",
+    "Vaccine Introduction Grant",
+    "HSS", ## health system support
+    "IPV", ## polio
+    "ISS" ## immunization support services
+    )),]$application_area <- "nonspecific"
+
+demo_data_actual[which(demo_data_actual$application_area_notes %in%
+  c("Dengue",
+    "Diarrhoeal diseases",
+    "Filoviral diseases (including Ebola, Marburg)",
+    "HPV Demo", "HPV Demo - cash support",
+    "Kinetoplastids", ## todo: check that these are infectious, they're protozoa
+    "Leprosy",
+    "Measles", "Measles SIA", "Measles-Rubella",
+    "Meningitis A - campaign", "Meningitis A - operational costs",
+    "Penta", ## pentavalent vaccine
+    "Pneumo",
+    "Rotavirus",
+    "Salmonella infections", ## todo: check that this should be infectious
+    "Yellow Fever"
+    )),]$application_area <- "Infectious disease, other"
+
+demo_data_actual[which(demo_data_actual$application_area_notes %in%
+  c("Helminths (Worms & Flukes)")),]$application_area <- "Other"
+```
+
+#### Core Element and Core Capacity
+
+```{r}
+## Unspecified: Unspecified
+demo_data_actual[which(demo_data_actual$core_capability_notes %in%
+  c("Unspecified", "")),]$core_element <- "unspecified"
+demo_data_actual[which(demo_data_actual$core_capability_notes %in%
+  c("Unspecified", "")),]$core_capability <- "unspecified"
+
+## Nonspecific: Nonspecific
+demo_data_actual[which(demo_data_actual$core_capability_notes %in%
+  c("Basic research")),]$core_element <- "nonspecific"
+demo_data_actual[which(demo_data_actual$core_capability_notes %in%
+  c("Basic research")),]$core_capability <- "nonspecific"
+
+## Prevent: Non-Specific
+demo_data_actual[which(demo_data_actual$core_capability_notes %in%
+  c("Microbicides", "Vector Control Products Biological control products")),]$core_element <- "Prevent"
+demo_data_actual[which(demo_data_actual$core_capability_notes %in%
+  c("Microbicides", "Vector Control Products Biological control products")),]$core_capability <- "nonspecific"
+
+## Prevent: Immunization
+demo_data_actual[which(demo_data_actual$core_capability_notes %in%
+  c("Vaccines (Preventive)")),]$core_element <- "Prevent"
+demo_data_actual[which(demo_data_actual$core_capability_notes %in%
+  c("Vaccines (Preventive)")),]$core_capability <- "Immunization"
+
+## Detect: Nonspecific
+demo_data_actual[which(demo_data_actual$core_capability_notes %in%
+  c("Diagnostics")),]$core_element <- "Detect"
+demo_data_actual[which(demo_data_actual$core_capability_notes %in%
+  c("Diagnostics")),]$core_capability <- "nonspecific"
+
+## Respond: Nonspecific
+demo_data_actual[which(demo_data_actual$core_capability_notes %in%
+  c("Drugs", "Vaccines (Therapeutic)")),]$core_element <- "Respond"
+demo_data_actual[which(demo_data_actual$core_capability_notes %in%
+  c("Drugs", "Vaccines (Therapeutic)")),]$core_capability <- "nonspecific"
+```
+
+
+## Simulated Data
+
+```{r, eval = FALSE}
+## read in simulated dataset
+demo_data_sim <- read.table(file = "../data/simulated_data.tsv", sep = "\t", header = TRUE)
+```
+
+```{r, eval = FALSE}
+
+## Adjust levels of relative funding
+demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Prevent")] <- 
+  rnorm(n = sum(demo_data_sim$core_element == "Prevent"),
+        mean = 50000, sd = 4000)
+
+demo_data_sim$amount_dispersed[which(demo_data_sim$core_element == "Prevent")] <- 
+  rnorm(n = sum(demo_data_sim$core_element == "Prevent"),
+        mean = 0.9, sd = 0.005) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Prevent")]
+
+demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Detect")] <- 
+  rnorm(n = sum(demo_data_sim$core_element == "Detect"),
+        mean = 60000, sd = 6000)
+
+demo_data_sim$amount_dispersed[which(demo_data_sim$core_element == "Detect")] <- 
+  rnorm(n = sum(demo_data_sim$core_element == "Detect"),
+        mean = 0.98, sd = 0.001) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Detect")]
+
+demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Respond")] <- 
+  rnorm(n = sum(demo_data_sim$core_element == "Respond"),
+        mean = 70000, sd = 10000)
+
+demo_data_sim$amount_dispersed[which(demo_data_sim$core_element == "Respond")] <- 
+  rnorm(n = sum(demo_data_sim$core_element == "Respond"),
+        mean = 1.2, sd = 0.1) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Respond")]
+
+demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Other")] <- 
+  rnorm(n = sum(demo_data_sim$core_element == "Other"),
+        mean = 40000, sd = 9000)
+
+demo_data_sim$amount_dispersed[which(demo_data_sim$core_element == "Other")] <- 
+  rnorm(n = sum(demo_data_sim$core_element == "Other"),
+        mean = 1, sd = 0.07) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Other")]
+
+write.table(demo_data_sim, file = "../data/simulated_data.tsv", 
+            quote = FALSE, sep = '\t', col.names = TRUE, row.names = FALSE)
+
+```
+
+```{r}
+## Adjust by application area
+
+
+```
+
+# Analysis
+
+```{r, eval = FALSE}
+ggplot(demo_data_sim, aes(amount_committed, fill = core_element)) +
+  geom_histogram(binwidth = 500)
+```
+
+```{r}
+ggplot(demo_data_sim, aes(amount_committed, fill = funder_country)) +
+  geom_histogram(binwidth = 500)
+```
+
+
 
