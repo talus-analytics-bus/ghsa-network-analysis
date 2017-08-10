@@ -286,10 +286,14 @@ ihme_restructured_full <- ihme_restructured_full[,c(2,3,5,4,6,7,8,9,1)]
 ## don't print rownames in csv
 if(csv_flag == TRUE){
   write.csv(ihme_restructured_full,
-            file = "../data/ihme/processed/ihme_processed.csv", 
+            file = "../data/ihme/processed/ihme_processed_channel_wide.csv", 
             row.names = FALSE)
 }
 ```
+
+### Country -> Channel -> Country Recode
+
+Instead of coding the data as flowing from country to country through a channel, consider coding the data as flowing fro country to channel to country. This has not yet been completed (or even started).
 
 ## OIE
 
@@ -462,31 +466,19 @@ core_data <- core_data[,c("project_name", "application_area", "core_capability",
              "data_source")]
 ```
 
+## Additional Data Processing
+
+Exclude data from debt repayments.
+
+```{r}
+## remove rows corresponding to funder_country == "Debt_repayments"
+core_data <- core_data[-which(core_data$funder_country == "Debt_repayments"),]
+```
+
+
 ```{r}
 ## assign unique ID to each row
 core_data$row_id <- 1:nrow(core_data)
-```
-
-```{r}
-## Generate Random Sample of Data for Development
-
-core_data$in_sample <- FALSE
-
-## was initially going to sample randomly, starting out a bit more manually to make sure
-## I have coverage where I'm most concerned about having coverage
-oie_indices <- which(core_data$data_source == "OIE")
-set.seed(1202); ihme_indices <- base::sample(which(core_data$data_source == "IHME"), size = 100)
-set.seed(0311); gfinder_indices <- base::sample(which(core_data$data_source == "G-Finder"), size = 100)
-set.seed(0311); gavi_indices <- base::sample(which(core_data$data_source == "GAVI"), size = 100)
-
-core_data$in_sample[c(oie_indices,
-                      ihme_indices,
-                      gfinder_indices,
-                      gavi_indices)] <- TRUE
-```
-
-```{r}
-dev_data <- core_data[which(core_data$in_sample == TRUE),]
 ```
 
 ```{r}
@@ -499,11 +491,6 @@ if(csv_flag == TRUE){
             file = "../data/aggregate/mock_ghsa_data_full.csv", 
             row.names = FALSE)
   
-  ## save development dataset
-    write.csv(dev_data,
-            file = "../data/aggregate/mock_ghsa_data_sampled.csv", 
-            row.names = FALSE)
-  
 }
 ```
 
@@ -513,50 +500,5 @@ paste("Full dataset has",
       prettyNum(nrow(core_data), big.mark = ","), "rows and is", 
       file.size("../data/aggregate/mock_ghsa_data_full.csv")/1000000,
       "MB")
-
-## print info for development dataset
-paste("Subsampled development dataset has (for now)", 
-      prettyNum(nrow(dev_data), big.mark = ","), "rows and is", 
-      file.size("../data/aggregate/mock_ghsa_data_sampled.csv")/1000000,
-      "MB")
 ```
-
-## Recode Selected Values
-```{r}
-## read in edits
-recodes <- read.table("../data/category_mapping.csv", 
-                 stringsAsFactors = FALSE, sep = ",", header = TRUE)
-```
-
-```{r}
-## set flag to indicate whether or not something has been recoded
-dev_data$recoded <- FALSE
-
-for(i in 1:nrow(recodes)){
-  ## column index of the field that needs to be recoded
-  colindex <- which(names(dev_data) == recodes$initial_fieldname[i])
-  
-  ## look at rows that correspond to the relevant data source AND
-  ## that have the specified value, save those rows
-  rowindex <- which(dev_data$data_source == recodes$data_source[i] &
-                       dev_data[,colindex] == recodes$initial_value[i])
-  
-  ## replace value if anything exists, otherwise do nothing
-  ## and move onto the next suggested update from recodes
-  
-  if(length(colindex) > 0 & length(rowindex) > 0 ){
-    
-  dev_data[rowindex,colindex] <- recodes$updated_value[i]
-  ## set flag to indicate that some of the data in this row have been recoded
-  dev_data[rowindex,]$recoded <- TRUE
-  
-  }
-  
-  ## celebrate
-}
-
-```
-
-
-
 
