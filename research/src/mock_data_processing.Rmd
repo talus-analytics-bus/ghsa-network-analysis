@@ -46,11 +46,11 @@ CRS data are not currently being used to generate the mock dataset, as the onlin
 ## two seperate files have to be read in because they were saved as different tabs in Excel format
 ## will merge them later
 ## gavic = committed funds 
-gavic <- read.table("../data/gavi/raw/gavi_commitments.csv", 
+gavic <- read.table("../data/gavi/raw/gavi_commitments.tsv", 
                  stringsAsFactors = FALSE, sep = "\t", header = TRUE)
 
 ## gavid = dispersed funds
-gavid <- read.table("../data/gavi/raw/gavi_disbursements.csv", 
+gavid <- read.table("../data/gavi/raw/gavi_disbursements.tsv", 
                  stringsAsFactors = FALSE, sep = "\t", header = TRUE)
 ```
 
@@ -62,6 +62,7 @@ gavid <- read.table("../data/gavi/raw/gavi_disbursements.csv",
 * Add "GAVI" as data source  
 * Add "GAVI" as channel
 * Add "Immunization" as core capability
+* Add "Multilaterals (Public, Private)" as funder type
 
 ```{r}
 ## exclude total counts
@@ -148,11 +149,12 @@ gavi_full$funder <- "GAVI"
 gavi_full$channel <- "GAVI"
 gavi_full$data_source <- "GAVI"
 gavi_full$core_capability <- "Immunization"
+gavi_full$funder_type <- "Multilaterals (Public, Private)"
 ```
 
 ```{r}
 ## reorder fields so they are sensibly ordered
-gavi_full <- gavi_full[,c("Country", "Region", "High.Level.Category", "Sub.category", "year", 
+gavi_full <- gavi_full[,c("Country", "Region", "High.Level.Category", "Sub.category", "core_capability", "year", 
                           "funder", "channel", "amount_committed", "amount_dispersed", "data_source")]
 ```
 
@@ -171,13 +173,13 @@ if(csv_flag == TRUE){
 
 ### Details
 
-**Source:** Policy Cures G-Finder
-**Dataset:** Neglected Disease Funding for all diseases - all products for FYI 2015
-**Brief description:** The G-Finder database provides information on funding for 35 neglected diseases across 142 product areas including drugs, vaccines, diagnostics, microbicides, and vector control products. Data are collected by survey and manually collated and reviewed by the Policy Cures team.
-**Level of aggregation:** Disease, Secondary-level Disease, Product, Funder, Funding Type, Recipeint, Year
-**Location:** https://gfinder.policycuresresearch.org/PublicSearchTool/
-**Data Obtained Date:** 8/8/2017
-**Note:** It's possible to export data for long periods than just one year, but selecting especially long time periods caused the data exporter tool to return an error and no data.
+**Source:** Policy Cures G-Finder  
+**Dataset:** Neglected Disease Funding for all diseases - all products for FYI 2015  
+**Brief description:** The G-Finder database provides information on funding for 35 neglected diseases across 142 product areas including drugs, vaccines, diagnostics, microbicides, and vector control products. Data are collected by survey and manually collated and reviewed by the Policy Cures team.  
+**Level of aggregation:** Disease, Secondary-level Disease, Product, Funder, Funding Type, Recipeint, Year  
+**Location:** https://gfinder.policycuresresearch.org/PublicSearchTool/  
+**Data Obtained Date:** 8/8/2017  
+**Note:** It's possible to export data for long periods than just one year, but selecting especially long time periods caused the data exporter tool to return an error and no data.  
 
 ```{r gfinder_data}
 ## note that filepaths have to be relative to .Rmd file in order to work
@@ -312,6 +314,7 @@ oie <- read.table("../data/oie/raw/eu_contracts.csv",
 * Extract year from field Date.of.Signature.of.Contract
 * Add "EU" as funder
   + Note that while these funds were distributed by OIE, they were provided to OIE by the EU
+* Add "Public Sector" as funder type
 * Add "OIE" as channel
 * Add "OIE" as data source  
 
@@ -325,6 +328,7 @@ oie$Year.of.Signature.of.Contract <- as.numeric(as.character(format(oie$Date.of.
 oie$Funder <- "EU"
 oie$channel <- "OIE"
 oie$data_source = "OIE"
+oie$funder_type = "Public sector"
 ```
 
 ```{r}
@@ -342,10 +346,11 @@ if(csv_flag == TRUE){
 ## Map Equivalent Fields Together
 
 Since each dataset (GAVI, G-Finder, OIE, and IHME) each had unique data structures and variable ("field") names, it was necessary to develop a mapping of equivalent fields. The datatable printed below shows the way in which fields in each datasource were mapped to a standardized data ontology including broad categories like year, amount, funder, and disease.  
+
 Across sources, data are reported at varying levels of resolution. For instance, G-Finder reports disease information at a much higher level of resolution (e.g. "Strongyloidiasis & other intestinal roundworms") than IHME (e.g. "infectious disease"). 
 
 ```{r}
-field_mapping <- read.table("../data/field_mapping.txt", stringsAsFactors = FALSE, 
+field_mapping <- read.table("../data/field_mapping.tsv", stringsAsFactors = FALSE, 
                             sep = "\t", header = TRUE)
 ```
 
@@ -480,6 +485,9 @@ core_data$in_sample[c(oie_indices,
                       gavi_indices)] <- TRUE
 ```
 
+```{r}
+dev_data <- core_data[which(core_data$in_sample == TRUE),]
+```
 
 ```{r}
 ## save data if csv_flag is true
@@ -492,7 +500,7 @@ if(csv_flag == TRUE){
             row.names = FALSE)
   
   ## save development dataset
-    write.csv(core_data[which(core_data$in_sample == TRUE),],
+    write.csv(dev_data,
             file = "../data/aggregate/mock_ghsa_data_sampled.csv", 
             row.names = FALSE)
   
@@ -500,10 +508,55 @@ if(csv_flag == TRUE){
 ```
 
 ```{r}
-table(core_data$data_source)
-table(core_data[which(core_data$in_sample == TRUE &
-                      core_data$data_source == "GAVI"),]$core_capability)
+## print info for full datset
+paste("Full dataset has", 
+      prettyNum(nrow(core_data), big.mark = ","), "rows and is", 
+      file.size("../data/aggregate/mock_ghsa_data_full.csv")/1000000,
+      "MB")
+
+## print info for development dataset
+paste("Subsampled development dataset has (for now)", 
+      prettyNum(nrow(dev_data), big.mark = ","), "rows and is", 
+      file.size("../data/aggregate/mock_ghsa_data_sampled.csv")/1000000,
+      "MB")
+```
+
+## Recode Selected Values
+```{r}
+## read in edits
+recodes <- read.table("../data/category_mapping.csv", 
+                 stringsAsFactors = FALSE, sep = ",", header = TRUE)
+```
+
+```{r}
+## set flag to indicate whether or not something has been recoded
+dev_data$recoded <- FALSE
+
+for(i in 1:nrow(recodes)){
+  ## column index of the field that needs to be recoded
+  colindex <- which(names(dev_data) == recodes$initial_fieldname[i])
+  
+  ## look at rows that correspond to the relevant data source AND
+  ## that have the specified value, save those rows
+  rowindex <- which(dev_data$data_source == recodes$data_source[i] &
+                       dev_data[,colindex] == recodes$initial_value[i])
+  
+  ## replace value if anything exists, otherwise do nothing
+  ## and move onto the next suggested update from recodes
+  
+  if(length(colindex) > 0 & length(rowindex) > 0 ){
+    
+  dev_data[rowindex,colindex] <- recodes$updated_value[i]
+  ## set flag to indicate that some of the data in this row have been recoded
+  dev_data[rowindex,]$recoded <- TRUE
+  
+  }
+  
+  ## celebrate
+}
 
 ```
+
+
 
 
