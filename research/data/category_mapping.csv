@@ -1,0 +1,54 @@
+data_source,initial_fieldname,initial_value,updated_value,notes
+GAVI,application_area,ISS ,nonspecific,
+GAVI,application_area,HepB mono,"Infectious Disease, other",
+GAVI,application_area,Tetra DTP-HepB,"Infectious Disease, other",
+GAVI,application_area,INS,nonspecific,
+GAVI,application_area,CCEOP,nonspecific,cold chain equipment optimization platform
+GAVI,application_area,CSO Type B,nonspecific,civil society organization
+GAVI,application_area,Graduation grant,nonspecific,
+GAVI,application_area,HPV,HPV,
+GAVI,application_area,HPV Demo,HPV,
+GAVI,application_area,HPV Demo - cash support,HPV,
+GAVI,application_area,HSS,nonspecific,
+GAVI,application_area,Injection Safety Devices,nonspecific,
+GAVI,application_area,INS,nonspecific,injection safety
+GAVI,application_area,IPV,polio,inactivated polio vaccine
+GAVI,application_area,ISS,nonspecific,immunization support services
+GAVI,application_area,JEV,Japanese encephalitis virus,flavavirus related to dengue
+GAVI,application_area,Meningitis A - operational costs,Meningitis A,
+GAVI,application_area,Operational costs,nonspecific,
+GAVI,application_area,Penta,"Infectious Disease, other","pentavalent vaccine (whooping cough, diptheria, tetanus, Hep B, Haemophilus influenza type B)"
+GAVI,application_area,Pneumo,"Infectious Disease, other",
+GAVI,application_area,Programme,nonspecific,
+GAVI,application_area,Tetra DTP-HepB,"Infectious Disease, other",
+GAVI,application_area,Tetra DTP-Hib,"Infectious Disease, other",
+GAVI,application_area,Vaccine Introduction Grant,nonspecific,
+GAVI,application_area,Vaccines,nonspecific,
+G-Finder,application_area,Can not be allocated to one disease Core funding of a multi-disease R&D organisation,nonspecific,
+G-Finder,application_area,Can not be allocated to one disease General diagnostic platforms,nonspecific,
+G-Finder,application_area,Can not be allocated to one disease Other R&D,nonspecific,
+IHME,application_area,infectious disease,"Infectious Disease, other",Not exact mapping but no level of specificity regarding which infectious disease the funding is for so leaving this way for now
+IHME,application_area,malaria,Malaria,
+IHME,application_area,maternal health,nonspecific,
+IHME,application_area,newborn and child health,nonspecific,
+IHME,core_capability,counseling and treatment,Respond: nonspecific,
+IHME,core_capability,diagnostics,Detect: nonspecific,
+IHME,core_capability,family planning,Real time Surveillance,
+IHME,core_capability,health support system,Workforce Development,
+IHME,core_capability,nets,Prevent: nonspecific,
+IHME,core_capability,nutrition,Prevent: nonspecific,
+IHME,core_capability,orphan and vulnerable children,Respond,
+IHME,core_capability,other,Prevent: nonspecific,Imperfect estimate but IHME has heavy emphasis on prevention and response
+IHME,core_capability,prevention,Prevent: nonspecific,
+IHME,core_capability,prevention of mother to child transmission,Prevent: nonspecific,
+IHME,core_capability,treatments,Respond: nonspecific,
+IHME,core_capability,unidentified,Prevent: nonspecific,Imperfect estimate but IHME has heavy emphasis on prevention and response
+IHME,core_capability,unspecified,Prevent: nonspecific,Imperfect estimate but IHME has heavy emphasis on prevention and response
+IHME,core_capability,vaccines,Immunization,
+G-Finder,core_capability,Drugs,Respond: nonspecific,
+G-Finder,core_capability,Basic research,Prevent: nonspecific,
+G-Finder,core_capability,Diagnostics,Real time Surveillance,
+G-Finder,core_capability,Microbicides,Antimicrobial Resistance (AMR),
+G-Finder,core_capability,unspecified,Prevent: nonspecific,Imperfect estimate could be updated but want to add a value (this is mock data)
+G-Finder,core_capability,Vaccines (Preventive),Immunization,
+G-Finder,core_capability,Vector Control Products Pesticides,Prevent: nonspecific,
