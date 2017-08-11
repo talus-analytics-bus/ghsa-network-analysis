@@ -316,9 +316,6 @@ oie <- read.table("../data/oie/raw/eu_contracts.csv",
 ### Data Processing
 
 * Extract year from field Date.of.Signature.of.Contract
-* Add "EU" as funder
-  + Note that while these funds were distributed by OIE, they were provided to OIE by the EU
-* Add "Public Sector" as funder type
 * Add "OIE" as channel
 * Add "OIE" as data source  
 
@@ -329,10 +326,8 @@ oie$Date.of.Signature.of.Contract <- as.Date(oie$Date.of.Signature.of.Contract, 
 ## extract year of date of contract signature
 oie$Year.of.Signature.of.Contract <- as.numeric(as.character(format(oie$Date.of.Signature.of.Contract, format = "%Y")))
 
-oie$Funder <- "EU"
 oie$channel <- "OIE"
 oie$data_source = "OIE"
-oie$funder_type = "Public sector"
 ```
 
 ```{r}
@@ -347,7 +342,7 @@ if(csv_flag == TRUE){
 
 ## Aggregate Data
 
-### Map Equivalent Fields Together
+### Map Equivalent Fields Together  
 
 Since each dataset (GAVI, G-Finder, OIE, and IHME) each had unique data structures and variable ("field") names, it was necessary to develop a mapping of equivalent fields. The datatable printed below shows the way in which fields in each datasource were mapped to a standardized data ontology including broad categories like year, amount, funder, and disease.  
 
@@ -535,35 +530,26 @@ core_data[which(core_data$recipient_type %in%
 #### Funder Country
 
 ```{r}
-## needs to be finished TODO
-fc_map <- read.table("../data/aggregate/recipient_country_mapping.txt", header = TRUE, sep = "\t")
-  
-for(i in 1:nrow(recodes)){
-   ## column index of the field that needs to be recoded
-   colindex <- which(names(dev_data) == recodes$initial_fieldname[i])
-   
-   ## look at rows that correspond to the relevant data source AND
-   ## that have the specified value, save those rows
-   rowindex <- which(dev_data$data_source == recodes$data_source[i] &
-                        dev_data[,colindex] == recodes$initial_value[i])
-   
-   ## replace value if anything exists, otherwise do nothing
-   ## and move onto the next suggested update from recodes
-   
-  if(length(colindex) > 0 & length(rowindex) > 0 ){
-     
-   dev_data[rowindex,colindex] <- recodes$updated_value[i]
-  ## set flag to indicate that some of the data in this row have been recoded
-   dev_data[rowindex,]$recoded <- TRUE
-   
-   }
-   
-   ## celebrate
- }
+## todo: deal with accents, for some reason UTF-8 isn't helping here
+ac_map <- read.table("../data/agency_country_mapping.tsv", header = TRUE, sep = "\t",
+                     stringsAsFactors = FALSE, encoding = "UTF-8")
+
+for(i in 1:nrow(ac_map)){
+  ## recode countries for recipient-country pairs
+  ## wrapping with isTRUE to deal with NA values returned by any() for accents (see todo above)
+  if(isTRUE(any(core_data$recipient == ac_map$agency[i]))){
+    core_data[which(core_data$recipient == ac_map$agency[i]),]$recipient_country <- ac_map$agency_country[i]
+  }
+    ## recode countries for funder-country pairs
+  ## wrapping with isTRUE to deal with NA values returned by any() for accents (see todo above)
+  if(isTRUE(any(core_data$funder == ac_map$agency[i]))){
+    core_data[which(core_data$funder == ac_map$agency[i]),]$funder_country <- ac_map$agency_country[i]
+  }
+}
 ```
-```
+
 ```{r}
-## print info for full datset
+## print info for full datset 
 paste("Full dataset has", 
       prettyNum(nrow(core_data), big.mark = ","), "rows and is", 
       file.size("../data/aggregate/mock_ghsa_data_full.csv")/1000000,
@@ -606,6 +592,8 @@ demo_data_actual$amount_committed <- as.numeric(demo_data_actual$amount_committe
 ### Manual Recoding
 
 #### Application Area/Disease
+
+(Semi)-manually map application area notes to application areas. Note that we may want to update these application areas in the future.
 
 ```{r}
 ## where can we directly port over from application area notes to application area?
@@ -651,7 +639,20 @@ demo_data_actual[which(demo_data_actual$application_area_notes %in%
 demo_data_actual[which(is.na(demo_data_actual$application_area)),]$application_area <- "unspecified"
 ```
 
+#### Recipient
+
+Only a single recipient example needs to be recoded.
+
+```{r}
+## todo: when figure out how to deal with UTF-8 characters, this step won't be necessary
+## as it can be done in the agency_country mapping step
+demo_data_actual[which(demo_data_actual$recipient == "Fondation Mérieux"),]$recipient_country <- "France"
+```
+
+
 #### Core Element and Core Capacity
+
+(Semi)-manually map notes captured from various data sources to JEE core elements and core capacities. 
 
 ```{r}
 ## Unspecified: Unspecified
@@ -693,12 +694,16 @@ demo_data_actual[which(demo_data_actual$core_capability_notes %in%
 
 ## Simulated Data
 
+Generate simulated dataset, drawing from actual distribution of dispersals reported in IHME, G-Finder, GAVI, and OIE databases.
+
 ```{r, eval = FALSE}
+## note: not doing this every time the Rmd file is sourced, just when needed (see eval = FALSE)
 ## read in simulated dataset
 demo_data_sim <- read.table(file = "../data/simulated_data.tsv", sep = "\t", header = TRUE)
 ```
 
 ```{r, eval = FALSE}
+set.seed(1202)
 
 ## Adjust levels of relative funding
 ## sample from 25th-60th quantile
@@ -756,6 +761,8 @@ if(csv_flag == TRUE){
 demo_data_sim <- read.table(file = "../data/simulated_data.tsv", sep = "\t", header = TRUE)
 ```
 
+## Demo Dataset
+
 ```{r}
 ## merge actual and notional data
 demo_data <- plyr::rbind.fill(demo_data_actual[,-which(names(demo_data_actual) %in% 
@@ -765,7 +772,22 @@ demo_data <- plyr::rbind.fill(demo_data_actual[,-which(names(demo_data_actual) %
 
 ```
 
+
+```{r}
+datatable(demo_data, rownames = FALSE)
+```
+
+```{r}
+## save demo data
+if(csv_flag == TRUE){
+  write.table(demo_data, file = "../data/demo_data.tsv", 
+              quote = FALSE, sep = '\t', col.names = TRUE, row.names = FALSE)
+}
+```
+
 # Analysis
+
+The straighforward analyses included below are inteded to confirm that the demo dataset is functioning as expected.
 
 ## Data Source
 
@@ -783,18 +805,19 @@ ggplot(demo_data, aes(log(amount_dispersed), fill = data_source)) +
 ## Amount Dispersed
 
 ```{r}
-## still needs legend
+## todo: still needs legend
 ggplot(demo_data, aes(log(amount_dispersed))) +
-    geom_histogram(data = subset(demo_data, core_element == 'Prevent'), fill = "red", alpha = 0.2) +
-    geom_histogram(data = subset(demo_data, core_element == 'Detect'), fill = "blue", alpha = 0.2) +
-    geom_histogram(data = subset(demo_data, core_element == 'Respond'), fill = "green", alpha = 0.2) +
+    geom_histogram(data = subset(demo_data, core_element == 'Prevent'), 
+                   fill = "red", alpha = 0.2, bins = 25) +
+    geom_histogram(data = subset(demo_data, core_element == 'Detect'), 
+                   fill = "blue", alpha = 0.2, bins = 25) +
+    geom_histogram(data = subset(demo_data, core_element == 'Respond'), 
+                   fill = "green", alpha = 0.2, bins = 25) +
     geom_histogram(data = subset(demo_data, core_element == 'Other'), fill = "orange", alpha = 0.2) +
   ylab("Number of Disperals") +
   xlab("Amount Dispersed") +
   ggtitle("Disperal Amount by JEE Core Element") 
 ```
-
-
 
 
 
