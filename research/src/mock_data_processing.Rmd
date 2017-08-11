@@ -63,7 +63,8 @@ gavid <- read.table("../data/gavi/raw/gavi_disbursements.tsv",
 * Add "GAVI" as data source  
 * Add "GAVI" as channel
 * Add "Immunization" as core capability
-* Add "Multilaterals (Public, Private)" as funder type
+* Add "Prevent" as core element
+* Add "Public-Private partnership" as funder type
 
 ```{r, message = FALSE, warning = FALSE}
 ## exclude total counts
@@ -150,13 +151,15 @@ gavi_full$funder <- "GAVI"
 gavi_full$channel <- "GAVI"
 gavi_full$data_source <- "GAVI"
 gavi_full$core_capability <- "Immunization"
-gavi_full$funder_type <- "Multilaterals (Public, Private)"
+gavi_full$core_element <- "Prevent"
+gavi_full$funder_type <- "Public-Private partnership"
 ```
 
 ```{r}
 ## reorder fields so they are sensibly ordered
-gavi_full <- gavi_full[,c("Country", "Region", "High.Level.Category", "Sub.category", "core_capability", "year", 
-                          "funder", "channel", "amount_committed", "amount_dispersed", "data_source")]
+gavi_full <- gavi_full[,c("Country", "Region", "High.Level.Category", "Sub.category", "core_capability",
+                          "core_element", "year",  "funder", "channel", "amount_committed", "amount_dispersed",
+                          "funder_type", "data_source")]
 ```
 
 ```{r}
@@ -454,7 +457,8 @@ core_data <- plyr::rbind.fill(gavi_core_data,
                               oie_core_data)
 
 ## recorder fields so that they seem somewhat sensible when we save/print them
-core_data <- core_data[,c("project_name", "application_area", "core_capability",
+core_data <- core_data[,c("project_name", "application_area", 
+             "core_element", "core_capability",
              "funder", "funder_type", "funder_country",
              "channel", 
              "recipient", "recipient_type", "recipient_country",
@@ -485,6 +489,79 @@ if(csv_flag == TRUE){
 core_data$amount_dispersed <- as.numeric(core_data$amount_dispersed)
 ```
 
+#### Recipient
+
+```{r}
+## if recipient country is specified, but not recipient, use recipient country as the value for recipient
+core_data[which(is.na(core_data$recipient)),]$recipient <-
+  core_data[which(is.na(core_data$recipient)),]$recipient_country
+```
+
+#### Recipient Categories
+
+```{r}
+## note GAVI donation to "CAR" is for Central African Republic
+## All GAVI donations are reported as being to countries
+core_data[which(core_data$data_source == "GAVI"),]$recipient_type <- "Public sector"
+
+core_data[which(core_data$recipient_type %in%
+  c("Academic and other research institutions",
+    "Government research institutions"
+    )),]$recipient_type <- "Academic and other research institutions"
+
+core_data[which(core_data$recipient_type %in%
+  c("Aggregate Pharmaceutical and Biotechnology Companies"
+    )),]$recipient_type <- "Private sector"
+
+core_data[which(core_data$recipient_type %in%
+  c("Public sector government"
+    )),]$recipient_type <- "Public sector"
+
+core_data[which(core_data$recipient_type %in%
+  c("Product Development Partnership (PDP)"
+    )),]$recipient_type <- "Public-Private partnership"
+
+core_data[which(core_data$recipient_type %in%
+  c("Other intermediary",
+    "Private sector philanthropic foundations, trusts, NGOs, corporate donors"
+    )),]$recipient_type <- "Other"
+
+core_data[which(core_data$recipient_type %in%
+  c("N/A"
+    )),]$recipient_type <- "unspecified"
+
+```
+
+#### Funder Country
+
+```{r}
+## needs to be finished TODO
+fc_map <- read.table("../data/aggregate/recipient_country_mapping.txt", header = TRUE, sep = "\t")
+  
+for(i in 1:nrow(recodes)){
+   ## column index of the field that needs to be recoded
+   colindex <- which(names(dev_data) == recodes$initial_fieldname[i])
+   
+   ## look at rows that correspond to the relevant data source AND
+   ## that have the specified value, save those rows
+   rowindex <- which(dev_data$data_source == recodes$data_source[i] &
+                        dev_data[,colindex] == recodes$initial_value[i])
+   
+   ## replace value if anything exists, otherwise do nothing
+   ## and move onto the next suggested update from recodes
+   
+  if(length(colindex) > 0 & length(rowindex) > 0 ){
+     
+   dev_data[rowindex,colindex] <- recodes$updated_value[i]
+  ## set flag to indicate that some of the data in this row have been recoded
+   dev_data[rowindex,]$recoded <- TRUE
+   
+   }
+   
+   ## celebrate
+ }
+```
+```
 ```{r}
 ## print info for full datset
 paste("Full dataset has", 
@@ -520,9 +597,6 @@ gfinder_sample_indices <- sample(which(core_data$data_source == "G-Finder"), siz
 demo_data_actual <- plyr::rbind.fill(core_data[gavi_sample_indices,],
                                      core_data[gfinder_sample_indices,],
                                      core_data[oie_sample_indices,])
-
-## create core element data field
-demo_data_actual$core_element <- NA
 
 ## recode numbers as numbers
 demo_data_actual$amount_dispersed <- as.numeric(demo_data_actual$amount_dispersed)
@@ -572,6 +646,9 @@ demo_data_actual[which(demo_data_actual$application_area_notes %in%
 
 demo_data_actual[which(demo_data_actual$application_area_notes %in%
   c("Helminths (Worms & Flukes)")),]$application_area <- "Other"
+
+## code any remaining NAs as "unspecified"
+demo_data_actual[which(is.na(demo_data_actual$application_area)),]$application_area <- "unspecified"
 ```
 
 #### Core Element and Core Capacity
