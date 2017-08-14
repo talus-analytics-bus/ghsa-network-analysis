@@ -30,6 +30,54 @@ library(ggplot2) ## plotting
 
 CRS data are not currently being used to generate the mock dataset, as the online CRS data exporter tool does not function as expected, and returns partial data plus an error message. Once exported, the data include only net disbursements, but not commitments. An error message is generated.
 
+## Bill and Melinda Gates Foundation
+
+### Details
+
+**Subdirectory:** gates_foundation  
+**Source:** Bill and Melinda Gates Grants Database, 2017 Global Health Funding  
+**Dataset:** custom export using 2017 data for program == "Global Health"  
+**Dataset details:** grantee, year, issue, program, amount  
+**Brief description:** Bill and Melinda Gates Foundation data for grants given in 2017 for "Global Health" purposes    
+**General Location: https://www.gatesfoundation.org/How-We-Work/Quick-Links/Grants-Database  
+**Data Obtained Date:** 8/14/2017  
+
+```{r}
+gates <- read.delim("../data/gates_foundation/raw/gates_gh_17.tsv",
+                    stringsAsFactors = FALSE)
+```
+
+### Data Processing 
+
+* Remove "$" and commas from amount field  
+* Add Gates Foundation as funder  
+* Add "Private sector" as funder_type  
+* Add "Gates Foundation" as data source
+
+```{r}
+## remove commas and $ from amount
+gates$AMOUNT <- gsub(",", "", gsub("\\$", "", gates$AMOUNT))
+
+## add funder == "Gates Foundation"
+gates$funder <- "Gates Foundation"
+
+## funder_type == "Private sector"
+gates$funder_type <- "Private sector"
+
+gates$data_source <- "Gates Foundation"
+```
+
+```{r}
+## save processed data 
+## save data if csv_flag is true
+## don't print rownames in csv
+if(csv_flag == TRUE){
+  write.csv(gates,
+            file = "../data/gates_foundation/processed/gates_processed.csv", 
+            row.names = FALSE)
+}
+```
+
 ## GAVI
 
 ### Details
@@ -360,6 +408,27 @@ datatable(field_mapping[,-which(names(field_mapping) %in% c("notes", "subdirecto
 ```
 
 ```{r}
+## Gates data
+## okay here that warnings are turned off, flag is about factors and characters being converted
+
+## generate dataset that includes the core data elements included in gates,
+## as specified in the field_mapping guide printed above
+gates_core_data <- gates[which(names(gates) %in% field_mapping$fieldname[
+                                which(field_mapping$source == "Gates" &
+                                      complete.cases(field_mapping$standard_fieldname))])]
+
+## rename core data elements of gates
+
+## first create temporary dataframe that merges names of core data to standard_fieldnames specified in field_mapping guide
+temp_names <- suppressWarnings(inner_join(data.frame(fieldname = names(gates_core_data)), 
+                   field_mapping[which(field_mapping$source == "Gates"),],
+                   by = "fieldname"))
+
+## then update gavi_core_data fieldnames
+names(gates_core_data) <- temp_names$standard_fieldname; rm(temp_names)
+```
+
+```{r}
 ## GAVI data
 ## okay here that warnings are turned off, flag is about factors and characters being converted
 
@@ -443,10 +512,10 @@ temp_names <- suppressWarnings(inner_join(data.frame(fieldname = names(oie_core_
 names(oie_core_data) <- temp_names$standard_fieldname; rm(temp_names)
 ```
 
-
 ```{r}
-## UNION ALL (rbind) data together for OIE, IHME, and G-Finder, plus match fieldnames
-core_data <- plyr::rbind.fill(gavi_core_data,
+## UNION ALL (rbind) data together for Gates, OIE, IHME, and G-Finder, plus match fieldnames
+core_data <- plyr::rbind.fill(gates_core_data,
+                              gavi_core_data,
                               gfinder_core_data,
                               ihme_core_data,
                               oie_core_data)
@@ -466,6 +535,76 @@ core_data <- core_data[,c("project_name", "application_area",
 ```{r}
 ## assign unique ID to each row
 core_data$row_id <- 1:nrow(core_data)
+```
+
+## Overall Data Processing
+
+### Application Area/Disease
+
+(Semi)-manually map application area notes to application areas. Note that we may want to update these application areas in the future.
+
+```{r}
+application_area_mapping <- field_mapping <- read.table("../data/application_area_mapping.tsv", 
+                                                        stringsAsFactors = FALSE, 
+                                                        sep = "\t", header = TRUE)
+```
+
+```{r}
+for(i in 1:nrow(application_area_mapping)){
+  
+  ## column index of the field that needs to be recoded
+  colindex <- which(names(core_data) == application_area_mapping$initial_field[i])
+  
+  ## look at rows that correspond to the specified value, save those rows
+  rowindex <- which(core_data[,colindex] == application_area_mapping$initial_value[i])
+  
+  ## column index of the field that will be replaced
+  colindex_update <- which(names(core_data) == application_area_mapping$new_field[i])
+  
+  ## replace value if anything exists, otherwise do nothing
+  ## and move onto the next suggested update from recodes
+  
+  if(length(colindex) > 0 & length(rowindex) > 0 ){
+    
+  core_data[rowindex,colindex_update] <- application_area_mapping$new_value[i]
+  
+  }
+  
+  ## celebrate
+}
+
+```
+
+### Core Element and Core Capacity
+
+```{r}
+jee_mapping <- field_mapping <- read.table("../data/jee_mapping.txt", 
+                                          stringsAsFactors = FALSE, 
+                                          sep = "\t", header = TRUE)
+```
+
+```{r}
+for(i in 1:nrow(jee_mapping)){
+  
+  ## column index of the field that needs to be recoded
+  colindex <- which(names(core_data) == jee_mapping$initial_field[i])
+  
+  ## look at rows that correspond to the specified value, save those rows
+  rowindex <- which(core_data[,colindex] == jee_mapping$initial_value[i])
+  
+  ## replace value if anything exists, otherwise do nothing
+  ## and move onto the next suggested update from recodes
+  
+  if(length(colindex) > 0 & length(rowindex) > 0 ){
+    
+  core_data[rowindex,which(names(core_data) == "core_element")] <- jee_mapping$core_element[i]
+  core_data[rowindex,which(names(core_data) == "core_capability")] <- jee_mapping$core_capability[i]
+
+  }
+  
+  ## celebrate
+}
+
 ```
 
 ```{r}
@@ -563,7 +702,8 @@ paste("Full dataset has",
 The sampled dataset used as part of the demo dataset will include data from the following sources:  
   * GAVI (random sample of 25 recipient-application pairs form years 2012-2015)
   * OIE (all data from 2012-2015)
-  * G-Finder (random sample of 100 data committed funds from 2015 only)
+  * G-Finder (random sample of 100 committed funds from 2015 only)
+  * Gates Foundation (random sample of 100 committed funds from 2017 only)
 
 ```{r}
 set.seed(1202)
@@ -576,7 +716,7 @@ oie_sample_indices <- which(core_data$year %in% c(2012:2015) &
                             core_data$data_source == "OIE")
 
 set.seed(1202)
-## store the indices of the OIE data elements we want to include, in case we want to reference them later
+## store the indices of the gfinder data elements we want to include, in case we want to reference them later
 gfinder_sample_indices <- sample(which(core_data$data_source == "G-Finder"), size = 100)
 
 ## demo data combining selected data elements, identified in the notes above
@@ -587,58 +727,20 @@ demo_data_actual <- plyr::rbind.fill(core_data[gavi_sample_indices,],
 ## recode numbers as numbers
 demo_data_actual$amount_dispersed <- as.numeric(demo_data_actual$amount_dispersed)
 demo_data_actual$amount_committed <- as.numeric(demo_data_actual$amount_committed)
-```
 
-### Manual Recoding
+set.seed(1202)
+## store the indices of the Gates data elements we want to include, in case we want to reference them later
+gates_sample_indices <- sample(which(core_data$data_source == "Gates Foundation"), size = 100)
 
-#### Application Area/Disease
+## demo data combining selected data elements, identified in the notes above
+demo_data_actual <- plyr::rbind.fill(core_data[gavi_sample_indices,],
+                                     core_data[gfinder_sample_indices,],
+                                     core_data[oie_sample_indices,],
+                                     core_data[gates_sample_indices,])
 
-(Semi)-manually map application area notes to application areas. Note that we may want to update these application areas in the future.
-
-```{r}
-## where can we directly port over from application area notes to application area?
-temp <- which(demo_data_actual$application_area_notes %in%
-                c("HIV/AIDS",
-                  "Malaria",
-                  "Tuberculosis",
-                  "Measles and/or Rubella"))
-
-demo_data_actual[temp,]$application_area <- demo_data_actual[temp,]$application_area_notes
-rm(temp)
-  
-demo_data_actual[which(demo_data_actual$application_area_notes %in%
-  c("Can not be allocated to one disease Core funding of a multi-disease R&D organisation",
-    "Can not be allocated to one disease General diagnostic platforms",
-    "Can not be allocated to one disease Other R&D",
-    "Vaccine Introduction Grant",
-    "HSS", ## health system support
-    "IPV", ## polio
-    "ISS" ## immunization support services
-    )),]$application_area <- "nonspecific"
-
-demo_data_actual[which(demo_data_actual$application_area_notes %in%
-  c("Dengue",
-    "Diarrhoeal diseases",
-    "Filoviral diseases (including Ebola, Marburg)",
-    "HPV Demo", "HPV Demo - cash support",
-    "Kinetoplastids", ## todo: check that these are infectious, they're protozoa
-    "Leprosy",
-    "Measles", "Measles SIA", "Measles-Rubella",
-    "Meningitis A - campaign", "Meningitis A - operational costs",
-    "Penta", ## pentavalent vaccine
-    "Pneumo",
-    "Rotavirus",
-    "Salmonella infections", ## todo: check that this should be infectious
-    "Yellow Fever"
-    )),]$application_area <- "Infectious disease, other"
-
-demo_data_actual[which(demo_data_actual$application_area_notes %in%
-  c("Helminths (Worms & Flukes)")),]$application_area <- "Other"
-
-## code any remaining NAs as "unspecified", only do this if NAs exist
-if(any(is.na(demo_data_actual$application_area))){
-  demo_data_actual[which(is.na(demo_data_actual$application_area)),]$application_area <- "unspecified"
-}
+## recode numbers as numbers
+demo_data_actual$amount_dispersed <- as.numeric(demo_data_actual$amount_dispersed)
+demo_data_actual$amount_committed <- as.numeric(demo_data_actual$amount_committed)
 ```
 
 #### Recipient
@@ -649,49 +751,6 @@ Only a single recipient example needs to be recoded.
 ## todo: when figure out how to deal with UTF-8 characters, this step won't be necessary
 ## as it can be done in the agency_country mapping step
 demo_data_actual[which(demo_data_actual$recipient == "Fondation Mérieux"),]$recipient_country <- "France"
-```
-
-
-#### Core Element and Core Capacity
-
-(Semi)-manually map notes captured from various data sources to JEE core elements and core capacities. 
-
-```{r}
-## Unspecified: Unspecified
-demo_data_actual[which(demo_data_actual$core_capability_notes %in%
-  c("Unspecified", "")),]$core_element <- "unspecified"
-demo_data_actual[which(demo_data_actual$core_capability_notes %in%
-  c("Unspecified", "")),]$core_capability <- "unspecified"
-
-## Nonspecific: Nonspecific
-demo_data_actual[which(demo_data_actual$core_capability_notes %in%
-  c("Basic research")),]$core_element <- "nonspecific"
-demo_data_actual[which(demo_data_actual$core_capability_notes %in%
-  c("Basic research")),]$core_capability <- "nonspecific"
-
-## Prevent: Non-Specific
-demo_data_actual[which(demo_data_actual$core_capability_notes %in%
-  c("Microbicides", "Vector Control Products Biological control products")),]$core_element <- "Prevent"
-demo_data_actual[which(demo_data_actual$core_capability_notes %in%
-  c("Microbicides", "Vector Control Products Biological control products")),]$core_capability <- "nonspecific"
-
-## Prevent: Immunization
-demo_data_actual[which(demo_data_actual$core_capability_notes %in%
-  c("Vaccines (Preventive)")),]$core_element <- "Prevent"
-demo_data_actual[which(demo_data_actual$core_capability_notes %in%
-  c("Vaccines (Preventive)")),]$core_capability <- "Immunization"
-
-## Detect: Nonspecific
-demo_data_actual[which(demo_data_actual$core_capability_notes %in%
-  c("Diagnostics")),]$core_element <- "Detect"
-demo_data_actual[which(demo_data_actual$core_capability_notes %in%
-  c("Diagnostics")),]$core_capability <- "nonspecific"
-
-## Respond: Nonspecific
-demo_data_actual[which(demo_data_actual$core_capability_notes %in%
-  c("Drugs", "Vaccines (Therapeutic)")),]$core_element <- "Respond"
-demo_data_actual[which(demo_data_actual$core_capability_notes %in%
-  c("Drugs", "Vaccines (Therapeutic)")),]$core_capability <- "nonspecific"
 ```
 
 ## Simulated Data
@@ -810,10 +869,26 @@ ggplot(demo_data, aes(log(amount_dispersed), fill = data_source)) +
   scale_fill_discrete(name = "Data Source")
 ```
 
+```{r, warning = FALSE}
+ggplot(demo_data, aes(log(amount_committed), fill = data_source)) +
+    geom_histogram(bins = 25) +
+  ylab("Number of Commitments") +
+  xlab("Log Amount Committed") +
+  ggtitle("Commitment Amount by Data Source") +
+  ## rename legend
+  scale_fill_discrete(name = "Data Source")
+```
+
 ### Amount Dispersed
 
+This should have a legend, but not going to spend the time doing it in R since it's a decent amount of work for this type of plot (boo ggplot2 for not allowing more manual overrides).  
+
+Prevent: red  
+Detect: blue  
+Respond: green  
+Other: orange  
+
 ```{r}
-## todo: still needs legend
 ggplot(demo_data, aes(log(amount_dispersed))) +
     geom_histogram(data = subset(demo_data, core_element == 'Prevent'), 
                    fill = "red", alpha = 0.2, bins = 25) +
@@ -825,7 +900,7 @@ ggplot(demo_data, aes(log(amount_dispersed))) +
                    fill = "orange", alpha = 0.2, bins = 25) +
   ylab("Number of Disperals") +
   xlab("Amount Dispersed") +
-  ggtitle("Disperal Amount by JEE Core Element") 
+  ggtitle("Disperal Amount by JEE Core Element")
 ```
 
 ## Analysis Ideas
@@ -833,7 +908,6 @@ ggplot(demo_data, aes(log(amount_dispersed))) +
 ### Which core elements (prevent, detect, respond) are most funded?
 
 ```{r}
-library(scales)
 ggplot(demo_data, aes(x = "", y = amount_dispersed, fill = core_element)) + 
     geom_bar(width = 1, stat = "identity")
 ```
