@@ -561,7 +561,7 @@ paste("Full dataset has",
 ## Sampled Actual Data
 
 The sampled dataset used as part of the demo dataset will include data from the following sources:  
-  * GAVI (random sample of 100 recipient-application pairs form years 2012-2015)
+  * GAVI (random sample of 25 recipient-application pairs form years 2012-2015)
   * OIE (all data from 2012-2015)
   * G-Finder (random sample of 100 data committed funds from 2015 only)
 
@@ -569,7 +569,7 @@ The sampled dataset used as part of the demo dataset will include data from the 
 set.seed(1202)
 ## store the indices of the GAVI data elements we want to include, in case we want to reference them later
 gavi_sample_indices <- sample(which(core_data$year %in% c(2012:2015) &
-                                    core_data$data_source == "GAVI"), size = 100)
+                                    core_data$data_source == "GAVI"), size = 25)
 
 ## store the indices of the OIE data elements we want to include, in case we want to reference them later
 oie_sample_indices <- which(core_data$year %in% c(2012:2015) &
@@ -635,8 +635,10 @@ demo_data_actual[which(demo_data_actual$application_area_notes %in%
 demo_data_actual[which(demo_data_actual$application_area_notes %in%
   c("Helminths (Worms & Flukes)")),]$application_area <- "Other"
 
-## code any remaining NAs as "unspecified"
-demo_data_actual[which(is.na(demo_data_actual$application_area)),]$application_area <- "unspecified"
+## code any remaining NAs as "unspecified", only do this if NAs exist
+if(any(is.na(demo_data_actual$application_area))){
+  demo_data_actual[which(is.na(demo_data_actual$application_area)),]$application_area <- "unspecified"
+}
 ```
 
 #### Recipient
@@ -706,7 +708,7 @@ demo_data_sim <- read.table(file = "../data/simulated_data.tsv", sep = "\t", hea
 set.seed(1202)
 
 ## Adjust levels of relative funding
-## sample from 25th-60th quantile
+## sample from 19th-80th quantile
 demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Prevent")] <- 
   sample(core_data$amount_dispersed[
     which(core_data$amount_dispersed >= quantile(core_data$amount_dispersed, 0.1, na.rm = TRUE) &
@@ -717,7 +719,7 @@ demo_data_sim$amount_dispersed[which(demo_data_sim$core_element == "Prevent")] <
   rnorm(n = sum(demo_data_sim$core_element == "Prevent"),
         mean = 0.8, sd = 0.1) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Prevent")]
 
-## sample from 20th-40th quantile
+## sample from 10th-40th quantile
 demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Detect")] <- 
   sample(core_data$amount_dispersed[
     which(core_data$amount_dispersed >= quantile(core_data$amount_dispersed, 0.1, na.rm = TRUE) &
@@ -728,7 +730,7 @@ demo_data_sim$amount_dispersed[which(demo_data_sim$core_element == "Detect")] <-
   rnorm(n = sum(demo_data_sim$core_element == "Detect"),
         mean = 0.9, sd = 0.1) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Detect")]
 
-## sample from 30th-70th quantile
+## sample from 30th-80th quantile
 demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Respond")] <- 
   sample(core_data$amount_dispersed[
     which(core_data$amount_dispersed >= quantile(core_data$amount_dispersed, 0.3, na.rm = TRUE) &
@@ -739,7 +741,7 @@ demo_data_sim$amount_dispersed[which(demo_data_sim$core_element == "Respond")] <
   rnorm(n = sum(demo_data_sim$core_element == "Respond"),
         mean = 1.1, sd = 0.2) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Respond")]
 
-## sample from 10th-40th quantile
+## sample from 10th quantile - median
 demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Other")] <- 
   sample(core_data$amount_dispersed[
     which(core_data$amount_dispersed >= quantile(core_data$amount_dispersed, 0.1, na.rm = TRUE) &
@@ -750,6 +752,7 @@ demo_data_sim$amount_dispersed[which(demo_data_sim$core_element == "Other")] <-
   rnorm(n = sum(demo_data_sim$core_element == "Other"),
         mean = 1, sd = 0.01) * demo_data_sim$amount_committed[which(demo_data_sim$core_element == "Other")]
 
+## save file if csv flag is true
 if(csv_flag == TRUE){
   write.table(demo_data_sim, file = "../data/simulated_data.tsv", 
               quote = FALSE, sep = '\t', col.names = TRUE, row.names = FALSE)
@@ -764,7 +767,7 @@ demo_data_sim <- read.table(file = "../data/simulated_data.tsv", sep = "\t", hea
 ## Demo Dataset
 
 ```{r}
-## merge actual and notional data
+## merge actual and notional data, excluding certainf ields from demo_data_actual (notes)
 demo_data <- plyr::rbind.fill(demo_data_actual[,-which(names(demo_data_actual) %in% 
                                                                c("application_area_notes",
                                                                 "core_capability_notes"))],
@@ -772,37 +775,42 @@ demo_data <- plyr::rbind.fill(demo_data_actual[,-which(names(demo_data_actual) %
 
 ```
 
-
 ```{r}
-datatable(demo_data, rownames = FALSE)
+## print demo data
+datatable(demo_data, 
+          ## don't show rownames
+          rownames = FALSE)
 ```
 
 ```{r}
-## save demo data
+## save demo data if csv flag is trhe
 if(csv_flag == TRUE){
   write.table(demo_data, file = "../data/demo_data.tsv", 
               quote = FALSE, sep = '\t', col.names = TRUE, row.names = FALSE)
 }
 ```
 
-# Analysis
+# Analysis Ideas
 
-The straighforward analyses included below are inteded to confirm that the demo dataset is functioning as expected.
+## Sanity Checks of Data Generation (Notional Data)
 
-## Data Source
+The straighforward analyses included below are inteded to confirm that the demo dataset is functioning as expected, and to brainstorm potential visualizations for future web development.
 
-Ensure that simulated notional data isn't too far out of line.
+### Data Source
 
-```{r}
-## still needs legend
+Check that simulated notional data isn't too far out of line, compared to actual data. Note that since simulated data is based samples from actual data, this shouldn't be the case.
+
+```{r, warning = FALSE}
 ggplot(demo_data, aes(log(amount_dispersed), fill = data_source)) +
     geom_histogram(bins = 25) +
-  ylab("Number of Dispers") +
+  ylab("Number of Dispersals") +
   xlab("Log Amount Dispersed") +
-  ggtitle("Disperal Amount by Data Source") 
+  ggtitle("Disperal Amount by Data Source") +
+  ## rename legend
+  scale_fill_discrete(name = "Data Source")
 ```
 
-## Amount Dispersed
+### Amount Dispersed
 
 ```{r}
 ## todo: still needs legend
@@ -813,11 +821,34 @@ ggplot(demo_data, aes(log(amount_dispersed))) +
                    fill = "blue", alpha = 0.2, bins = 25) +
     geom_histogram(data = subset(demo_data, core_element == 'Respond'), 
                    fill = "green", alpha = 0.2, bins = 25) +
-    geom_histogram(data = subset(demo_data, core_element == 'Other'), fill = "orange", alpha = 0.2) +
+    geom_histogram(data = subset(demo_data, core_element == 'Other'), 
+                   fill = "orange", alpha = 0.2, bins = 25) +
   ylab("Number of Disperals") +
   xlab("Amount Dispersed") +
   ggtitle("Disperal Amount by JEE Core Element") 
 ```
+
+## Analysis Ideas
+
+### Which core elements (prevent, detect, respond) are most funded?
+
+```{r}
+library(scales)
+ggplot(demo_data, aes(x = "", y = amount_dispersed, fill = core_element)) + 
+    geom_bar(width = 1, stat = "identity")
+```
+
+### How has funding for core elements changed over time?
+
+Something like this (https://stackoverflow.com/questions/34244813/100-stacked-area-plot-in-ggplot2) if temporal data are available.
+
+### Where are the most funds being dispersed?
+
+World with country color proportaional to sum of amount_dispersed, grouped by recipient_country. Not going to spend time making this in R since it's a decent amount of work and will need to be re-done in js anyway.
+
+### Who is dispersing the most funds?
+
+World with country color proportaional to sum of amount_dispersed, grouped by funder_country. Not going to spend time making this in R since it's a decent amount of work and will need to be re-done in js anyway.
 
 
 
