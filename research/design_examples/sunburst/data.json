@@ -1,0 +1,45 @@
+{
+ "name": "Total Funding: Kenya",
+ "children": [
+  {
+   "name": "Prevent",
+   "children": [
+    {"name": "National Legislation, Policy, and Financing", "size": 8258},
+    {"name": "IHR Coordination, Communiction, and Advocacy", "size": 10001},
+    {"name": "Antimicrobial Resistance", "size": 8217},
+    {"name": "Zoonotic Disease", "size": 12555},
+    {"name": "Food Safety", "size": 2324},
+    {"name": "Biosafety and Biosecurity", "size": 10993},
+    {"name": "Immunization", "size": 10993}
+   ]
+  },
+ {
+   "name": "Detect",
+   "children": [
+    {"name": "National Laboratory System", "size": 8258},
+    {"name": "Real Time Surveillance", "size": 10001},
+    {"name": "Reporting", "size": 8217},
+    {"name": "Workforce Development", "size": 12555}
+   ]
+  },
+ {
+   "name": "Respond",
+   "children": [
+    {"name": "Preparedness", "size": 8258},
+    {"name": "Emergency Response Operations", "size": 10001},
+    {"name": "Linking Public Health and Security Operations", "size": 8217},
+    {"name": "Medical Countermeasures and Personnel Deployment", "size": 12555},
+    {"name": "Risk Communication", "size": 10993}
+   ]
+  },
+   {
+   "name": "Other IHR-Related Hazards",
+   "children": [
+    {"name": "Points of Entry", "size": 8258},
+    {"name": "Chemical Events", "size": 10001},
+    {"name": "Radiation Emergencies", "size": 8217}
+   ]
+  }
+
+ ]
+}
