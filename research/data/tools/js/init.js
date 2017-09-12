@@ -1,2 +1,2 @@
 // runs the functions that we need
-App.test();
+App.getData('fa_slim_16_17.csv', App.mapDataFa);
