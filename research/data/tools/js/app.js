@@ -77,13 +77,14 @@ const App = {};
 		// get unique project IDs
 		const uniqueProjectIds = _.unique(_.pluck(rawData, 'Award Identifier'));
 		let id = 0;
+		const allRecords = [];
 		for (let i = 0; i < uniqueProjectIds.length; i++) {
 			const proj = rawData.filter(d => d['Award Identifier'] === uniqueProjectIds[i]);
 			if (proj.length === 0) continue;
 
 			// match award location
 			// write new record			
-			const newRecord = {"project_id":"","project_name":"","project_function":"","project_disease":"","donor_country":"","donor_sector":"","donor_name":"","recipient_country":"","recipient_sector":"","recipient_name":"","cy_award_start":"","cy_award_end":"","total_committed":"","total_disbursed":"","commitments":[],"disbursals":[],"source":{"dataset_name":"","date_added_mmddyyyy":""}};
+			const newRecord = {"project_id":"","project_name":"","project_function":"","project_disease":"","donor_country":"","donor_sector":"","donor_name":"","recipient_country":"","recipient_sector":"","recipient_name":"","cy_award_start":"","cy_award_end":"","total_committed":"","total_disbursed":"","transactions":[],"source":{"dataset_name":"","date_added_mmddyyyy":""}};
 			id++;
 			proj.forEach(transaction => {
 				// get the transactions that match this one's recipient country
@@ -120,24 +121,25 @@ const App = {};
 				this_country_transactions.forEach(curTransaction => {
 					curTransaction.processed = true;
 					const newTransactionBlob = {
+						type: curTransaction['Award Transaction - Type'].toLowerCase(),
 						amount: parseFloat(curTransaction['Award Transaction - Value']),
 						cy: new Date(transaction['Award Transaction - Value Date']).getFullYear().toString()
 					};
-					if (curTransaction['Award Transaction - Type'] === 'Disbursement') {
-						newRecord.disbursals.push(newTransactionBlob);
+					if (newTransactionBlob.type === 'disbursement') {
 						if (total_disbursed_tmp === null) total_disbursed_tmp = newTransactionBlob.amount;
 						else total_disbursed_tmp = total_disbursed_tmp + newTransactionBlob.amount;
-					} else if (curTransaction['Award Transaction - Type'] === 'Commitment') {
-						newRecord.commitments.push(newTransactionBlob);
+					} else if (newTransactionBlob.type === 'commitment') {
 						if (total_committed_tmp === null) total_committed_tmp = newTransactionBlob.amount;
 						else total_committed_tmp = total_committed_tmp + newTransactionBlob.amount;
 					}
+					newRecord.transactions.push(newTransactionBlob);
 				});
 
 				newRecord.total_committed = total_committed_tmp;
 				newRecord.total_disbursed = total_disbursed_tmp;
 			});
-			console.log(newRecord);
+			allRecords.push(newRecord);
 		}
+		console.log(allRecords);
 	};
 })();
