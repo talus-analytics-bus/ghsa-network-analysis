@@ -15,21 +15,12 @@ app.get('/', function(req, res) {
 
 app.post('/getCsvData', function(req, res) {
 	console.log("getCsvData!");
-	/** csv file
-	a,b,c
-	1,2,3
-	4,5,6
-	*/
 	const dataFn = req.body.dataFn;
 	var result = [];
 	const csvFilePath = `./data/${dataFn}`;
 	csv()
 	.fromFile(csvFilePath)
 	.on('json',(jsonObj)=>{
-		// combine csv header row and csv line to a json object
-		// jsonObj.a ==> 1 or 4
-		// res.set('Content-Type','application/json');
-		// res.send(jsonObj);
 		result.push(jsonObj);
 	})
 	.on('done',(error)=>{
