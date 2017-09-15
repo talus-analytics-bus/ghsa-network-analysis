@@ -12,11 +12,12 @@
 	<link href="css/bootstrap-multiselect.css" rel="stylesheet" type="text/css">
 	<link href="css/tooltipster.bundle.min.css" rel="stylesheet" type="text/css">
 	<link href="css/tooltipster-sideTip-shadow.css" rel="stylesheet" type="text/css">
+	<link href="css/nprogress.min.css" rel="stylesheet" type="text/css">
 	<link href="css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 	<nav class="navbar navbar-default navbar-fixed-top">
-		<div class="container">
+		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
 					<span class="sr-only">Toggle navigation</span>
@@ -24,11 +25,12 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">Talus Analytics</a>
+				<a class="navbar-brand" href="#">GHSA Network Analysis</a>
 			</div>
 			<div class="collapse navbar-collapse" id="navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
-					<li><a href="#">Home</a></li>
+					<li><a href="#">Map</a></li>
+					<li><a href="#analysis">Analysis</a></li>
 					<li><a href="#about">About</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
@@ -43,8 +45,35 @@
 		
 	<!-- ----------- TEMPLATES ------------- -->
 	<script id="home-template" type="text/x-handlebars-template">
-		<div class="home-container container container-content">
+		<div class="home-container">
 			<div class="map-container"></div>
+			<div class="search-container">
+				<div class="form-group has-feedback">
+					<input type="text" class="form-control" placeholder="search for a country...">
+					<i class="glyphicon glyphicon-search form-control-feedback"></i>
+				</div>
+			</div>
+			<div class="map-options-container">
+				<div class="filter-box">
+					<div class="dropdown-label">Function</div>
+					<select class="function-select form-control" multiple="multiple"></select>
+				</div>
+				<div class="filter-box">
+					<div class="dropdown-label">Disease</div>
+					<select class="disease-select form-control" multiple="multiple"></select>
+				</div>
+				<div class="filter-box">
+					<div class="dropdown-label">Color countries by:</div>
+					<div class="radio-option">
+						<input type="radio" checked />
+						<span>Amount funded</span>
+					</div>
+					<div class="radio-option">
+						<input type="radio" />
+						<span>Amount received</span>
+					</div>
+				</div>
+			</div>
 		</div>
 	</script>
 
@@ -71,6 +100,7 @@
 	<script src="lib/handlebars-v3.0.0.js"></script>	
 
 	<!-- Miscellaneous Libraries -->
+	<script src="lib/nprogress.min.js"></script>
 	<script src="lib/topojson.v2.min.js"></script>
 	<script src="lib/d3-geo-projection.v2.min.js"></script>
 	<script src="lib/bootstrap-multiselect.js"></script>

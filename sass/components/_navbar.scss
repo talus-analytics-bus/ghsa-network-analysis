@@ -1,4 +1,6 @@
 .navbar {
+	padding-left: 15px;
+	padding-right: 25px;
 	border-bottom: $border;
 	@include gradient(#fff, #f0f0f0);
 }

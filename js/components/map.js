@@ -6,7 +6,7 @@ const Map = {};
 	 * @param {String} selector A selector of the container element the map will be placed in
 	 * @return {Object} An object containing the map and the layer containing drawn items
 	 */
-	Map.createWorldMap = (selector, callback) => {
+	Map.createWorldMap = (selector, world) => {
 		// prepare map
 		const width = 1200;
 		const height = 640;
@@ -30,7 +30,6 @@ const Map = {};
 			.attr('preserveAspectRatio', 'xMinYMin meet')
 			.attr('viewBox', `0 0 ${width} ${height}`)
 			.append('g');
-		const g = svg.append('g');
 
 		// add overlay
 		svg.append('rect')
@@ -38,28 +37,24 @@ const Map = {};
 			.attr('width', width)
 			.attr('height', height);
 
+		const g = svg.append('g');
+
 		// attach zoom
 		svg.call(zoom);
 
 		// add world data
-		d3.json('data/world-50m.json', (error, world) => {
-			if (error) throw error;
-
-			const countries = topojson.feature(world, world.objects.countries).features;
-
-			g.selectAll('.country')
-				.data(countries)
-				.enter().append('path')
-					.attr('class', 'country')
-					.attr('d', path);
-			g.append('path')
-				.datum(topojson.mesh(world, world.objects.countries, (a, b) => a !== b))
-				.attr('class', 'boundary')
+		const countries = topojson.feature(world, world.objects.countries).features;
+		g.selectAll('.country')
+			.data(countries)
+			.enter().append('path')
+				.attr('class', 'country')
 				.attr('d', path);
+		g.append('path')
+			.datum(topojson.mesh(world, world.objects.countries, (a, b) => a !== b))
+			.attr('class', 'boundary')
+			.attr('d', path);
 
-			if (callback) callback();
-		});
-
+		// pan and zoom function
 		let currScale = 1;
 		function zoomed() {
 			const transform = d3.event.transform;
