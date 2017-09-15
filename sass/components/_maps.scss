@@ -1,3 +1,7 @@
+.overlay {
+	fill: none;
+	pointer-events: all;
+}
 .country {
   fill: #ccc;
   &:hover {
