@@ -1,0 +1,14 @@
+#footer {
+  position: relative;
+  width: 100%;
+  padding: 10px;
+  font-weight: 600;
+  text-align: center;
+  border-top: $border;
+  border-bottom: $border;
+  color: #555;
+  @include gradient(#fcfcfc, #f0f0f0);
+
+  span { margin-right: 1px; }
+  img { height: 42px; }
+}

@@ -1,18 +1,13 @@
-
-
 # Elastic Beanstalk Files
-
 .elasticbeanstalk/*
-
 !.elasticbeanstalk/*.cfg.yml
-
 !.elasticbeanstalk/*.global.yml
 
 # Selected Subdirectories
-
 research/documents
 research/presentations
 data/simulated_data.tsv
 
-node_modules
+# Dependencies
+node_modules/
 

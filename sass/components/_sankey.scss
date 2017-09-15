@@ -1,0 +1,13 @@
+.sankey-chart {
+	.link {
+		fill: none;
+		stroke: black;
+		stroke-opacity: 0.2;
+	}
+	.node {
+		stroke: black;
+	}
+	.node-label {
+		text-anchor: end;
+	}
+}

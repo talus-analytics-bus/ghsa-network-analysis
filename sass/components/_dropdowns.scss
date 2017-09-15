@@ -1,0 +1,25 @@
+select.form-control {
+	display: inline-block;
+	width: auto;
+}
+.btn b.caret { margin-left: 3px; }
+
+.dropdown-box {
+	display: inline-block;
+	width: 200px;
+}
+.dropdown-label {
+	margin-bottom: 3px;
+	font-weight: 600;
+}
+.dropdown-label-inline {
+	display: inline-block;
+	margin-right: 7px;
+	font-weight: 600;
+}
+
+
+/* --- Bootstrap Multiselect --- */
+.multiselect-container > li > a.multiselect-all label {
+	font-weight: 600;
+}

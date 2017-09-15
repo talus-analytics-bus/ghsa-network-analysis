@@ -1,0 +1,26 @@
+.tab {
+  display: inline-block;
+  padding: 10px 20px 7.5px 20px;
+  border-bottom: none;
+  font-size: 1.1em;
+  cursor: pointer;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  @include border-top-radius(10px);
+  @include gradient(white, #f9f9f9);
+}
+.tab:hover {
+  border-color: #adadad;
+  @include gradient(#e6e6e6, #eee);
+}
+.tab.active {
+  @include gradient(#e9e9e9, #f0f0f0);
+  @include box-shadow(inset 0 3.5px 5px rgba(0,0,0,.125));
+}
+.tab-content-container {
+  border: $light-border;
+  padding: 15px 25px;
+}
+.tab-content {
+  display: none;
+}

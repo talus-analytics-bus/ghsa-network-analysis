@@ -1,122 +1,92 @@
-<html>
-
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Country Aid</title>
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:600,400' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/css?family=Raleway:600,400" rel="stylesheet">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/nprogress.css" rel="stylesheet">
-    <link href="css/main.css" rel="stylesheet">
-    <!-- TODO move below styles to scss -->
-    <style> 
-     .onoffswitch {
-        position: relative; bottom: 200px; left: 65px; width: 90px;
-        -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
-    }
-    .onoffswitch-checkbox {
-        display: none;
-    }
-    .onoffswitch-label {
-        display: block; overflow: hidden; cursor: pointer;
-        border: 2px solid #E0DCDC; border-radius: 14px;
-    }
-    .onoffswitch-inner {
-        display: block; width: 200%; margin-left: -100%;
-        transition: margin 0.3s ease-in 0s;
-    }
-    .onoffswitch-inner:before, .onoffswitch-inner:after {
-        display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
-        font-size: 12px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
-        box-sizing: border-box;
-    }
-    .onoffswitch-inner:before {
-        content: "Sent";
-        padding-left: 5px;
-        background-color: #F5F5F5; color: #A30D0D;
-    }
-    .onoffswitch-inner:after {
-        content: " Received";
-        padding-right: 5px;
-        background-color: #EEEEEE; color: #0A166E;
-        text-align: right;
-    }
-    .onoffswitch-switch {
-        display: block; width: 16px; margin: 7px;
-        background: #FFFFFF;
-        position: absolute; top: 0; bottom: 0;
-        right: 56px;
-        border: 2px solid #E0DCDC; border-radius: 14px;
-        transition: all 0.3s ease-in 0s; 
-    }
-    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
-        margin-left: 0;
-    }
-    .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
-        right: 0px; 
-    }</style>
+	<meta charset="utf-8">
+	<title>Talus Framework</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="img/favicon.ico">
+		
+		<!-- Stylesheets -->
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:600,400,300' rel='stylesheet' type='text/css'>
+	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	<link href="css/bootstrap-multiselect.css" rel="stylesheet" type="text/css">
+	<link href="css/tooltipster.bundle.min.css" rel="stylesheet" type="text/css">
+	<link href="css/tooltipster-sideTip-shadow.css" rel="stylesheet" type="text/css">
+	<link href="css/leaflet.css" rel="stylesheet" type="text/css">
+	<link href="css/main.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <div id="page-content"></div>
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">Talus Analytics</a>
+			</div>
+			<div class="collapse navbar-collapse" id="navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="#">Home</a></li>
+					<li><a href="#about">About</a></li>
+				</ul>
+			</div><!-- /.navbar-collapse -->
+		</div><!-- /.container-fluid -->
+	</nav>
+	<div id="page-content"></div>
+	<div id="footer">
+		<span>Built by</span>
+		<img src="img/talus-logo.png" />
+	</div>
 
-    <!-- TEMPLATES -->
-    <!-- Login page -->
-    <script id="login-template" type="text/x-handlebars-template">
-        <div class="login-container container">
-            <div class="login-box">
-                <div class="login-input-container">
-                    <div class="login-input-label">Username</div>
-                    <input class="username-input login-input form-control">
-                </div>
-                <div class="login-input-container">
-                    <div class="login-input-label">Password</div>
-                    <input type="password" class="password-input login-input form-control">
-                </div>
-                <div class="login-button btn btn-primary">Login</div>
-            </div>
-        </div>
-    </script>
+		
+	<!-- ----------- TEMPLATES ------------- -->
+	<script id="home-template" type="text/x-handlebars-template">
+		<div class="home-container container container-content">
+			<div id="map"></div>
+		</div>
+	</script>
 
-    <!-- Network analysis map page -->
-    <script id="map-template" type="text/x-handlebars-template">
-        <div id="container" style="position: relative; width: 100%; height: 100%;"></div> <!-- holds map -->
-        <div class="onoffswitch">
-            <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" checked>
-            <label class="onoffswitch-label" for="myonoffswitch">
-                <span class="onoffswitch-inner"></span>
-                <span class="onoffswitch-switch"></span>
-            </label>
-        </div>
-    </script>
+	<script id="about-template" type="text/x-handlebars-template">
+		<div class="about-page-container container container-text">
+			<h3>About</h3>
+			<div class="description">
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus sed nulla eu placerat. Cras sed neque sit amet ipsum dignissim dignissim. Phasellus ante turpis, viverra ut dui efficitur, viverra venenatis libero.
+			</div>
+		</div>
+	</script>
 
-    <!-- General Libraries -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
-    <script src="lib/jquery-3.1.1.min.js"></script>
-    <script src="lib/underscore-min.js"></script>
+	
+	<!-- General Libraries -->
+	<script src="lib/jquery-3.2.1.min.js"></script>
+	<script src="lib/d3.min.js"></script>
+	<script src="lib/popper.min.js"></script>
+	<script src="lib/bootstrap.min.js"></script>
+	<script src="lib/leaflet.min.js"></script>
+	
+	<!-- Routing Libraries -->
+	<script src="lib/signals.min.js"></script>
+	<script src="lib/crossroads.min.js"></script>
+	<script src="lib/hasher.min.js"></script>
+	<script src="lib/handlebars-v3.0.0.js"></script>	
+	
+	<!-- Miscellaneous Libraries -->
+	<script src="lib/bootstrap-multiselect.js"></script>
+	<script src="lib/jquery.noty.packaged.min.js"></script>
+	<script src="lib/tooltipster.bundle.min.js"></script>
 
-    <!-- Routing Libraries -->
-    <script src="lib/signals.min.js"></script>
-    <script src="lib/crossroads.min.js"></script>
-    <script src="lib/hasher.min.js"></script>
-    <script src="lib/handlebars-v3.0.0.js"></script>
+	<!--<script src="build/lib.min.js"></script>-->
+		
+	<!-- Project Specific Files -->
+	<script src="js/utility.js"></script>
+	<script src="js/routing.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/components/map.js"></script>
+	<script src="js/pages/home.js"></script>
+	<script src="js/init.js"></script>
 
-    <!-- Mapping Libraries -->
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
-    <script src="lib/datamaps.world.js"></script>
-    <!-- useful reading: https://github.com/markmarkoh/datamaps/blob/master/README.md#getting-started -->
-
-    <!-- Other -->
-    <script src="lib/nprogress.min.js"></script>
-    <script src="lib/bootstrap.min.js"></script>
-    <script src="lib/jquery.noty.packaged.min.js"></script>
-
-    <!-- Project-specific Files -->
-    <script src="js/utility.js"></script>
-    <script src="js/api.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/pages/map.js"></script>
-    <script src="js/pages/login.js"></script>
-    <script src="js/routing.js"></script>
-    <script src="js/init.js"></script>
-
+	<!--<script src="build/bundle.min.js"></script>-->
 </body>
 </html>
