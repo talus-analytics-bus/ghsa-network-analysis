@@ -9,7 +9,7 @@ const Map = {};
 	Map.createWorldMap = (selector, callback) => {
 		// prepare map
 		const width = 1200;
-		const height = 600;
+		const height = 640;
 		const scale = 170;
 
 		// define projection and path
@@ -26,8 +26,9 @@ const Map = {};
 
 		// set map width and height
 		const svg = d3.selectAll(selector).append('svg')
-			.attr('width', width)
-			.attr('height', height)
+			.classed('map', true)
+			.attr('preserveAspectRatio', 'xMinYMin meet')
+			.attr('viewBox', `0 0 ${width} ${height}`)
 			.append('g');
 		const g = svg.append('g');
 

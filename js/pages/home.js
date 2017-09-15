@@ -1,7 +1,7 @@
 (() => {
 	App.initHome = () => {
-		const map = Map.createWorldMap('#map', () => {
-			
+		const map = Map.createWorldMap('.map-container', () => {
+
 		});
 	};
 })();

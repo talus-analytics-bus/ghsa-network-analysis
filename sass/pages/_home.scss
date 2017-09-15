@@ -4,3 +4,9 @@
 	text-align: center;
 	background-color: #222;
 }
+.map-container {
+	position: relative;
+	width: 100%;
+	max-height: calc(100vh - 115px);
+	overflow-y: hidden;
+}
