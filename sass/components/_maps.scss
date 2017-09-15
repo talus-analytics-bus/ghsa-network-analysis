@@ -1,10 +1,10 @@
-.states,
-.counties {
-	fill: none;
-	stroke: white;
-	stroke-linejoin: round;
+.country {
+  fill: #ccc;
+  &:hover {
+  	fill: steelblue;
+  }
 }
-.state,
-.county {
-	fill: #ccc;
+.boundary {
+  fill: none;
+  stroke: none;
 }
