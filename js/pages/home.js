@@ -51,7 +51,8 @@
 			// TODO attach tooltips to countries
 			d3.selectAll('.country').each(function addTooltip(d) {
 				$(this).tooltipster({
-					trigger: 'click',
+					plugins: ['follower'],
+					delay: 100,
 					content: d.properties.NAME,
 				});
 			});
