@@ -49,8 +49,12 @@
 			<div class="map-container"></div>
 			<div class="search-container">
 				<div class="form-group has-feedback">
-					<input type="text" class="form-control" placeholder="search for a country...">
+					<input type="text" class="country-search-input form-control" placeholder="search for a country...">
 					<i class="glyphicon glyphicon-search form-control-feedback"></i>
+				</div>
+				<div class="live-search-results-container">
+					<div class="live-search-no-results-text">No results found</div>
+					<div class="live-search-results-contents"></div>
 				</div>
 			</div>
 			<div class="map-options-container">
@@ -100,6 +104,7 @@
 	<script src="lib/handlebars-v3.0.0.js"></script>	
 
 	<!-- Miscellaneous Libraries -->
+	<script src="lib/fuse.min.js"></script>
 	<script src="lib/nprogress.min.js"></script>
 	<script src="lib/topojson.v2.min.js"></script>
 	<script src="lib/d3-geo-projection.v2.min.js"></script>

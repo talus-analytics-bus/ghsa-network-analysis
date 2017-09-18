@@ -1,0 +1,34 @@
+.live-search-results-container {
+  display: none;
+  position: absolute;
+  top: 34px;
+  width: 300px;
+  background-color: white;
+  border-left: $border;
+  border-right: $border;
+  text-align: left;
+}
+.live-search-no-results-text {
+  display: none;
+  padding: 10px;
+  text-align: center;
+  border-top: $border;
+  font-style: italic;
+}
+.live-search-results-box {
+  padding: 10px;
+  border-bottom: $border;
+  cursor: pointer;
+  @include gradient(#f9f9f9, #eee);
+  &:first-child { border-top: $border; }
+  &:hover {
+    @include gradient(#eee, #e8e8e8);
+    div { color: #000; }
+  }
+}
+.live-search-results-title {
+	font-weight: 600;
+}
+.live-search-results-subtitle {
+  font-size: 0.9em;
+}
