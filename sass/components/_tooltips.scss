@@ -1,25 +1,19 @@
+.tooltipster-follower.tooltipster-shadow .tooltipster-content {
+	padding: 12px 20px;
+	color: #444;
+}
 .tooltip-title {
-	font-size: 1.6em;
-	margin-top: 8px;
-}
-.tooltip-subtitle {
 	font-size: 1.1em;
-	margin-top: 8px;
-}
-.tooltip-content {
-	margin-top: 30px;
-	.col-sm-6 {
-		margin-left: 0;
-		margin-right: 0;
-	}
-}
-.tooltip-big-number {
-	font-size: 2.4em;
 	font-weight: 600;
 	text-align: center;
 }
-.tooltip-big-number-text {
+.tooltip-main-value {
+	margin-top: 20px;
+	font-family: 'Raleway', sans-serif;
+	font-size: 1.8em;
 	text-align: center;
-	margin-top: 15px;
-	margin-bottom: 5px;
+}
+.tooltip-main-value-label {
+	margin-top: 10px;
+	text-align: center;
 }

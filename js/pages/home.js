@@ -24,8 +24,7 @@
 			d3.queue()
 				.defer(d3.json, 'data/world.json')
 				.defer(d3.json, 'data/funding_data.json')
-				.defer(d3.json, 'data/currencies.json')
-				.await((error, worldData, fundingData, currencyData) => {
+				.await((error, worldData, fundingData) => {
 					if (error) throw error;
 					console.log(fundingData);
 
@@ -42,7 +41,7 @@
 					populateLookupVariables(fundingData);
 
 					// populate filters and update map
-					populateFilters(fundingData, currencyData);
+					populateFilters(fundingData);
 					updateMap();
 
 					NProgress.done();
@@ -61,6 +60,7 @@
 				$(this).tooltipster({
 					plugins: ['follower'],
 					delay: 100,
+					minWidth: 200,
 					content: d.properties.NAME,
 				});
 			});
@@ -68,10 +68,14 @@
 			return map;
 		}
 
+		// gets the money type being displayed (donor vs recipient)
+		function getMoneyType() {
+			return $('.money-type-filter input:checked').attr('ind');
+		}
+
 		// returns the proper country lookup object based on type (donor vs recipient)
 		function getDataLookup() {
-			const moneyType = $('.money-type-filter input:checked').attr('ind');
-			if (moneyType === 'funded') return fundingLookup;
+			if (getMoneyType() === 'funded') return fundingLookup;
 			return recipientLookup;
 		}
 
@@ -87,6 +91,8 @@
 
 		// updates map colors
 		function updateMap() {
+			const currencyIso = $('.currency-select').val();
+			const moneyType = getMoneyType();
 			const dataLookup = getDataLookup();
 
 			// transfer lookup to data map, and only include valid country codes
@@ -103,14 +109,31 @@
 			const colorScale = getColorScale();
 			colorScale.domain(dataMap.values());
 
-			// color countries
-			d3.selectAll('.country').style('fill', (d) => {
-				const isoCode = d.properties.ISO3;
-				if (dataMap.has(isoCode)) {
-					return d.color = colorScale(dataMap.get(isoCode));
-				}
-				return d.color = '#ccc';
-			});
+			// color countries and update tooltip content
+			d3.selectAll('.country')
+				.style('fill', (d) => {
+					const isoCode = d.properties.ISO3;
+					if (dataMap.has(isoCode)) {
+						d.value = dataMap.get(isoCode);
+						return d.color = colorScale(d.value);
+					}
+					d.value = null;
+					return d.color = '#ccc';
+				})
+				.each(function updateTooltip(d) {
+					const container = d3.select(document.createElement('div'));
+					container.append('div')
+						.attr('class', 'tooltip-title')
+						.text(d.properties.NAME);
+					container.append('div')
+						.attr('class', 'tooltip-main-value')
+						.text(App.formatMoney(d.value, currencyIso));
+					container.append('div')
+						.attr('class', 'tooltip-main-value-label')
+						.text(moneyType === 'funded' ? 'Donated' : 'Received');
+
+					$(this).tooltipster('content', container.html());
+				});
 		}
 
 		// initializes search functionality
@@ -191,9 +214,9 @@
 		}
 
 		// populates the filters in the map options box
-		function populateFilters(fundingData, currencyData) {
+		function populateFilters(fundingData) {
 			// get unique values from data
-			const currencies = Object.values(currencyData)
+			const currencies = Object.values(App.currencies)
 				.sort((a, b) => d3.ascending(a.name, b.name));
 
 			// populate dropdowns

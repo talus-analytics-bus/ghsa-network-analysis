@@ -1,9 +1,24 @@
 const App = {};
 
 (() => {
-	App.initialize = () => {
+	App.initialize = (callback) => {
+		// load currency data
+		d3.json('data/currencies.json', (error, currencies) => {
+			App.currencies = Object.assign({}, currencies);
 
+			if (callback) callback();
+		});
 	};
+
+	/* ------------------ Global Functions ------------------- */
+	App.formatMoney = (usdValue, currencyIso) => {
+		const format = d3.format(',.0f');
+		const multiplier = App.currencies[currencyIso].exchange_rates
+			.find(er => er.convert_from === 'USD')
+			.multiplier;
+		return `${format(usdValue * multiplier)} ${currencyIso}`;
+	};
+
 
 	/* ------------------ Vendor Defaults ------------------- */
 	// tooltipster defaults

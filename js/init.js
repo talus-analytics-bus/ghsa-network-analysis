@@ -1,5 +1,6 @@
 (() => {
-	App.initialize();
-	Routing.precompileTemplates();
-	Routing.initializeRoutes();
+	App.initialize(() => {
+		Routing.precompileTemplates();
+		Routing.initializeRoutes();
+	});
 })();
