@@ -114,7 +114,6 @@
 
 		// updates map colors
 		function updateMap() {
-			const currencyIso = $('.currency-select').val();
 			const moneyType = getMoneyType();
 			const dataLookup = getDataLookup();
 
@@ -152,7 +151,7 @@
 						.text(d.properties.NAME);
 					container.append('div')
 						.attr('class', 'tooltip-main-value')
-						.text(App.formatMoney(d.value, currencyIso));
+						.text(App.formatMoney(d.value, App.currencyIso));
 					container.append('div')
 						.attr('class', 'tooltip-main-value-label')
 						.text(moneyType === 'funded' ? 'Donated' : 'Received');
@@ -171,7 +170,6 @@
 
 			const colors = colorScale.range();
 			const quantiles = colorScale.quantiles();
-			const currencyIso = $('.currency-select').val();
 
 			const legend = d3.select('.legend')
 				.attr('width', barWidth * colors.length + 2 * legendPadding)
@@ -200,13 +198,13 @@
 				.attr('dy', '.35em')
 				.text((d, i) => {
 					if (i >= quantiles.length) return '';
-					return App.siFormat(quantiles[i]);
+					return App.formatMoneyShort(quantiles[i], App.currencyIso);
 				});
 
 			// update legend title
 			let titleText = getMoneyType() === 'funded' ?
 				'Funds Donated' : 'Funds Received';
-			titleText += ` (in ${currencyIso})`;
+			titleText += ` (in ${App.currencyIso})`;
 			const legendTitle = legend.selectAll('.legend-title')
 				.data([titleText]);
 			const nlt = legendTitle.enter().append('text')
@@ -222,13 +220,12 @@
 		// displays detailed country information
 		function displayCountryInfo(d) {
 			// get total value
-			const currencyIso = $('.currency-select').val();
 			const dataLookup = getDataLookup();
 			const payments = dataLookup[d.properties.ISO3];
 			const totalValue = getCountryDataValue(payments);
 
 			$('.info-title').text(d.properties.NAME);
-			$('.info-value').text(App.formatMoney(totalValue, currencyIso));
+			$('.info-value').text(App.formatMoney(totalValue, App.currencyIso));
 			$('.info-container').slideDown();
 		}
 
@@ -319,17 +316,9 @@
 
 		// populates the filters in the map options box
 		function populateFilters() {
-			// get unique values from data
-			const currencies = Object.values(App.currencies)
-				.sort((a, b) => d3.ascending(a.name, b.name));
-
 			// populate dropdowns
 			Util.populateSelect('.function-select', allFunctions, { selected: true });
 			Util.populateSelect('.disease-select', allDiseases, { selected: true });
-			Util.populateSelect('.currency-select', currencies, {
-				nameKey: d => `${Util.capitalize(d.name)} (${d.iso.code})`,
-				valKey: d => d.iso.code,
-			});
 
 			// initialize multiselects
 			$('.function-select, .disease-select').multiselect({
@@ -337,9 +326,6 @@
 				includeSelectAllOption: true,
 				numberDisplayed: 0,
 			});
-
-			// select USD as default
-			$('.currency-select').val('USD');
 
 			// attach change behavior
 			$('.map-options-container .radio-option').click(function clickedRadio() {

@@ -5,22 +5,23 @@ const App = {};
 		// load currency data
 		d3.json('data/currencies.json', (error, currencies) => {
 			App.currencies = Object.assign({}, currencies);
+			App.currencyIso = 'USD';
 
 			if (callback) callback();
 		});
 	};
 
 	/* ------------------ Global Functions ------------------- */
-	App.formatMoney = (usdValue, currencyIso) => {
-		const format = d3.format(',.0f');
+	App.siFormat = num => d3.format(',.3s')(num).replace('G', 'B');
+	App.formatMoneyShort = (usdValue, currencyIso) => {
 		const multiplier = App.currencies[currencyIso].exchange_rates
 			.find(er => er.convert_from === 'USD')
 			.multiplier;
-		return `${format(usdValue * multiplier)} ${currencyIso}`;
+		return App.siFormat(usdValue * multiplier);
 	};
-
-	App.siFormat = num => d3.format(',.3s')(num).replace('G', 'B');
-
+	App.formatMoney = (usdValue, currencyIso) => {
+		return `${App.formatMoneyShort(usdValue, currencyIso)} ${currencyIso}`;
+	}
 
 	/* ------------------ Vendor Defaults ------------------- */
 	// tooltipster defaults
