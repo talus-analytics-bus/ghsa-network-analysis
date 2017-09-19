@@ -103,6 +103,7 @@
 
 		// given a set of payments, returns the sum value after applying filters
 		function getCountryDataValue(payments) {
+			if (!payments) return 0;
 			return d3.sum(payments, p => p.total_committed);
 		}
 
@@ -220,7 +221,14 @@
 
 		// displays detailed country information
 		function displayCountryInfo(d) {
+			// get total value
+			const currencyIso = $('.currency-select').val();
+			const dataLookup = getDataLookup();
+			const payments = dataLookup[d.properties.ISO3];
+			const totalValue = getCountryDataValue(payments);
+
 			$('.info-title').text(d.properties.NAME);
+			$('.info-value').text(App.formatMoney(totalValue, currencyIso));
 			$('.info-container').slideDown();
 		}
 
