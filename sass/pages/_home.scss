@@ -35,6 +35,11 @@
 	z-index: 10;
 	@include border-radius(10px);
 
+	.filter-section:nth-child(n+2) {
+		margin-top: 15px;
+		border-top: $light-border;
+		padding-top: 15px;
+	}
 	.filter-box:nth-child(n+2) {
 		margin-top: 15px;
 	}
@@ -48,5 +53,8 @@
 	.radio-option input {
 		position: relative;
 		top: 2px;
+	}
+	.currency-select {
+		width: 200px;
 	}
 }

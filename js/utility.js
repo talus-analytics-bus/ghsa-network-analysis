@@ -11,7 +11,10 @@ const Util = {};
 	};
 
 	// capitalizes words
-	Util.capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+	Util.capitalize = (str) => {
+		const strArr = str.split(' ');
+		return strArr.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+	}
 
 	// sorts an array of object by a given key
 	Util.sortByKey = (array, key, reverse) => {

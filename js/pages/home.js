@@ -1,9 +1,9 @@
 (() => {
 	App.initHome = () => {
-		// lookup variables used throughout
-		let countryData;  // an array of country data
-		let fundingLookup;
-		let recipientLookup;
+		// state variables used throughout
+		let countryData;  // an array of all country data
+		let fundingLookup;  // a lookup of money funded for each country
+		let recipientLookup;  // a lookup of money received for each country
 
 		// other variables
 		let liveSearchTimeout;  // timeout for country search
@@ -14,32 +14,32 @@
 			NProgress.start();
 
 			// load world data
-			d3.json('data/world.json', (error, worldData) => {
-				if (error) throw error;
+			d3.queue()
+				.defer(d3.json, 'data/world.json')
+				.defer(d3.json, 'data/funding_data.json')
+				.defer(d3.json, 'data/currencies.json')
+				.await((error, worldData, fundingData, currencyData) => {
+					if (error) throw error;
 
-				// populate country data variable
-				countries = worldData.objects.countries.geometries.map((c) => {
-					return c.properties;
-				});
+					// populate country data variable
+					countries = worldData.objects.countries.geometries.map((c) => {
+						return c.properties;
+					});
 
-				// build map and initialize search
-				const map = buildMap(worldData);
-				initSearch(worldData);
+					// build map and initialize search
+					const map = buildMap(worldData);
+					initSearch(worldData);
 
-				// load funding data
-				d3.json('data/funding_data.json', (error, data) => {
-					console.log(data);
+					// populate lookups
+					fundingLookup = d3.map(fundingData, d => d.donor_country);
+					recipientLookup = d3.map(fundingData, d => d.recipient_country);
 
-					// data collation
-					fundingLookup = d3.map(data, d => d.donor_country);
-					recipientLookup = d3.map(data, d => d.recipient_country);
-
-					populateFilters(data);
-					updateMap(map, data);
+					// populate filters and update map
+					populateFilters(fundingData, currencyData);
+					updateMap(map, fundingData);
 
 					NProgress.done();
 				});
-			});
 		}
 
 
@@ -143,18 +143,24 @@
 			}
 		}
 
-		function populateFilters(data) {
+		function populateFilters(fundingData, currencyData) {
 			// get unique values from data
-			const functions = d3.map(data, d => d.project_function).keys()
+			const functions = d3.map(fundingData, d => d.project_function).keys()
 				.filter(d => d !== 'undefined')
 				.sort();
-			const diseases = d3.map(data, d => d.project_disease).keys()
+			const diseases = d3.map(fundingData, d => d.project_disease).keys()
 				.filter(d => d !== 'undefined')
 				.sort();
+			const currencies = Object.values(currencyData)
+				.sort((a, b) => d3.ascending(a.name, b.name));
 
 			// populate dropdowns
 			Util.populateSelect('.function-select', functions, { selected: true });
 			Util.populateSelect('.disease-select', diseases, { selected: true });
+			Util.populateSelect('.currency-select', currencies, {
+				nameKey: d => `${Util.capitalize(d.name)} (${d.iso.code})`,
+				valKey: d => d.iso.code,
+			});
 
 			// initialize multiselects
 			$('.function-select, .disease-select').multiselect({
@@ -162,6 +168,9 @@
 				includeSelectAllOption: true,
 				numberDisplayed: 0,
 			});
+
+			// select USD as default
+			$('.currency-select').val('USD');
 
 			// show map options
 			$('.map-options-container').show();
