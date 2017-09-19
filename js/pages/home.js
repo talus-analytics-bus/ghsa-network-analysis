@@ -26,7 +26,6 @@
 				.defer(d3.json, 'data/funding_data.json')
 				.await((error, worldData, fundingData) => {
 					if (error) throw error;
-					console.log(fundingData);
 
 					// populate country data variable
 					allCountries = worldData.objects.countries.geometries.map((c) => {
@@ -134,6 +133,64 @@
 
 					$(this).tooltipster('content', container.html());
 				});
+
+			updateLegend(colorScale);
+		}
+
+		// update the map legend
+		function updateLegend(colorScale) {
+			const barHeight = 16;
+			const barWidth = 70;
+			const legendPadding = 20;
+
+			const colors = colorScale.range();
+			const quantiles = colorScale.quantiles();
+			const currencyIso = $('.currency-select').val();
+
+			const legend = d3.select('.legend')
+				.attr('width', barWidth * colors.length + 2 * legendPadding)
+				.attr('height', barHeight + 50)
+				.select('g')
+					.attr('transform', `translate(${legendPadding}, 0)`);
+			let legendGroups = legend.selectAll('g')
+				.data(colors);
+			legendGroups.exit().remove();
+			
+			const newLegendGroups = legendGroups.enter().append('g');
+			newLegendGroups.append('rect')
+				.attr('class', 'legend-bar');
+			newLegendGroups.append('text')
+				.attr('class', 'legend-text');
+
+			legendGroups = legendGroups.merge(newLegendGroups)
+				.attr('transform', (d, i) => `translate(${barWidth * i}, 0)`);
+			legendGroups.select('.legend-bar')
+				.attr('width', barWidth)
+				.attr('height', barHeight)
+				.style('fill', d => d);
+			legendGroups.select('.legend-text')
+				.attr('x', barWidth)
+				.attr('y', barHeight + 12)
+				.attr('dy', '.35em')
+				.text((d, i) => {
+					if (i >= quantiles.length) return '';
+					return App.siFormat(quantiles[i]);
+				});
+
+			// update legend title
+			let titleText = getMoneyType() === 'funded' ?
+				'Funds Donated' : 'Funds Received';
+			titleText += ` (in ${currencyIso})`;
+			let legendTitle = legend.selectAll('.legend-title')
+				.data([titleText]);
+			const nlt = legendTitle.enter().append('text')
+				.attr('class', 'legend-title');
+			legendTitle.merge(nlt)
+				.attr('x', barWidth * colors.length / 2)
+				.attr('y', barHeight + 48)
+				.text(d => d);
+
+			$('.legend-container').slideDown();
 		}
 
 		// initializes search functionality

@@ -19,6 +19,10 @@ const App = {};
 		return `${format(usdValue * multiplier)} ${currencyIso}`;
 	};
 
+	App.siFormat = (num) => {
+		return d3.format(',.3s')(num).replace('G', 'B');
+	}
+
 
 	/* ------------------ Vendor Defaults ------------------- */
 	// tooltipster defaults
