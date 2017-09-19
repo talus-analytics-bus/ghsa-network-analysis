@@ -79,6 +79,7 @@
 	top: 20px;
 	left: 0;
 	width: 100%;
+	pointer-events: none;
 
 	.info-box {
 		display: inline-block;
@@ -86,6 +87,7 @@
 		max-width: 300px;
 		border: $border;
 		background-color: rgba(255,255,255,0.95);
+		pointer-events: all;
 		@include border-radius(15px);
 	}
 	.info-title {
