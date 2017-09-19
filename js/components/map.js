@@ -36,8 +36,7 @@ const Map = {};
 		svg.append('rect')
 			.attr('class', 'overlay')
 			.attr('width', width)
-			.attr('height', height)
-			.on('click', reset);
+			.attr('height', height);
 
 		const g = svg.append('g');
 
@@ -50,8 +49,7 @@ const Map = {};
 			.data(countries)
 			.enter().append('path')
 				.attr('class', 'country')
-				.attr('d', path)
-				.on('click', zoomTo);
+				.attr('d', path);
 		g.append('path')
 			.datum(topojson.mesh(world, world.objects.countries, (a, b) => a !== b))
 			.attr('class', 'boundary')
@@ -59,17 +57,11 @@ const Map = {};
 
 		// pan and zoom function
 		function zoomed() {
-			g.style('stroke-width', `${1.5 / d3.event.transform.k}px`)
+			g.style('stroke-width', `${1.5 / d3.event.transform.k}px`);
 			g.attr('transform', d3.event.transform);
 		}
 
-		let activeCountry = d3.select(null);
 		function zoomTo(d) {
-			// set country active
-			if (activeCountry.node() === this) return reset();
-			activeCountry.classed('active', false);
-			activeCountry = d3.select(this).classed('active', true);
-
 			// move country to top of layer
 			$(this.parentNode).append(this);
 
@@ -79,17 +71,14 @@ const Map = {};
 			const dy = bounds[1][1] - bounds[0][1];
 			const x = (bounds[0][0] + bounds[1][0]) / 2;
 			const y = (bounds[0][1] + bounds[1][1]) / 2;
-			const s = Math.max(1, Math.min(8, 0.9 / Math.max(dx / width, dy / height)));
+			const s = Math.max(1, Math.min(8, 0.7 / Math.max(dx / width, dy / height)));
 			const t = [width / 2 - s * x, height / 2 - s * y - 90];
-			svg.transition()
+			return svg.transition()
 				.duration(750)
 				.call(zoom.transform, d3.zoomIdentity.translate(t[0], t[1]).scale(s));
 		}
 
 		function reset() {
-			activeCountry.classed('active', false);
-			activeCountry = d3.select(null);
-
 			svg.transition()
 				.duration(750)
 				.call(zoom.transform, d3.zoomIdentity);
@@ -99,6 +88,6 @@ const Map = {};
 			if (d3.event.defaultPrevented) d3.event.stopPropagation();
 		}
 
-		return { element: svg, zoomTo };
+		return { element: svg, zoomTo, reset };
 	};
 })();

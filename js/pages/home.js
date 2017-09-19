@@ -9,6 +9,7 @@
 
 		// other variables
 		let map;  // the world map
+		let activeCountry = d3.select(null);  // the active country
 		let liveSearchTimeout;  // timeout for country search
 
 		// colors
@@ -53,17 +54,40 @@
 			// add map to map container
 			const mapObj = Map.createWorldMap('.map-container', worldData);
 
-			// TODO attach tooltips to countries
-			d3.selectAll('.country').each(function addTooltip(d) {
-				$(this).tooltipster({
-					plugins: ['follower'],
-					delay: 100,
-					minWidth: 200,
-					content: d.properties.NAME,
+			// clicking overlay resets map
+			mapObj.element.select('.overlay').on('click', resetMap);
+
+			// define country click behavior and attach tooltips
+			d3.selectAll('.country')
+				.on('click', function onClick(d) {
+					// set country as active
+					if (activeCountry.node() === this) return resetMap();
+					activeCountry.classed('active', false);
+					activeCountry = d3.select(this).classed('active', true);
+
+					// zoom in to country
+					mapObj.zoomTo.call(this, d);
+
+					// display info box
+					displayCountryInfo(activeCountry.datum());
+				})
+				.each(function addTooltip(d) {
+					$(this).tooltipster({
+						plugins: ['follower'],
+						delay: 100,
+						minWidth: 200,
+						content: d.properties.NAME,
+					});
 				});
-			});
 
 			return mapObj;
+		}
+
+		function resetMap() {
+			map.reset();
+			activeCountry.classed('active', false);
+			activeCountry = d3.select(null);
+			$('.info-container').slideUp();
 		}
 
 		// gets the money type being displayed (donor vs recipient)
@@ -194,6 +218,12 @@
 			$('.legend-container').slideDown();
 		}
 
+		// displays detailed country information
+		function displayCountryInfo(d) {
+			$('.info-title').text(d.properties.NAME);
+			$('.info-container').slideDown();
+		}
+
 		// initializes search functionality
 		function initSearch() {
 			// set search bar behavior
@@ -260,10 +290,17 @@
 					// clear input
 					$('.country-search-input').val('');
 
-					// zoom to country
+					// get country element
 					const country = d3.selectAll('.country')
 						.filter(c => d.ISO3 === c.properties.ISO3);
-					map.zoomTo.call(country.node(), country.datum());
+
+					// set country as active
+					activeCountry.classed('active', false);
+					activeCountry = country.classed('active', true);
+
+					// zoom in to country
+					map.zoomTo.call(activeCountry.node(), activeCountry.datum());
+					displayCountryInfo(activeCountry.datum());
 				});
 				boxes.select('.live-search-results-title')
 					.text(d => `${d.NAME} (${d.ISO3})`);

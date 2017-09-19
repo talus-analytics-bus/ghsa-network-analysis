@@ -73,3 +73,18 @@
 		@include border-radius(15px);
 	}
 }
+.info-container {
+	display: none;
+	position: absolute;
+	top: 20px;
+	left: 0;
+	width: 100%;
+
+	.info-box {
+		display: inline-block;
+		padding: 20px;
+		border: $border;
+		background-color: rgba(255,255,255,0.95);
+		@include border-radius(15px);
+	}
+}
