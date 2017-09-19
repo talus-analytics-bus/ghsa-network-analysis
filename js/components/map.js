@@ -36,7 +36,8 @@ const Map = {};
 		svg.append('rect')
 			.attr('class', 'overlay')
 			.attr('width', width)
-			.attr('height', height);
+			.attr('height', height)
+			.on('click', reset);
 
 		const g = svg.append('g');
 
@@ -65,25 +66,15 @@ const Map = {};
 		let activeCountry = d3.select(null);
 		function zoomTo(d) {
 			// set country active
-			if (activeCountry === this) return reset();
+			if (activeCountry.node() === this) return reset();
 			activeCountry.classed('active', false);
 			activeCountry = d3.select(this).classed('active', true);
-
-			// get bounds of country
-			let bounds;
-			if (typeof d === 'string') {
-				const countryData = d3.selectAll('.country')
-					.filter(dd => dd.properties.ISO3 === d)
-					.datum();
-				bounds = path.bounds(countryData);
-			} else {
-				bounds = path.bounds(d);
-			}
 
 			// move country to top of layer
 			$(this.parentNode).append(this);
 
 			// call zoom
+			const bounds = path.bounds(d);
 			const dx = bounds[1][0] - bounds[0][0];
 			const dy = bounds[1][1] - bounds[0][1];
 			const x = (bounds[0][0] + bounds[1][0]) / 2;

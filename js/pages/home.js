@@ -8,6 +8,7 @@
 		const allDiseases = [];  // an array of all diseases
 
 		// other variables
+		let map;  // the world map
 		let liveSearchTimeout;  // timeout for country search
 
 		// colors
@@ -31,7 +32,7 @@
 						.map(c => c.properties);
 
 					// build map and initialize search
-					const map = buildMap(worldData);
+					map = buildMap(worldData);
 					initSearch();
 
 					// populate lookups
@@ -50,7 +51,7 @@
 		// builds the map and attaches tooltips to countries
 		function buildMap(worldData) {
 			// add map to map container
-			const map = Map.createWorldMap('.map-container', worldData);
+			const mapObj = Map.createWorldMap('.map-container', worldData);
 
 			// TODO attach tooltips to countries
 			d3.selectAll('.country').each(function addTooltip(d) {
@@ -62,7 +63,7 @@
 				});
 			});
 
-			return map;
+			return mapObj;
 		}
 
 		// gets the money type being displayed (donor vs recipient)
@@ -255,14 +256,15 @@
 				newBoxes.append('div')
 					.attr('class', 'live-search-results-subtitle');
 
-				boxes = boxes.merge(newBoxes)
-					.attr('code', d => d.abbreviation)
-					.on('mousedown', (d) => {
-						// clear input
-						$('.country-search-input').val('');
+				boxes = boxes.merge(newBoxes).on('mousedown', (d) => {
+					// clear input
+					$('.country-search-input').val('');
 
-						// TODO
-					});
+					// zoom to country
+					const country = d3.selectAll('.country')
+						.filter(c => d.ISO3 === c.properties.ISO3);
+					map.zoomTo.call(country.node(), country.datum());
+				});
 				boxes.select('.live-search-results-title')
 					.text(d => `${d.NAME} (${d.ISO3})`);
 				boxes.select('.live-search-results-subtitle')
