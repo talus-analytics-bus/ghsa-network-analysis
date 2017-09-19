@@ -7,7 +7,6 @@
 }
 .map-container {
 	width: 100%;
-	min-height: 200px;
 	max-height: calc(100vh - 115px);
 	overflow-y: hidden;
 }
@@ -69,6 +68,7 @@
 	.legend-box {
 		display: inline-block;
 		padding: 20px 20px 15px;
+		border: $border;
 		background-color: rgba(220,220,220,0.95);
 		@include border-radius(15px);
 	}

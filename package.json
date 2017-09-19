@@ -43,7 +43,9 @@
       "d3": true,
       "L": true,
       "noty": true,
-      "topojson": true
+      "topojson": true,
+      "NProgress": true,
+      "Fuse": true
     },
     "rules": {
       "indent": [
@@ -53,6 +55,10 @@
       "no-use-before-define": [
         "error",
         "nofunc"
+      ],
+      "no-param-reassign": [
+        "error",
+        { "props": false }
       ]
     }
   },

@@ -8,7 +8,6 @@
 		const allDiseases = [];  // an array of all diseases
 
 		// other variables
-		let map;
 		let liveSearchTimeout;  // timeout for country search
 
 		// colors
@@ -28,19 +27,18 @@
 					if (error) throw error;
 
 					// populate country data variable
-					allCountries = worldData.objects.countries.geometries.map((c) => {
-						return c.properties;
-					});
+					allCountries = worldData.objects.countries.geometries
+						.map(c => c.properties);
 
 					// build map and initialize search
-					map = buildMap(worldData);
-					initSearch(worldData);
+					const map = buildMap(worldData);
+					initSearch();
 
 					// populate lookups
 					populateLookupVariables(fundingData);
 
 					// populate filters and update map
-					populateFilters(fundingData);
+					populateFilters();
 					updateMap();
 
 					NProgress.done();
@@ -114,10 +112,12 @@
 					const isoCode = d.properties.ISO3;
 					if (dataMap.has(isoCode)) {
 						d.value = dataMap.get(isoCode);
-						return d.color = colorScale(d.value);
+						d.color = colorScale(d.value);
+					} else {
+						d.value = null;
+						d.color = '#ccc';
 					}
-					d.value = null;
-					return d.color = '#ccc';
+					return d.color;
 				})
 				.each(function updateTooltip(d) {
 					const container = d3.select(document.createElement('div'));
@@ -155,7 +155,7 @@
 			let legendGroups = legend.selectAll('g')
 				.data(colors);
 			legendGroups.exit().remove();
-			
+
 			const newLegendGroups = legendGroups.enter().append('g');
 			newLegendGroups.append('rect')
 				.attr('class', 'legend-bar');
@@ -181,7 +181,7 @@
 			let titleText = getMoneyType() === 'funded' ?
 				'Funds Donated' : 'Funds Received';
 			titleText += ` (in ${currencyIso})`;
-			let legendTitle = legend.selectAll('.legend-title')
+			const legendTitle = legend.selectAll('.legend-title')
 				.data([titleText]);
 			const nlt = legendTitle.enter().append('text')
 				.attr('class', 'legend-title');
@@ -194,15 +194,15 @@
 		}
 
 		// initializes search functionality
-		function initSearch(worldData) {
+		function initSearch() {
 			// set search bar behavior
 			$('.country-search-input')
-				.on('focus', function() { searchForCountry($(this).val()); })
-				.on('blur', function() {
+				.on('focus', function focus() { searchForCountry($(this).val()); })
+				.on('blur', () => {
 					clearTimeout(liveSearchTimeout);
 					$('.live-search-results-container').hide();
 				})
-				.on('keyup', function(ev) {
+				.on('keyup', function keyUp(ev) {
 					clearTimeout(liveSearchTimeout);
 					const searchVal = $(this).val();
 					if (ev.which === 13) {
@@ -210,7 +210,7 @@
 						searchForCountry(searchVal);
 					} else {
 						// perform search when user stops typing for 250ms
-						liveSearchTimeout = setTimeout(function() {
+						liveSearchTimeout = setTimeout(() => {
 							searchForCountry(searchVal);
 						}, 250);
 					}
@@ -224,15 +224,15 @@
 				$resultsBox.hide();
 				return;
 			}
-			
+
 			// show live search box under search bar
-			const fuse = new Fuse(countries, {
+			const fuse = new Fuse(allCountries, {
 				threshold: 0.3,
 				distance: 1e5,
 				keys: ['ISO2', 'ISO3', 'FIPS', 'NAME'],
 			});
 			const results = fuse.search(searchVal);
-			
+
 			// show results in boxes under search input
 			$resultsBox.show();
 			if (results.length === 0) {
@@ -254,7 +254,7 @@
 					.attr('class', 'live-search-results-title');
 				newBoxes.append('div')
 					.attr('class', 'live-search-results-subtitle');
-					
+
 				boxes = boxes.merge(newBoxes)
 					.attr('code', d => d.abbreviation)
 					.on('mousedown', (d) => {
@@ -271,7 +271,7 @@
 		}
 
 		// populates the filters in the map options box
-		function populateFilters(fundingData) {
+		function populateFilters() {
 			// get unique values from data
 			const currencies = Object.values(App.currencies)
 				.sort((a, b) => d3.ascending(a.name, b.name));
@@ -331,5 +331,5 @@
 		}
 
 		init();
-	}
+	};
 })();

@@ -9,6 +9,9 @@
   &:hover {
   	stroke: rgba(255,255,255,0.8);
   }
+  &.active {
+    stroke: rgba(255,109,0,0.8);
+  }
 }
 .boundary {
   fill: none;

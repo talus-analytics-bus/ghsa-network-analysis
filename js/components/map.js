@@ -16,7 +16,7 @@ const Map = {};
 		const projection = d3.geoMercator()
 			.translate([width / 2, height / 2])
 			.scale(scale)
-			.precision(.1);
+			.precision(0.1);
 		const path = d3.geoPath().projection(projection);
 
 		// define zoom
@@ -29,7 +29,8 @@ const Map = {};
 			.classed('map', true)
 			.attr('preserveAspectRatio', 'xMinYMin meet')
 			.attr('viewBox', `0 0 ${width} ${height}`)
-			.append('g');
+			.append('g')
+				.on('click', stopped, true);
 
 		// add overlay
 		svg.append('rect')
@@ -48,26 +49,65 @@ const Map = {};
 			.data(countries)
 			.enter().append('path')
 				.attr('class', 'country')
-				.attr('d', path);
+				.attr('d', path)
+				.on('click', zoomTo);
 		g.append('path')
 			.datum(topojson.mesh(world, world.objects.countries, (a, b) => a !== b))
 			.attr('class', 'boundary')
 			.attr('d', path);
 
 		// pan and zoom function
-		let currScale = 1;
 		function zoomed() {
-			const transform = d3.event.transform;
-			if (transform.k === currScale) {
-				// pan event; don't use transition
-				g.attr('transform', transform);
-			} else {
-				// zoom event; use transition
-				g.transition().attr('transform', transform);
-				currScale = transform.k;
-			}
+			g.style('stroke-width', `${1.5 / d3.event.transform.k}px`)
+			g.attr('transform', d3.event.transform);
 		}
 
-		return { svg, path, projection };
+		let activeCountry = d3.select(null);
+		function zoomTo(d) {
+			// set country active
+			if (activeCountry === this) return reset();
+			activeCountry.classed('active', false);
+			activeCountry = d3.select(this).classed('active', true);
+
+			// get bounds of country
+			let bounds;
+			if (typeof d === 'string') {
+				const countryData = d3.selectAll('.country')
+					.filter(dd => dd.properties.ISO3 === d)
+					.datum();
+				bounds = path.bounds(countryData);
+			} else {
+				bounds = path.bounds(d);
+			}
+
+			// move country to top of layer
+			$(this.parentNode).append(this);
+
+			// call zoom
+			const dx = bounds[1][0] - bounds[0][0];
+			const dy = bounds[1][1] - bounds[0][1];
+			const x = (bounds[0][0] + bounds[1][0]) / 2;
+			const y = (bounds[0][1] + bounds[1][1]) / 2;
+			const s = Math.max(1, Math.min(8, 0.9 / Math.max(dx / width, dy / height)));
+			const t = [width / 2 - s * x, height / 2 - s * y - 90];
+			svg.transition()
+				.duration(750)
+				.call(zoom.transform, d3.zoomIdentity.translate(t[0], t[1]).scale(s));
+		}
+
+		function reset() {
+			activeCountry.classed('active', false);
+			activeCountry = d3.select(null);
+
+			svg.transition()
+				.duration(750)
+				.call(zoom.transform, d3.zoomIdentity);
+		}
+
+		function stopped() {
+			if (d3.event.defaultPrevented) d3.event.stopPropagation();
+		}
+
+		return { element: svg, zoomTo };
 	};
 })();

@@ -14,7 +14,7 @@ const Util = {};
 	Util.capitalize = (str) => {
 		const strArr = str.split(' ');
 		return strArr.map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-	}
+	};
 
 	// sorts an array of object by a given key
 	Util.sortByKey = (array, key, reverse) => {
