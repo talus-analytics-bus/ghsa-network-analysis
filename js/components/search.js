@@ -19,7 +19,7 @@
 				if (ev.which === 13) {
 					// enter: perform search immediately
 					if (activeResultNum >= 0) {
-						$('.country-search-input').val('');
+						$(selector).val('');
 						hideSearch();
 						searchedFn(results[activeResultNum]);
 					} else {
@@ -95,7 +95,7 @@
 
 				boxes = boxes.merge(newBoxes).on('mousedown', (d) => {
 					// clear input
-					$('.country-search-input').val('');
+					$(selector).val('');
 
 					// call searched function
 					searchedFn(d);

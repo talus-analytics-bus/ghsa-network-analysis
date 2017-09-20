@@ -3,7 +3,6 @@
 		// lookup variables used throughout
 		const fundingLookup = {};  // a lookup of money funded for each country
 		const recipientLookup = {};  // a lookup of money received for each country
-		let allCountries = [];  // an array of all countries and properties
 		const allFunctions = [];  // an array of all functions
 		const allDiseases = [];  // an array of all diseases
 
@@ -19,40 +18,24 @@
 
 		// function for initializing the page
 		function init() {
-			NProgress.start();
+			// build map and initialize search
+			map = buildMap();
+			initSearch();
 
-			// load world data
-			d3.queue()
-				.defer(d3.json, 'data/world.json')
-				.defer(d3.json, 'data/funding_data.json')
-				.await((error, worldData, fundingData) => {
-					if (error) throw error;
+			// populate lookups and filters
+			populateLookupVariables();
+			populateFilters();
 
-					// populate country data variable
-					allCountries = worldData.objects.countries.geometries
-						.map(c => c.properties);
-
-					// build map and initialize search
-					map = buildMap(worldData);
-					initSearch();
-
-					// populate lookups
-					populateLookupVariables(fundingData);
-
-					// populate filters and update map
-					populateFilters();
-					updateAll();
-
-					NProgress.done();
-				});
+			// update map
+			updateAll();
 		}
 
 
 		/* ---------------------- Functions ----------------------- */
 		// builds the map and attaches tooltips to countries
-		function buildMap(worldData) {
+		function buildMap() {
 			// add map to map container
-			const mapObj = Map.createWorldMap('.map-container', worldData);
+			const mapObj = Map.createWorldMap('.map-container', App.geoData);
 
 			// clicking overlay resets map
 			mapObj.element.select('.overlay').on('click', resetMap);
@@ -120,7 +103,7 @@
 
 			// filter data and only use data with valid country values
 			currentDataMap.clear();
-			allCountries.forEach((c) => {
+			App.countries.forEach((c) => {
 				const payments = dataLookup[c.ISO3];
 				if (payments) {
 					const filteredPayments = payments
@@ -160,7 +143,7 @@
 						.text(d.properties.NAME);
 					container.append('div')
 						.attr('class', 'tooltip-main-value')
-						.text(App.formatMoney(d.value, App.currencyIso));
+						.text(App.formatMoney(d.value));
 					container.append('div')
 						.attr('class', 'tooltip-main-value-label')
 						.text(moneyType === 'funded' ? 'Donated' : 'Received');
@@ -207,7 +190,7 @@
 				.attr('dy', '.35em')
 				.text((d, i) => {
 					if (i >= quantiles.length) return '';
-					return App.formatMoneyShort(quantiles[i], App.currencyIso);
+					return App.formatMoneyShort(quantiles[i]);
 				});
 
 			// update legend title
@@ -236,13 +219,13 @@
 
 			// populate info container
 			$('.info-title').text(d.properties.NAME);
-			$('.info-value').text(App.formatMoney(totalValue, App.currencyIso));
+			$('.info-value').text(App.formatMoney(totalValue));
 			$('.info-container').slideDown();
 		}
 
 		// initializes search functionality
 		function initSearch() {
-			App.initCountrySearchBar('.country-search-input', allCountries, (result) => {
+			App.initCountrySearchBar('.country-search-input', App.countries, (result) => {
 				// get country element
 				const country = d3.selectAll('.country')
 					.filter(c => result.ISO3 === c.properties.ISO3);
@@ -284,8 +267,8 @@
 		}
 
 		// populates lookup objects based on funding data
-		function populateLookupVariables(fundingData) {
-			fundingData.forEach((d) => {
+		function populateLookupVariables() {
+			App.fundingData.forEach((d) => {
 				const fn = d.project_function;
 				const disease = d.project_disease;
 				const donor = d.donor_country;

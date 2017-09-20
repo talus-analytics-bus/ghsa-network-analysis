@@ -2,25 +2,42 @@ const App = {};
 
 (() => {
 	App.initialize = (callback) => {
-		// load currency data
-		d3.json('data/currencies.json', (error, currencies) => {
-			App.currencies = Object.assign({}, currencies);
-			App.currencyIso = 'USD';
+		// front-load all the data
+		NProgress.start();
+		d3.queue()
+			.defer(d3.json, 'data/world.json')
+			.defer(d3.json, 'data/funding_data.json')
+			.defer(d3.json, 'data/currencies.json')
+			.await((error, worldData, fundingData, currencies) => {
+				if (error) throw error;
 
-			if (callback) callback();
-		});
+				// save geo data; save list of countries in namespace
+				App.geoData = worldData;
+				App.countries = worldData.objects.countries.geometries
+					.map(c => c.properties);
+
+				// save funding data
+				App.fundingData = fundingData;
+
+				// save currencies in namespace; set default currency
+				App.currencies = Object.assign({}, currencies);
+				App.currencyIso = 'USD';
+
+				if (callback) callback();
+				NProgress.done();
+			});
 	};
 
 	/* ------------------ Global Functions ------------------- */
 	App.siFormat = num => d3.format(',.3s')(num).replace('G', 'B');
-	App.formatMoneyShort = (usdValue, currencyIso) => {
-		const multiplier = App.currencies[currencyIso].exchange_rates
+	App.formatMoneyShort = (usdValue) => {
+		const multiplier = App.currencies[App.currencyIso].exchange_rates
 			.find(er => er.convert_from === 'USD')
 			.multiplier;
 		return App.siFormat(usdValue * multiplier);
 	};
-	App.formatMoney = (usdValue, currencyIso) => {
-		return `${App.formatMoneyShort(usdValue, currencyIso)} ${currencyIso}`;
+	App.formatMoney = (usdValue) => {
+		return `${App.formatMoneyShort(usdValue)} ${App.currencyIso}`;
 	}
 
 	/* ------------------ Vendor Defaults ------------------- */

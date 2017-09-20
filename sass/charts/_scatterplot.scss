@@ -1,0 +1,27 @@
+.scatterplot {
+	.country-node {
+		@include opacity(0.9);
+	}
+}
+.scatterplot-tooltip {
+	font-size: 1.4rem;
+}
+.scatterplot-tooltip-title {
+	font-size: 1.2em;
+	font-weight: 600;
+	text-align: center;
+}
+.scatterplot-tooltip-info {
+	margin: 15px 0 25px;
+}
+.scatterplot-tooltip-value {
+	margin: 0 10px;
+	font-family: 'Raleway', sans-serif;
+	font-size: 2.2em;
+	text-align: center;
+	white-space: nowrap;
+}
+.scatterplot-tooltip-value-label {
+	margin-top: 10px;
+	text-align: center;
+}
