@@ -10,7 +10,6 @@
 		// other variables
 		let map;  // the world map
 		let activeCountry = d3.select(null);  // the active country
-		let liveSearchTimeout;  // timeout for country search
 
 		// colors
 		const purples = ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8',
@@ -231,87 +230,19 @@
 
 		// initializes search functionality
 		function initSearch() {
-			// set search bar behavior
-			$('.country-search-input')
-				.on('focus', function focus() { searchForCountry($(this).val()); })
-				.on('blur', () => {
-					clearTimeout(liveSearchTimeout);
-					$('.live-search-results-container').hide();
-				})
-				.on('keyup', function keyUp(ev) {
-					clearTimeout(liveSearchTimeout);
-					const searchVal = $(this).val();
-					if (ev.which === 13) {
-						// enter: perform search immediately
-						searchForCountry(searchVal);
-					} else {
-						// perform search when user stops typing for 250ms
-						liveSearchTimeout = setTimeout(() => {
-							searchForCountry(searchVal);
-						}, 250);
-					}
-				});
-		}
+			App.initCountrySearchBar('.country-search-input', allCountries, (result) => {
+				// get country element
+				const country = d3.selectAll('.country')
+					.filter(c => result.ISO3 === c.properties.ISO3);
 
-		// displays country search results
-		function searchForCountry(searchVal) {
-			const $resultsBox = $('.live-search-results-container');
-			if (searchVal.trim() === '') {
-				$resultsBox.hide();
-				return;
-			}
+				// set country as active
+				activeCountry.classed('active', false);
+				activeCountry = country.classed('active', true);
 
-			// show live search box under search bar
-			const fuse = new Fuse(allCountries, {
-				threshold: 0.3,
-				distance: 1e5,
-				keys: ['ISO2', 'ISO3', 'FIPS', 'NAME'],
+				// zoom in to country
+				map.zoomTo.call(activeCountry.node(), activeCountry.datum());
+				displayCountryInfo(activeCountry.datum());
 			});
-			const results = fuse.search(searchVal);
-
-			// show results in boxes under search input
-			$resultsBox.show();
-			if (results.length === 0) {
-				$resultsBox.find('.live-search-no-results-text').show();
-				$resultsBox.find('.live-search-results-contents').hide();
-			} else {
-				$resultsBox.find('.live-search-no-results-text').hide();
-				$resultsBox.find('.live-search-results-contents').show();
-
-				let boxes = d3.select($resultsBox[0])
-					.select('.live-search-results-contents')
-					.selectAll('.live-search-results-box')
-						.data(results.slice(0, 4));
-				boxes.exit().remove();
-
-				const newBoxes = boxes.enter().append('div')
-					.attr('class', 'live-search-results-box');
-				newBoxes.append('div')
-					.attr('class', 'live-search-results-title');
-				newBoxes.append('div')
-					.attr('class', 'live-search-results-subtitle');
-
-				boxes = boxes.merge(newBoxes).on('mousedown', (d) => {
-					// clear input
-					$('.country-search-input').val('');
-
-					// get country element
-					const country = d3.selectAll('.country')
-						.filter(c => d.ISO3 === c.properties.ISO3);
-
-					// set country as active
-					activeCountry.classed('active', false);
-					activeCountry = country.classed('active', true);
-
-					// zoom in to country
-					map.zoomTo.call(activeCountry.node(), activeCountry.datum());
-					displayCountryInfo(activeCountry.datum());
-				});
-				boxes.select('.live-search-results-title')
-					.text(d => `${d.NAME} (${d.ISO3})`);
-				boxes.select('.live-search-results-subtitle')
-					.text(d => `Population: ${Util.comma(d.POP2005)}`);
-			}
 		}
 
 		// populates the filters in the map options box

@@ -10,23 +10,26 @@
 	max-height: calc(100vh - 115px);
 	overflow-y: hidden;
 }
-.search-container {
+.right-container {
 	position: absolute;
 	top: 15px;
 	right: 20px;
 	z-index: 100;
-	
+}
+.search-container {
+	position: relative;
+	margin-top: 10px;
+
 	input {
-		width: 300px;
+		position: relative;
+		left: 2px;
+		width: 298px;
 		border-color: #999;
-		@include border-radius(10px);
+		@include border-radius(6px);
 	}
 }
 .map-options-container {
 	display: none;
-	position: absolute;
-	top: 60px;
-	right: 20px;
 	width: 300px;
 	padding: 15px 20px;
 	border: $border;
