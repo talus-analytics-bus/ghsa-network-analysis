@@ -1,12 +1,6 @@
 (() => {
 	App.initHome = () => {
-		// lookup variables used throughout
-		const fundingLookup = {};  // a lookup of money funded for each country
-		const recipientLookup = {};  // a lookup of money received for each country
-		const allFunctions = [];  // an array of all functions
-		const allDiseases = [];  // an array of all diseases
-
-		// other variables
+		// variables used throughout home page
 		let map;  // the world map
 		let activeCountry = d3.select(null);  // the active country
 		let currentDataMap = d3.map();  // the current data map
@@ -21,12 +15,7 @@
 			// build map and initialize search
 			map = buildMap();
 			initSearch();
-
-			// populate lookups and filters
-			populateLookupVariables();
 			populateFilters();
-
-			// update map
 			updateAll();
 		}
 
@@ -92,14 +81,14 @@
 		// updates the country to value data map based on user settings
 		function updateDataMap() {
 			// get lookup (has all data)
-			let dataLookup = fundingLookup;
-			if (getMoneyType() === 'received') dataLookup = recipientLookup;
+			let dataLookup = App.fundingLookup;
+			if (getMoneyType() === 'received') dataLookup = App.recipientLookup;
 
 			// get filter values
 			let functions = $('.function-select').val();
 			let diseases = $('.disease-select').val();
-			if (!functions.length) functions = allFunctions;
-			if (!diseases.length) diseases = allDiseases;
+			if (!functions.length) functions = App.functions.slice(0);
+			if (!diseases.length) diseases = App.diseases.slice(0);
 
 			// filter data and only use data with valid country values
 			currentDataMap.clear();
@@ -225,7 +214,7 @@
 
 		// initializes search functionality
 		function initSearch() {
-			App.initCountrySearchBar('.country-search-input', App.countries, (result) => {
+			App.initCountrySearchBar('.country-search-input', (result) => {
 				// get country element
 				const country = d3.selectAll('.country')
 					.filter(c => result.ISO2 === c.properties.ISO2);
@@ -243,8 +232,8 @@
 		// populates the filters in the map options box
 		function populateFilters() {
 			// populate dropdowns
-			Util.populateSelect('.function-select', allFunctions, { selected: true });
-			Util.populateSelect('.disease-select', allDiseases, { selected: true });
+			Util.populateSelect('.function-select', App.functions, { selected: true });
+			Util.populateSelect('.disease-select', App.diseases, { selected: true });
 
 			// initialize multiselects
 			$('.function-select, .disease-select').multiselect({
@@ -264,29 +253,6 @@
 
 			// show map options
 			$('.map-options-container').show();
-		}
-
-		// populates lookup objects based on funding data
-		function populateLookupVariables() {
-			App.fundingData.forEach((d) => {
-				const fn = d.project_function;
-				const disease = d.project_disease;
-				const donor = d.donor_country;
-				const recipient = d.recipient_country;
-
-				if (fn && allFunctions.indexOf(fn) === -1) {
-					allFunctions.push(fn);
-				}
-				if (disease && allDiseases.indexOf(disease) === -1) {
-					allDiseases.push(disease);
-				}
-				if (!fundingLookup[donor]) fundingLookup[donor] = [];
-				fundingLookup[donor].push(d);
-				if (!recipientLookup[recipient]) recipientLookup[recipient] = [];
-				recipientLookup[recipient].push(d);
-			});
-			allFunctions.sort();
-			allDiseases.sort();
 		}
 
 		init();

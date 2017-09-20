@@ -105,7 +105,27 @@
 
 	<script id="analysis-template" type="text/x-handlebars-template">
 		<div class="analysis-container container">
-			<div class="row">
+			<div class="analysis-filter-bar">
+				<div class="filter-box">
+					<div class="dropdown-label">Function</div>
+					<select class="function-select form-control" multiple="multiple"></select>
+				</div>
+				<div class="filter-box">
+					<div class="dropdown-label">Disease</div>
+					<select class="disease-select form-control" multiple="multiple"></select>
+				</div>
+				<div class="search-container">
+					<div class="form-group has-feedback">
+						<input type="text" class="country-search-input form-control" placeholder="search for a country...">
+						<i class="glyphicon glyphicon-search form-control-feedback"></i>
+					</div>
+					<div class="live-search-results-container">
+						<div class="live-search-no-results-text">No results found</div>
+						<div class="live-search-results-contents"></div>
+					</div>
+				</div>
+			</div>
+			<div class="analysis-content row">
 				<div class="col-md-6 col-sm-12">
 					<h3>Amount Countries Fund vs. Receive</h3>
 					<div class="description">

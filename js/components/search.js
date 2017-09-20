@@ -1,5 +1,5 @@
 (() => {
-	App.initCountrySearchBar = (selector, data, searchedFn) => {
+	App.initCountrySearchBar = (selector, searchedFn) => {
 		// timeout for country search
 		let liveSearchTimeout;
 		const numResultsToDisplay = 3;
@@ -49,7 +49,7 @@
 			});
 
 		// initialize search engine
-		const fuse = new Fuse(data, {
+		const fuse = new Fuse(App.countries, {
 			threshold: 0.3,
 			distance: 1e5,
 			keys: ['ISO2', 'ISO3', 'FIPS', 'NAME'],
@@ -101,7 +101,7 @@
 					searchedFn(d);
 				});
 				boxes.select('.live-search-results-title')
-					.text(d => `${d.NAME} (${d.ISO2})`);
+					.text(d => `${d.NAME} (${d.ISO3})`);
 				boxes.select('.live-search-results-subtitle')
 					.text(d => `Population: ${Util.comma(d.POP2005)}`);
 			}

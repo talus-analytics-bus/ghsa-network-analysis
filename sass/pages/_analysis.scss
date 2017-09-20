@@ -1,9 +1,32 @@
+$analysis-white: rgba(255,255,255,0.85);
+
 .analysis-container {
-	padding: 20px 30px 50px;
+	padding: 0 30px 50px;
 	width: 100%;
 	background-color: #222;
-	color: rgba(255,255,255,0.85);
+	color: $analysis-white;
 	text {
-		fill: rgba(255,255,255,0.85);
+		fill: $analysis-white;
 	}
+}
+.analysis-filter-bar {
+	padding: 15px 30px;
+	margin: 0 -30px;
+	border-bottom: 1px solid rgba(255,255,255,0.5);
+	text-align: center;
+
+	.filter-box {
+		display: inline-block;
+		margin: 0 15px;
+		text-align: left;
+	}
+	.search-container {
+		display: inline-block;
+		position: relative;
+		margin-left: 20px;
+		color: #333;
+	}
+}
+.analysis-content {
+	margin-top: 20px;
 }
