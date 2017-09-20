@@ -101,7 +101,7 @@
 					searchedFn(d);
 				});
 				boxes.select('.live-search-results-title')
-					.text(d => `${d.NAME} (${d.ISO3})`);
+					.text(d => `${d.NAME} (${d.ISO2})`);
 				boxes.select('.live-search-results-subtitle')
 					.text(d => `Population: ${Util.comma(d.POP2005)}`);
 			}

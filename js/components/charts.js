@@ -1,7 +1,7 @@
 (() => {
 	App.buildScatterplot = (selector, data, param = {}) => {
-		const margin = { top: 70, right: 20, bottom: 50, left: 85 };
-		const width = param.width || 800;
+		const margin = { top: 70, right: 20, bottom: 50, left: 90 };
+		const width = param.width || 700;
 		const height = param.height || 400;
 		const chartContainer = d3.select(selector).append('svg')
 			.classed('scatterplot', true)
@@ -75,7 +75,7 @@
 			.text(`Amount Funded (in ${App.currencyIso})`);
 		chart.append('text')
 			.attr('class', 'axis-label y-axis-label-1')
-			.attr('y', -22)
+			.attr('y', -25)
 			.text(`Amount Received (in ${App.currencyIso})`);
 
 		// function to get tooltip content for countries

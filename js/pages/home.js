@@ -104,13 +104,13 @@
 			// filter data and only use data with valid country values
 			currentDataMap.clear();
 			App.countries.forEach((c) => {
-				const payments = dataLookup[c.ISO3];
+				const payments = dataLookup[c.ISO2];
 				if (payments) {
 					const filteredPayments = payments
 						.filter(p => functions.includes(p.project_function))
 						.filter(p => diseases.includes(p.project_disease));
 					const value = d3.sum(filteredPayments, p => p.total_committed);
-					currentDataMap.set(c.ISO3, value);
+					currentDataMap.set(c.ISO2, value);
 				}
 			});
 		}
@@ -126,7 +126,7 @@
 			// color countries and update tooltip content
 			d3.selectAll('.country')
 				.style('fill', (d) => {
-					const isoCode = d.properties.ISO3;
+					const isoCode = d.properties.ISO2;
 					if (currentDataMap.has(isoCode)) {
 						d.value = currentDataMap.get(isoCode);
 						d.color = colorScale(d.value);
@@ -213,8 +213,8 @@
 		function displayCountryInfo(d) {
 			// get total value
 			let totalValue = 0;
-			if (currentDataMap.has(d.properties.ISO3)) {
-				totalValue = currentDataMap.get(d.properties.ISO3);
+			if (currentDataMap.has(d.properties.ISO2)) {
+				totalValue = currentDataMap.get(d.properties.ISO2);
 			}
 
 			// populate info container
@@ -228,7 +228,7 @@
 			App.initCountrySearchBar('.country-search-input', App.countries, (result) => {
 				// get country element
 				const country = d3.selectAll('.country')
-					.filter(c => result.ISO3 === c.properties.ISO3);
+					.filter(c => result.ISO2 === c.properties.ISO2);
 
 				// set country as active
 				activeCountry.classed('active', false);
