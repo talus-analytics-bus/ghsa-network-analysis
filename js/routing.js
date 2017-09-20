@@ -15,6 +15,9 @@ const Routing = {};
 		crossroads.addRoute('/', () => {
 			loadPage('home', App.initHome);
 		});
+		crossroads.addRoute('/analysis', () => {
+			loadPage('analysis', App.initAnalysis);
+		});
 		crossroads.addRoute('/about', () => {
 			loadPage('about');
 		});

@@ -95,15 +95,30 @@
 		}
 
 		// returns the proper country lookup object based on type (donor vs recipient)
-		function getDataLookup() {
-			if (getMoneyType() === 'funded') return fundingLookup;
-			return recipientLookup;
-		}
+		function getDataMap() {
+			// get lookup (has all data)
+			let dataLookup = fundingLookup;
+			if (getMoneyType() === 'received') dataLookup = recipientLookup;
 
-		// given a set of payments, returns the sum value after applying filters
-		function getCountryDataValue(payments) {
-			if (!payments) return 0;
-			return d3.sum(payments, p => p.total_committed);
+			// get filter values
+			let functions = $('.function-select').val();
+			let diseases = $('.disease-select').val();
+			if (!functions.length) functions = allFunctions;
+			if (!diseases.length) diseases = allDiseases;
+
+			// filter data and only use data with valid country values
+			const dataMap = d3.map();
+			allCountries.forEach((c) => {
+				const payments = dataLookup[c.ISO3];
+				if (payments) {
+					const filteredPayments = payments
+						.filter(p => functions.includes(p.project_function))
+						.filter(p => diseases.includes(p.project_disease));
+					const value = d3.sum(filteredPayments, p => p.total_committed);
+					dataMap.set(c.ISO3, value);
+				}
+			});
+			return dataMap;
 		}
 
 		// returns color scale based on map settings
@@ -114,17 +129,7 @@
 		// updates map colors
 		function updateMap() {
 			const moneyType = getMoneyType();
-			const dataLookup = getDataLookup();
-
-			// transfer lookup to data map, and only include valid country codes
-			const dataMap = d3.map();
-			allCountries.forEach((c) => {
-				if (dataLookup[c.ISO3]) {
-					const payments = dataLookup[c.ISO3];
-					const value = getCountryDataValue(payments);
-					dataMap.set(c.ISO3, value);
-				}
-			});
+			const dataMap = getDataMap();
 
 			// get color scale and set domain
 			const colorScale = getColorScale();
