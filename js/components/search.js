@@ -2,22 +2,44 @@
 	App.initCountrySearchBar = (selector, data, searchedFn) => {
 		// timeout for country search
 		let liveSearchTimeout;
+		const numResultsToDisplay = 3;
+		let results = [];
+		let activeResultNum = -1;
+		const $resultsBox = $('.live-search-results-container');
 
 		// set search bar behavior
 		$(selector)
 			.on('focus', function focus() {
 				searchForCountry($(this).val(), searchedFn);
 			})
-			.on('blur', () => {
-				clearTimeout(liveSearchTimeout);
-				$('.live-search-results-container').hide();
-			})
+			.on('blur', hideSearch)
 			.on('keyup', function keyUp(ev) {
 				clearTimeout(liveSearchTimeout);
 				const searchVal = $(this).val();
 				if (ev.which === 13) {
 					// enter: perform search immediately
-					searchForCountry(searchVal, searchedFn);
+					if (activeResultNum >= 0) {
+						$('.country-search-input').val('');
+						hideSearch();
+						searchedFn(results[activeResultNum]);
+					} else {
+						searchForCountry(searchVal, searchedFn);
+					}
+				} else if (ev.which === 27) {
+					// escape key: blur
+					hideSearch();
+				} else if (ev.which === 40) {
+					// down arrow: scroll for search results
+					if (activeResultNum < numResultsToDisplay - 1) {
+						activeResultNum++;
+						highlightResultBox();
+					}
+				} else if (ev.which === 38) {
+					// up arrow: scroll for search results
+					if (activeResultNum > -1) {
+						activeResultNum--;
+						highlightResultBox();
+					}
 				} else {
 					// perform search when user stops typing for 250ms
 					liveSearchTimeout = setTimeout(() => {
@@ -36,14 +58,18 @@
 
 		// function for displaying country search results
 		function searchForCountry(searchVal, searchedFn) {
-			const $resultsBox = $('.live-search-results-container');
+			// hide if nothing in search bar
 			if (searchVal.trim() === '') {
 				$resultsBox.hide();
 				return;
 			}
 
+			// reset highlighted search box
+			activeResultNum = -1;
+			highlightResultBox();
+
 			// search for results
-			const results = fuse.search(searchVal);
+			results = fuse.search(searchVal);
 
 			// show results in boxes under search input
 			$resultsBox.show();
@@ -57,7 +83,7 @@
 				let boxes = d3.select($resultsBox[0])
 					.select('.live-search-results-contents')
 					.selectAll('.live-search-results-box')
-						.data(results.slice(0, 4));
+						.data(results.slice(0, numResultsToDisplay));
 				boxes.exit().remove();
 
 				const newBoxes = boxes.enter().append('div')
@@ -79,6 +105,22 @@
 				boxes.select('.live-search-results-subtitle')
 					.text(d => `Population: ${Util.comma(d.POP2005)}`);
 			}
+		}
+
+		// colors the search result selected
+		function highlightResultBox() {
+			$resultsBox.find('.live-search-results-box').removeClass('active');
+			if (activeResultNum > -1) {
+				const childNum = activeResultNum + 1;
+				$resultsBox
+					.find(`.live-search-results-box:nth-child(${childNum})`)
+					.addClass('active');
+			}
+		};
+
+		function hideSearch() {
+			clearTimeout(liveSearchTimeout);
+			$resultsBox.hide();
 		}
 	}
 })();

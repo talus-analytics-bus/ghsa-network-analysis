@@ -10,6 +10,7 @@
 		// other variables
 		let map;  // the world map
 		let activeCountry = d3.select(null);  // the active country
+		let currentDataMap = d3.map();  // the current data map
 
 		// colors
 		const purples = ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8',
@@ -40,7 +41,7 @@
 
 					// populate filters and update map
 					populateFilters();
-					updateMap();
+					updateAll();
 
 					NProgress.done();
 				});
@@ -94,8 +95,19 @@
 			return $('.money-type-filter input:checked').attr('ind');
 		}
 
-		// returns the proper country lookup object based on type (donor vs recipient)
-		function getDataMap() {
+		// returns color scale based on map settings
+		function getColorScale() {
+			return d3.scaleQuantile().range(purples);
+		}
+
+		// updates data map and map
+		function updateAll() {
+			updateDataMap();
+			updateMap();
+		}
+
+		// updates the country to value data map based on user settings
+		function updateDataMap() {
 			// get lookup (has all data)
 			let dataLookup = fundingLookup;
 			if (getMoneyType() === 'received') dataLookup = recipientLookup;
@@ -107,7 +119,7 @@
 			if (!diseases.length) diseases = allDiseases;
 
 			// filter data and only use data with valid country values
-			const dataMap = d3.map();
+			currentDataMap.clear();
 			allCountries.forEach((c) => {
 				const payments = dataLookup[c.ISO3];
 				if (payments) {
@@ -115,32 +127,25 @@
 						.filter(p => functions.includes(p.project_function))
 						.filter(p => diseases.includes(p.project_disease));
 					const value = d3.sum(filteredPayments, p => p.total_committed);
-					dataMap.set(c.ISO3, value);
+					currentDataMap.set(c.ISO3, value);
 				}
 			});
-			return dataMap;
-		}
-
-		// returns color scale based on map settings
-		function getColorScale() {
-			return d3.scaleQuantile().range(purples);
 		}
 
 		// updates map colors
 		function updateMap() {
 			const moneyType = getMoneyType();
-			const dataMap = getDataMap();
 
 			// get color scale and set domain
 			const colorScale = getColorScale();
-			colorScale.domain(dataMap.values());
+			colorScale.domain(currentDataMap.values());
 
 			// color countries and update tooltip content
 			d3.selectAll('.country')
 				.style('fill', (d) => {
 					const isoCode = d.properties.ISO3;
-					if (dataMap.has(isoCode)) {
-						d.value = dataMap.get(isoCode);
+					if (currentDataMap.has(isoCode)) {
+						d.value = currentDataMap.get(isoCode);
 						d.color = colorScale(d.value);
 					} else {
 						d.value = null;
@@ -224,10 +229,12 @@
 		// displays detailed country information
 		function displayCountryInfo(d) {
 			// get total value
-			const dataLookup = getDataLookup();
-			const payments = dataLookup[d.properties.ISO3];
-			const totalValue = getCountryDataValue(payments);
+			let totalValue = 0;
+			if (currentDataMap.has(d.properties.ISO3)) {
+				totalValue = currentDataMap.get(d.properties.ISO3);
+			}
 
+			// populate info container
 			$('.info-title').text(d.properties.NAME);
 			$('.info-value').text(App.formatMoney(totalValue, App.currencyIso));
 			$('.info-container').slideDown();
@@ -268,9 +275,9 @@
 				const $option = $(this);
 				$option.find('input').prop('checked', true);
 				$option.siblings().find('input').prop('checked', false);
-				updateMap();
+				updateAll();
 			});
-			$('.map-options-container select').on('change', updateMap);
+			$('.map-options-container select').on('change', updateAll);
 
 			// show map options
 			$('.map-options-container').show();

@@ -21,8 +21,9 @@
   cursor: pointer;
   @include gradient(#fefefe, #f3f3f3);
   &:first-child { border-top: $border; }
-  &:hover {
-    @include gradient(#eee, #e8e8e8);
+  &:hover,
+  &.active {
+    @include gradient(#e6e6e6, #d9d9d9);
     div { color: #000; }
   }
 }
