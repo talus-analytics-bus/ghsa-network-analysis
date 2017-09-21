@@ -99,7 +99,10 @@ const App = {};
 			// donorData = {name: 'error', sector: 'error', country:'error'};
 			output.donor_name = donorData.name;
 			output.donor_sector = donorData.sector;
-			output.donor_country = donorData.country;
+			const donor_country_tmp = countries_json.find(d => d.NAME === donorData.country);
+			if (donor_country_tmp !== undefined) output.donor_country = donor_country_tmp.ISO2;
+			else output.donor_country = "Not reported";
+			// output.donor_country = donorData.country;
 		} else {
 			output.donor_name = Util.publisher_names[input];
 			output.donor_sector = Util.organization_type["OrganisationType"].find(d => d.code === donorData.publisher_organization_type).name;
@@ -107,9 +110,12 @@ const App = {};
 			if (donor_country_tmp === undefined) {
 				output_donor_country = "International";
 			} else {
-				output.donor_country = donor_country_tmp.NAME;
+				output.donor_country = donor_country_tmp.ISO2;
 			}
 		}
+		if (output.donor_name === undefined) output.donor_name = "Not reported";
+		if (output.donor_country === undefined) output.donor_country = "Not reported";
+		if (output.donor_sector === undefined) output.donor_sector = "Not reported";
 		return output;
 	};
 
@@ -144,6 +150,9 @@ const App = {};
 			output.recipient_sector = "Country";
 			output.recipient_country = input; // country_code, 2-char
 		}
+		if (output.recipient_name === undefined) output.recipient_name = "Not reported";
+		if (output.recipient_sector === undefined) output.recipient_sector = "Not reported";
+		if (output.recipient_country === undefined) output.recipient_country = "Not reported";
 		return output;
 	};
 
@@ -187,7 +196,7 @@ const App = {};
 
 
 			// project_id
-			proj.project_id = projId;
+			proj.project_id = 'proj.' + projId.toString();
 			projId++;
 
 			// get all transactions associated with this project
