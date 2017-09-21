@@ -5,6 +5,290 @@ const App = {};
 		// console.log(faRaw);
 	};
 
+	/* getIatiTransactions
+	*  tests the IATI data downloaded into JSON format
+	*/
+	App.getIatiTransactions = () => {
+		console.log('Running App.testIatiData');
+
+		$.ajax({
+			type: 'post',
+			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=trans,sector,act,country&sector_group=121&sector_group=122&day_start_gt=2014-01-01&select=aid,reporting_ref,funder_ref,title,country_code,trans_code,trans_usd,trans_day',
+			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=60000&from=trans,sector,act,country&sector_group=121&sector_group=122&day_start_gt=2014-01-01&select=aid,reporting_ref,funder_ref,title,country_code,trans_code,trans_usd,trans_day,sector_code',
+			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=20000&from=trans,sector,act,country&sector_group=121&trans_day_gt=2016-01-01&select=aid,reporting_ref,funder_ref,title,country_code,trans_code,trans_usd,trans_day,sector_code',
+			success: function(data) {
+				console.log('got it!');
+				console.log(data)
+			},
+			error: function(){
+				console.log('error');
+			}
+		});
+	};
+
+	/* getIatiActivities
+	*  tests the IATI data downloaded into JSON format
+	*/
+	App.getIatiActivities = () => {
+		console.log('Running App.getIatiActivities');
+
+		$.ajax({
+			type: 'post',
+			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&sector_group=121&sector_group=122&select=aid,sector_code,day_start,day_end,spend,commitment',
+			success: function(data) {
+				console.log('got it!');
+				console.log(data)
+			},
+			error: function(){
+				console.log('error');
+			}
+		});
+	};
+
+
+	/* getFunctionTags
+	*  gets the function tags for the data
+	*/
+	App.getFunctionTags = (input) => {
+		if (input === null || input === []) return [];
+		// for each tag in the input arr
+		outputTags = [];
+		for (let i = 0; i < input.length; i++) {
+			// get sector code text
+			const sectorTag = Util.iatiSectorCodeHash[input];
+			if (sectorTag === undefined) continue;
+			const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].function_tags;
+			if (outputTmp === undefined) continue;
+			if (outputTmp !== "") outputTags = _.union(outputTags, outputTmp.split('; '));
+			else continue;
+		}
+		return outputTags;
+	};
+
+	/* getDiseaseTags
+	*  gets the disease tags for the data
+	*/
+	App.getDiseaseTags = (input) => {
+		if (input === null || input === []) return [];
+		// for each tag in the input arr
+		outputTags = [];
+		for (let i = 0; i < input.length; i++) {
+			// get sector code text
+			const sectorTag = Util.iatiSectorCodeHash[input];
+			if (sectorTag === undefined) continue;
+			const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].disease_tags;
+			if (outputTmp === undefined) continue;
+			if (outputTmp !== "") outputTags = _.union(outputTags, outputTmp.split('; '));
+			else continue;
+		}
+		return outputTags;
+	};
+
+	/* getDonorData
+	*  gets name, sector, and country of donor
+	*/
+	App.undefinedDonorNames = [];
+	App.getDonorData = (input) => {
+		// input is funder_ref (cross-reference with ctrack data)
+		output = {};
+		if (input === null) return {name: "Not reported", sector: "Not reported", country: "Not reported"};
+		let donorData = publishers_data.find(d => d.publisher_iati_id === input);
+		if (donorData === undefined) {
+			donorData = Util.funder_aux_hash[input];
+			if (donorData === undefined) App.undefinedDonorNames.push(input);
+			// donorData = {name: 'error', sector: 'error', country:'error'};
+			output.donor_name = donorData.name;
+			output.donor_sector = donorData.sector;
+			output.donor_country = donorData.country;
+		} else {
+			output.donor_name = Util.publisher_names[input];
+			output.donor_sector = Util.organization_type["OrganisationType"].find(d => d.code === donorData.publisher_organization_type).name;
+			const donor_country_tmp = countries_json.find(d => d.ISO2 === donorData.publisher_country);
+			if (donor_country_tmp === undefined) {
+				output_donor_country = "International";
+			} else {
+				output.donor_country = donor_country_tmp.NAME;
+			}
+		}
+		return output;
+	};
+
+	/* getRecipientData
+	*  gets name, sector, and country of recipient
+	*/
+	App.getRecipientData = (input) => {
+		// input is country code, 2-char (cross-reference with country data)
+		output = {};
+
+		const country_data = countries_json.find(d => d.ISO2 === input);
+
+
+
+		if (country_data === undefined) {
+			const aux_country_hash = {
+				"XK":"Kosovo",
+				"SS":"South Sudan",
+				"KES":"Kenya",
+				"UK":"United Kingdom",
+				"LBR":"Liberia",
+				"TP":"Timor-Leste",
+				"YV":"Venezuela",
+				"QNB":"Venezuela"
+			};
+			output.recipient_name = aux_country_hash[input];
+			if (output.recipient_name === undefined) {
+				output = {recipient_name: "Not reported", recipient_sector: "Not reported", recipient_country: "Not reported" };
+			}
+		} else {
+			output.recipient_name = country_data.NAME;
+			output.recipient_sector = "Country";
+			output.recipient_country = input; // country_code, 2-char
+		}
+		return output;
+	};
+
+	/* getTransType
+	*  gets transaction type based on trans_code
+	*/
+	App.allTransTypes = [];
+	App.getTransType = (input) => {
+		App.allTransTypes.push(input);
+		if (input === null) return 'not reported';
+
+		// input is trans_code
+		const output = Util.old_transaction_type[input].toLowerCase();
+		return output;
+	};
+
+
+	/* mapDataIati
+	*  map the IATI data downloaded into JSON format into the app data structure
+	*/
+	App.mapDataIati = () => {
+		console.log('Running App.mapDataIati');
+
+		// check data
+		console.log(iatiRaw);
+
+		// grab transactions
+		let transactions = iatiRaw.rows;
+
+		// Grab unique project names
+		let projNames = _.unique(_.pluck(transactions, 'aid'));
+
+		// Create new project for each
+		const output = [];
+		let projId = 0;
+		for (let i  = 0; i < projNames.length; i++) {
+			const proj = {};
+
+			// get current project name ("aid" data field)
+			const curProj_aid = projNames[i];
+
+
+			// project_id
+			proj.project_id = projId;
+			projId++;
+
+			// get all transactions associated with this project
+			const projTrans = transactions.filter(d => d.aid === curProj_aid);
+
+			// // DEBUG print result count, check ones that seem high
+			// console.log('projTrans.length = ' + projTrans.length);
+			// if (projTrans.length > 100) console.log(curProj_aid);
+
+			// grab the first transaction so we can reference its project-level data fields
+			const firstProjTrans = projTrans[0];
+
+			// DEBUG store aid data
+			proj.aid = firstProjTrans.aid;
+
+			// project_name
+			proj.project_name = firstProjTrans.title;
+			proj.project_name = firstProjTrans.title;
+			
+			// project_function
+			// get sector codes for this activity (project)
+			const curSectorCodes = _.unique(_.pluck(iatiActivities.rows.filter(d => d.aid === firstProjTrans.aid), 'sector_code'));
+			proj.project_function = App.getFunctionTags(curSectorCodes);
+
+			// project_disease
+			proj.project_disease = App.getDiseaseTags(curSectorCodes);
+
+			// donor_country
+			const curDonorData = App.getDonorData(firstProjTrans.funder_ref);
+			proj.donor_country = curDonorData.donor_country;
+
+			// donor_sectors
+			proj.donor_sector = curDonorData.donor_sector;
+
+			// donor_name
+			proj.donor_name = curDonorData.donor_name;
+
+			// channel
+			// placeholder
+
+			// recipient_country
+			const curRecipientData = App.getRecipientData(firstProjTrans.country_code); // TODO
+			proj.recipient_country = curRecipientData.recipient_country;
+
+			// recipient_sector
+			proj.recipient_sector = curRecipientData.recipient_sector;
+
+			// recipient_name
+			proj.recipient_name = curRecipientData.recipient_name;
+
+			// process transactions data
+			proj.transactions = [];
+
+			for (let j = 0; j < projTrans.length; j++) {
+				const curTrans = {};
+
+				// transactions[0].type
+				curTrans.type = App.getTransType(projTrans[j].trans_code);
+				
+				// transactions[0].amount
+				curTrans.amount = projTrans[j].trans_usd;
+
+				// transactions[0].cy
+				curTrans.cy = Util.SqlDayToYYYY(projTrans[j].trans_day);
+
+				// transactions[0].currency
+				curTrans.currency = 'USD'; // always USD for IATI data
+
+				// add transaction
+				proj.transactions.push(curTrans);
+			}
+
+			let someCommitments = false;
+			let someDisbursements = false;
+			
+			proj.total_committed = 0.0;
+			proj.total_disbursed = 0.0;
+			proj.transactions.forEach(d => {
+				if (d.type === "commitment") {
+					someCommitments = true;
+					proj.total_committed += d.amount;
+				} else if (d.type === "disbursement") {
+					someDisbursements = true;
+					proj.total_disbursed += d.amount;
+				}
+			});
+
+			if (!someCommitments) proj.total_committed = null;
+			if (!someDisbursements) proj.total_disbursed = null;
+
+			// total_currency
+			proj.total_currency = 'USD'; // always USD for IATI for now
+
+			// add project to output
+			output.push(proj);
+		}
+
+		console.log(output);
+
+	};
+
 	/* getData
 	*  gets data from CSV file
 	*/
