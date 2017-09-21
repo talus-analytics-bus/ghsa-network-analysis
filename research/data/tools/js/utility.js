@@ -806,7 +806,148 @@ Util.organization_type = {
   ]
 };
 
-Util.funder_aux_hash = {"ES":{"name":"Spain","sector":"Government","country":"Spain"},"IDA":{"name":"International Disability Alliance","sector":"International NGO","country":"International"},"SE":{"name":"Sweden","sector":"Government","country":"Sweden"},"CA":{"name":"Canada","sector":"Government","country":"Canada"},"EU":{"name":"European Union","sector":"Multilateral","country":"International"},"NZ":{"name":"New Zealand","sector":"Government","country":"New Zealand"},"NL":{"name":"Netherlands","sector":"Government","country":"Netherlands"},"IE":{"name":"Ireland","sector":"Government","country":"Ireland"},"GB":{"name":"United Kingdom","sector":"Government","country":"United Kingdom"},"AsDB-Special-Funds":{"name":"Asian Development Bank","sector":"Multilateral","country":"International"},"AU":{"name":"Australia","sector":"Government","country":"Australia"},"XM-DAC-69-02":{"name":"Slovak Agency for Internal Development Cooperation","sector":"Government","country":"Slovakia"},"BE":{"name":"Belgium","sector":"Government","country":"Belgium"},"BMGF":{"name":"Bill & Melinda Gates Foundation","sector":"Foundation","country":"International"},"CH":{"name":"Switzerland","sector":"Government","country":"Switzerland"},"DE":{"name":"Germany","sector":"Government","country":"Germany"},"DK":{"name":"Denmark","sector":"Government","country":"Denmark"},"GB-SC-SC032327":{"name":"EMMS International","sector":"International NGO","country":"International"},"FR":{"name":"France","sector":"Government","country":"France"},"GB-3":{"name":"United Kingdom","sector":"Government","country":"United Kingdom"},"US":{"name":"United States of America","sector":"Government","country":"United States of America"},"FI":{"name":"Finland","sector":"Government","country":"Finland"},"AfDB":{"name":"African Development Bank","sector":"Multilateral","country":"International"},"INGO":{"name":"International NGO","sector":"International NGO","country":"International"},"GAVI":{"name":"GAVI Alliance","sector":"Public Private Partnership","country":"International"},"GFFATM":{"name":"Global Fund","sector":"Multilateral","country":"International"},"NL-CCI-20081098":{"name":"BRAC International","sector":"International NGO","country":"International"},"GB-COH-GB-COH-01846493":{"name":"AECOM","sector":"Private Sector","country":"United Kingdom"}};
+Util.funder_aux_hash = {
+  "ES": {
+    "name": "Spain",
+    "sector": "Government",
+    "country": "Spain"
+  },
+  "IDA": {
+    "name": "International Disability Alliance",
+    "sector": "International NGO",
+    "country": "International"
+  },
+  "SE": {
+    "name": "Sweden",
+    "sector": "Government",
+    "country": "Sweden"
+  },
+  "CA": {
+    "name": "Canada",
+    "sector": "Government",
+    "country": "Canada"
+  },
+  "EU": {
+    "name": "European Union",
+    "sector": "Multilateral",
+    "country": "International"
+  },
+  "NZ": {
+    "name": "New Zealand",
+    "sector": "Government",
+    "country": "New Zealand"
+  },
+  "NL": {
+    "name": "Netherlands",
+    "sector": "Government",
+    "country": "Netherlands"
+  },
+  "IE": {
+    "name": "Ireland",
+    "sector": "Government",
+    "country": "Ireland"
+  },
+  "GB": {
+    "name": "United Kingdom",
+    "sector": "Government",
+    "country": "United Kingdom"
+  },
+  "AsDB-Special-Funds": {
+    "name": "Asian Development Bank",
+    "sector": "Multilateral",
+    "country": "International"
+  },
+  "AU": {
+    "name": "Australia",
+    "sector": "Government",
+    "country": "Australia"
+  },
+  "XM-DAC-69-02": {
+    "name": "Slovak Agency for Internal Development Cooperation",
+    "sector": "Government",
+    "country": "Slovakia"
+  },
+  "BE": {
+    "name": "Belgium",
+    "sector": "Government",
+    "country": "Belgium"
+  },
+  "BMGF": {
+    "name": "Bill & Melinda Gates Foundation",
+    "sector": "Foundation",
+    "country": "International"
+  },
+  "CH": {
+    "name": "Switzerland",
+    "sector": "Government",
+    "country": "Switzerland"
+  },
+  "DE": {
+    "name": "Germany",
+    "sector": "Government",
+    "country": "Germany"
+  },
+  "DK": {
+    "name": "Denmark",
+    "sector": "Government",
+    "country": "Denmark"
+  },
+  "GB-SC-SC032327": {
+    "name": "EMMS International",
+    "sector": "International NGO",
+    "country": "International"
+  },
+  "FR": {
+    "name": "France",
+    "sector": "Government",
+    "country": "France"
+  },
+  "GB-3": {
+    "name": "United Kingdom",
+    "sector": "Government",
+    "country": "United Kingdom"
+  },
+  "US": {
+    "name": "United States",
+    "sector": "Government",
+    "country": "United States"
+  },
+  "FI": {
+    "name": "Finland",
+    "sector": "Government",
+    "country": "Finland"
+  },
+  "AfDB": {
+    "name": "African Development Bank",
+    "sector": "Multilateral",
+    "country": "International"
+  },
+  "INGO": {
+    "name": "International NGO",
+    "sector": "International NGO",
+    "country": "International"
+  },
+  "GAVI": {
+    "name": "GAVI Alliance",
+    "sector": "Public Private Partnership",
+    "country": "International"
+  },
+  "GFFATM": {
+    "name": "Global Fund",
+    "sector": "Multilateral",
+    "country": "International"
+  },
+  "NL-CCI-20081098": {
+    "name": "BRAC International",
+    "sector": "International NGO",
+    "country": "International"
+  },
+  "GB-COH-GB-COH-01846493": {
+    "name": "AECOM",
+    "sector": "Private Sector",
+    "country": "United Kingdom"
+  }
+};
 
 Util.iatiDiseaseFunctionHash = {
   "Basic health care": {
