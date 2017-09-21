@@ -1,0 +1,35 @@
+.live-search-results-container {
+  display: none;
+  position: absolute;
+  top: 34px;
+  width: 300px;
+  background-color: white;
+  border-left: $border;
+  border-right: $border;
+  text-align: left;
+}
+.live-search-no-results-text {
+  display: none;
+  padding: 10px;
+  text-align: center;
+  border-top: $border;
+  font-style: italic;
+}
+.live-search-results-box {
+  padding: 10px 20px;
+  border-bottom: $light-border;
+  cursor: pointer;
+  @include gradient(#fefefe, #f3f3f3);
+  &:first-child { border-top: $border; }
+  &:hover,
+  &.active {
+    @include gradient(#e6e6e6, #d9d9d9);
+    div { color: #000; }
+  }
+}
+.live-search-results-title {
+	font-weight: 600;
+}
+.live-search-results-subtitle {
+  font-size: 0.9em;
+}

@@ -1,0 +1,8 @@
+.section {
+	margin-bottom: 30px;
+
+	&:nth-child(n+2) {
+		border-top: $light-border;
+		padding-top: 10px;
+	}
+}

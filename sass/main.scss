@@ -1,16 +1,33 @@
+@import 'helpers/borders';
 @import 'helpers/classes';
 @import 'helpers/colors';
 @import 'helpers/mixins';
-@import 'helpers/vendors';
 
-@import 'pages/map';
-@import 'pages/login';
+@import 'components/blocks';
+@import 'components/buttons';
+@import 'components/containers';
+@import 'components/dropdowns';
+@import 'components/footer';
+@import 'components/maps';
+@import 'components/navbar';
+@import 'components/sankey';
+@import 'components/search';
+@import 'components/sections';
+@import 'components/sliders';
+@import 'components/tabs';
+@import 'components/tables';
+@import 'components/text';
+@import 'components/tooltips';
 
-body { 
-	font-family: 'Open Sans', sans-serif;
-	font-size: 16px;
-}
+@import 'charts/charts';
+@import 'charts/scatterplot';
+
+@import 'pages/analysis';
+@import 'pages/home';
+
+
+body { font-family: 'Open Sans', sans-serif; }
 #page-content {
-	position: relative;
-	z-index: 10;
+	margin-top: 51px;
+	min-height: 100px;
 }

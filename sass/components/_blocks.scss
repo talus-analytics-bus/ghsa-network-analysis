@@ -1,0 +1,110 @@
+/* --- Block Link Content --- */
+.block-link-container {
+  float: left;
+  width: 365px;
+}
+.block-link-capabilities-header {
+  position: relative;
+  color: black;
+  padding: 15px 30px 15px 25px;
+  border: $border;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  @include border-left-radius(15px);
+  @include gradient(white, #e6e6e6);
+  @include box-shadow(-2px 0px 3px rgba(0,0,0,0.2));
+  @include noselect;
+
+  &.active {
+    @include gradient(white, lightsteelblue);
+    @include box-shadow(inset 2px 2px 5px rgba(0,0,0,0.4));
+  }
+  .chevron {
+    top: 3px;
+    width: 24px;
+    height: 19px;
+  }
+}
+.block-link {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  width: 90%;
+  left: 10%;
+  padding: 10px 15px 10px 30px;
+  border-right: $border;
+  border-bottom: $border;
+  border-left: $border;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 0.85rem;
+  color: black;
+  cursor: pointer;
+  @include border-left-radius(15px);
+  @include gradient(white, #e6e6e6);
+  @include box-shadow(-2px 0px 3px rgba(0,0,0,0.2));
+  @include noselect;
+  
+  &:first-child { border-top: $border; }
+  &.hidden { display: none; }
+  &.active {
+    font-weight: bold;
+    @include gradient(white, lightsteelblue);
+    @include box-shadow(inset 2px 2px 5px rgba(0,0,0,0.4));
+  }
+}
+.block-link-cover {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  @include border-left-radius(15px);
+  background-color: transparent;
+  &:hover {
+    @include hori-gradient(rgba(0,0,0,0.1), transparent);
+  }
+}
+.block-link-title {
+  display: inline-block;
+  font-size: 1.1em;
+  vertical-align: top;
+  margin-right: 15px;
+}
+.block-link-subtitle {
+  margin-left: auto;
+  font-size: 0.9rem;
+  text-align: right;
+  white-space: nowrap;
+  vertical-align: top;
+  color: #333;
+}
+
+
+/* --- Block Content --- */
+.block-container { border-top: $light-border; }
+.block {
+  position: relative;
+  padding: 30px 30px 30px 0px;
+  text-align: left;
+  border-bottom: $light-border;
+  @include box-sizing();
+}
+.block-content { margin-top: 5px; }
+.block-description {
+  margin: 20px 0px 0px 0px;
+  max-width: 750px;
+  text-align: left;
+}
+.input-block-container {
+  margin-left: 350px;
+  padding-left: 75px;
+  width: 90%;
+  .block {
+    padding-bottom: 70px;
+    border-bottom: none;
+    &.no-reset { padding-bottom: 30px; }
+  }
+  .block-description { font-style: italic; }
+}

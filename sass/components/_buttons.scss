@@ -1,0 +1,8 @@
+.alt-btn {
+	padding: 5px 15px;
+	@include border-radius(7.5px);
+}
+.alt-btn-large {
+	padding: 10px 25px;
+	@include border-radius(7.5px);
+}

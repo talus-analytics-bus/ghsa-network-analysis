@@ -1,0 +1,108 @@
+.home-container {
+	position: relative;
+	width: 100%;
+	padding: 0;
+	text-align: center;
+	background-color: #222;
+}
+.map-container {
+	width: 100%;
+	max-height: calc(100vh - 115px);
+	overflow-y: hidden;
+}
+.right-container {
+	position: absolute;
+	top: 15px;
+	right: 20px;
+	z-index: 100;
+}
+.search-container {
+	position: relative;
+	margin-top: 10px;
+
+	input {
+		position: relative;
+		left: 2px;
+		width: 298px;
+		padding: 6px 16px;
+		border-color: #999;
+		@include border-radius(6px);
+	}
+}
+.map-options-container {
+	display: none;
+	width: 300px;
+	padding: 15px 20px;
+	border: $border;
+	text-align: left;
+	background-color: rgba(255,255,255,0.95);
+	z-index: 10;
+	@include border-radius(10px);
+
+	.filter-section:nth-child(n+2) {
+		margin-top: 15px;
+		border-top: $light-border;
+		padding-top: 15px;
+	}
+	.filter-box:nth-child(n+2) {
+		margin-top: 15px;
+	}
+	.multiselect {
+		width: 170px;
+	}
+	.radio-option {
+		margin-left: 10px;
+		cursor: pointer;
+	}
+	.radio-option input {
+		position: relative;
+		top: 2px;
+	}
+	.currency-select {
+		width: 200px;
+	}
+}
+.legend-container {
+	display: none;
+	position: absolute;
+	bottom: 20px;
+	left: 0;
+	width: 100%;
+
+	.legend-box {
+		display: inline-block;
+		padding: 20px 20px 15px;
+		border: $border;
+		background-color: rgba(220,220,220,0.95);
+		@include border-radius(15px);
+	}
+}
+.info-container {
+	display: none;
+	position: absolute;
+	top: 20px;
+	left: 0;
+	width: 100%;
+	pointer-events: none;
+
+	.info-box {
+		display: inline-block;
+		padding: 20px;
+		max-width: 300px;
+		border: $border;
+		background-color: rgba(255,255,255,0.95);
+		pointer-events: all;
+		@include border-radius(15px);
+	}
+	.info-title {
+		font-size: 1.1em;
+		font-weight: 600;
+		text-align: center;
+	}
+	.info-value {
+		font-family: 'Raleway', sans-serif;
+		font-size: 1.6em;
+		margin-top: 10px;
+		text-align: center;
+	}
+}

@@ -1,0 +1,10 @@
+.table {
+	width: auto;
+	td:nth-child(n+2) {
+		padding-left: 25px;
+	}
+}
+.table thead td {
+	font-weight: 600;
+	padding: 5px;
+}
