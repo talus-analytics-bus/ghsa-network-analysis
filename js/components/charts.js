@@ -18,15 +18,15 @@
 			.attr('width', width + margin.right)
 			.attr('height', height + margin.top);
 
-		const x = d3.scaleLinear()
-			.domain([0, d3.max(data, d => d.funded)])
+		const x = d3.scaleLog()
+			.domain([1, d3.max(data, d => d.funded)])
 			.range([0, width]);
-		const y = d3.scaleLinear()
-			.domain([0, d3.max(data, d => d.received)])
+		const y = d3.scaleLog()
+			.domain([1, d3.max(data, d => d.received)])
 			.range([height, 0]);
-		const sizeScale = d3.scaleLinear()
-			.domain([0, d3.max(data, d => d.gdp)])
-			.range([5, 30]);
+		const sizeScale = d3.scaleLog()
+			.domain([1e4, d3.max(data, d => d.POP2005)])
+			.range([1, 30]);
 
 		const xAxis = d3.axisBottom(x)
 			.tickFormat(App.formatMoneyShort);
@@ -49,7 +49,7 @@
 			.data(data)
 			.enter().append('circle')
 				.attr('class', 'country-node')
-				.attr('r', d => sizeScale(d.gdp))
+				.attr('r', d => sizeScale(d.POP2005))
 				.attr('cx', d => x(d.funded))
 				.attr('cy', d => y(d.received))
 				.style('fill', () => {
@@ -89,7 +89,7 @@
 			const infoContainer = content.append('div')
 				.attr('class', 'scatterplot-tooltip-info');
 			infoContainer.append('div')
-				.html(`GDP (in 2015): <b>${App.formatMoney(d.gdp)}</b>`);
+				.html(`Population (in 2005): <b>${Util.comma(d.POP2005)}</b>`);
 			infoContainer.append('div')
 				.html(`Number of Funding Items: <b>${Math.round(40 * Math.random())}</b>`);
 

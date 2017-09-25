@@ -9,13 +9,23 @@
 		function drawCharts() {
 			// collate the data
 			const fundingData = App.countries.map((c) => {
+				let totalFunded = 0;
+				let totalReceived = 0;
+				if (App.fundingLookup[c.ISO2]) {
+					totalFunded = d3.sum(App.fundingLookup[c.ISO2], d => d.total_disbursed);
+				}
+				if (App.recipientLookup[c.ISO2]) {
+					totalReceived = d3.sum(App.recipientLookup[c.ISO2], d => d.total_disbursed);
+				}
+
 				return {
 					NAME: c.NAME,
-					funded: Math.pow(10, 4 + 3 * Math.random()),
-					received: Math.pow(10, 4 + 3 * Math.random()),
-					gdp: Math.pow(10, 4 + 3 * Math.random()),
+					funded: totalFunded,
+					received: totalReceived,
+					POP2005: c.POP2005,
 				};
 			});
+			console.log(fundingData);
 
 			// build the chart
 			App.buildScatterplot('.scatterplot-container', fundingData);
