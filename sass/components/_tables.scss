@@ -8,3 +8,10 @@
 	font-weight: 600;
 	padding: 5px;
 }
+
+.dataTables_wrapper .row:last-child {
+	margin-top: 10px;
+}
+.dataTables_wrapper .dataTables_scroll {
+	border-bottom: 1px solid #eee;
+}

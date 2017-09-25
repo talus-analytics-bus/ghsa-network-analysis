@@ -1,0 +1,80 @@
+[
+  {
+    "tag_name": "Basic health care",
+    "children": [
+      {
+        "tag_name": "Health infrastructure",
+        "children": []
+      },
+      {
+        "tag_name": "Health personnel development",
+        "children": []
+      },
+      {
+        "tag_name": "Family health",
+        "children": []
+      },
+      {
+        "tag_name": "Maternal and child health",
+        "children": []
+      },
+      {
+        "tag_name": "Water, sanitation, and hygiene",
+        "children": []
+      }
+    ]
+  },
+  {
+    "tag_name": "Medical services",
+    "children": [
+      {
+        "tag_name": "Diagnostics",
+        "children": []
+      },
+      {
+        "tag_name": "Drugs",
+        "children": []
+      },
+      {
+        "tag_name": "Vaccination",
+        "children": []
+      }
+    ]
+  },
+  {
+    "tag_name": "Nutrition and food security",
+    "children": []
+  },
+  {
+    "tag_name": "Health policy",
+    "children": []
+  },
+  {
+    "tag_name": "Education and training",
+    "children": []
+  },
+  {
+    "tag_name": "Integrated operations and delivery",
+    "children": []
+  },
+  {
+    "tag_name": "Research and development",
+    "children": []
+  },
+  {
+    "tag_name": "Infection control",
+    "children": []
+  },
+  {
+    "tag_name": "Vector control",
+    "children": []
+  },
+  {
+    "tag_name": "Emergency response",
+    "children": []
+  },
+  {
+    "tag_name": "Emergency recovery",
+    "children": []
+  }
+]

@@ -20,6 +20,13 @@ select.form-control {
 
 
 /* --- Bootstrap Multiselect --- */
+.multiselect-container > li > a {
+	padding-left: 15px;
+}
+.multiselect-container > li.multiselect-item > a {
+	padding-left: 0;
+}
+
 .multiselect-container > li > a.multiselect-all label {
 	font-weight: 600;
 }

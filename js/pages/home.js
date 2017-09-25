@@ -5,6 +5,10 @@
 		let activeCountry = d3.select(null);  // the active country
 		let currentDataMap = d3.map();  // the current data map
 
+		// other variables
+		let infoTableHasBeenInit = false;
+		let infoDataTable;
+
 		// colors
 		const purples = ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8',
 			'#807dba', '#6a51a3'];
@@ -15,7 +19,7 @@
 			// build map and initialize search
 			map = buildMap();
 			initSearch();
-			populateFilters();
+			initFilters();
 			updateAll();
 		}
 
@@ -72,6 +76,12 @@
 			return d3.scaleQuantile().range(purples);
 		}
 
+		// gets the lookup object currently being used
+		function getDataLookup() {
+			if (getMoneyType() === 'received') return App.recipientLookup;
+			return App.fundingLookup;
+		}
+
 		// updates data map and map
 		function updateAll() {
 			updateDataMap();
@@ -81,14 +91,27 @@
 		// updates the country to value data map based on user settings
 		function updateDataMap() {
 			// get lookup (has all data)
-			let dataLookup = App.fundingLookup;
-			if (getMoneyType() === 'received') dataLookup = App.recipientLookup;
+			const dataLookup = getDataLookup();
 
-			// get filter values
+			// TODO get filter values; need to incorporate parent/child structure correctly
 			let functions = $('.function-select').val();
 			let diseases = $('.disease-select').val();
-			if (!functions.length) functions = App.functions.slice(0);
-			if (!diseases.length) diseases = App.diseases.slice(0);
+			if (!functions.length) {
+				functions = App.functions.map(d => d.tag_name);
+				App.functions.forEach((d) => {
+					d.children.forEach((c) => {
+						functions.push(c.tag_name);
+					});
+				});
+			}
+			if (!diseases.length) {
+				diseases = App.diseases.map(d => d.tag_name);
+				App.diseases.forEach((d) => {
+					d.children.forEach((c) => {
+						diseases.push(c.tag_name);
+					});
+				});
+			}
 
 			// filter data and only use data with valid country values
 			currentDataMap.clear();
@@ -96,8 +119,8 @@
 				const payments = dataLookup[c.ISO2];
 				if (payments) {
 					const filteredPayments = payments
-						.filter(p => functions.includes(p.project_function))
-						.filter(p => diseases.includes(p.project_disease));
+						//.filter(p => Util.hasCommonElement(functions, p.project_function))
+						//.filter(p => Util.hasCommonElement(diseases, p.project_disease));
 					const value = d3.sum(filteredPayments, p => p.total_committed);
 					currentDataMap.set(c.ISO2, value);
 				}
@@ -113,7 +136,8 @@
 			colorScale.domain(currentDataMap.values());
 
 			// color countries and update tooltip content
-			d3.selectAll('.country')
+			d3.selectAll('.country').transition()
+				.duration(500)
 				.style('fill', (d) => {
 					const isoCode = d.properties.ISO2;
 					if (currentDataMap.has(isoCode)) {
@@ -200,16 +224,78 @@
 
 		// displays detailed country information
 		function displayCountryInfo(d) {
+			const dataLookup = getDataLookup();
+			const payments = dataLookup[d.properties.ISO2];
+
 			// get total value
 			let totalValue = 0;
 			if (currentDataMap.has(d.properties.ISO2)) {
 				totalValue = currentDataMap.get(d.properties.ISO2);
 			}
 
-			// populate info container
+			// define info close button behavior
+			$('.info-close-button').on('click', resetMap);
+
+			// populate info title
 			$('.info-title').text(d.properties.NAME);
-			$('.info-value').text(App.formatMoney(totalValue));
+
+			// populate info total value
+			const valueLabel = (getMoneyType() === 'received') ?
+				'Total Received' : 'Total Donated';
+			const valueText = App.formatMoney(totalValue);
+			$('.info-total-value').html(`${valueLabel}: <b>${valueText}</b>`);
+
+			// define column data for info table
+			const headerData = [
+				{ name: 'Donor', value: 'donor_name' },
+				{ name: 'Recipient', value: 'recipient_name' },
+				{ name: 'Name', value: 'project_name' },
+				{ name: 'Value', value: 'total_disbursed', format: App.formatMoneyFull },
+			];
+
+			// clear DataTables plugin from table
+			if (infoTableHasBeenInit) infoDataTable.destroy();
+
+			// populate table
+			const infoTable = d3.select('.info-table');
+			const infoThead = infoTable.select('thead tr');
+			const headers = infoThead.selectAll('th')
+				.data(headerData);
+			headers.exit().remove();
+			headers.enter().append('th')
+				.merge(headers)
+				.text(d => d.name);
+
+			const infoTbody = infoTable.select('tbody');
+			const rows = infoTbody.selectAll('tr')
+				.data(payments);
+			rows.exit().remove();
+			const newRows = rows.enter().append('tr');
+
+			const cells = newRows.merge(rows).selectAll('td')
+				.data(d => headerData.map(c => ({ rowData: d, colData: c })));
+			cells.exit().remove();
+			cells.enter().append('td')
+				.merge(cells)
+				.text((d) => {
+					const cellValue = d.rowData[d.colData.value];
+					if (d.colData.format) return d.colData.format(cellValue);
+					return cellValue;
+				});
+
+			// show info
 			$('.info-container').slideDown();
+
+			// initialize DataTables plugin, if not already
+			infoDataTable = $('.info-table').DataTable({
+				scrollY: '30vh',
+				scrollCollapse: false,
+				order: [3, 'desc'],
+				columnDefs: [
+					{ type: 'money', targets: 3 },
+				],
+			});
+			infoTableHasBeenInit = true;
 		}
 
 		// initializes search functionality
@@ -230,15 +316,16 @@
 		}
 
 		// populates the filters in the map options box
-		function populateFilters() {
+		function initFilters() {
 			// populate dropdowns
-			Util.populateSelect('.function-select', App.functions, { selected: true });
-			Util.populateSelect('.disease-select', App.diseases, { selected: true });
+			populateSelect('.function-select', App.functions);
+			populateSelect('.disease-select', App.diseases);
 
 			// initialize multiselects
 			$('.function-select, .disease-select').multiselect({
 				dropRight: true,
 				includeSelectAllOption: true,
+				enableClickableOptGroups: true,
 				numberDisplayed: 0,
 			});
 
@@ -253,6 +340,20 @@
 
 			// show map options
 			$('.map-options-container').show();
+		}
+
+		function populateSelect(selector, data) {
+			const optgroups = d3.select(selector).selectAll('optgroup')
+				.data(data)
+				.enter().append('optgroup')
+					.attr('label', d => d.tag_name)
+					.text(d => d.tag_name);
+			optgroups.selectAll('option')
+				.data(d => d.children)
+				.enter().append('option')
+					.attr('selected', true)
+					.attr('value', d => d.tag_name)
+					.text(d => d.tag_name);
 		}
 
 		init();

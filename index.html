@@ -14,6 +14,7 @@
 	<link href="css/tooltipster.bundle.min.css" rel="stylesheet" type="text/css">
 	<link href="css/tooltipster-sideTip-shadow.css" rel="stylesheet" type="text/css">
 	<link href="css/tooltipster-follower.min.css" rel="stylesheet" type="text/css">
+	<link href="css/datatables.min.css" rel="stylesheet" type="text/css">
 	<link href="css/nprogress.min.css" rel="stylesheet" type="text/css">
 	<link href="css/main.css" rel="stylesheet" type="text/css">
 </head>
@@ -96,8 +97,22 @@
 			</div>
 			<div class="info-container">
 				<div class="info-box">
+					<div class="info-close-button">
+						<img class="close-icon" src="img/close.png" />
+					</div>
 					<div class="info-title"></div>
-					<div class="info-value"></div>
+					<div class="info-total-value"></div>
+					<div class="info-table-container">
+						<table class="info-table table table-condensed table-striped table-bordered">
+							<thead>
+								<tr></tr>
+							</thead>
+							<tbody></tbody>	
+						</table>
+					</div>
+					<div class="info-button-container">
+						<button class="btn btn-default">Show in Analysis Page</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -169,6 +184,7 @@
 	<script src="lib/topojson.v2.min.js"></script>
 	<script src="lib/d3-geo-projection.v2.min.js"></script>
 	<script src="lib/bootstrap-multiselect.js"></script>
+	<script src="lib/datatables.min.js"></script>
 	<script src="lib/jquery.noty.packaged.min.js"></script>
 	<script src="lib/tooltipster.bundle.min.js"></script>
 	<script src="lib/tooltipster-follower.min.js"></script>

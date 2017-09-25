@@ -26,6 +26,15 @@ const Util = {};
 		return reverse ? array.reverse() : array;
 	};
 
+	// function for determining whether two arrays share a common element
+	Util.hasCommonElement = (arr1, arr2) => {
+		const len2 = arr2.length;
+		for (let i = 0; i < len2; i++) {
+			if (arr1.includes(arr2[i])) return true;
+		}
+		return false;
+	};
+
 	// reads the value of an input and changes it to a formatted number
 	Util.getInputNumVal = (input) => {
 		const $input = $(input);
