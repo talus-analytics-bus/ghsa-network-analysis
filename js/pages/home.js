@@ -45,7 +45,7 @@
 					mapObj.zoomTo.call(this, d);
 
 					// display info box
-					displayCountryInfo(activeCountry.datum());
+					displayCountryInfo();
 				})
 				.each(function addTooltip(d) {
 					$(this).tooltipster({
@@ -82,10 +82,16 @@
 			return App.fundingLookup;
 		}
 
-		// updates data map and map
+		// update everything if any parameters change
 		function updateAll() {
+			// update data map and actual map
 			updateDataMap();
 			updateMap();
+
+			// update info box if showing
+			if ($('.info-container').is(':visible')) {
+				displayCountryInfo();
+			}
 		}
 
 		// updates the country to value data map based on user settings
@@ -223,9 +229,10 @@
 		}
 
 		// displays detailed country information
-		function displayCountryInfo(d) {
+		function displayCountryInfo() {
 			const moneyType = getMoneyType();
 			const dataLookup = getDataLookup();
+			const d = activeCountry.datum();
 			const payments = dataLookup[d.properties.ISO2];
 
 			// define info close button behavior
@@ -323,7 +330,7 @@
 
 				// zoom in to country
 				map.zoomTo.call(activeCountry.node(), activeCountry.datum());
-				displayCountryInfo(activeCountry.datum());
+				displayCountryInfo();
 			});
 		}
 
