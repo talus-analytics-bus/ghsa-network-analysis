@@ -45,23 +45,6 @@ const App = {};
 					const donor = d.donor_country;
 					const recipient = d.recipient_country;
 
-					// if datum has a parent value for fn or disease, convert to children
-					// TODO this should be done in data
-					/*for (let i = d.project_function.length - 1; i >= 0; i++) {
-						const fnObj = App.functions.find(f => f.tag_name === d.project_function[i]);
-						if (fnObj && fnObj.children.length) {
-							d.project_function.splice(i, 1);
-							d.project_function = d.project_function.concat(fnObj.children.map(f => f.tag_name));
-						}
-					}
-					for (let i = d.project_disease.length - 1; i >= 0; i++) {
-						const fnObj = App.functions.find(f => f.tag_name === d.project_disease[i]);
-						if (fnObj && fnObj.children.length) {
-							d.project_disease.splice(i, 1);
-							d.project_disease = d.project_disease.concat(fnObj.children.map(f => f.tag_name));
-						}
-					}*/
-
 					// store payments in lookup objects
 					if (!App.fundingLookup[donor]) App.fundingLookup[donor] = [];
 					App.fundingLookup[donor].push(d);

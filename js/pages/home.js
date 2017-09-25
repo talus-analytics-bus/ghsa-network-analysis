@@ -224,14 +224,9 @@
 
 		// displays detailed country information
 		function displayCountryInfo(d) {
+			const moneyType = getMoneyType();
 			const dataLookup = getDataLookup();
 			const payments = dataLookup[d.properties.ISO2];
-
-			// get total value
-			let totalValue = 0;
-			if (currentDataMap.has(d.properties.ISO2)) {
-				totalValue = currentDataMap.get(d.properties.ISO2);
-			}
 
 			// define info close button behavior
 			$('.info-close-button').on('click', resetMap);
@@ -239,8 +234,25 @@
 			// populate info title
 			$('.info-title').text(d.properties.NAME);
 
+			// if there are no payments, return
+			if (!payments) {
+				const valueText = (moneyType === 'received') ? 
+					'No data for payments received by this country' :
+					'No data for money donated by this country';
+				$('.info-total-value').html(valueText);
+				$('.info-table-container').hide();
+				$('.info-container').slideDown();
+				return;
+			} else {
+				$('.info-table-container').show();
+			}
+
 			// populate info total value
-			const valueLabel = (getMoneyType() === 'received') ?
+			let totalValue = 0;
+			if (currentDataMap.has(d.properties.ISO2)) {
+				totalValue = currentDataMap.get(d.properties.ISO2);
+			}
+			const valueLabel = (moneyType === 'received') ?
 				'Total Received' : 'Total Donated';
 			const valueText = App.formatMoney(totalValue);
 			$('.info-total-value').html(`${valueLabel}: <b>${valueText}</b>`);
