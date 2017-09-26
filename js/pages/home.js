@@ -6,6 +6,7 @@
 		const coordsByIso = {};  // lat/lon of each country by iso
 		const currentNodeDataMap = d3.map();  // maps each country to the current monetary value
 		let currentLinkData = [];  // contains data for each link between two countries
+		let currentInfoTab = 'all';  // the current info tab (all, country, function, disease)
 
 		// other variables
 		let infoTableHasBeenInit = false;
@@ -378,7 +379,7 @@
 
 			// define "go to analysis" button behavior
 			$('.info-analysis-button')
-				.text(`Show ${d.properties.NAME} in Analysis Page`)
+				.html(`Show ${d.properties.NAME} in Analysis Page`)
 				.off('click')
 				.on('click', () => {
 					hasher.setHash(`analysis/${d.properties.ISO2}`);
