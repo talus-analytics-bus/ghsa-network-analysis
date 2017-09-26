@@ -14,12 +14,12 @@
 				const c = Object.assign({}, App.countries[i]);
 				if (App.fundingLookup[c.ISO2]) {
 					c.total_committed = d3.sum(App.fundingLookup[c.ISO2], d => d.total_committed);
-					c.total_disbursed = d3.sum(App.fundingLookup[c.ISO2], d => d.total_disbursed);
+					c.total_spent = d3.sum(App.fundingLookup[c.ISO2], d => d.total_spent);
 					fundedData.push(c);
 				}
 				if (App.recipientLookup[c.ISO2]) {
 					c.total_committed = d3.sum(App.recipientLookup[c.ISO2], d => d.total_committed);
-					c.total_disbursed = d3.sum(App.recipientLookup[c.ISO2], d => d.total_disbursed);
+					c.total_spent = d3.sum(App.recipientLookup[c.ISO2], d => d.total_spent);
 					receivedData.push(c);
 				}
 			}

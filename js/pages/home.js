@@ -344,7 +344,7 @@
 				{ name: 'Recipient', value: 'recipient_name' },
 				{ name: 'Name', value: 'project_name' },
 				{ name: 'Committed', value: 'total_committed', format: App.formatMoneyFull },
-				{ name: 'Disbursed', value: 'total_disbursed', format: App.formatMoneyFull },
+				{ name: 'Disbursed', value: 'total_spent', format: App.formatMoneyFull },
 			];
 
 			// clear DataTables plugin from table

@@ -39,7 +39,7 @@
 			.size([size, size])
 			.padding(2);
 		const root = d3.hierarchy(nodeData)
-			.sum(d => d.total_disbursed)
+			.sum(d => d.total_spent)
 			.sort((a, b) => b.POP2005 - a.POP2005);
 		let focus = root;
 		const nodePackData = pack(root).descendants();
@@ -63,7 +63,7 @@
 			.attr('r', d => d.r)
 			.filter(d => d.parent)
 				.style('fill', (d) => {
-					let percDisbursed = d.data.total_disbursed / d.data.total_committed;
+					let percDisbursed = d.data.total_spent / d.data.total_committed;
 					if (percDisbursed > 1) percDisbursed = 1;
 					return colorScale(percDisbursed);
 				})
@@ -79,11 +79,11 @@
 						.attr('class', 'tooltip-row-content');
 					rowContent.append('div')
 						.attr('class', 'tooltip-row')
-						.html(`<b>Total Disbursed:</b> ${App.formatMoney(d.data.total_disbursed)}`);
+						.html(`<b>Total Disbursed:</b> ${App.formatMoney(d.data.total_spent)}`);
 					rowContent.append('div')
 						.attr('class', 'tooltip-row')
 						.html(`<b>Total Committed:</b> ${App.formatMoney(d.data.total_committed)}`);
-					const percDisbursed = d.data.total_disbursed / d.data.total_committed;
+					const percDisbursed = d.data.total_spent / d.data.total_committed;
 					rowContent.append('div')
 						.attr('class', 'tooltip-row')
 						.html(`<b>Percent Disbursed:</b> ${d3.format('.1%')(percDisbursed)}`);
