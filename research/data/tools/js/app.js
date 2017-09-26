@@ -9,11 +9,11 @@ const App = {};
 	*  tests the IATI data downloaded into JSON format
 	*/
 	App.getIatiTransactions = () => {
-		console.log('Running App.testIatiData');
+		console.log('Running App.getIatiTransactions');
 
 		$.ajax({
 			type: 'post',
-			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=trans,sector,act,country&sector_group=121&sector_group=122&day_start_gt=2014-01-01&select=aid,reporting_ref,funder_ref,title,country_code,trans_code,trans_usd,trans_day',
+			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=trans,sector,act,country&sector_group=121&sector_group=122&day_start_gt=2014-01-01&select=aid,reporting_ref,funder_ref,title,country_code,country_percent,trans_code,trans_usd,trans_day',
 			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=60000&from=trans,sector,act,country&sector_group=121&sector_group=122&day_start_gt=2014-01-01&select=aid,reporting_ref,funder_ref,title,country_code,trans_code,trans_usd,trans_day,sector_code',
 			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=20000&from=trans,sector,act,country&sector_group=121&trans_day_gt=2016-01-01&select=aid,reporting_ref,funder_ref,title,country_code,trans_code,trans_usd,trans_day,sector_code',
 			success: function(data) {
