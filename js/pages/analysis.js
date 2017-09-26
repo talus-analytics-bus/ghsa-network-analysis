@@ -1,5 +1,5 @@
 (() => {
-	App.initAnalysis = () => {
+	App.initAnalysis = (countryIso) => {
 		function init() {
 			populateFilters();
 			initSearch();

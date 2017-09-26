@@ -342,7 +342,8 @@
 				{ name: 'Donor', value: 'donor_name' },
 				{ name: 'Recipient', value: 'recipient_name' },
 				{ name: 'Name', value: 'project_name' },
-				{ name: 'Value', value: 'total_disbursed', format: App.formatMoneyFull },
+				{ name: 'Committed', value: 'total_committed', format: App.formatMoneyFull },
+				{ name: 'Disbursed', value: 'total_disbursed', format: App.formatMoneyFull },
 			];
 
 			// clear DataTables plugin from table
@@ -382,9 +383,9 @@
 			infoDataTable = $('.info-table').DataTable({
 				scrollY: '30vh',
 				scrollCollapse: false,
-				order: [3, 'desc'],
+				order: [4, 'desc'],
 				columnDefs: [
-					{ type: 'money', targets: 3 },
+					{ type: 'money', targets: [3, 4] },
 				],
 			});
 			infoTableHasBeenInit = true;
