@@ -8,26 +8,31 @@
 
 		function drawCharts() {
 			// collate the data
-			const fundingData = App.countries.map((c) => {
-				let totalFunded = 0;
-				let totalReceived = 0;
+			const fundedData = [];
+			const receivedData = [];
+			for (let i = 0; i < App.countries.length; i++) {
+				const c = Object.assign({}, App.countries[i]);
 				if (App.fundingLookup[c.ISO2]) {
-					totalFunded = d3.sum(App.fundingLookup[c.ISO2], d => d.total_disbursed);
+					c.total_committed = d3.sum(App.fundingLookup[c.ISO2], d => d.total_committed);
+					c.total_disbursed = d3.sum(App.fundingLookup[c.ISO2], d => d.total_disbursed);
+					fundedData.push(c);
 				}
 				if (App.recipientLookup[c.ISO2]) {
-					totalReceived = d3.sum(App.recipientLookup[c.ISO2], d => d.total_disbursed);
+					c.total_committed = d3.sum(App.recipientLookup[c.ISO2], d => d.total_committed);
+					c.total_disbursed = d3.sum(App.recipientLookup[c.ISO2], d => d.total_disbursed);
+					receivedData.push(c);
 				}
-
-				return {
-					NAME: c.NAME,
-					funded: totalFunded,
-					received: totalReceived,
-					POP2005: c.POP2005,
-				};
-			});
+			}
 
 			// build the chart
-			App.buildScatterplot('.scatterplot-container', fundingData);
+			App.buildCirclePack('.countries-funded-container', fundedData, {
+				tooltipLabel: 'Total Funded',
+				colors: ['#c6dbef', '#084594'],
+			});
+			App.buildCirclePack('.countries-received-container', receivedData, {
+				tooltipLabel: 'Total Received',
+				colors: ['#feedde', '#8c2d04'],
+			});
 		}
 
 

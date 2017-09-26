@@ -376,6 +376,14 @@
 					return cellValue;
 				});
 
+			// define "go to analysis" button behavior
+			$('.info-analysis-button')
+				.text(`Show ${d.properties.NAME} in Analysis Page`)
+				.off('click')
+				.on('click', () => {
+					hasher.setHash(`analysis/${d.properties.ISO2}`);
+				});
+
 			// show info
 			$('.info-container').slideDown();
 

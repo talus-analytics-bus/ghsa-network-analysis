@@ -1,8 +1,8 @@
 $analysis-white: rgba(255,255,255,0.85);
 
 .analysis-container {
-	padding: 0 30px 50px;
-	width: 100%;
+	border-left: $border;
+	border-right: $border;
 }
 .analysis-filter-bar {
 	padding: 15px 30px;
@@ -23,5 +23,10 @@ $analysis-white: rgba(255,255,255,0.85);
 	}
 }
 .analysis-content {
-	margin-top: 20px;
+	padding: 20px 30px 50px;
+	@include gradient(#f0f0f0, #e0e0e0);
+}
+.countries-funded-container,
+.countries-received-container {
+	text-align: center;
 }
