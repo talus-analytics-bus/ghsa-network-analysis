@@ -237,7 +237,7 @@
 			links.enter().append('path')
 				.attr('class', 'country-link')
 				.merge(links)
-					.style('stroke-width', 10 * Math.random())
+					.style('stroke-width', d => 7 * Math.random())
 					.style('stroke', '#8c6bb1')
 					.attr('d', map.path);
 
@@ -420,12 +420,17 @@
 				numberDisplayed: 0,
 			});
 
-			// attach change behavior
+			// attach radio button behavior
 			$('.map-options-container .radio-option').click(function clickedRadio() {
 				const $option = $(this);
 				$option.find('input').prop('checked', true);
 				$option.siblings().find('input').prop('checked', false);
-				updateAll();
+			});
+
+			// attach change behavior
+			$('.money-type-filter .radio-option').click(updateAll);
+			$('.links-filter .radio-option').click(() => {
+				$('.country-link').toggle();
 			});
 			$('.map-options-container select').on('change', updateAll);
 
