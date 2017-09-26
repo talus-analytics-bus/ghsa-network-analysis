@@ -39,18 +39,22 @@ const Map = {};
 			.attr('height', height);
 
 		const g = svg.append('g');
+		const nodeG = g.append('g')
+			.attr('class', 'countries');
+		const linkG = g.append('g')
+			.attr('class', 'links');
 
 		// attach zoom
 		svg.call(zoom);
 
 		// add world data
 		const countries = topojson.feature(world, world.objects.countries).features;
-		g.selectAll('.country')
+		nodeG.selectAll('.country')
 			.data(countries)
 			.enter().append('path')
 				.attr('class', 'country')
 				.attr('d', path);
-		g.append('path')
+		nodeG.append('path')
 			.datum(topojson.mesh(world, world.objects.countries, (a, b) => a !== b))
 			.attr('class', 'boundary')
 			.attr('d', path);

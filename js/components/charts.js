@@ -18,8 +18,8 @@
 			.attr('width', width + margin.right)
 			.attr('height', height + margin.top);
 
-		const x = d3.scaleLog()
-			.domain([1, d3.max(data, d => d.funded)])
+		const x = d3.scaleBand()
+			.domain(App.functions.map(d => d.tag_name))
 			.range([0, width]);
 		const y = d3.scaleLog()
 			.domain([1, d3.max(data, d => d.received)])
@@ -28,8 +28,7 @@
 			.domain([1e4, d3.max(data, d => d.POP2005)])
 			.range([1, 30]);
 
-		const xAxis = d3.axisBottom(x)
-			.tickFormat(App.formatMoneyShort);
+		const xAxis = d3.axisBottom(x);
 		const yAxis = d3.axisLeft(y)
 			.tickFormat(App.formatMoneyShort);
 

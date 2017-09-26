@@ -227,17 +227,18 @@
 			});
 			
 			// get color scale for links
-			const linkColorScale = getColorScale();
-			linkColorScale.domain([0, d3.max(pathData, d => d.value)]);
+			const linkSizeScale = d3.scaleLinear()
+				.domain([1, d3.max(pathData, d => d.value)])
+				.range([1, 5]);
 
 			// update links
-			const links = map.element.selectAll('.country-link')
+			const links = map.element.select('.links').selectAll('.country-link')
 				.data(pathData);
 			links.exit().remove();
 			links.enter().append('path')
 				.attr('class', 'country-link')
 				.merge(links)
-					.style('stroke-width', d => 7 * Math.random())
+					.style('stroke-width', d => linkSizeScale(d.value))
 					.style('stroke', '#8c6bb1')
 					.attr('d', map.path);
 
