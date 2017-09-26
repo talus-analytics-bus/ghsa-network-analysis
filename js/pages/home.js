@@ -1,17 +1,19 @@
 (() => {
 	App.initHome = () => {
 		// variables used throughout home page
-		let map;  // the world map
+		//let map;  // the world map
 		let activeCountry = d3.select(null);  // the active country
-		let currentDataMap = d3.map();  // the current data map
+		const coordsByIso = {};  // lat/lon of each country by iso
+		const currentNodeDataMap = d3.map();  // maps each country to the current monetary value
+		let currentLinkData = [];  // contains data for each link between two countries
 
 		// other variables
 		let infoTableHasBeenInit = false;
 		let infoDataTable;
 
 		// colors
-		const purples = ['#f2f0f7', '#dadaeb', '#bcbddc', '#9e9ac8',
-			'#807dba', '#6a51a3'];
+		const purples = ['#e0ecf4', '#bfd3e6', '#9ebcda',
+			'#8c96c6', '#8c6bb1', '#88419d', '#810f7c', '#4d004b'];
 
 
 		// function for initializing the page
@@ -25,7 +27,7 @@
 
 
 		/* ---------------------- Functions ----------------------- */
-		// builds the map and attaches tooltips to countries
+		// builds the map, attaches tooltips to countries, populates coordinates dict
 		function buildMap() {
 			// add map to map container
 			const mapObj = Map.createWorldMap('.map-container', App.geoData);
@@ -47,13 +49,18 @@
 					// display info box
 					displayCountryInfo();
 				})
-				.each(function addTooltip(d) {
+				.each(function addTooltipAndPopulateDict(d) {
+					// add tooltip
 					$(this).tooltipster({
 						plugins: ['follower'],
 						delay: 100,
 						minWidth: 200,
 						content: d.properties.NAME,
 					});
+
+					// populate coordinates dictionary
+					const xyCoords = mapObj.path.centroid(d);
+					coordsByIso[d.properties.ISO2] = mapObj.projection.invert(xyCoords);
 				});
 
 			return mapObj;
@@ -85,7 +92,7 @@
 		// update everything if any parameters change
 		function updateAll() {
 			// update data map and actual map
-			updateDataMap();
+			updateDataMaps();
 			updateMap();
 
 			// update info box if showing
@@ -95,8 +102,9 @@
 		}
 
 		// updates the country to value data map based on user settings
-		function updateDataMap() {
+		function updateDataMaps() {
 			// get lookup (has all data)
+			const moneyType = getMoneyType();
 			const dataLookup = getDataLookup();
 
 			// TODO get filter values; need to incorporate parent/child structure correctly
@@ -119,16 +127,50 @@
 				});
 			}
 
-			// filter data and only use data with valid country values
-			currentDataMap.clear();
+			// clear out current data
+			currentNodeDataMap.clear();
+			currentLinkData = [];
+
+			// filter and only use data with valid country values
 			App.countries.forEach((c) => {
 				const payments = dataLookup[c.ISO2];
 				if (payments) {
-					const filteredPayments = payments
-						//.filter(p => Util.hasCommonElement(functions, p.project_function))
-						//.filter(p => Util.hasCommonElement(diseases, p.project_disease));
-					const value = d3.sum(filteredPayments, p => p.total_committed);
-					currentDataMap.set(c.ISO2, value);
+					let totalValue = 0;
+					const valueByCountry = {};
+					for (let i = 0, n = payments.length; i < n; i++) {
+						const p = payments[i];
+						//if (!Util.hasCommonElement(functions, p.project_function)) continue;
+						//if (!Util.hasCommonElement(diseases, p.project_disease)) continue;
+
+						const value = p.total_committed || 0;
+						const otherIso = (moneyType === 'received') ? p.donor_country : p.recipient_country;
+						if (!valueByCountry[otherIso]) valueByCountry[otherIso] = 0;
+						valueByCountry[otherIso] += value;
+						totalValue += value;
+					}
+
+					// set in node map
+					currentNodeDataMap.set(c.ISO2, totalValue);
+
+					// add to link data
+					for (let iso in valueByCountry) {
+						const value = valueByCountry[iso];
+						if (value) {
+							if (moneyType === 'received') {
+								currentLinkData.push({
+									source: iso,
+									target: c.ISO2,
+									value,
+								});
+							} else {
+								currentLinkData.push({
+									source: c.ISO2,
+									target: iso,
+									value,
+								});
+							}
+						}
+					}
 				}
 			});
 		}
@@ -138,17 +180,17 @@
 			const moneyType = getMoneyType();
 
 			// get color scale and set domain
-			const colorScale = getColorScale();
-			colorScale.domain(currentDataMap.values());
+			const nodeColorScale = getColorScale();
+			nodeColorScale.domain(currentNodeDataMap.values());
 
 			// color countries and update tooltip content
-			d3.selectAll('.country').transition()
+			map.element.selectAll('.country').transition()
 				.duration(500)
 				.style('fill', (d) => {
 					const isoCode = d.properties.ISO2;
-					if (currentDataMap.has(isoCode)) {
-						d.value = currentDataMap.get(isoCode);
-						d.color = colorScale(d.value);
+					if (currentNodeDataMap.has(isoCode)) {
+						d.value = currentNodeDataMap.get(isoCode);
+						d.color = nodeColorScale(d.value);
 					} else {
 						d.value = null;
 						d.color = '#ccc';
@@ -170,7 +212,37 @@
 					$(this).tooltipster('content', container.html());
 				});
 
-			updateLegend(colorScale);
+			// turn link data into path data
+			const pathData = [];
+			currentLinkData.forEach((l) => {
+				const sourceCoords = coordsByIso[l.source];
+				const targetCoords = coordsByIso[l.target];
+				if (sourceCoords && targetCoords) {
+					pathData.push({
+						type: 'LineString',
+						coordinates: [sourceCoords, targetCoords],
+						value: l.value,
+					});
+				}
+			});
+			
+			// get color scale for links
+			const linkColorScale = getColorScale();
+			linkColorScale.domain([0, d3.max(pathData, d => d.value)]);
+
+			// update links
+			const links = map.element.selectAll('.country-link')
+				.data(pathData);
+			links.exit().remove();
+			links.enter().append('path')
+				.attr('class', 'country-link')
+				.merge(links)
+					.style('stroke-width', 10 * Math.random())
+					.style('stroke', '#8c6bb1')
+					.attr('d', map.path);
+
+			// update legend
+			updateLegend(nodeColorScale);
 		}
 
 		// update the map legend
@@ -256,8 +328,8 @@
 
 			// populate info total value
 			let totalValue = 0;
-			if (currentDataMap.has(d.properties.ISO2)) {
-				totalValue = currentDataMap.get(d.properties.ISO2);
+			if (currentNodeDataMap.has(d.properties.ISO2)) {
+				totalValue = currentNodeDataMap.get(d.properties.ISO2);
 			}
 			const valueLabel = (moneyType === 'received') ?
 				'Total Received' : 'Total Donated';

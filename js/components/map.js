@@ -88,6 +88,6 @@ const Map = {};
 			if (d3.event.defaultPrevented) d3.event.stopPropagation();
 		}
 
-		return { element: svg, zoomTo, reset };
+		return { element: svg, projection, path, zoomTo, reset };
 	};
 })();

@@ -25,7 +25,6 @@
 					POP2005: c.POP2005,
 				};
 			});
-			console.log(fundingData);
 
 			// build the chart
 			App.buildScatterplot('.scatterplot-container', fundingData);
