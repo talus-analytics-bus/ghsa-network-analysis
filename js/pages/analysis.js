@@ -58,62 +58,67 @@
 		}
 
 		function drawCountryCharts() {
-			// collate the data
-			const fundedData = [];
-			const fundedByCountry = {};
-			App.fundingLookup[countryIso].forEach((p) => {
-				if (!fundedByCountry[p.recipient_country]) {
-					fundedByCountry[p.recipient_country] = {
-						total_committed: 0,
-						total_spent: 0,
-					};
-				}
-				fundedByCountry[p.recipient_country].total_committed += p.total_committed;
-				fundedByCountry[p.recipient_country].total_spent += p.total_spent;
-			});
-			App.countries.forEach((c) => {
-				if (fundedByCountry[c.ISO2]) {
-					const cCopy = Object.assign({}, c);
-					cCopy.total_committed = fundedByCountry[c.ISO2].total_committed;
-					cCopy.total_spent = fundedByCountry[c.ISO2].total_spent;
-					fundedData.push(cCopy);
-				}
-			});
+			if (App.fundingLookup[countryIso]) {
+				const fundedData = [];
+				const fundedByCountry = {};
+				App.fundingLookup[countryIso].forEach((p) => {
+					if (!fundedByCountry[p.recipient_country]) {
+						fundedByCountry[p.recipient_country] = {
+							total_committed: 0,
+							total_spent: 0,
+						};
+					}
+					fundedByCountry[p.recipient_country].total_committed += p.total_committed;
+					fundedByCountry[p.recipient_country].total_spent += p.total_spent;
+				});
+				App.countries.forEach((c) => {
+					if (fundedByCountry[c.ISO2]) {
+						const cCopy = Object.assign({}, c);
+						cCopy.total_committed = fundedByCountry[c.ISO2].total_committed;
+						cCopy.total_spent = fundedByCountry[c.ISO2].total_spent;
+						fundedData.push(cCopy);
+					}
+				});
+				App.buildCirclePack('.country-funded-container', fundedData, {
+					tooltipLabel: 'Total Funded',
+					colors: ['#c6dbef', '#084594'],
+					onClick: iso => hasher.setHash(`analysis/${iso}`),
+				});
+			} else {
+				d3.select('.country-funded-description')
+					.html('<i>There are no data for countries funded by this country.</i>');
+			}
 
-			const receivedData = [];
-			const receivedByCountry = {};
-			App.recipientLookup[countryIso].forEach((p) => {
-				if (!receivedByCountry[p.donor_country]) {
-					receivedByCountry[p.donor_country] = {
-						total_committed: 0,
-						total_spent: 0,
-					};
-				}
-				receivedByCountry[p.donor_country].total_committed += p.total_committed;
-				receivedByCountry[p.donor_country].total_spent += p.total_spent;
-			});
-			App.countries.forEach((c) => {
-				if (receivedByCountry[c.ISO2]) {
-					const cCopy = Object.assign({}, c);
-					cCopy.total_committed = receivedByCountry[c.ISO2].total_committed;
-					cCopy.total_spent = receivedByCountry[c.ISO2].total_spent;
-					receivedData.push(cCopy);
-				}
-			});
-
-			console.log(fundedData);
-
-			// build the chart
-			App.buildCirclePack('.country-funded-container', fundedData, {
-				tooltipLabel: 'Total Funded',
-				colors: ['#c6dbef', '#084594'],
-				onClick: iso => hasher.setHash(`analysis/${iso}`),
-			});
-			App.buildCirclePack('.country-received-container', receivedData, {
-				tooltipLabel: 'Total Received',
-				colors: ['#feedde', '#8c2d04'],
-				onClick: iso => hasher.setHash(`analysis/${iso}`),
-			});
+			if (App.recipientLookup[countryIso]) {
+				const receivedData = [];
+				const receivedByCountry = {};
+				App.recipientLookup[countryIso].forEach((p) => {
+					if (!receivedByCountry[p.donor_country]) {
+						receivedByCountry[p.donor_country] = {
+							total_committed: 0,
+							total_spent: 0,
+						};
+					}
+					receivedByCountry[p.donor_country].total_committed += p.total_committed;
+					receivedByCountry[p.donor_country].total_spent += p.total_spent;
+				});
+				App.countries.forEach((c) => {
+					if (receivedByCountry[c.ISO2]) {
+						const cCopy = Object.assign({}, c);
+						cCopy.total_committed = receivedByCountry[c.ISO2].total_committed;
+						cCopy.total_spent = receivedByCountry[c.ISO2].total_spent;
+						receivedData.push(cCopy);
+					}
+				});
+				App.buildCirclePack('.country-received-container', receivedData, {
+					tooltipLabel: 'Total Received',
+					colors: ['#feedde', '#8c2d04'],
+					onClick: iso => hasher.setHash(`analysis/${iso}`),
+				});
+			} else {
+				d3.select('.country-received-description')
+					.html('<i>There are no data for funds received by this country.</i>');
+			}
 		}
 
 		// populates the filters in the map options box
@@ -132,8 +137,8 @@
 		// initializes search functionality
 		function initSearch() {
 			App.initCountrySearchBar('.country-search-input', (result) => {
-				// TODO
-
+				console.log(result);
+				hasher.setHash(`analysis/${result.ISO2}`);
 			});
 		}
 

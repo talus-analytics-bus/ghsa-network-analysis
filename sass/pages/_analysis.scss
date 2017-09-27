@@ -6,9 +6,11 @@ $analysis-white: rgba(255,255,255,0.85);
 	border-right: $border;
 }
 .analysis-filter-bar {
+	position: relative;
 	padding: 15px 30px;
 	border-bottom: $border;
 	text-align: center;
+	z-index: 1000;
 
 	.filter-box {
 		display: inline-block;
@@ -24,8 +26,10 @@ $analysis-white: rgba(255,255,255,0.85);
 }
 .analysis-content {
 	display: none;
+	position: relative;
 	margin: 0;
 	padding: 20px 30px 50px;
+	z-index: 100;
 	@include gradient(#f0f0f0, #e0e0e0);
 }
 .circle-pack-container {
