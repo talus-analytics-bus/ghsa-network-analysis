@@ -1,6 +1,20 @@
 const App = {};
 
 (() => {
+
+	// Loads the current 'funding_data' dataset to be played with
+	App.loadFundingData = () => {
+		const path = './data/';
+		const fn = 'funding_data-iati_2014_plus-092717-MV.json';
+		console.log('Loading funding data...');
+			d3.queue()
+				.defer(d3.json, path + fn)
+				.await((error, data) => {
+					console.log('loading complete:');
+					console.log(data);
+			});
+	};
+
 	// Keeps only those transactions associated with a project AID that has
 	// a health sector group
 	App.filterTransactionsBySector = () => {
@@ -193,9 +207,6 @@ const App = {};
 	App.mapDataIati = () => {
 		console.log('Running App.mapDataIati');
 
-		// // check data
-		// console.log(iatiRaw);
-
 		// grab transactions
 		let transactions = iatiRaw;
 
@@ -206,7 +217,6 @@ const App = {};
 		let projNames = _.unique(_.pluck(transactions, 'aid'));
 		
 		for (let i  = 0; i < projNames.length; i++) {
-
 
 			// get current project name ("aid" data field)
 			const curProj_aid = projNames[i];
@@ -317,13 +327,16 @@ const App = {};
 				// total_currency
 				proj.total_currency = 'USD'; // always USD for IATI for now
 
-				// add project to output
-				output.push(proj);
+				// if funds committed and spent are both null or zero, exclude the project
+				// otherwise, add project to output
+				const committedNullOrZero = proj.total_committed === null || proj.total_committed === 0.0;
+				const spentNullOrZero = proj.total_spent === null || proj.total_spent === 0.0;
+				if (!committedNullOrZero || !spentNullOrZero) output.push(proj);
 			}
 		}
 
 		console.log(output);
-
+		Util.save(output, 'funding_data-iati_2014_plus-092717-MV.json');
 	};
 
 	/* getData
