@@ -3,4 +3,4 @@
 // App.getIatiActivities();
 // App.getIatiTransactions();
 // App.filterTransactionsBySector();
-App.mapDataIati();
+// App.mapDataIati();
