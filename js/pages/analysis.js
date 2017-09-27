@@ -11,18 +11,22 @@
 			const fundedData = [];
 			const receivedData = [];
 			for (let i = 0; i < App.countries.length; i++) {
-				const c = Object.assign({}, App.countries[i]);
+				const c = App.countries[i];
+				const fc = Object.assign({}, c);
 				if (App.fundingLookup[c.ISO2]) {
-					c.total_committed = d3.sum(App.fundingLookup[c.ISO2], d => d.total_committed);
-					c.total_spent = d3.sum(App.fundingLookup[c.ISO2], d => d.total_spent);
-					fundedData.push(c);
+					fc.total_committed = d3.sum(App.fundingLookup[c.ISO2], d => d.total_committed);
+					fc.total_spent = d3.sum(App.fundingLookup[c.ISO2], d => d.total_spent);
+					fundedData.push(fc);
 				}
+
+				const rc = Object.assign({}, c);
 				if (App.recipientLookup[c.ISO2]) {
-					c.total_committed = d3.sum(App.recipientLookup[c.ISO2], d => d.total_committed);
-					c.total_spent = d3.sum(App.recipientLookup[c.ISO2], d => d.total_spent);
-					receivedData.push(c);
+					rc.total_committed = d3.sum(App.recipientLookup[c.ISO2], d => d.total_committed);
+					rc.total_spent = d3.sum(App.recipientLookup[c.ISO2], d => d.total_spent);
+					receivedData.push(rc);
 				}
 			}
+			console.log(fundedData);
 
 			// build the chart
 			App.buildCirclePack('.countries-funded-container', fundedData, {

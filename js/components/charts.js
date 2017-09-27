@@ -31,7 +31,7 @@
 		// re-form data to fit for circle pack
 		const nodeData = {
 			name: 'background',
-			children: data,
+			children: data.slice(0),
 		};
 
 		// start drawing the node pack
@@ -40,7 +40,7 @@
 			.padding(2);
 		const root = d3.hierarchy(nodeData)
 			.sum(d => d.total_spent)
-			.sort((a, b) => b.POP2005 - a.POP2005);
+			.sort((a, b) => b.total_spent - a.total_spent);
 		let focus = root;
 		const nodePackData = pack(root).descendants();
 
