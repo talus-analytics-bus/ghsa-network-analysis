@@ -3,9 +3,7 @@
 		// variables used throughout home page
 		//let map;  // the world map
 		let activeCountry = d3.select(null);  // the active country
-		const coordsByIso = {};  // lat/lon of each country by iso
 		const currentNodeDataMap = d3.map();  // maps each country to the current monetary value
-		let currentLinkData = [];  // contains data for each link between two countries
 		let currentInfoTab = 'all';  // the current info tab (all, country, function, disease)
 
 		// other variables
@@ -50,18 +48,13 @@
 					// display info box
 					displayCountryInfo();
 				})
-				.each(function addTooltipAndPopulateDict(d) {
-					// add tooltip
+				.each(function addTooltip(d) {
 					$(this).tooltipster({
 						plugins: ['follower'],
 						delay: 100,
 						minWidth: 200,
 						content: d.properties.NAME,
 					});
-
-					// populate coordinates dictionary
-					const xyCoords = mapObj.path.centroid(d);
-					coordsByIso[d.properties.ISO2] = mapObj.projection.invert(xyCoords);
 				});
 
 			return mapObj;
@@ -130,7 +123,6 @@
 
 			// clear out current data
 			currentNodeDataMap.clear();
-			currentLinkData = [];
 
 			// filter and only use data with valid country values
 			App.countries.forEach((c) => {
@@ -142,36 +134,11 @@
 						const p = payments[i];
 						//if (!Util.hasCommonElement(functions, p.project_function)) continue;
 						//if (!Util.hasCommonElement(diseases, p.project_disease)) continue;
-
-						const value = p.total_committed || 0;
-						const otherIso = (moneyType === 'received') ? p.donor_country : p.recipient_country;
-						if (!valueByCountry[otherIso]) valueByCountry[otherIso] = 0;
-						valueByCountry[otherIso] += value;
-						totalValue += value;
+						totalValue += p.total_committed || 0;
 					}
 
 					// set in node map
 					currentNodeDataMap.set(c.ISO2, totalValue);
-
-					// add to link data
-					for (let iso in valueByCountry) {
-						const value = valueByCountry[iso];
-						if (value) {
-							if (moneyType === 'received') {
-								currentLinkData.push({
-									source: iso,
-									target: c.ISO2,
-									value,
-								});
-							} else {
-								currentLinkData.push({
-									source: c.ISO2,
-									target: iso,
-									value,
-								});
-							}
-						}
-					}
 				}
 			});
 		}
@@ -212,36 +179,6 @@
 
 					$(this).tooltipster('content', container.html());
 				});
-
-			// turn link data into path data
-			const pathData = [];
-			currentLinkData.forEach((l) => {
-				const sourceCoords = coordsByIso[l.source];
-				const targetCoords = coordsByIso[l.target];
-				if (sourceCoords && targetCoords) {
-					pathData.push({
-						type: 'LineString',
-						coordinates: [sourceCoords, targetCoords],
-						value: l.value,
-					});
-				}
-			});
-			
-			// get color scale for links
-			const linkSizeScale = d3.scaleLinear()
-				.domain([1, d3.max(pathData, d => d.value)])
-				.range([1, 5]);
-
-			// update links
-			const links = map.element.select('.links').selectAll('.country-link')
-				.data(pathData);
-			links.exit().remove();
-			links.enter().append('path')
-				.attr('class', 'country-link')
-				.merge(links)
-					.style('stroke-width', d => linkSizeScale(d.value))
-					.style('stroke', '#8c6bb1')
-					.attr('d', map.path);
 
 			// update legend
 			updateLegend(nodeColorScale);
