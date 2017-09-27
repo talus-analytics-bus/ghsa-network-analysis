@@ -1,0 +1,11 @@
+.circle-pack-chart {
+	.node--root {
+		fill: none;
+	}
+	.node {
+		stroke: none;
+	}
+	.node:hover {
+		stroke: rgba(0,0,0,0.6);
+	}
+}

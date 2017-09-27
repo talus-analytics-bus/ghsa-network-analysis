@@ -1,6 +1,8 @@
+.tooltipster-sidetip.tooltipster-shadow .tooltipster-content,
 .tooltipster-follower.tooltipster-shadow .tooltipster-content {
 	padding: 12px 20px;
 	color: #444;
+	font-size: 1em !important;
 }
 .tooltip-title {
 	font-size: 1.1em;
@@ -10,10 +12,13 @@
 .tooltip-main-value {
 	margin-top: 20px;
 	font-family: 'Raleway', sans-serif;
-	font-size: 1.8em;
+	font-size: 1.9em;
 	text-align: center;
 }
 .tooltip-main-value-label {
 	margin-top: 10px;
 	text-align: center;
+}
+.tooltip-row-content {
+	margin-top: 10px;
 }

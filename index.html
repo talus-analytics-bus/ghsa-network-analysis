@@ -54,17 +54,6 @@
 			<div class="right-container">
 				<div class="map-options-container">
 					<div class="filter-section">
-						<div class="filter-box money-type-filter">
-							<div class="dropdown-label">Color countries by:</div>
-							<div class="radio-option">
-								<input type="radio" ind="funded" checked />
-								<span>Amount funded</span>
-							</div>
-							<div class="radio-option">
-								<input type="radio" ind="received" />
-								<span>Amount received</span>
-							</div>
-						</div>
 						<div class="filter-box links-filter">
 							<div class="dropdown-label">Show funding network:</div>
 							<div class="radio-option">
@@ -74,6 +63,19 @@
 							<div class="radio-option">
 								<input type="radio" ind="no" />
 								<span>No</span>
+							</div>
+						</div>
+					</div>
+					<div class="filter-section">
+						<div class="filter-box money-type-filter">
+							<div class="dropdown-label">Color countries by:</div>
+							<div class="radio-option">
+								<input type="radio" ind="funded" checked />
+								<span>Amount funded</span>
+							</div>
+							<div class="radio-option">
+								<input type="radio" ind="received" />
+								<span>Amount received</span>
 							</div>
 						</div>
 					</div>
@@ -113,6 +115,14 @@
 					</div>
 					<div class="info-title"></div>
 					<div class="info-total-value"></div>
+					<div class="info-tab-container">
+						<div class="btn-group">
+							<div class="btn btn-default">All</div>
+							<div class="btn btn-default">By Country</div>
+							<div class="btn btn-default">By Function</div>
+							<div class="btn btn-default">By Disease</div>
+						</div>
+					</div>
 					<div class="info-table-container">
 						<table class="info-table table table-condensed table-striped table-bordered">
 							<thead>
@@ -122,7 +132,7 @@
 						</table>
 					</div>
 					<div class="info-button-container">
-						<button class="btn btn-default">Show in Analysis Page</button>
+						<button class="info-analysis-button btn btn-default">Show in Analysis Page</button>
 					</div>
 				</div>
 			</div>
@@ -153,15 +163,18 @@
 			</div>
 			<div class="analysis-content row">
 				<div class="col-md-6 col-sm-12">
-					<h3>Amount Countries Fund vs. Receive</h3>
+					<h3>Donor Countries</h3>
 					<div class="description">
-						The plot below displays each country by amount funded and received.
-						<br>Countries are sized by relative GDP and colored by known JEE score.
+						The plot below displays each country by amount funded.
 					</div>
-					<div class="scatterplot-container"></div>
+					<div class="countries-funded-container"></div>
 				</div>
 				<div class="col-md-6 col-sm-12">
-
+					<h3>Recipient Countries</h3>
+					<div class="description">
+						The plot below displays each country by amount received.
+					</div>
+					<div class="countries-received-container"></div>
 				</div>
 			</div>
 		</div>

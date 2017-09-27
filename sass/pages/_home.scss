@@ -89,7 +89,7 @@
 		display: inline-block;
 		position: relative;
 		padding: 20px;
-		width: 750px;
+		width: 800px;
 		border: $border;
 		background-color: rgba(255,255,255,0.96);
 		pointer-events: all;
@@ -121,13 +121,16 @@
 		margin-top: 10px;
 		text-align: center;
 	}
-	.info-table-container {
+	.info-tab-container {
 		margin-top: 20px;
+	}
+	.info-table-container {
+		margin-top: 10px;
 		text-align: left;
 	}
 	.info-table {
-		th:last-child,
-		td:last-child {
+		th:nth-child(n+4),
+		td:nth-child(n+4) {
 			text-align: right;
 			white-space: nowrap;
 		}

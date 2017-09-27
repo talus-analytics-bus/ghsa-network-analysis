@@ -6,6 +6,7 @@
 		const coordsByIso = {};  // lat/lon of each country by iso
 		const currentNodeDataMap = d3.map();  // maps each country to the current monetary value
 		let currentLinkData = [];  // contains data for each link between two countries
+		let currentInfoTab = 'all';  // the current info tab (all, country, function, disease)
 
 		// other variables
 		let infoTableHasBeenInit = false;
@@ -342,7 +343,8 @@
 				{ name: 'Donor', value: 'donor_name' },
 				{ name: 'Recipient', value: 'recipient_name' },
 				{ name: 'Name', value: 'project_name' },
-				{ name: 'Value', value: 'total_disbursed', format: App.formatMoneyFull },
+				{ name: 'Committed', value: 'total_committed', format: App.formatMoneyFull },
+				{ name: 'Disbursed', value: 'total_spent', format: App.formatMoneyFull },
 			];
 
 			// clear DataTables plugin from table
@@ -375,6 +377,14 @@
 					return cellValue;
 				});
 
+			// define "go to analysis" button behavior
+			$('.info-analysis-button')
+				.html(`Show ${d.properties.NAME} in Analysis Page`)
+				.off('click')
+				.on('click', () => {
+					hasher.setHash(`analysis/${d.properties.ISO2}`);
+				});
+
 			// show info
 			$('.info-container').slideDown();
 
@@ -382,9 +392,9 @@
 			infoDataTable = $('.info-table').DataTable({
 				scrollY: '30vh',
 				scrollCollapse: false,
-				order: [3, 'desc'],
+				order: [4, 'desc'],
 				columnDefs: [
-					{ type: 'money', targets: 3 },
+					{ type: 'money', targets: [3, 4] },
 				],
 			});
 			infoTableHasBeenInit = true;

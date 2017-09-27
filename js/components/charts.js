@@ -1,116 +1,97 @@
 (() => {
-	App.buildScatterplot = (selector, data, param = {}) => {
-		const margin = { top: 70, right: 20, bottom: 50, left: 90 };
-		const width = param.width || 700;
-		const height = param.height || 400;
+	App.buildCirclePack = (selector, data, param = {}) => {
+		// define any constants
+		const blues = ['#c6dbef', '#084594'];
+		const colors = param.colors || blues;
+
+		// start building the chart
+		const margin = { top: 30, right: 20, bottom: 30, left: 20 };
+		const size = param.size || 300;
+
 		const chartContainer = d3.select(selector).append('svg')
-			.classed('scatterplot', true)
-			.attr('width', width + margin.left + margin.right)
-			.attr('height', height + margin.top + margin.bottom);
+			.classed('circle-pack-chart', true)
+			.attr('width', size + margin.left + margin.right)
+			.attr('height', size + margin.top + margin.bottom)
 		const chart = chartContainer.append('g')
 			.attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-		// add clip path
+		// add glow definition
 		const defs = chartContainer.append('defs');
-		const chartClip = defs.append('clipPath').attr('id', 'chart-clip');
-		chartClip.append('rect')
-			.attr('y', -margin.top)
-			.attr('width', width + margin.right)
-			.attr('height', height + margin.top);
+		const filter = defs.append('filter')
+			.attr('id', 'glow');
+		filter.append('feGaussianBlur')
+			.attr('stdDeviation', 3.5)
+			.attr('result', 'coloredBlur');
+		var feMerge = filter.append('feMerge');
+		feMerge.append('feMergeNode')
+			.attr('in', 'coloredBlur');
+		feMerge.append('feMergeNode')
+			.attr('in', 'SourceGraphic');
 
-		const x = d3.scaleBand()
-			.domain(App.functions.map(d => d.tag_name))
-			.range([0, width]);
-		const y = d3.scaleLog()
-			.domain([1, d3.max(data, d => d.received)])
-			.range([height, 0]);
-		const sizeScale = d3.scaleLog()
-			.domain([1e4, d3.max(data, d => d.POP2005)])
-			.range([1, 30]);
+		// re-form data to fit for circle pack
+		const nodeData = {
+			name: 'background',
+			children: data,
+		};
 
-		const xAxis = d3.axisBottom(x);
-		const yAxis = d3.axisLeft(y)
-			.tickFormat(App.formatMoneyShort);
+		// start drawing the node pack
+		const pack = d3.pack()
+			.size([size, size])
+			.padding(2);
+		const root = d3.hierarchy(nodeData)
+			.sum(d => d.total_spent)
+			.sort((a, b) => b.POP2005 - a.POP2005);
+		let focus = root;
+		const nodePackData = pack(root).descendants();
 
-		// add clip path and axes
-		const chartBody = chart.append('g')
-			.attr('clip-path', 'url(#chart-clip)');
-		chart.append('g')
-			.attr('class', 'x axis')
-			.attr('transform', `translate(0, ${height})`)
-			.call(xAxis);
-		chart.append('g')
-			.attr('class', 'y axis')
-			.call(yAxis);
+		// define color scale
+		const colorScale = d3.scaleLinear().range(colors);
 
-		// add each country
-		chartBody.append('g').selectAll('.country-node')
-			.data(data)
-			.enter().append('circle')
-				.attr('class', 'country-node')
-				.attr('r', d => sizeScale(d.POP2005))
-				.attr('cx', d => x(d.funded))
-				.attr('cy', d => y(d.received))
-				.style('fill', () => {
-					const rand = 10 * Math.random();
-					if (rand > 5) return '#aaa';
-					if (rand < 1) return '#c91414';
-					else if (rand < 3) return '#ff6d00';
-					else return '#0c6b0c'; 
+		// add in the nodes
+		const nodes = chart.selectAll('g')
+			.data(nodePackData)
+			.enter().append('g')
+				.attr('transform', d => `translate(${d.x}, ${d.y})`)
+				.each(function assignNode(d) { d.node = this; });
+
+		const nodesG = nodes.append('g')
+			.attr('class', (d) => {
+				return d.parent ? d.children ? 'node' : 'node node--leaf' : 'node node--root';
+			});
+
+		nodesG.append('circle')
+			.attr('r', d => d.r)
+			.filter(d => d.parent)
+				.style('fill', (d) => {
+					let percDisbursed = d.data.total_spent / d.data.total_committed;
+					if (percDisbursed > 1) percDisbursed = 1;
+					return colorScale(percDisbursed);
 				})
-				.each(function addTooltip(d) {
+				.style('filter', 'url(#glow)')
+				.each(function(d) {
+					const contentContainer = d3.select(document.createElement('div'));
+					const content = contentContainer.append('div')
+						.attr('class', 'tooltip-content');
+					content.append('div')
+						.attr('class', 'tooltip-title')
+						.text(d.data.NAME);
+					const rowContent = content.append('div')
+						.attr('class', 'tooltip-row-content');
+					rowContent.append('div')
+						.attr('class', 'tooltip-row')
+						.html(`<b>Total Disbursed:</b> ${App.formatMoney(d.data.total_spent)}`);
+					rowContent.append('div')
+						.attr('class', 'tooltip-row')
+						.html(`<b>Total Committed:</b> ${App.formatMoney(d.data.total_committed)}`);
+					const percDisbursed = d.data.total_spent / d.data.total_committed;
+					rowContent.append('div')
+						.attr('class', 'tooltip-row')
+						.html(`<b>Percent Disbursed:</b> ${d3.format('.1%')(percDisbursed)}`);
+
 					$(this).tooltipster({
-						minWidth: 200,
-						maxWidth: 400,
-						content: getTooltipContent(d),
+						trigger: 'hover',
+						content: contentContainer.html(),
 					});
 				});
-
-		// add axes labels
-		chart.append('text')
-			.attr('class', 'axis-label x-axis-label')
-			.attr('x', width / 2)
-			.attr('y', height + 45)
-			.text(`Amount Funded (in ${App.currencyIso})`);
-		chart.append('text')
-			.attr('class', 'axis-label y-axis-label-1')
-			.attr('y', -25)
-			.text(`Amount Received (in ${App.currencyIso})`);
-
-		// function to get tooltip content for countries
-		function getTooltipContent(d) {
-			const contentContainer = d3.select(document.createElement('div'));
-			const content = contentContainer.append('div')
-				.attr('class', 'scatterplot-tooltip');
-			content.append('div')
-				.attr('class', 'scatterplot-tooltip-title')
-				.text(d.NAME);
-			const infoContainer = content.append('div')
-				.attr('class', 'scatterplot-tooltip-info');
-			infoContainer.append('div')
-				.html(`Population (in 2005): <b>${Util.comma(d.POP2005)}</b>`);
-			infoContainer.append('div')
-				.html(`Number of Funding Items: <b>${Math.round(40 * Math.random())}</b>`);
-
-			const row = content.append('div').attr('class', 'row');
-			const leftCol = row.append('div').attr('class', 'col-sm-6');
-			const rightCol = row.append('div').attr('class', 'col-sm-6');
-
-			leftCol.append('div')
-				.attr('class', 'scatterplot-tooltip-value')
-				.text(App.formatMoney(d.funded));
-			leftCol.append('div')
-				.attr('class', 'scatterplot-tooltip-value-label')
-				.text('Funded');
-			rightCol.append('div')
-				.attr('class', 'scatterplot-tooltip-value')
-				.text(App.formatMoney(d.received));
-			rightCol.append('div')
-				.attr('class', 'scatterplot-tooltip-value-label')
-				.text('Received');
-			return contentContainer.html();			
-		}
-
-		return chart;
 	};
 })();
