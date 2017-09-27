@@ -6,10 +6,6 @@
 		const currentNodeDataMap = d3.map();  // maps each country to the current monetary value
 		let currentInfoTab = 'all';  // the current info tab (all, country, function, disease)
 
-		// other variables
-		let infoTableHasBeenInit = false;
-		let infoDataTable;
-
 		// colors
 		const purples = ['#e0ecf4', '#bfd3e6', '#9ebcda',
 			'#8c96c6', '#8c6bb1', '#88419d', '#810f7c', '#4d004b'];
@@ -129,12 +125,11 @@
 				const payments = dataLookup[c.ISO2];
 				if (payments) {
 					let totalValue = 0;
-					const valueByCountry = {};
 					for (let i = 0, n = payments.length; i < n; i++) {
 						const p = payments[i];
 						//if (!Util.hasCommonElement(functions, p.project_function)) continue;
 						//if (!Util.hasCommonElement(diseases, p.project_disease)) continue;
-						totalValue += p.total_committed || 0;
+						totalValue += p.total_spent || 0;
 					}
 
 					// set in node map
@@ -241,100 +236,12 @@
 
 		// displays detailed country information
 		function displayCountryInfo() {
+			const country = activeCountry.datum().properties;
 			const moneyType = getMoneyType();
 			const dataLookup = getDataLookup();
-			const d = activeCountry.datum();
-			const payments = dataLookup[d.properties.ISO2];
+			const payments = dataLookup[country.ISO2];
 
-			// define info close button behavior
-			$('.info-close-button').on('click', resetMap);
-
-			// populate info title
-			$('.info-title').text(d.properties.NAME);
-
-			// if there are no payments, return
-			if (!payments) {
-				const valueText = (moneyType === 'received') ? 
-					'No data for payments received by this country' :
-					'No data for money donated by this country';
-				$('.info-total-value').html(valueText);
-				$('.info-table-container').hide();
-				$('.info-container').slideDown();
-				return;
-			} else {
-				$('.info-table-container').show();
-			}
-
-			// populate info total value
-			let totalValue = 0;
-			if (currentNodeDataMap.has(d.properties.ISO2)) {
-				totalValue = currentNodeDataMap.get(d.properties.ISO2);
-			}
-			const valueLabel = (moneyType === 'received') ?
-				'Total Received' : 'Total Donated';
-			const valueText = App.formatMoney(totalValue);
-			$('.info-total-value').html(`${valueLabel}: <b>${valueText}</b>`);
-
-			// define column data for info table
-			const headerData = [
-				{ name: 'Donor', value: 'donor_name' },
-				{ name: 'Recipient', value: 'recipient_name' },
-				{ name: 'Name', value: 'project_name' },
-				{ name: 'Committed', value: 'total_committed', format: App.formatMoneyFull },
-				{ name: 'Disbursed', value: 'total_spent', format: App.formatMoneyFull },
-			];
-
-			// clear DataTables plugin from table
-			if (infoTableHasBeenInit) infoDataTable.destroy();
-
-			// populate table
-			const infoTable = d3.select('.info-table');
-			const infoThead = infoTable.select('thead tr');
-			const headers = infoThead.selectAll('th')
-				.data(headerData);
-			headers.exit().remove();
-			headers.enter().append('th')
-				.merge(headers)
-				.text(d => d.name);
-
-			const infoTbody = infoTable.select('tbody');
-			const rows = infoTbody.selectAll('tr')
-				.data(payments);
-			rows.exit().remove();
-			const newRows = rows.enter().append('tr');
-
-			const cells = newRows.merge(rows).selectAll('td')
-				.data(d => headerData.map(c => ({ rowData: d, colData: c })));
-			cells.exit().remove();
-			cells.enter().append('td')
-				.merge(cells)
-				.text((d) => {
-					const cellValue = d.rowData[d.colData.value];
-					if (d.colData.format) return d.colData.format(cellValue);
-					return cellValue;
-				});
-
-			// define "go to analysis" button behavior
-			$('.info-analysis-button')
-				.html(`Show ${d.properties.NAME} in Analysis Page`)
-				.off('click')
-				.on('click', () => {
-					hasher.setHash(`analysis/${d.properties.ISO2}`);
-				});
-
-			// show info
-			$('.info-container').slideDown();
-
-			// initialize DataTables plugin, if not already
-			infoDataTable = $('.info-table').DataTable({
-				scrollY: '30vh',
-				scrollCollapse: false,
-				order: [4, 'desc'],
-				columnDefs: [
-					{ type: 'money', targets: [3, 4] },
-				],
-			});
-			infoTableHasBeenInit = true;
+			App.populateCountryInfoBox(country, moneyType, payments, resetMap);
 		}
 
 		// initializes search functionality
