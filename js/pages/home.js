@@ -4,7 +4,6 @@
 		//let map;  // the world map
 		let activeCountry = d3.select(null);  // the active country
 		const currentNodeDataMap = d3.map();  // maps each country to the current monetary value
-		let currentInfoTab = 'all';  // the current info tab (all, country, function, disease)
 
 		// colors
 		const purples = ['#e0ecf4', '#bfd3e6', '#9ebcda',
@@ -17,6 +16,7 @@
 			map = buildMap();
 			initSearch();
 			initFilters();
+			App.initCountryInfoBox({ closeFunc: resetMap });
 			updateAll();
 		}
 
@@ -241,7 +241,7 @@
 			const dataLookup = getDataLookup();
 			const payments = dataLookup[country.ISO2];
 
-			App.populateCountryInfoBox(country, moneyType, payments, resetMap);
+			App.updateCountryInfoBox(country, moneyType, payments);
 		}
 
 		// initializes search functionality

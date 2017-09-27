@@ -129,8 +129,7 @@
 		text-align: left;
 	}
 	.info-table {
-		th:nth-child(n+4),
-		td:nth-child(n+4) {
+		.money-cell {
 			text-align: right;
 			white-space: nowrap;
 		}
