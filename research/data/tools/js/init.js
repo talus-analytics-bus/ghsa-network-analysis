@@ -2,4 +2,6 @@
 // App.getData('fa_slim_16_17.csv', App.mapDataFa);
 // App.getIatiActivities();
 // App.getIatiTransactions();
-App.mapDataIati();
+// App.filterTransactionsBySector();
+// App.mapDataIati();
+App.loadFundingData();
