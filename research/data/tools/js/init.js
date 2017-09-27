@@ -4,3 +4,4 @@
 // App.getIatiTransactions();
 // App.filterTransactionsBySector();
 // App.mapDataIati();
+App.loadFundingData();
