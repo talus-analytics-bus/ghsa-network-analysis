@@ -59,7 +59,7 @@
 				return d.parent ? d.children ? 'node' : 'node node--leaf' : 'node node--root';
 			});
 
-		nodesG.append('circle')
+		const circles = nodesG.append('circle')
 			.attr('r', d => d.r)
 			.filter(d => d.parent)
 				.style('fill', (d) => {
@@ -93,5 +93,6 @@
 						content: contentContainer.html(),
 					});
 				});
+		if (param.onClick) circles.on('click', d => param.onClick(d.data.ISO2));
 	};
 })();

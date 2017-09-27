@@ -3,10 +3,26 @@
 		function init() {
 			populateFilters();
 			initSearch();
-			drawCharts();
+
+			if (countryIso) {
+				populateCountryContent();
+				$('.analysis-country-content').slideDown();
+			} else {
+				populateGlobalContent();
+				$('.analysis-global-content').slideDown();
+			}
 		}
 
-		function drawCharts() {
+		function populateGlobalContent() {
+			drawGlobalCharts();
+		}
+
+		function populateCountryContent() {
+			const country = App.countries.find(c => c.ISO2 === countryIso);
+			$('.analysis-country-title').text(country.NAME);
+		}
+
+		function drawGlobalCharts() {
 			// collate the data
 			const fundedData = [];
 			const receivedData = [];
@@ -26,16 +42,17 @@
 					receivedData.push(rc);
 				}
 			}
-			console.log(fundedData);
 
 			// build the chart
 			App.buildCirclePack('.countries-funded-container', fundedData, {
 				tooltipLabel: 'Total Funded',
 				colors: ['#c6dbef', '#084594'],
+				onClick: iso => hasher.setHash(`analysis/${iso}`),
 			});
 			App.buildCirclePack('.countries-received-container', receivedData, {
 				tooltipLabel: 'Total Received',
 				colors: ['#feedde', '#8c2d04'],
+				onClick: iso => hasher.setHash(`analysis/${iso}`),
 			});
 		}
 
