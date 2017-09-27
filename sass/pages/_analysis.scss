@@ -28,7 +28,6 @@ $analysis-white: rgba(255,255,255,0.85);
 	padding: 20px 30px 50px;
 	@include gradient(#f0f0f0, #e0e0e0);
 }
-.countries-funded-container,
-.countries-received-container {
+.circle-pack-container {
 	text-align: center;
 }

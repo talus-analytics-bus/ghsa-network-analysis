@@ -5,7 +5,7 @@
 		const colors = param.colors || blues;
 
 		// start building the chart
-		const margin = { top: 30, right: 20, bottom: 30, left: 20 };
+		const margin = { top: 30, right: 30, bottom: 80, left: 30 };
 		const size = param.size || 300;
 
 		const chartContainer = d3.select(selector).append('svg')
@@ -27,6 +27,20 @@
 			.attr('in', 'coloredBlur');
 		feMerge.append('feMergeNode')
 			.attr('in', 'SourceGraphic');
+
+		// add horizontal gradient definition for legend
+		const gradient = defs.append('linearGradient')
+			.attr('id', `${selector}-gradient`)
+			.attr('x1', '0%')
+			.attr('x2', '100%')
+			.attr('y1', '0%')
+			.attr('y2', '0%');
+		gradient.append('stop')
+			.attr('stop-color', colors[0])
+			.attr('offset', '0%');
+		gradient.append('stop')
+			.attr('stop-color', colors[1])
+			.attr('offset', '100%');
 
 		// re-form data to fit for circle pack
 		const nodeData = {
@@ -94,5 +108,26 @@
 					});
 				});
 		if (param.onClick) circles.on('click', d => param.onClick(d.data.ISO2));
+
+		// add legend
+		const legendWidth = 320;
+		const legend = chart.append('g')
+			.attr('transform', `translate(${(size - legendWidth) / 2}, ${size + 25})`);
+		legend.append('rect')
+			.attr('width', legendWidth)
+			.attr('height', 20)
+			.attr('fill',  `url(#${selector}-gradient)`);
+		legend.append('text')
+			.attr('class', 'legend-label')
+			.attr('y', 20 + 12)
+			.attr('dy', '.35em')
+			.text('0% Disbursed');
+		legend.append('text')
+			.attr('class', 'legend-label')
+			.attr('x', legendWidth)
+			.attr('y', 20 + 12)
+			.attr('dy', '.35em')
+			.style('text-anchor', 'end')
+			.text('100% Disbursed');
 	};
 })();
