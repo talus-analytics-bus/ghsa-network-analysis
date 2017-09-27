@@ -1,8 +1,24 @@
 const App = {};
 
 (() => {
-	App.test = () => {
-		// console.log(faRaw);
+	// Keeps only those transactions associated with a project AID that has
+	// a health sector group
+	App.filterTransactionsBySector = () => {
+		console.log('Loading transactions data...');
+		d3.queue()
+			.defer(d3.json, 'data/test.json')
+			.await((error, data) => {
+				console.log('test complete:');
+				console.log(data);
+
+
+				// Get list of activities with right sectors
+				console.log("Getting list of 'aid' that are correct sector...")
+				const sectorAid = _.unique(_.pluck(iatiActivities.rows,'aid'));
+				console.log("Filtering transactions data by sector...");
+				const dataBySector = data.filter(d => sectorAid.indexOf(d.aid) > -1);
+				console.log(dataBySector);
+			});
 	};
 
 	/* getIatiTransactions
@@ -13,9 +29,9 @@ const App = {};
 
 		$.ajax({
 			type: 'post',
-			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=trans,sector,act,country&sector_group=121&sector_group=122&day_start_gt=2014-01-01&select=aid,reporting_ref,funder_ref,title,country_code,country_percent,trans_code,trans_usd,trans_day',
-			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=60000&from=trans,sector,act,country&sector_group=121&sector_group=122&day_start_gt=2014-01-01&select=aid,reporting_ref,funder_ref,title,country_code,trans_code,trans_usd,trans_day,sector_code',
-			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=20000&from=trans,sector,act,country&sector_group=121&trans_day_gt=2016-01-01&select=aid,reporting_ref,funder_ref,title,country_code,trans_code,trans_usd,trans_day,sector_code',
+			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=900000&from=trans,act,country&day_start_gt=2014-01-01&select=aid,funder_ref,title,country_code,country_percent,trans_code,trans_usd,trans_day',
+			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=trans,act,country&day_start_gt=2014-01-01&select=aid,reporting_ref,funder_ref,title,country_code,country_percent,trans_code,trans_usd,trans_day',
+			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=trans,sector,act,country&sector_group=121&sector_group=122&day_start_gt=2014-01-01&select=aid,reporting_ref,funder_ref,title,country_code,country_percent,trans_code,trans_usd,trans_day',
 			success: function(data) {
 				console.log('got it!');
 				console.log(data)
@@ -34,7 +50,8 @@ const App = {};
 
 		$.ajax({
 			type: 'post',
-			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&sector_group=121&sector_group=122&select=aid,sector_code,day_start,day_end,spend,commitment',
+			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&sector_group=121&sector_group=122&flags=0&select=aid,sector_code,day_start,day_end,spend,commitment,flags',
+			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&sector_group=121&sector_group=122&select=aid,sector_code,day_start,day_end,spend,commitment',
 			success: function(data) {
 				console.log('got it!');
 				console.log(data)
@@ -55,7 +72,7 @@ const App = {};
 		outputTags = [];
 		for (let i = 0; i < input.length; i++) {
 			// get sector code text
-			const sectorTag = Util.iatiSectorCodeHash[input];
+			const sectorTag = Util.iatiSectorCodeHash[input[i]];
 			if (sectorTag === undefined) continue;
 			const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].function_tags;
 			if (outputTmp === undefined) continue;
@@ -74,7 +91,7 @@ const App = {};
 		outputTags = [];
 		for (let i = 0; i < input.length; i++) {
 			// get sector code text
-			const sectorTag = Util.iatiSectorCodeHash[input];
+			const sectorTag = Util.iatiSectorCodeHash[input[i]];
 			if (sectorTag === undefined) continue;
 			const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].disease_tags;
 			if (outputTmp === undefined) continue;
@@ -176,122 +193,133 @@ const App = {};
 	App.mapDataIati = () => {
 		console.log('Running App.mapDataIati');
 
-		// check data
-		console.log(iatiRaw);
+		// // check data
+		// console.log(iatiRaw);
 
 		// grab transactions
-		let transactions = iatiRaw.rows;
+		let transactions = iatiRaw;
 
-		// Grab unique project names
-		let projNames = _.unique(_.pluck(transactions, 'aid'));
-
-		// Create new project for each
 		const output = [];
 		let projId = 0;
+		
+		// Grab unique project names
+		let projNames = _.unique(_.pluck(transactions, 'aid'));
+		
 		for (let i  = 0; i < projNames.length; i++) {
-			const proj = {};
+
 
 			// get current project name ("aid" data field)
 			const curProj_aid = projNames[i];
 
-
-			// project_id
-			proj.project_id = 'proj.' + projId.toString();
-			projId++;
-
 			// get all transactions associated with this project
 			const projTrans = transactions.filter(d => d.aid === curProj_aid);
 
-			// // DEBUG print result count, check ones that seem high
-			// console.log('projTrans.length = ' + projTrans.length);
-			// if (projTrans.length > 100) console.log(curProj_aid);
+			// Grab unique recipient country codes
+			let projCountryCodes = _.unique(_.pluck(projTrans, 'country_code'));
 
-			// grab the first transaction so we can reference its project-level data fields
-			const firstProjTrans = projTrans[0];
+			// create project entry obj for each 'aid' and 'country_code' combo
+			for (let j = 0; j < projCountryCodes.length; j++) {
 
-			// DEBUG store aid data
-			proj.aid = firstProjTrans.aid;
+				// Create new project for each recipient country
+				const proj = {};
 
-			// project_name
-			proj.project_name = firstProjTrans.title;
-			proj.project_name = firstProjTrans.title;
-			
-			// project_function
-			// get sector codes for this activity (project)
-			const curSectorCodes = _.unique(_.pluck(iatiActivities.rows.filter(d => d.aid === firstProjTrans.aid), 'sector_code'));
-			proj.project_function = App.getFunctionTags(curSectorCodes);
+				// Get current country code (2-char)
+				const curCountryCode = projCountryCodes[j];
 
-			// project_disease
-			proj.project_disease = App.getDiseaseTags(curSectorCodes);
-
-			// donor_country
-			const curDonorData = App.getDonorData(firstProjTrans.funder_ref);
-			proj.donor_country = curDonorData.donor_country;
-
-			// donor_sectors
-			proj.donor_sector = curDonorData.donor_sector;
-
-			// donor_name
-			proj.donor_name = curDonorData.donor_name;
-
-			// channel
-			// placeholder
-
-			// recipient_country
-			const curRecipientData = App.getRecipientData(firstProjTrans.country_code); // TODO
-			proj.recipient_country = curRecipientData.recipient_country;
-
-			// recipient_sector
-			proj.recipient_sector = curRecipientData.recipient_sector;
-
-			// recipient_name
-			proj.recipient_name = curRecipientData.recipient_name;
-
-			// process transactions data
-			proj.transactions = [];
-
-			for (let j = 0; j < projTrans.length; j++) {
-				const curTrans = {};
-
-				// transactions[0].type
-				curTrans.type = App.getTransType(projTrans[j].trans_code);
+				// Get transactions for this project 'aid' for this 'country_code'
+				const projCountryTrans = projTrans.filter(d => d.country_code === curCountryCode);
 				
-				// transactions[0].amount
-				curTrans.amount = projTrans[j].trans_usd;
+				// project_id
+				proj.project_id = 'proj.' + projId.toString();
+				projId++;
 
-				// transactions[0].cy
-				curTrans.cy = Util.SqlDayToYYYY(projTrans[j].trans_day);
+				// grab the first transaction so we can reference its project-level data fields
+				const firstProjTrans = projCountryTrans[0];
 
-				// transactions[0].currency
-				curTrans.currency = 'USD'; // always USD for IATI data
+				// DEBUG store aid data
+				proj.aid = firstProjTrans.aid;
 
-				// add transaction
-				proj.transactions.push(curTrans);
-			}
+				// project_name
+				proj.project_name = firstProjTrans.title;
+				
+				// project_function
+				// get sector codes for this activity (project)
+				const curSectorCodes = _.unique(_.pluck(iatiActivities.rows.filter(d => d.aid === firstProjTrans.aid), 'sector_code'));
+				// if (firstProjTrans.aid === "CA-3-D000514001") console.log(curSectorCodes);
+				proj.project_function = App.getFunctionTags(curSectorCodes);
 
-			let someCommitments = false;
-			let someDisbursements = false;
-			
-			proj.total_committed = 0.0;
-			proj.total_disbursed = 0.0;
-			proj.transactions.forEach(d => {
-				if (d.type === "commitment") {
-					someCommitments = true;
-					proj.total_committed += d.amount;
-				} else if (d.type === "disbursement") {
-					someDisbursements = true;
-					proj.total_disbursed += d.amount;
+				// project_disease
+				proj.project_disease = App.getDiseaseTags(curSectorCodes);
+
+				// donor_country
+				const curDonorData = App.getDonorData(firstProjTrans.funder_ref);
+				proj.donor_country = curDonorData.donor_country;
+
+				// donor_sectors
+				proj.donor_sector = curDonorData.donor_sector;
+
+				// donor_name
+				proj.donor_name = curDonorData.donor_name;
+
+				// channel
+				// placeholder
+
+				// recipient_country
+				const curRecipientData = App.getRecipientData(firstProjTrans.country_code); // TODO
+				proj.recipient_country = curRecipientData.recipient_country;
+
+				// recipient_sector
+				proj.recipient_sector = curRecipientData.recipient_sector;
+
+				// recipient_name
+				proj.recipient_name = curRecipientData.recipient_name;
+
+				// process transactions data
+				proj.transactions = [];
+
+				for (let j = 0; j < projCountryTrans.length; j++) {
+					const curTrans = {};
+
+					// transactions[0].type
+					curTrans.type = App.getTransType(projCountryTrans[j].trans_code);
+					
+					// transactions[0].amount
+					curTrans.amount = parseFloat(projCountryTrans[j].trans_usd) * parseFloat(projCountryTrans[j].country_percent) / 100.0;
+
+					// transactions[0].cy
+					curTrans.cy = Util.SqlDayToYYYY(projCountryTrans[j].trans_day);
+
+					// transactions[0].currency
+					curTrans.currency = 'USD'; // always USD for IATI data
+
+					// add transaction
+					proj.transactions.push(curTrans);
 				}
-			});
 
-			if (!someCommitments) proj.total_committed = null;
-			if (!someDisbursements) proj.total_disbursed = null;
+				let someCommitments = false;
+				let someSpent = false;
+				
+				proj.total_committed = 0.0;
+				proj.total_spent = 0.0;
+				proj.transactions.forEach(d => {
+					if (d.type === "commitment") {
+						someCommitments = true;
+						proj.total_committed += d.amount;
+					} else if (d.type === "disbursement" || d.type === "expenditure") {
+						someSpent = true;
+						proj.total_spent += d.amount;
+					}
+				});
 
-			// total_currency
-			proj.total_currency = 'USD'; // always USD for IATI for now
+				if (!someCommitments) proj.total_committed = null;
+				if (!someSpent) proj.total_spent = null;
 
-			// add project to output
-			output.push(proj);
+				// total_currency
+				proj.total_currency = 'USD'; // always USD for IATI for now
+
+				// add project to output
+				output.push(proj);
+			}
 		}
 
 		console.log(output);
@@ -340,15 +368,15 @@ const App = {};
 	};
 
 	App.hashDisease = {
-	  "Health - General": "General",
-	  "Maternal and Child Health": "Maternal and child health",
-	  "Nutrition": "Nutrition",
-	  "Water Supply and Sanitation": "Water supply and sanitation",
-	  "HIV/AIDS": "HIV/AIDS",
-	  "Malaria": "Malaria",
-	  "Other Public Health Threats": "Other",
-	  "Pandemic Influenza and Other Emerging Threats (PIOET)": "Pandemic influenza",
-	  "Tuberculosis": "Tuberculosis"
+		"Health - General": "General",
+		"Maternal and Child Health": "Maternal and child health",
+		"Nutrition": "Nutrition",
+		"Water Supply and Sanitation": "Water supply and sanitation",
+		"HIV/AIDS": "HIV/AIDS",
+		"Malaria": "Malaria",
+		"Other Public Health Threats": "Other",
+		"Pandemic Influenza and Other Emerging Threats (PIOET)": "Pandemic influenza",
+		"Tuberculosis": "Tuberculosis"
 	};
 
 	App.hashFunction = {
@@ -356,12 +384,12 @@ const App = {};
 	};
 
 	App.hashAidType = {
-	  "Contributions to specific-purpose programmes and funds managed by international organisations (multilateral, INGO)": "Contributions to specific-purpose programmes and funds managed by international organisations (multilateral, INGO)",
-	  "Core contributions to multilateral institutions": "Core contributions to multilateral institutions",
-	  "Donor country personnel": "Donor country personnel",
-	  "Other technical assistance": "Other technical assistance",
-	  "Project-type interventions": "Project-type interventions",
-	  "Sector budget support": "Sector budget support"
+		"Contributions to specific-purpose programmes and funds managed by international organisations (multilateral, INGO)": "Contributions to specific-purpose programmes and funds managed by international organisations (multilateral, INGO)",
+		"Core contributions to multilateral institutions": "Core contributions to multilateral institutions",
+		"Donor country personnel": "Donor country personnel",
+		"Other technical assistance": "Other technical assistance",
+		"Project-type interventions": "Project-type interventions",
+		"Sector budget support": "Sector budget support"
 	};
 
 	App.mapDisease = (input) => {
@@ -432,7 +460,7 @@ const App = {};
 				const this_country_transactions = proj.filter(d => d['Award Transaction - Recipient Country - Name'] === recipient_country && d.processed === undefined);
 				
 				if (this_country_transactions.length === 0) return;
-		
+
 				
 				newRecord.donor_country = "United States of America";
 				newRecord.donor_sector = "Government";
