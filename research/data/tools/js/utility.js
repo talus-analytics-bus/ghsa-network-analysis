@@ -70,6 +70,15 @@ Util.SqlDayToYYYY = (num_days) => {
     const time2 = new Date(time1.getTime() + num_msec);
     return time2.getFullYear().toString();
 };
+
+// Sums the numbers in an array
+Util.sumArr = (arr) => {
+    const getSum = (total, num) => {
+        return total + num;
+    };
+    return arr.reduce(getSum);
+};
+
 //     "transaction_type_map": {
 //         "1": "IF",
 //         "2": "C",
