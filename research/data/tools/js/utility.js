@@ -69,12 +69,7 @@ Util.funder_aux_hash = {"ES":{"name":"Spain","sector":"Government","country":"Sp
 // Current mapping
 Util.iatiDiseaseFunctionHash = {
   "Basic health care": {
-    "disease_tags": [
-      {
-        "p": "Unspecified",
-        "c": null
-      }
-    ],
+    "disease_tags": undefined,
     "function_tags": [
       {
         "p": "Basic health care",
@@ -83,12 +78,7 @@ Util.iatiDiseaseFunctionHash = {
     ]
   },
   "Basic health infrastructure": {
-    "disease_tags": [
-      {
-        "p": "Unspecified",
-        "c": null
-      }
-    ],
+    "disease_tags": undefined,
     "function_tags": [
       {
         "p": "Basic health care",
@@ -97,12 +87,7 @@ Util.iatiDiseaseFunctionHash = {
     ]
   },
   "Basic nutrition": {
-    "disease_tags": [
-      {
-        "p": "Unspecified",
-        "c": null
-      }
-    ],
+    "disease_tags": undefined,
     "function_tags": [
       {
         "p": "Nutrition and food security",
@@ -111,12 +96,7 @@ Util.iatiDiseaseFunctionHash = {
     ]
   },
   "Health education": {
-    "disease_tags": [
-      {
-        "p": "Unspecified",
-        "c": null
-      }
-    ],
+    "disease_tags": undefined,
     "function_tags": [
       {
         "p": "Education",
@@ -125,12 +105,7 @@ Util.iatiDiseaseFunctionHash = {
     ]
   },
   "Health personnel development": {
-    "disease_tags": [
-      {
-        "p": "Unspecified",
-        "c": null
-      }
-    ],
+    "disease_tags": undefined,
     "function_tags": [
       {
         "p": "Basic health care",
@@ -139,12 +114,7 @@ Util.iatiDiseaseFunctionHash = {
     ]
   },
   "Health policy and administrative management": {
-    "disease_tags": [
-      {
-        "p": "Unspecified",
-        "c": null
-      }
-    ],
+    "disease_tags": undefined,
     "function_tags": [
       {
         "p": "Health policy",
@@ -181,12 +151,7 @@ Util.iatiDiseaseFunctionHash = {
     ]
   },
   "Medical education/training": {
-    "disease_tags": [
-      {
-        "p": "Unspecified",
-        "c": null
-      }
-    ],
+    "disease_tags": undefined,
     "function_tags": [
       {
         "p": "Education",
@@ -195,12 +160,7 @@ Util.iatiDiseaseFunctionHash = {
     ]
   },
   "Medical research": {
-    "disease_tags": [
-      {
-        "p": "Unspecified",
-        "c": null
-      }
-    ],
+    "disease_tags": undefined,
     "function_tags": [
       {
         "p": "Research and development",
@@ -209,12 +169,7 @@ Util.iatiDiseaseFunctionHash = {
     ]
   },
   "Medical services": {
-    "disease_tags": [
-      {
-        "p": "Unspecified",
-        "c": null
-      }
-    ],
+    "disease_tags": undefined,
     "function_tags": [
       {
         "p": "Medical services",
@@ -237,19 +192,354 @@ Util.iatiDiseaseFunctionHash = {
     ]
   },
   "Livestock/veterinary services": {
-    "disease_tags": [
-      {
-        "p": "Unspecified",
-        "c": null
-      }
-    ],
+    "disease_tags": undefined,
     "function_tags": [
       {
         "p": "Livestock / Veterinary services",
         "c": null
       }
     ]
+  },
+  "Population policy and administrative management": {
+    "disease_tags": undefined,
+    "function_tags": [
+      {
+        "p": "Health policy",
+        "c": null
+      }
+    ]
+  },
+  "Reproductive health care": {
+    "disease_tags": undefined,
+    "function_tags": [
+      {
+        "p": "Basic health care",
+        "c": "Family health"
+      }
+    ]
+  },
+  "Family planning": {
+    "disease_tags": undefined,
+    "function_tags": [
+      {
+        "p": "Basic health care",
+        "c": "Family health"
+      }
+    ]
+  },
+  "STD control including HIV/AIDS": {
+    "disease_tags": [
+      {
+        "p": "Infectious disease",
+        "c": null
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Infection control",
+        "c": null
+      }
+    ]
+  },
+  "Personnel development for population and reproductive health": {
+    "disease_tags": undefined,
+    "function_tags": [
+      {
+        "p": "Basic health care",
+        "c": "Health personnel development"
+      },
+      {
+        "p": "Basic health care",
+        "c": "Family health"
+      }
+    ]
   }
 };
 
-Util.iatiSectorCodeHash = {"11110":"Education policy and administrative management","11120":"Education facilities and training","11130":"Teacher training","11182":"Educational research","11220":"Primary education","11230":"Basic life skills for youth and adults","11231":"Basic life skills for youth","11232":"Primary education equivalent for adults","11240":"Early childhood education","11320":"Secondary education","11321":"Lower secondary education","11322":"Upper secondary education","11330":"Vocational training","11420":"Higher education","11430":"Advanced technical and managerial training","12110":"Health policy and administrative management","12181":"Medical education/training","12182":"Medical research","12191":"Medical services","12220":"Basic health care","12230":"Basic health infrastructure","12240":"Basic nutrition","12250":"Infectious disease control","12261":"Health education","12262":"Malaria control","12263":"Tuberculosis control","12281":"Health personnel development","13010":"Population policy and administrative management","13020":"Reproductive health care","13030":"Family planning","13040":"STD control including HIV/AIDS","13081":"Personnel development for population and reproductive health","14010":"Water sector policy and administrative management","14015":"Water resources conservation (including data collection)","14020":"Water supply and sanitation - large systems","14021":"Water supply - large systems","14022":"Sanitation - large systems","14030":"Basic drinking water supply and basic sanitation","14031":"Basic drinking water supply","14032":"Basic sanitation","14040":"River basins’ development","14050":"Waste management / disposal","14081":"Education and training in water supply and sanitation","15110":"Public sector policy and administrative management","15111":"Public Finance Management (PFM)","15112":"Decentralisation and support to subnational government","15113":"Anti-corruption organisations and institutions","15114":"Domestic Revenue Mobilisation","15116":"Tax collection","15117":"Budget planning","15118":"National audit","15119":"Debt and aid management","15120":"Public sector financial management","15121":"Foreign affairs","15122":"Diplomatic missions","15123":"Administration of developing countries' foreign aid","15124":"General personnel services","15125":"Central procurement","15126":"Other general public services","15127":"National monitoring and evaluation","15128":"Local government finance","15129":"Other central transfers to institutions","15130":"Legal and judicial development","15131":"Justice, law and order policy, planning and administration","15132":"Police","15133":"Fire and rescue services","15134":"Judicial affairs","15135":"Ombudsman","15136":"Immigration","15137":"Prisons","15140":"Government administration","15142":"Macroeconomic policy","15143":"Meteorological services","15144":"National standards development","15150":"Democratic participation and civil society","15151":"Elections","15152":"Legislatures and political parties","15153":"Media and free flow of information","15154":"Executive office","15155":"Tax policy and administration support","15156":"Other non-tax revenue mobilisation","15160":"Human rights","15161":"Elections","15162":"Human rights","15163":"Free flow of information","15164":"Women's equality organisations and institutions","15170":"Women’s equality organisations and institutions","15180":"Ending violence against women and girls","15185":"Local government administration","15210":"Security system management and reform","15220":"Civilian peace-building, conflict prevention and resolution","15230":"Participation in international peacekeeping operations","15240":"Reintegration and SALW control","15250":"Removal of land mines and explosive remnants of war","15261":"Child soldiers (Prevention and demobilisation)","16010":"Social/ welfare services","16011":"Social protection and welfare services policy, planning and administration","16012":"Social security (excl pensions)","16013":"General pensions","16014":"Civil service pensions","16015":"Social services (incl youth development and women+ children)","16020":"Employment policy and administrative management","16030":"Housing policy and administrative management","16040":"Low-cost housing","16050":"Multisector aid for basic social services","16061":"Culture and recreation","16062":"Statistical capacity building","16063":"Narcotics control","16064":"Social mitigation of HIV/AIDS","16065":"Recreation and sport","16066":"Culture","21010":"Transport policy and administrative management","21011":"Transport policy, planning and administration","21012":"Public transport services","21013":"Transport regulation","21020":"Road transport","21021":"Feeder road construction","21022":"Feeder road maintenance","21023":"National road construction","21024":"National road maintenance","21030":"Rail transport","21040":"Water transport","21050":"Air transport","21061":"Storage","21081":"Education and training in transport and storage","22010":"Communications policy and administrative management","22011":"Communications policy, planning and administration","22012":"Postal services","22013":"Information services","22020":"Telecommunications","22030":"Radio/television/print media","22040":"Information and communication technology (ICT)","23010":"Energy policy and administrative management","23020":"Power generation/non-renewable sources","23030":"Power generation/renewable sources","23040":"Electrical transmission/ distribution","23050":"Gas distribution","23061":"Oil-fired power plants","23062":"Gas-fired power plants","23063":"Coal-fired power plants","23064":"Nuclear power plants","23065":"Hydro-electric power plants","23066":"Geothermal energy","23067":"Solar energy","23068":"Wind power","23069":"Ocean power","23070":"Biomass","23081":"Energy education/training","23082":"Energy research","23110":"Energy policy and administrative management","23111":"Energy sector policy, planning and administration","23112":"Energy regulation","23181":"Energy education/training","23182":"Energy research","23183":"Energy conservation and demand-side efficiency","23210":"Energy generation, renewable sources – multiple technologies","23220":"Hydro-electric power plants","23230":"Solar energy","23240":"Wind energy","23250":"Marine energy","23260":"Geothermal energy","23270":"Biofuel-fired power plants","23310":"Energy generation, non-renewable sources – unspecified","23320":"Coal-fired electric power plants","23330":"Oil-fired electric power plants","23340":"Natural gas-fired electric power plants","23350":"Fossil fuel electric power plants with carbon capture and storage (CCS)","23360":"Non-renewable waste-fired electric power plants","23410":"Hybrid energy electric power plants","23510":"Nuclear energy electric power plants","23610":"Heat plants","23620":"District heating and cooling","23630":"Electric power transmission and distribution","23640":"Gas distribution","24010":"Financial policy and administrative management","24020":"Monetary institutions","24030":"Formal sector financial intermediaries","24040":"Informal/semi-formal financial intermediaries","24081":"Education/training in banking and financial services","25010":"Business support services and institutions","25020":"Privatisation","31110":"Agricultural policy and administrative management","31120":"Agricultural development","31130":"Agricultural land resources","31140":"Agricultural water resources","31150":"Agricultural inputs","31161":"Food crop production","31162":"Industrial crops/export crops","31163":"Livestock","31164":"Agrarian reform","31165":"Agricultural alternative development","31166":"Agricultural extension","31181":"Agricultural education/training","31182":"Agricultural research","31191":"Agricultural services","31192":"Plant and post-harvest protection and pest control","31193":"Agricultural financial services","31194":"Agricultural co-operatives","31195":"Livestock/veterinary services","31210":"Forestry policy and administrative management","31220":"Forestry development","31261":"Fuelwood/charcoal","31281":"Forestry education/training","31282":"Forestry research","31291":"Forestry services","31310":"Fishing policy and administrative management","31320":"Fishery development","31381":"Fishery education/training","31382":"Fishery research","31391":"Fishery services","32110":"Industrial policy and administrative management","32120":"Industrial development","32130":"Small and medium-sized enterprises (SME) development","32140":"Cottage industries and handicraft","32161":"Agro-industries","32162":"Forest industries","32163":"Textiles, leather and substitutes","32164":"Chemicals","32165":"Fertilizer plants","32166":"Cement/lime/plaster","32167":"Energy manufacturing","32168":"Pharmaceutical production","32169":"Basic metal industries","32170":"Non-ferrous metal industries","32171":"Engineering","32172":"Transport equipment industry","32182":"Technological research and development","32210":"Mineral/mining policy and administrative management","32220":"Mineral prospection and exploration","32261":"Coal","32262":"Oil and gas","32263":"Ferrous metals","32264":"Nonferrous metals","32265":"Precious metals/materials","32266":"Industrial minerals","32267":"Fertilizer minerals","32268":"Offshore minerals","32310":"Construction policy and administrative management","33110":"Trade policy and administrative Management","33120":"Trade facilitation","33130":"Regional trade agreements (RTAs)","33140":"Multilateral trade negotiations","33150":"Trade-related adjustment","33181":"Trade education/training","33210":"Tourism policy and administrative management","41010":"Environmental policy and administrative management","41020":"Biosphere protection","41030":"Bio-diversity","41040":"Site preservation","41050":"Flood prevention/control","41081":"Environmental education/ training","41082":"Environmental research","43010":"Multisector aid","43030":"Urban development and management","43031":"Urban land policy and management","43032":"Urban development","43040":"Rural development","43041":"Rural land policy and management","43042":"Rural development","43050":"Non-agricultural alternative development","43081":"Multisector education/training","43082":"Research/scientific institutions","51010":"General budget support-related aid","52010":"Food aid/Food security programmes","53030":"Import support (capital goods)","53040":"Import support (commodities)","60010":"Action relating to debt","60020":"Debt forgiveness","60030":"Relief of multilateral debt","60040":"Rescheduling and refinancing","60061":"Debt for development swap","60062":"Other debt swap","60063":"Debt buy-back","72010":"Material relief assistance and services","72040":"Emergency food aid","72050":"Relief co-ordination; protection and support services","73010":"Reconstruction relief and rehabilitation","74010":"Disaster prevention and preparedness","91010":"Administrative costs (non-sector allocable)","92010":"Support to national NGOs","92020":"Support to international NGOs","92030":"Support to local and regional NGOs","93010":"Refugees in donor countries (non-sector allocable)","99810":"Sectors not specified","99820":"Promotion of development awareness (non-sector allocable)"};
+Util.iatiSectorCodeHash = {
+  "11110": "Education policy and administrative management",
+  "11120": "Education facilities and training",
+  "11130": "Teacher training",
+  "11182": "Educational research",
+  "11220": "Primary education",
+  "11230": "Basic life skills for youth and adults",
+  "11231": "Basic life skills for youth",
+  "11232": "Primary education equivalent for adults",
+  "11240": "Early childhood education",
+  "11320": "Secondary education",
+  "11321": "Lower secondary education",
+  "11322": "Upper secondary education",
+  "11330": "Vocational training",
+  "11420": "Higher education",
+  "11430": "Advanced technical and managerial training",
+  "12110": "Health policy and administrative management",
+  "12181": "Medical education/training",
+  "12182": "Medical research",
+  "12191": "Medical services",
+  "12220": "Basic health care",
+  "12230": "Basic health infrastructure",
+  "12240": "Basic nutrition",
+  "12250": "Infectious disease control",
+  "12261": "Health education",
+  "12262": "Malaria control",
+  "12263": "Tuberculosis control",
+  "12281": "Health personnel development",
+  "13010": "Population policy and administrative management",
+  "13020": "Reproductive health care",
+  "13030": "Family planning",
+  "13040": "STD control including HIV/AIDS",
+  "13081": "Personnel development for population and reproductive health",
+  "14010": "Water sector policy and administrative management",
+  "14015": "Water resources conservation (including data collection)",
+  "14020": "Water supply and sanitation - large systems",
+  "14021": "Water supply - large systems",
+  "14022": "Sanitation - large systems",
+  "14030": "Basic drinking water supply and basic sanitation",
+  "14031": "Basic drinking water supply",
+  "14032": "Basic sanitation",
+  "14040": "River basins’ development",
+  "14050": "Waste management / disposal",
+  "14081": "Education and training in water supply and sanitation",
+  "15110": "Public sector policy and administrative management",
+  "15111": "Public Finance Management (PFM)",
+  "15112": "Decentralisation and support to subnational government",
+  "15113": "Anti-corruption organisations and institutions",
+  "15114": "Domestic Revenue Mobilisation",
+  "15116": "Tax collection",
+  "15117": "Budget planning",
+  "15118": "National audit",
+  "15119": "Debt and aid management",
+  "15120": "Public sector financial management",
+  "15121": "Foreign affairs",
+  "15122": "Diplomatic missions",
+  "15123": "Administration of developing countries' foreign aid",
+  "15124": "General personnel services",
+  "15125": "Central procurement",
+  "15126": "Other general public services",
+  "15127": "National monitoring and evaluation",
+  "15128": "Local government finance",
+  "15129": "Other central transfers to institutions",
+  "15130": "Legal and judicial development",
+  "15131": "Justice, law and order policy, planning and administration",
+  "15132": "Police",
+  "15133": "Fire and rescue services",
+  "15134": "Judicial affairs",
+  "15135": "Ombudsman",
+  "15136": "Immigration",
+  "15137": "Prisons",
+  "15140": "Government administration",
+  "15142": "Macroeconomic policy",
+  "15143": "Meteorological services",
+  "15144": "National standards development",
+  "15150": "Democratic participation and civil society",
+  "15151": "Elections",
+  "15152": "Legislatures and political parties",
+  "15153": "Media and free flow of information",
+  "15154": "Executive office",
+  "15155": "Tax policy and administration support",
+  "15156": "Other non-tax revenue mobilisation",
+  "15160": "Human rights",
+  "15161": "Elections",
+  "15162": "Human rights",
+  "15163": "Free flow of information",
+  "15164": "Women's equality organisations and institutions",
+  "15170": "Women’s equality organisations and institutions",
+  "15180": "Ending violence against women and girls",
+  "15185": "Local government administration",
+  "15210": "Security system management and reform",
+  "15220": "Civilian peace-building, conflict prevention and resolution",
+  "15230": "Participation in international peacekeeping operations",
+  "15240": "Reintegration and SALW control",
+  "15250": "Removal of land mines and explosive remnants of war",
+  "15261": "Child soldiers (Prevention and demobilisation)",
+  "16010": "Social/ welfare services",
+  "16011": "Social protection and welfare services policy, planning and administration",
+  "16012": "Social security (excl pensions)",
+  "16013": "General pensions",
+  "16014": "Civil service pensions",
+  "16015": "Social services (incl youth development and women+ children)",
+  "16020": "Employment policy and administrative management",
+  "16030": "Housing policy and administrative management",
+  "16040": "Low-cost housing",
+  "16050": "Multisector aid for basic social services",
+  "16061": "Culture and recreation",
+  "16062": "Statistical capacity building",
+  "16063": "Narcotics control",
+  "16064": "Social mitigation of HIV/AIDS",
+  "16065": "Recreation and sport",
+  "16066": "Culture",
+  "21010": "Transport policy and administrative management",
+  "21011": "Transport policy, planning and administration",
+  "21012": "Public transport services",
+  "21013": "Transport regulation",
+  "21020": "Road transport",
+  "21021": "Feeder road construction",
+  "21022": "Feeder road maintenance",
+  "21023": "National road construction",
+  "21024": "National road maintenance",
+  "21030": "Rail transport",
+  "21040": "Water transport",
+  "21050": "Air transport",
+  "21061": "Storage",
+  "21081": "Education and training in transport and storage",
+  "22010": "Communications policy and administrative management",
+  "22011": "Communications policy, planning and administration",
+  "22012": "Postal services",
+  "22013": "Information services",
+  "22020": "Telecommunications",
+  "22030": "Radio/television/print media",
+  "22040": "Information and communication technology (ICT)",
+  "23010": "Energy policy and administrative management",
+  "23020": "Power generation/non-renewable sources",
+  "23030": "Power generation/renewable sources",
+  "23040": "Electrical transmission/ distribution",
+  "23050": "Gas distribution",
+  "23061": "Oil-fired power plants",
+  "23062": "Gas-fired power plants",
+  "23063": "Coal-fired power plants",
+  "23064": "Nuclear power plants",
+  "23065": "Hydro-electric power plants",
+  "23066": "Geothermal energy",
+  "23067": "Solar energy",
+  "23068": "Wind power",
+  "23069": "Ocean power",
+  "23070": "Biomass",
+  "23081": "Energy education/training",
+  "23082": "Energy research",
+  "23110": "Energy policy and administrative management",
+  "23111": "Energy sector policy, planning and administration",
+  "23112": "Energy regulation",
+  "23181": "Energy education/training",
+  "23182": "Energy research",
+  "23183": "Energy conservation and demand-side efficiency",
+  "23210": "Energy generation, renewable sources – multiple technologies",
+  "23220": "Hydro-electric power plants",
+  "23230": "Solar energy",
+  "23240": "Wind energy",
+  "23250": "Marine energy",
+  "23260": "Geothermal energy",
+  "23270": "Biofuel-fired power plants",
+  "23310": "Energy generation, non-renewable sources – unspecified",
+  "23320": "Coal-fired electric power plants",
+  "23330": "Oil-fired electric power plants",
+  "23340": "Natural gas-fired electric power plants",
+  "23350": "Fossil fuel electric power plants with carbon capture and storage (CCS)",
+  "23360": "Non-renewable waste-fired electric power plants",
+  "23410": "Hybrid energy electric power plants",
+  "23510": "Nuclear energy electric power plants",
+  "23610": "Heat plants",
+  "23620": "District heating and cooling",
+  "23630": "Electric power transmission and distribution",
+  "23640": "Gas distribution",
+  "24010": "Financial policy and administrative management",
+  "24020": "Monetary institutions",
+  "24030": "Formal sector financial intermediaries",
+  "24040": "Informal/semi-formal financial intermediaries",
+  "24081": "Education/training in banking and financial services",
+  "25010": "Business support services and institutions",
+  "25020": "Privatisation",
+  "31110": "Agricultural policy and administrative management",
+  "31120": "Agricultural development",
+  "31130": "Agricultural land resources",
+  "31140": "Agricultural water resources",
+  "31150": "Agricultural inputs",
+  "31161": "Food crop production",
+  "31162": "Industrial crops/export crops",
+  "31163": "Livestock",
+  "31164": "Agrarian reform",
+  "31165": "Agricultural alternative development",
+  "31166": "Agricultural extension",
+  "31181": "Agricultural education/training",
+  "31182": "Agricultural research",
+  "31191": "Agricultural services",
+  "31192": "Plant and post-harvest protection and pest control",
+  "31193": "Agricultural financial services",
+  "31194": "Agricultural co-operatives",
+  "31195": "Livestock/veterinary services",
+  "31210": "Forestry policy and administrative management",
+  "31220": "Forestry development",
+  "31261": "Fuelwood/charcoal",
+  "31281": "Forestry education/training",
+  "31282": "Forestry research",
+  "31291": "Forestry services",
+  "31310": "Fishing policy and administrative management",
+  "31320": "Fishery development",
+  "31381": "Fishery education/training",
+  "31382": "Fishery research",
+  "31391": "Fishery services",
+  "32110": "Industrial policy and administrative management",
+  "32120": "Industrial development",
+  "32130": "Small and medium-sized enterprises (SME) development",
+  "32140": "Cottage industries and handicraft",
+  "32161": "Agro-industries",
+  "32162": "Forest industries",
+  "32163": "Textiles, leather and substitutes",
+  "32164": "Chemicals",
+  "32165": "Fertilizer plants",
+  "32166": "Cement/lime/plaster",
+  "32167": "Energy manufacturing",
+  "32168": "Pharmaceutical production",
+  "32169": "Basic metal industries",
+  "32170": "Non-ferrous metal industries",
+  "32171": "Engineering",
+  "32172": "Transport equipment industry",
+  "32182": "Technological research and development",
+  "32210": "Mineral/mining policy and administrative management",
+  "32220": "Mineral prospection and exploration",
+  "32261": "Coal",
+  "32262": "Oil and gas",
+  "32263": "Ferrous metals",
+  "32264": "Nonferrous metals",
+  "32265": "Precious metals/materials",
+  "32266": "Industrial minerals",
+  "32267": "Fertilizer minerals",
+  "32268": "Offshore minerals",
+  "32310": "Construction policy and administrative management",
+  "33110": "Trade policy and administrative Management",
+  "33120": "Trade facilitation",
+  "33130": "Regional trade agreements (RTAs)",
+  "33140": "Multilateral trade negotiations",
+  "33150": "Trade-related adjustment",
+  "33181": "Trade education/training",
+  "33210": "Tourism policy and administrative management",
+  "41010": "Environmental policy and administrative management",
+  "41020": "Biosphere protection",
+  "41030": "Bio-diversity",
+  "41040": "Site preservation",
+  "41050": "Flood prevention/control",
+  "41081": "Environmental education/ training",
+  "41082": "Environmental research",
+  "43010": "Multisector aid",
+  "43030": "Urban development and management",
+  "43031": "Urban land policy and management",
+  "43032": "Urban development",
+  "43040": "Rural development",
+  "43041": "Rural land policy and management",
+  "43042": "Rural development",
+  "43050": "Non-agricultural alternative development",
+  "43081": "Multisector education/training",
+  "43082": "Research/scientific institutions",
+  "51010": "General budget support-related aid",
+  "52010": "Food aid/Food security programmes",
+  "53030": "Import support (capital goods)",
+  "53040": "Import support (commodities)",
+  "60010": "Action relating to debt",
+  "60020": "Debt forgiveness",
+  "60030": "Relief of multilateral debt",
+  "60040": "Rescheduling and refinancing",
+  "60061": "Debt for development swap",
+  "60062": "Other debt swap",
+  "60063": "Debt buy-back",
+  "72010": "Material relief assistance and services",
+  "72040": "Emergency food aid",
+  "72050": "Relief co-ordination; protection and support services",
+  "73010": "Reconstruction relief and rehabilitation",
+  "74010": "Disaster prevention and preparedness",
+  "91010": "Administrative costs (non-sector allocable)",
+  "92010": "Support to national NGOs",
+  "92020": "Support to international NGOs",
+  "92030": "Support to local and regional NGOs",
+  "93010": "Refugees in donor countries (non-sector allocable)",
+  "99810": "Sectors not specified",
+  "99820": "Promotion of development awareness (non-sector allocable)"
+};

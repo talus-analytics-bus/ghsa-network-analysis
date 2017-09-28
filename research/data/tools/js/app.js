@@ -26,7 +26,7 @@ const App = {};
 	App.filterTransactionsBySector = () => {
 		console.log('Loading transactions data...');
 		d3.queue()
-			.defer(d3.json, 'data/test.json')
+			.defer(d3.json, 'data/rawTransactions.json')
 			.await((error, data) => {
 				console.log('Transactions data loaded:');
 				console.log(data);
@@ -38,14 +38,14 @@ const App = {};
 				console.log("Filtering transactions data...");
 
 				const filteredTransactions = data.filter((d) => {
-					const isHealthOrAnimalSector = sectorAid.indexOf(d.aid) > -1;
-					const isWhoFunderRef = d.funder_ref === "XM-DAC-928";
-					return isHealthOrAnimalSector || isWhoFunderRef;
+					const isRightSector = sectorAid.indexOf(d.aid) > -1; // keep correct sector
+					const isWhoFunderRef = d.funder_ref === "XM-DAC-928"; // keep if WHO was funder regardless of sector
+					return isRightSector || isWhoFunderRef;
 				});
 
 				console.log('Filtered transactions data loaded:');
 				console.log(filteredTransactions);
-				Util.save(filteredTransactions, 'rawTransactions.json');
+				Util.save(filteredTransactions, 'filteredTransactions.json');
 			});
 	};
 
@@ -63,6 +63,7 @@ const App = {};
 			success: function(data) {
 				console.log('got it!');
 				console.log(data)
+				Util.save(data)
 			},
 			error: function(){
 				console.log('error');
@@ -72,15 +73,32 @@ const App = {};
 
 	/* getIatiActivities
 	*  tests the IATI data downloaded into JSON format
-	*  Pulls data for the following activities, from all time:
-	*  
+	*  Currently gets projects with sector codes from this list:
+	* 12110
+	* 12181
+	* 12182
+	* 12191
+	* 12220
+	* 12230
+	* 12240
+	* 12250
+	* 12261
+	* 12262
+	* 12263
+	* 12281
+	* 13010
+	* 13020
+	* 13030
+	* 13040
+	* 13081
+	* 31195
 	*/
 	App.getIatiActivities = () => {
 		console.log('Running App.getIatiActivities');
 
 		$.ajax({
 			type: 'post',
-			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&flags=0&select=aid,sector_code,day_start,day_end,spend,commitment,flags,funder_ref',
+			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&flags=0&sector_code=12110&sector_code=12181&sector_code=12182&sector_code=12191&sector_code=12220&sector_code=12230&sector_code=12240&sector_code=12250&sector_code=12261&sector_code=12262&sector_code=12263&sector_code=12281&sector_code=13010&sector_code=13020&sector_code=13030&sector_code=13040&sector_code=13081&sector_code=31195&select=aid,sector_code,day_start,day_end,spend,commitment,flags,funder_ref',
 			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&sector_code=12110&sector_code=12181&sector_code=12182&sector_code=12191&sector_code=12220&sector_code=12230&sector_code=12240&sector_code=12250&sector_code=12261&sector_code=12262&sector_code=12263&sector_code=12281&sector_code=31195&flags=0&select=aid,sector_code,day_start,day_end,spend,commitment,flags',
 			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&sector_group=121&sector_group=122&select=aid,sector_code,day_start,day_end,spend,commitment',
 			success: function(data) {
@@ -111,20 +129,22 @@ const App = {};
 			// get sector code text
 			const sectorTag = Util.iatiSectorCodeHash[input[i]];
 			if (sectorTag === undefined) {
-				outputTags = _.union(outputTags, unspecTag);
+				// outputTags = _.union(outputTags, unspecTag);
 				continue;
 			}
 			else {
+				if (Util.iatiDiseaseFunctionHash[sectorTag] === undefined) console.log(sectorTag);
 				const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].function_tags;
 				if (outputTmp === undefined) {
-					outputTags = _.union(outputTags, unspecTag);
+					// outputTags = _.union(outputTags, unspecTag);
 					continue;
 				} else {
 					outputTags = _.union(outputTags, outputTmp);
 				}
 			}
 		}
-		return _.unique(outputTags);
+		if (outputTags.length === 0) return unspecTag;
+		else return _.unique(outputTags);
 	};
 
 	/* getDiseaseTags
@@ -138,20 +158,22 @@ const App = {};
 			// get sector code text
 			const sectorTag = Util.iatiSectorCodeHash[input[i]];
 			if (sectorTag === undefined) {
-				outputTags = _.union(outputTags, unspecTag);
+				// outputTags = _.union(outputTags, unspecTag);
 				continue;
 			}
 			else {
-				const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].function_tags;
+				if (Util.iatiDiseaseFunctionHash[sectorTag] === undefined) console.log(sectorTag);
+				const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].disease_tags;
 				if (outputTmp === undefined) {
-					outputTags = _.union(outputTags, unspecTag);
+					// outputTags = _.union(outputTags, unspecTag);
 					continue;
 				} else {
 					outputTags = _.union(outputTags, outputTmp);
 				}
 			}
 		}
-		return _.unique(outputTags);
+		if (outputTags.length === 0) return unspecTag;
+		else return _.unique(outputTags);
 	};
 
 	/* getDonorData
@@ -162,10 +184,17 @@ const App = {};
 		// input is funder_ref (cross-reference with ctrack data)
 		output = {};
 		if (input === null) return {name: "Not reported", sector: "Not reported", country: "Not reported"};
+		else if (input === "XI-IATI-21032") input = "XM-DAC-7"; // PSI incorrectly listed as funder for some NL government projs
+		else if (input === "XI-IATI-BWCO20151011") input = "BW-CIPA-CO20151011" // code for ITPC changed
+		else if (input === "UNDP") input = "XM-DAC-41114" // code for UNDP; sometimes people just write "UNDP"
+		else if (input === "UNFPA") input = "41119" // code for UNFPA; sometimes people just write "UNFPA"
 		let donorData = publishers_data.find(d => d.publisher_iati_id === input);
 		if (donorData === undefined) {
 			donorData = Util.funder_aux_hash[input];
-			if (donorData === undefined) App.undefinedDonorNames.push(input);
+			if (donorData === undefined) {
+				App.undefinedDonorNames.push(input);
+				donorData = Util.funder_aux_hash[input];
+			}
 			// donorData = {name: 'error', sector: 'error', country:'error'};
 			output.donor_name = donorData.name;
 			output.donor_sector = donorData.sector;
