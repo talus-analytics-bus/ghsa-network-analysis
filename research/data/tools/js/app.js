@@ -17,26 +17,40 @@ const App = {};
 
 	// Keeps only those transactions associated with a project AID that has
 	// a health sector group
+	/* filterTransactionsBySector
+	*  Operates on the data grabbed by App.getIatiTransactions, and keeps only data that meet these conditions:
+	*  Activity is tagged with sector group 121 or 122 (health)
+	*  Activity is tagged with sector code 31195 (Livestock/Veterinary services)
+	*  Activity funder_ref is the World Health Organisation (funder_ref === )
+	*/
 	App.filterTransactionsBySector = () => {
 		console.log('Loading transactions data...');
 		d3.queue()
 			.defer(d3.json, 'data/test.json')
 			.await((error, data) => {
-				console.log('test complete:');
+				console.log('Transactions data loaded:');
 				console.log(data);
 
-
 				// Get list of activities with right sectors
-				console.log("Getting list of 'aid' that are correct sector...")
+				console.log("Getting list of 'aid' values that are correct sector...")
 				const sectorAid = _.unique(_.pluck(iatiActivities.rows,'aid'));
-				console.log("Filtering transactions data by sector...");
-				const dataBySector = data.filter(d => sectorAid.indexOf(d.aid) > -1);
-				console.log(dataBySector);
+
+				console.log("Filtering transactions data...");
+
+				const filteredTransactions = data.filter((d) => {
+					const isHealthOrAnimalSector = sectorAid.indexOf(d.aid) > -1;
+					const isWhoFunderRef = d.funder_ref === "XM-DAC-928";
+					return isHealthOrAnimalSector || isWhoFunderRef;
+				});
+
+				console.log('Filtered transactions data loaded:');
+				console.log(filteredTransactions);
+				Util.save(filteredTransactions, 'rawTransactions.json');
 			});
 	};
 
 	/* getIatiTransactions
-	*  tests the IATI data downloaded into JSON format
+	*  Downloads all transactions from d-portal for activities with start dates on or after 1 Jan 2014
 	*/
 	App.getIatiTransactions = () => {
 		console.log('Running App.getIatiTransactions');
@@ -58,17 +72,22 @@ const App = {};
 
 	/* getIatiActivities
 	*  tests the IATI data downloaded into JSON format
+	*  Pulls data for the following activities, from all time:
+	*  
 	*/
 	App.getIatiActivities = () => {
 		console.log('Running App.getIatiActivities');
 
 		$.ajax({
 			type: 'post',
-			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&sector_group=121&sector_group=122&flags=0&select=aid,sector_code,day_start,day_end,spend,commitment,flags',
+			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&flags=0&select=aid,sector_code,day_start,day_end,spend,commitment,flags,funder_ref',
+			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&sector_code=12110&sector_code=12181&sector_code=12182&sector_code=12191&sector_code=12220&sector_code=12230&sector_code=12240&sector_code=12250&sector_code=12261&sector_code=12262&sector_code=12263&sector_code=12281&sector_code=31195&flags=0&select=aid,sector_code,day_start,day_end,spend,commitment,flags',
 			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&sector_group=121&sector_group=122&select=aid,sector_code,day_start,day_end,spend,commitment',
 			success: function(data) {
 				console.log('got it!');
 				console.log(data)
+
+				Util.save(data,'iati_activities.json');
 			},
 			error: function(){
 				console.log('error');
@@ -77,42 +96,62 @@ const App = {};
 	};
 
 
+	// Define the unspecified function/disease tag to be pushed
+	// if the tag(s) are not defined for the project
+	const unspecTag = {p: "Unspecified", c: null};
+
 	/* getFunctionTags
 	*  gets the function tags for the data
 	*/
 	App.getFunctionTags = (input) => {
-		if (input === null || input === []) return [];
+		if (input === null || input === []) return [unspecTag];
 		// for each tag in the input arr
 		outputTags = [];
 		for (let i = 0; i < input.length; i++) {
 			// get sector code text
 			const sectorTag = Util.iatiSectorCodeHash[input[i]];
-			if (sectorTag === undefined) continue;
-			const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].function_tags;
-			if (outputTmp === undefined) continue;
-			if (outputTmp !== "") outputTags = _.union(outputTags, outputTmp.split('; '));
-			else continue;
+			if (sectorTag === undefined) {
+				outputTags.push(unspecTag);
+				continue;
+			}
+			else {
+				const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].function_tags;
+				if (outputTmp === undefined) {
+					outputTags.push(unspecTag);
+					continue;
+				} else {
+					outputTags.push(outputTmp);
+				}
+			}
 		}
-		return outputTags;
+		return _.unique(outputTags);
 	};
 
 	/* getDiseaseTags
 	*  gets the disease tags for the data
 	*/
 	App.getDiseaseTags = (input) => {
-		if (input === null || input === []) return [];
+		if (input === null || input === []) return [unspecTag];
 		// for each tag in the input arr
 		outputTags = [];
 		for (let i = 0; i < input.length; i++) {
 			// get sector code text
 			const sectorTag = Util.iatiSectorCodeHash[input[i]];
-			if (sectorTag === undefined) continue;
-			const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].disease_tags;
-			if (outputTmp === undefined) continue;
-			if (outputTmp !== "") outputTags = _.union(outputTags, outputTmp.split('; '));
-			else continue;
+			if (sectorTag === undefined) {
+				outputTags.push(unspecTag);
+				continue;
+			}
+			else {
+				const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].disease_tags;
+				if (outputTmp === undefined) {
+					outputTags.push(unspecTag);
+					continue;
+				} else {
+					outputTags.push(outputTmp);
+				}
+			}
 		}
-		return outputTags;
+		return _.unique(outputTags);
 	};
 
 	/* getDonorData
@@ -246,8 +285,8 @@ const App = {};
 				// grab the first transaction so we can reference its project-level data fields
 				const firstProjTrans = projCountryTrans[0];
 
-				// DEBUG store aid data
-				proj.aid = firstProjTrans.aid;
+				// // DEBUG store aid data
+				// proj.aid = firstProjTrans.aid;
 
 				// project_name
 				proj.project_name = firstProjTrans.title;
@@ -336,7 +375,7 @@ const App = {};
 		}
 
 		console.log(output);
-		Util.save(output, 'funding_data-iati_2014_plus-092717-MV.json');
+		Util.save(output, 'funding_data-iati_2014_plus-092717-v2-MV.json');
 	};
 
 	/* getData
