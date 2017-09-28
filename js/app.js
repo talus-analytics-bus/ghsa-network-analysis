@@ -20,7 +20,7 @@ const App = {};
 		NProgress.start();
 		d3.queue()
 			.defer(d3.json, 'data/world.json')
-			.defer(d3.json, 'data/funding_data_092617.json')
+			.defer(d3.json, 'data/funding_data_092817.json')
 			.defer(d3.json, 'data/project_diseases.json')
 			.defer(d3.json, 'data/project_functions.json')
 			.defer(d3.json, 'data/currencies.json')
@@ -95,6 +95,29 @@ const App = {};
 				.attr('value', d => d.tag_name)
 				.text(d => d.tag_name);
 	};
+
+	App.getCategorySelectValue = (selector) => {
+		const multiselect = $(selector).next('.btn-group');
+		const value = [];
+		const optgroups = multiselect.find('.multiselect-group');
+		optgroups.each(function loop() {
+			const $optgroup = $(this);
+			const children = [];
+			const allOptions = $optgroup.nextUntil('.multiselect-group');
+			const activeOptions = allOptions
+				.filter('.active')
+				.each(function loopChildren() {
+					children.push($(this).find('input').attr('value'));
+				});
+			if (activeOptions.length || ($optgroup.hasClass('active') && !allOptions.length)) {
+				value.push({
+					tag_name: $optgroup.find('b').text().trim(),
+					children,
+				});
+			}
+		});
+		return value;
+	}
 
 
 	/* ------------------ Vendor Defaults ------------------- */

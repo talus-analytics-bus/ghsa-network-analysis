@@ -1,9 +1,11 @@
 (() => {
 	App.initHome = () => {
 		// variables used throughout home page
-		//let map;  // the world map
+		let map;  // the world map
 		let activeCountry = d3.select(null);  // the active country
 		const currentNodeDataMap = d3.map();  // maps each country to the current monetary value
+		let startYear = App.dataStartYear;  // the start year of the time range shown
+		let endYear = App.dataEndYear;  // the end year of the time range shown
 
 		// colors
 		const purples = ['#e0ecf4', '#bfd3e6', '#9ebcda',
@@ -99,24 +101,8 @@
 			const dataLookup = getDataLookup();
 
 			// TODO get filter values; need to incorporate parent/child structure correctly
-			let functions = $('.function-select').val();
-			let diseases = $('.disease-select').val();
-			if (!functions.length) {
-				functions = App.functions.map(d => d.tag_name);
-				App.functions.forEach((d) => {
-					d.children.forEach((c) => {
-						functions.push(c.tag_name);
-					});
-				});
-			}
-			if (!diseases.length) {
-				diseases = App.diseases.map(d => d.tag_name);
-				App.diseases.forEach((d) => {
-					d.children.forEach((c) => {
-						diseases.push(c.tag_name);
-					});
-				});
-			}
+			let functions = App.getCategorySelectValue('.function-select');
+			let diseases = App.getCategorySelectValue('.disease-select');
 
 			// clear out current data
 			currentNodeDataMap.clear();
@@ -130,6 +116,7 @@
 						const p = payments[i];
 						//if (!Util.hasCommonElement(functions, p.project_function)) continue;
 						//if (!Util.hasCommonElement(diseases, p.project_disease)) continue;
+						// TODO take year range into account
 						totalValue += p.total_spent || 0;
 					}
 
@@ -267,8 +254,16 @@
 			const slider = App.initSlider('.time-slider', {
 				min: App.dataStartYear,
 				max: App.dataEndYear,
-				value: [App.dataStartYear, App.dataEndYear],
+				value: [startYear, endYear],
 				tooltip: 'hide',
+			})
+			slider.on('change', (event) => {
+				const years = event.target.value.split(',');
+				if (+years[0] !== startYear || +years[1] !== endYear) {
+					startYear = +years[0];
+					endYear = +years[1];
+					updateAll();
+				}
 			});
 			return slider;
 		}
@@ -281,6 +276,7 @@
 
 			// initialize multiselects
 			$('.function-select, .disease-select').multiselect({
+				maxHeight: 260,
 				dropRight: true,
 				includeSelectAllOption: true,
 				enableClickableOptGroups: true,
@@ -295,7 +291,16 @@
 			});
 
 			// attach change behavior
-			$('.money-type-filter .radio-option').click(updateAll);
+			$('.money-type-filter .radio-option').click(() => {
+				const moneyType = getMoneyType();
+
+				// change button title in country info box
+				$('.info-tab-container .btn[tab="country"]')
+					.text(moneyType === 'received' ? 'By Donor' : 'By Recipient');
+
+				// update map
+				updateAll();
+			});
 			$('.links-filter .radio-option').click(() => {
 				$('.country-link').toggle();
 			});
