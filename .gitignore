@@ -11,5 +11,6 @@ data/simulated_data.tsv
 # Dependencies
 node_modules/
 
-# Large data file
+# Large data files
 research/data/tools/data/test.json
+research/data/tools/data/rawTransactions.json
