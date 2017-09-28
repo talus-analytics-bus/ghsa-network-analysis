@@ -83,6 +83,7 @@ const App = {};
 
 	/* ------------------ Category Functions ------------------- */
 	App.initCategorySelect = (selector, data, options) => {
+		const $select = $(selector);
 		const optgroups = d3.select(selector).selectAll('optgroup')
 			.data(data)
 			.enter().append('optgroup')
@@ -103,11 +104,10 @@ const App = {};
 			numberDisplayed: 0,
 		};
 		for (let ind in options) opts[ind] = options[ind];
-		$('.function-select, .disease-select').multiselect(opts);
+		$select.multiselect(opts);
 
 		// hide optgroups with only one option
 		// (this is a workaround fix for optgroup bug in bootstrap multiselect)
-		const $select = $(selector);
 		const multiselect = $select.next('.btn-group');
 		const groups = multiselect.find('.multiselect-group')
 			.each(function loop() {
