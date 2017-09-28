@@ -341,8 +341,9 @@ const App = {};
 					// transactions[0].currency
 					curTrans.currency = 'USD'; // always USD for IATI data
 
-					// add transaction
-					proj.transactions.push(curTrans);
+					// add transaction if it's a non-zero amount, otherwise skip it
+					const transactionAmountNullOrZero= curTrans.amount === null || curTrans.amount === 0.0 || curTrans.amount === undefined || isNaN(curTrans.amount);
+					if (!transactionAmountNullOrZero) proj.transactions.push(curTrans);
 				}
 
 				let someCommitments = false;
