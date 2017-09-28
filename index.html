@@ -54,19 +54,6 @@
 			<div class="right-container">
 				<div class="map-options-container">
 					<div class="filter-section">
-						<div class="filter-box links-filter">
-							<div class="dropdown-label">Show funding network:</div>
-							<div class="radio-option">
-								<input type="radio" ind="yes" checked />
-								<span>Yes</span>
-							</div>
-							<div class="radio-option">
-								<input type="radio" ind="no" />
-								<span>No</span>
-							</div>
-						</div>
-					</div>
-					<div class="filter-section">
 						<div class="filter-box money-type-filter">
 							<div class="dropdown-label">Color countries by:</div>
 							<div class="radio-option">
@@ -117,10 +104,10 @@
 					<div class="info-total-value"></div>
 					<div class="info-tab-container">
 						<div class="btn-group">
-							<div class="btn btn-default">All</div>
-							<div class="btn btn-default">By Country</div>
-							<div class="btn btn-default">By Function</div>
-							<div class="btn btn-default">By Disease</div>
+							<div class="btn btn-default" tab="all">All</div>
+							<div class="btn btn-default" tab="country">By Country</div>
+							<div class="btn btn-default" tab="function">By Function</div>
+							<div class="btn btn-default" tab="di">By Disease</div>
 						</div>
 					</div>
 					<div class="info-table-container">
@@ -161,20 +148,37 @@
 					</div>
 				</div>
 			</div>
-			<div class="analysis-content row">
+			<div class="analysis-global-content analysis-content row">
 				<div class="col-md-6 col-sm-12">
 					<h3>Donor Countries</h3>
 					<div class="description">
 						The plot below displays each country by amount funded.
 					</div>
-					<div class="countries-funded-container"></div>
+					<div class="global-funded-container circle-pack-container"></div>
 				</div>
 				<div class="col-md-6 col-sm-12">
 					<h3>Recipient Countries</h3>
 					<div class="description">
 						The plot below displays each country by amount received.
 					</div>
-					<div class="countries-received-container"></div>
+					<div class="global-received-container circle-pack-container"></div>
+				</div>
+			</div>
+			<div class="analysis-country-content analysis-content row">
+				<h3 class="analysis-country-title"></h3>
+				<div class="col-md-6 col-sm-12">
+					<h3>Countries Donated To</h3>
+					<div class="country-funded-description description">
+						The plot below displays the countries this country has funded.
+					</div>
+					<div class="country-funded-container circle-pack-container"></div>
+				</div>
+				<div class="col-md-6 col-sm-12">
+					<h3>Countries Received From</h3>
+					<div class="country-received-description description">
+						The plot below displays the countries this country has received money from.
+					</div>
+					<div class="country-received-container circle-pack-container"></div>
 				</div>
 			</div>
 		</div>
@@ -220,6 +224,7 @@
 	<script src="js/routing.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/components/charts.js"></script>
+	<script src="js/components/countryInfoBox.js"></script>
 	<script src="js/components/map.js"></script>
 	<script src="js/components/search.js"></script>
 	<script src="js/pages/analysis.js"></script>
