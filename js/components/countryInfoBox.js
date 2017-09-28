@@ -45,11 +45,11 @@
 				'No data for payments received by this country' :
 				'No data for money donated by this country';
 			$('.info-total-value').html(valueText);
-			$('.info-table-container').hide();
+			$('.info-content').slideUp();
 			$('.info-container').slideDown();
 			return;
 		} else {
-			$('.info-table-container').show();
+			$('.info-content').slideDown();
 		}
 
 		// populate info total value
@@ -84,12 +84,12 @@
 			];
 		} else if (currentInfoTab === 'country') {
 			headerData = [
-				{ name: 'Recipient Country', value: 'recipient_country' },
+				{ name: 'Recipient', value: 'recipient_country' },
 				{ name: 'Committed', value: 'total_committed', type: 'money' },
 				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 			];
 			if (currentMoneyType === 'received') {
-				headerData[0] = { name: 'Donor Country', value: 'donor_country' };
+				headerData[0] = { name: 'Donor', value: 'donor_country' };
 			}
 		} else if (currentInfoTab === 'function') {
 			headerData = [
@@ -122,15 +122,14 @@
 					totalByCountry[p.donor_country].total_committed += p.total_committed;
 					totalByCountry[p.donor_country].total_spent += p.total_spent;
 				});
-				App.countries.forEach((c) => {
-					if (totalByCountry[c.ISO2]) {
-						paymentTableData.push({
-							donor_country: c.NAME,
-							total_committed: totalByCountry[c.ISO2].total_committed,
-							total_spent: totalByCountry[c.ISO2].total_spent,
-						});
-					}
-				});
+				for (let iso in totalByCountry) {
+					const country = App.countries.find(c => c.ISO2 === iso);
+					paymentTableData.push({
+						donor_country: country ? country.NAME : iso,
+						total_committed: totalByCountry[iso].total_committed,
+						total_spent: totalByCountry[iso].total_spent,
+					});
+				}
 			} else {
 				currentPayments.forEach((p) => {
 					if (!totalByCountry[p.recipient_country]) {
@@ -142,15 +141,14 @@
 					totalByCountry[p.recipient_country].total_committed += p.total_committed;
 					totalByCountry[p.recipient_country].total_spent += p.total_spent;
 				});
-				App.countries.forEach((c) => {
-					if (totalByCountry[c.ISO2]) {
-						paymentTableData.push({
-							recipient_country: c.NAME,
-							total_committed: totalByCountry[c.ISO2].total_committed,
-							total_spent: totalByCountry[c.ISO2].total_spent,
-						});
-					}
-				});
+				for (let iso in totalByCountry) {
+					const country = App.countries.find(c => c.ISO2 === iso);					
+					paymentTableData.push({
+						recipient_country: country ? country.NAME : iso,
+						total_committed: totalByCountry[iso].total_committed,
+						total_spent: totalByCountry[iso].total_spent,
+					});
+				}
 			}
 		} else if (currentInfoTab === 'function') {
 

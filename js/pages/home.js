@@ -306,7 +306,16 @@
 			});
 
 			// attach change behavior
-			$('.money-type-filter .radio-option').click(updateAll);
+			$('.money-type-filter .radio-option').click(() => {
+				const moneyType = getMoneyType();
+
+				// change button title in country info box
+				$('.info-tab-container .btn[tab="country"]')
+					.text(moneyType === 'received' ? 'By Donor' : 'By Recipient');
+
+				// update map
+				updateAll();
+			});
 			$('.links-filter .radio-option').click(() => {
 				$('.country-link').toggle();
 			});
