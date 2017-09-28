@@ -124,8 +124,16 @@
 		// populates the filters in the map options box
 		function populateFilters() {
 			// populate dropdowns
-			Util.populateSelect('.function-select', App.functions, { selected: true });
-			Util.populateSelect('.disease-select', App.diseases, { selected: true });
+			App.populateCategorySelect('.function-select', App.functions);
+			App.populateCategorySelect('.disease-select', App.diseases);
+
+			// initialize multiselects
+			$('.function-select, .disease-select').multiselect({
+				dropRight: true,
+				includeSelectAllOption: true,
+				enableClickableOptGroups: true,
+				numberDisplayed: 0,
+			});
 
 			// initialize multiselects
 			$('.function-select, .disease-select').multiselect({
@@ -137,7 +145,6 @@
 		// initializes search functionality
 		function initSearch() {
 			App.initCountrySearchBar('.country-search-input', (result) => {
-				console.log(result);
 				hasher.setHash(`analysis/${result.ISO2}`);
 			});
 		}
