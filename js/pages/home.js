@@ -101,24 +101,8 @@
 			const dataLookup = getDataLookup();
 
 			// TODO get filter values; need to incorporate parent/child structure correctly
-			let functions = $('.function-select').val();
-			let diseases = $('.disease-select').val();
-			if (!functions.length) {
-				functions = App.functions.map(d => d.tag_name);
-				App.functions.forEach((d) => {
-					d.children.forEach((c) => {
-						functions.push(c.tag_name);
-					});
-				});
-			}
-			if (!diseases.length) {
-				diseases = App.diseases.map(d => d.tag_name);
-				App.diseases.forEach((d) => {
-					d.children.forEach((c) => {
-						diseases.push(c.tag_name);
-					});
-				});
-			}
+			let functions = App.getCategorySelectValue('.function-select');
+			let diseases = App.getCategorySelectValue('.disease-select');
 
 			// clear out current data
 			currentNodeDataMap.clear();
@@ -292,6 +276,7 @@
 
 			// initialize multiselects
 			$('.function-select, .disease-select').multiselect({
+				maxHeight: 260,
 				dropRight: true,
 				includeSelectAllOption: true,
 				enableClickableOptGroups: true,
