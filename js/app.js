@@ -20,7 +20,7 @@ const App = {};
 		NProgress.start();
 		d3.queue()
 			.defer(d3.json, 'data/world.json')
-			.defer(d3.json, 'data/funding_data_092617.json')
+			.defer(d3.json, 'data/funding_data_092817.json')
 			.defer(d3.json, 'data/project_diseases.json')
 			.defer(d3.json, 'data/project_functions.json')
 			.defer(d3.json, 'data/currencies.json')

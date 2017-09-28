@@ -21,6 +21,14 @@
       {
         "tag_name": "Water, sanitation, and hygiene",
         "children": []
+      },
+      {
+        "tag_name": "Other",
+        "children": []
+      },
+      {
+        "tag_name": "Unspecified",
+        "children": []
       }
     ]
   },
@@ -37,6 +45,14 @@
       },
       {
         "tag_name": "Vaccination",
+        "children": []
+      },
+      {
+        "tag_name": "Other",
+        "children": []
+      },
+      {
+        "tag_name": "Unspecified",
         "children": []
       }
     ]
@@ -75,6 +91,14 @@
   },
   {
     "tag_name": "Emergency recovery",
+    "children": []
+  },
+  {
+    "tag_name": "Other",
+    "children": []
+  },
+  {
+    "tag_name": "Unspecified",
     "children": []
   }
 ]

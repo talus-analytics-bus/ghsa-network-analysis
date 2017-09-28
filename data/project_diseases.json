@@ -61,11 +61,23 @@
       {
         "tag_name": "Yellow Fever",
         "children": []
+      },
+      {
+        "tag_name": "Other",
+        "children": []
+      },
+      {
+        "tag_name": "Unspecified",
+        "children": []
       }
     ]
   },
   {
-    "tag_name": "Tobacco",
+    "tag_name": "Other",
+    "children": []
+  },
+  {
+    "tag_name": "Unspecified",
     "children": []
   }
 ]

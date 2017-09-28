@@ -1,9 +1,11 @@
 (() => {
 	App.initHome = () => {
 		// variables used throughout home page
-		//let map;  // the world map
+		let map;  // the world map
 		let activeCountry = d3.select(null);  // the active country
 		const currentNodeDataMap = d3.map();  // maps each country to the current monetary value
+		let startYear = App.dataStartYear;  // the start year of the time range shown
+		let endYear = App.dataEndYear;  // the end year of the time range shown
 
 		// colors
 		const purples = ['#e0ecf4', '#bfd3e6', '#9ebcda',
@@ -130,6 +132,7 @@
 						const p = payments[i];
 						//if (!Util.hasCommonElement(functions, p.project_function)) continue;
 						//if (!Util.hasCommonElement(diseases, p.project_disease)) continue;
+						// TODO take year range into account
 						totalValue += p.total_spent || 0;
 					}
 
@@ -267,8 +270,16 @@
 			const slider = App.initSlider('.time-slider', {
 				min: App.dataStartYear,
 				max: App.dataEndYear,
-				value: [App.dataStartYear, App.dataEndYear],
+				value: [startYear, endYear],
 				tooltip: 'hide',
+			})
+			slider.on('change', (event) => {
+				const years = event.target.value.split(',');
+				if (+years[0] !== startYear || +years[1] !== endYear) {
+					startYear = +years[0];
+					endYear = +years[1];
+					updateAll();
+				}
 			});
 			return slider;
 		}

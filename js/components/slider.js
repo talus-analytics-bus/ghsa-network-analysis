@@ -2,7 +2,7 @@
 	// initializes bootstrap slider on the element and adds tick marks and labels
 	App.initSlider = (selector, options) => {
 		const slider = $(selector).slider(options);
-		addSliderTicks(selector, d3.range(options.value[0], options.value[1] + 1));
+		addSliderTicks(selector, d3.range(options.min, options.max + 1));
 		return slider;
 	};
 

@@ -1,0 +1,66 @@
+.info-container {
+	display: none;
+	position: absolute;
+	top: 20px;
+	left: 0;
+	width: 100%;
+	pointer-events: none;
+
+	.info-box {
+		display: inline-block;
+		position: relative;
+		padding: 20px;
+		width: 800px;
+		border: $border;
+		background-color: rgba(255,255,255,0.96);
+		pointer-events: all;
+		@include border-radius(15px);
+	}
+	.info-close-button {
+		position: absolute;
+		top: 18px;
+		right: 18px;
+		cursor: pointer;
+		@include opacity(0.75);
+
+		&:hover {
+			@include opacity(1);
+		}
+		img {
+			width: 22px;
+			height: 22px;
+		}
+	}
+	.info-title {
+		font-size: 1.3em;
+		font-weight: 600;
+		text-align: center;
+	}
+	.info-total-value {
+		font-family: 'Raleway', sans-serif;
+		font-size: 1.6em;
+		margin-top: 10px;
+		text-align: center;
+	}
+	.info-tab-container {
+		margin-top: 20px;
+	}
+	.info-table-container {
+		margin-top: 10px;
+		text-align: left;
+	}
+	.info-table {
+		.money-cell {
+			text-align: right;
+			white-space: nowrap;
+		}
+	}
+	.info-source-text {
+		margin: 10px 0 25px;
+		font-size: 0.9em;
+		text-align: right;
+	}
+	.info-button-container {
+		margin-top: 20px;
+	}
+}
