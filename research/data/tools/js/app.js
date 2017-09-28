@@ -5,7 +5,7 @@ const App = {};
 	// Loads the current 'funding_data' dataset to be played with
 	App.loadFundingData = () => {
 		const path = './data/';
-		const fn = 'funding_data-iati_2014_plus-092717-MV.json';
+		const fn = 'funding_data-iati_2014_plus-092717-v2-MV.json';
 		console.log('Loading funding data...');
 			d3.queue()
 				.defer(d3.json, path + fn)
@@ -98,29 +98,29 @@ const App = {};
 
 	// Define the unspecified function/disease tag to be pushed
 	// if the tag(s) are not defined for the project
-	const unspecTag = {p: "Unspecified", c: null};
+	const unspecTag = [{p: "Unspecified", c: null}];
 
 	/* getFunctionTags
 	*  gets the function tags for the data
 	*/
 	App.getFunctionTags = (input) => {
-		if (input === null || input === []) return [unspecTag];
+		if (input === null || input.length === 0) return unspecTag;
 		// for each tag in the input arr
 		outputTags = [];
 		for (let i = 0; i < input.length; i++) {
 			// get sector code text
 			const sectorTag = Util.iatiSectorCodeHash[input[i]];
 			if (sectorTag === undefined) {
-				outputTags.push(unspecTag);
+				outputTags = _.union(outputTags, unspecTag);
 				continue;
 			}
 			else {
 				const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].function_tags;
 				if (outputTmp === undefined) {
-					outputTags.push(unspecTag);
+					outputTags = _.union(outputTags, unspecTag);
 					continue;
 				} else {
-					outputTags.push(outputTmp);
+					outputTags = _.union(outputTags, outputTmp);
 				}
 			}
 		}
@@ -131,23 +131,23 @@ const App = {};
 	*  gets the disease tags for the data
 	*/
 	App.getDiseaseTags = (input) => {
-		if (input === null || input === []) return [unspecTag];
+		if (input === null || input.length === 0) return unspecTag;
 		// for each tag in the input arr
 		outputTags = [];
 		for (let i = 0; i < input.length; i++) {
 			// get sector code text
 			const sectorTag = Util.iatiSectorCodeHash[input[i]];
 			if (sectorTag === undefined) {
-				outputTags.push(unspecTag);
+				outputTags = _.union(outputTags, unspecTag);
 				continue;
 			}
 			else {
-				const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].disease_tags;
+				const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].function_tags;
 				if (outputTmp === undefined) {
-					outputTags.push(unspecTag);
+					outputTags = _.union(outputTags, unspecTag);
 					continue;
 				} else {
-					outputTags.push(outputTmp);
+					outputTags = _.union(outputTags, outputTmp);
 				}
 			}
 		}
@@ -294,11 +294,12 @@ const App = {};
 				// project_function
 				// get sector codes for this activity (project)
 				const curSectorCodes = _.unique(_.pluck(iatiActivities.rows.filter(d => d.aid === firstProjTrans.aid), 'sector_code'));
-				// if (firstProjTrans.aid === "CA-3-D000514001") console.log(curSectorCodes);
 				proj.project_function = App.getFunctionTags(curSectorCodes);
 
 				// project_disease
 				proj.project_disease = App.getDiseaseTags(curSectorCodes);
+
+				if (proj.project_function.length === 0) console.log(curSectorCodes);
 
 				// donor_country
 				const curDonorData = App.getDonorData(firstProjTrans.funder_ref);
@@ -367,6 +368,14 @@ const App = {};
 				// total_currency
 				proj.total_currency = 'USD'; // always USD for IATI for now
 
+				// source
+				proj.source = {
+					name: "IATI via D-Portal",
+					id: curProj_aid,
+					added_by: "Talus",
+					mmddyyyy_added: "092817"
+				};
+
 				// if funds committed and spent are both null or zero, exclude the project
 				// otherwise, add project to output
 				const committedNullOrZero = proj.total_committed === null || proj.total_committed === 0.0;
@@ -391,27 +400,6 @@ const App = {};
 			if (this.status == 200) {
 				// console.log(JSON.parse(this.response)[0]);
 				callback(JSON.parse(this.response)); // do stuff with the returned data
-				// const blob = new Blob([this.response], {type: 'application/json'});
-				// const downloadUrl = URL.createObjectURL(blob);
-				// const a = document.createElement("a");
-				// a.href = downloadUrl;
-
-				// // // set file name
-				// // const today = new Date();
-				// // const year = today.getFullYear();
-				// // let month = String(today.getMonth() + 1);
-				// // if (month.length === 1) month = `0${month}`;
-				// // let day = String(today.getDate());
-				// // if (day.length === 1) day = `0${day}`;
-				// // const yyyymmdd = `${year}${month}${day}`;
-				// // const filenameStr = yyyymmdd + ' ' + App.whoAmI.abbreviation;
-
-				// // a.download = "mvm_rules.json";
-				// // // a.download = "IHR Costing Tool - Detailed Report - " + filenameStr + ".xlsx";
-				// // document.body.appendChild(a);
-				// // a.click();
-				// // if (callback) callback(null);
-				// return;
 			}
 			if (callback) callback(this.status);
 		};
