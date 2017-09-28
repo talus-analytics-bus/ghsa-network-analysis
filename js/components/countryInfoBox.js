@@ -31,6 +31,14 @@
 		// populate info title
 		$('.info-title').text(country.NAME);
 
+		// define "go to analysis" button behavior
+		$('.info-analysis-button')
+			.html(`Show ${country.NAME} in Analysis Page`)
+			.off('click')
+			.on('click', () => {
+				hasher.setHash(`analysis/${country.ISO2}`);
+			});
+
 		// if there are no payments, return
 		if (!payments) {
 			const valueText = (moneyType === 'received') ? 
@@ -50,14 +58,6 @@
 			'Total Received' : 'Total Donated';
 		const valueText = App.formatMoney(totalValue);
 		$('.info-total-value').html(`${valueLabel}: <b>${valueText}</b>`);
-
-		// define "go to analysis" button behavior
-		$('.info-analysis-button')
-			.html(`Show ${country.NAME} in Analysis Page`)
-			.off('click')
-			.on('click', () => {
-				hasher.setHash(`analysis/${country.ISO2}`);
-			});
 
 		// update table
 		updateInfoTable({ showFirst: true });

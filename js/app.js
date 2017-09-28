@@ -2,6 +2,10 @@ const App = {};
 
 (() => {
 	App.initialize = (callback) => {
+		// data definition variables 
+		App.dataStartYear = 2014;
+		App.dataEndYear = 2017;
+
 		// define global variables used throughout
 		App.geoData = null;  // geographic data of the world
 		App.countries = [];  // an array of all countries and their properties
@@ -59,6 +63,7 @@ const App = {};
 			});
 	};
 
+
 	/* ------------------ Global Functions ------------------- */
 	App.siFormat = num => d3.format(',.3s')(num).replace('G', 'B');
 	App.formatMoneyShort = (usdValue) => {
@@ -75,13 +80,29 @@ const App = {};
 		return `${d3.format(',.3r')(usdValue)} ${App.currencyIso}`;
 	}
 
+
+	/* ------------------ General Functions ------------------- */
+	App.populateCategorySelect = (selector, data) => {
+		const optgroups = d3.select(selector).selectAll('optgroup')
+			.data(data)
+			.enter().append('optgroup')
+				.attr('label', d => d.tag_name)
+				.text(d => d.tag_name);
+		optgroups.selectAll('option')
+			.data(d => d.children)
+			.enter().append('option')
+				.attr('selected', true)
+				.attr('value', d => d.tag_name)
+				.text(d => d.tag_name);
+	};
+
+
 	/* ------------------ Vendor Defaults ------------------- */
 	// change number of paging buttons shown in DataTables
 	$.fn.DataTable.ext.pager.numbers_length = 6;
 
 	// add sorting algorithm to DataTables library
 	$.fn.dataTableExt.oSort['money-asc'] = (a, b) => {
-		console.log(b);
 		const aVal = Util.strToFloat(a);
 		const bVal = Util.strToFloat(b);
 		return (aVal < bVal) ? -1 : ((aVal > bVal) ? 1 : 0);

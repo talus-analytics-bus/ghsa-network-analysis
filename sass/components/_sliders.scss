@@ -1,34 +1,44 @@
-.slider {
-  .track,
-  .track-inset,
-  .track-overlay {
-    stroke-linecap: round;
+.slider.slider-horizontal {
+  position: relative;
+
+  .slider-track {
+    @include gradient(#d0d0d0, #fdfdfd);
   }
-  .track {
-    stroke: #000;
-    stroke-opacity: 0.3;
-    stroke-width: 10px;
+  .slider-selection {
+    @include gradient(#fff, #c6c6c6);
   }
-  .track-inset {
-    stroke: #ddd;
-    stroke-width: 8px;
-  }
-  .track-overlay {
-    pointer-events: stroke;
-    stroke-width: 50px;
+  .slider-handle {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 2px;
+    margin-left: -8px;
+    z-index: 10;
     cursor: pointer;
+    @include gradient(lightsteelblue, steelblue);
   }
-  .handle {
-    fill: #fff;
-    stroke: #000;
-    stroke-opacity: 0.5;
-    stroke-width: 1.25px;
+  .slider-tick-box {
+    position: absolute;
+    width: 100%;
+    top: 15px;
+    left: -1px;
+    z-index: 9;
   }
-  .ticks line {
-    stroke: #333;
+  .slider-tick-group {
+    position: absolute;
   }
-  .ticks text {
-    font-size: 0.95em;
-    text-anchor: middle;
+  .slider-tick-vert {
+    position: absolute;
+    width: 2px;
+    height: 3px;
+    background-color: #999;
+  }
+  .slider-tick-text {
+    position: absolute;
+    top: 6px;
+    left: -39px;
+    width: 80px;
+    font-size: 0.9em;
+    text-align: center;
   }
 }

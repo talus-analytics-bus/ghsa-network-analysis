@@ -14,8 +14,9 @@
 		function init() {
 			// build map and initialize search
 			map = buildMap();
-			initSearch();
 			initFilters();
+			initSlider();
+			initSearch();
 			App.initCountryInfoBox({ closeFunc: resetMap });
 			updateAll();
 		}
@@ -261,11 +262,22 @@
 			});
 		}
 
+		// initializes slider functionality
+		function initSlider() {
+			const slider = App.initSlider('.time-slider', {
+				min: App.dataStartYear,
+				max: App.dataEndYear,
+				value: [App.dataStartYear, App.dataEndYear],
+				tooltip: 'hide',
+			});
+			return slider;
+		}
+
 		// populates the filters in the map options box
 		function initFilters() {
 			// populate dropdowns
-			populateSelect('.function-select', App.functions);
-			populateSelect('.disease-select', App.diseases);
+			App.populateCategorySelect('.function-select', App.functions);
+			App.populateCategorySelect('.disease-select', App.diseases);
 
 			// initialize multiselects
 			$('.function-select, .disease-select').multiselect({
@@ -291,20 +303,6 @@
 
 			// show map options
 			$('.map-options-container').show();
-		}
-
-		function populateSelect(selector, data) {
-			const optgroups = d3.select(selector).selectAll('optgroup')
-				.data(data)
-				.enter().append('optgroup')
-					.attr('label', d => d.tag_name)
-					.text(d => d.tag_name);
-			optgroups.selectAll('option')
-				.data(d => d.children)
-				.enter().append('option')
-					.attr('selected', true)
-					.attr('value', d => d.tag_name)
-					.text(d => d.tag_name);
 		}
 
 		init();
