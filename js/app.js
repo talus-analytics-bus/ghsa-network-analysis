@@ -81,24 +81,48 @@ const App = {};
 	}
 
 
-	/* ------------------ General Functions ------------------- */
-	App.populateCategorySelect = (selector, data) => {
+	/* ------------------ Category Functions ------------------- */
+	App.initCategorySelect = (selector, data, options) => {
 		const optgroups = d3.select(selector).selectAll('optgroup')
 			.data(data)
 			.enter().append('optgroup')
 				.attr('label', d => d.tag_name)
 				.text(d => d.tag_name);
 		optgroups.selectAll('option')
-			.data(d => d.children)
+			.data(d => d.children.length ? d.children : [d])
 			.enter().append('option')
 				.attr('selected', true)
 				.attr('value', d => d.tag_name)
 				.text(d => d.tag_name);
+
+		// copy options over and initialize multiselect
+		const opts = {
+			maxHeight: 260,
+			includeSelectAllOption: true,
+			enableClickableOptGroups: true,
+			numberDisplayed: 0,
+		};
+		for (let ind in options) opts[ind] = options[ind];
+		$('.function-select, .disease-select').multiselect(opts);
+
+		// hide optgroups with only one option
+		// (this is a workaround fix for optgroup bug in bootstrap multiselect)
+		const $select = $(selector);
+		const multiselect = $select.next('.btn-group');
+		const groups = multiselect.find('.multiselect-group')
+			.each(function loop() {
+				const $optgroup = $(this);
+				const options = $optgroup.nextUntil('.multiselect-group');
+				if (options.length === 1) {
+					$optgroup.hide();
+					options.addClass('primary-option');
+				}
+			});
 	};
 
 	App.getCategorySelectValue = (selector) => {
-		const multiselect = $(selector).next('.btn-group');
 		const value = [];
+		const multiselect = $(selector).next('.btn-group');
 		const optgroups = multiselect.find('.multiselect-group');
 		optgroups.each(function loop() {
 			const $optgroup = $(this);
@@ -117,7 +141,22 @@ const App = {};
 			}
 		});
 		return value;
-	}
+	};
+
+	App.passesCategoryFilter = (values, filterValues) => {
+		let pass = false;
+		for (let i = 0; i < values.length; i++) {
+			const value = values[i];
+			const parent = filterValues.find(d => d.tag_name === value.p);
+			if (parent) {
+				if (!value.c || (value.c && parent.children.includes(value.c))) {
+					pass = true;
+					break;
+				}
+			}
+		}
+		return pass;
+	};
 
 
 	/* ------------------ Vendor Defaults ------------------- */

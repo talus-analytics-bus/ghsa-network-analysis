@@ -124,22 +124,8 @@
 		// populates the filters in the map options box
 		function populateFilters() {
 			// populate dropdowns
-			App.populateCategorySelect('.function-select', App.functions);
-			App.populateCategorySelect('.disease-select', App.diseases);
-
-			// initialize multiselects
-			$('.function-select, .disease-select').multiselect({
-				dropRight: true,
-				includeSelectAllOption: true,
-				enableClickableOptGroups: true,
-				numberDisplayed: 0,
-			});
-
-			// initialize multiselects
-			$('.function-select, .disease-select').multiselect({
-				includeSelectAllOption: true,
-				numberDisplayed: 0,
-			});
+			App.initCategorySelect('.function-select', App.functions);
+			App.initCategorySelect('.disease-select', App.diseases);
 		}
 
 		// initializes search functionality

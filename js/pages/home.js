@@ -114,8 +114,8 @@
 					let totalValue = 0;
 					for (let i = 0, n = payments.length; i < n; i++) {
 						const p = payments[i];
-						//if (!Util.hasCommonElement(functions, p.project_function)) continue;
-						//if (!Util.hasCommonElement(diseases, p.project_disease)) continue;
+						if (!App.passesCategoryFilter(p.project_function, functions)) continue;
+						//if (!App.passesCategoryFilter(p.project_disease, diseases)) continue;
 						// TODO take year range into account
 						totalValue += p.total_spent || 0;
 					}
@@ -271,17 +271,8 @@
 		// populates the filters in the map options box
 		function initFilters() {
 			// populate dropdowns
-			App.populateCategorySelect('.function-select', App.functions);
-			App.populateCategorySelect('.disease-select', App.diseases);
-
-			// initialize multiselects
-			$('.function-select, .disease-select').multiselect({
-				maxHeight: 260,
-				dropRight: true,
-				includeSelectAllOption: true,
-				enableClickableOptGroups: true,
-				numberDisplayed: 0,
-			});
+			App.initCategorySelect('.function-select', App.functions, { dropRight: true });
+			App.initCategorySelect('.disease-select', App.diseases, { dropRight: true });
 
 			// attach radio button behavior
 			$('.map-options-container .radio-option').click(function clickedRadio() {
