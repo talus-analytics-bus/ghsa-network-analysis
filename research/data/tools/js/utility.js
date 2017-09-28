@@ -39,6 +39,7 @@ Util.save = function(data, filename){
         a.dispatchEvent(e)
     };
 
+// IATI standard: Transaction Types (may be old)
 Util.old_transaction_type = {"C":"Commitment","D":"Disbursement","E":"Expenditure","IF":"Incoming Funds","IR":"Interest Repayment","LR":"Loan Repayment","R":"Reimbursement","QP":"Purchase of Equity","QS":"Sale of Equity","CG":"Credit Guarantee","11":"11"};
 
 Util.SqlDayToYYYY = (num_days) => {
@@ -63,58 +64,191 @@ Util.organization_type = {"date-last-modified":"2017-09-18T15:11:23.635208+00:00
 
 Util.funder_aux_hash = {"ES":{"name":"Spain","sector":"Government","country":"Spain"},"IDA":{"name":"International Disability Alliance","sector":"International NGO","country":"International"},"SE":{"name":"Sweden","sector":"Government","country":"Sweden"},"CA":{"name":"Canada","sector":"Government","country":"Canada"},"EU":{"name":"European Union","sector":"Multilateral","country":"International"},"NZ":{"name":"New Zealand","sector":"Government","country":"New Zealand"},"NL":{"name":"Netherlands","sector":"Government","country":"Netherlands"},"IE":{"name":"Ireland","sector":"Government","country":"Ireland"},"GB":{"name":"United Kingdom","sector":"Government","country":"United Kingdom"},"AsDB-Special-Funds":{"name":"Asian Development Bank","sector":"Multilateral","country":"International"},"AU":{"name":"Australia","sector":"Government","country":"Australia"},"XM-DAC-69-02":{"name":"Slovak Agency for Internal Development Cooperation","sector":"Government","country":"Slovakia"},"BE":{"name":"Belgium","sector":"Government","country":"Belgium"},"BMGF":{"name":"Bill & Melinda Gates Foundation","sector":"Foundation","country":"International"},"CH":{"name":"Switzerland","sector":"Government","country":"Switzerland"},"DE":{"name":"Germany","sector":"Government","country":"Germany"},"DK":{"name":"Denmark","sector":"Government","country":"Denmark"},"GB-SC-SC032327":{"name":"EMMS International","sector":"International NGO","country":"International"},"FR":{"name":"France","sector":"Government","country":"France"},"GB-3":{"name":"United Kingdom","sector":"Government","country":"United Kingdom"},"US":{"name":"United States","sector":"Government","country":"United States"},"FI":{"name":"Finland","sector":"Government","country":"Finland"},"AfDB":{"name":"African Development Bank","sector":"Multilateral","country":"International"},"INGO":{"name":"International NGO","sector":"International NGO","country":"International"},"GAVI":{"name":"GAVI Alliance","sector":"Public Private Partnership","country":"International"},"GFFATM":{"name":"Global Fund","sector":"Multilateral","country":"International"},"NL-CCI-20081098":{"name":"BRAC International","sector":"International NGO","country":"International"},"GB-COH-GB-COH-01846493":{"name":"AECOM","sector":"Private Sector","country":"United Kingdom"}};
 
+// IATI data-specific hash table that accepts an IATI sector tag (text) and maps it to the
+// corresponding disease and function tag(s) for that sector tag.
+// Current mapping
 Util.iatiDiseaseFunctionHash = {
   "Basic health care": {
-    "disease_tags": "",
-    "function_tags": "Basic health care"
+    "disease_tags": [
+      {
+        "p": "Unspecified",
+        "c": null
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Basic health care",
+        "c": null
+      }
+    ]
   },
   "Basic health infrastructure": {
-    "disease_tags": "",
-    "function_tags": "Health infrastructure; Basic health care"
+    "disease_tags": [
+      {
+        "p": "Unspecified",
+        "c": null
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Basic health care",
+        "c": "Health infrastructure"
+      }
+    ]
   },
   "Basic nutrition": {
-    "disease_tags": "",
-    "function_tags": "Nutrition and food security"
+    "disease_tags": [
+      {
+        "p": "Unspecified",
+        "c": null
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Nutrition and food security",
+        "c": null
+      }
+    ]
   },
   "Health education": {
-    "disease_tags": "",
-    "function_tags": "Education"
+    "disease_tags": [
+      {
+        "p": "Unspecified",
+        "c": null
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Education",
+        "c": null
+      }
+    ]
   },
   "Health personnel development": {
-    "disease_tags": "",
-    "function_tags": "Health personnel development; Basic health care"
+    "disease_tags": [
+      {
+        "p": "Unspecified",
+        "c": null
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Basic health care",
+        "c": "Health personnel development"
+      }
+    ]
   },
   "Health policy and administrative management": {
-    "disease_tags": "",
-    "function_tags": "Health policy"
+    "disease_tags": [
+      {
+        "p": "Unspecified",
+        "c": null
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Health policy",
+        "c": null
+      }
+    ]
   },
   "Infectious disease control": {
-    "disease_tags": "Infectious disease",
-    "function_tags": "Infection control"
+    "disease_tags": [
+      {
+        "p": "Infectious disease",
+        "c": null
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Infection control",
+        "c": null
+      }
+    ]
   },
   "Malaria control": {
-    "disease_tags": "Malaria; Infectious disease",
-    "function_tags": "Infection control"
+    "disease_tags": [
+      {
+        "p": "Infectious disease",
+        "c": "Malaria"
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Infection control",
+        "c": null
+      }
+    ]
   },
   "Medical education/training": {
-    "disease_tags": "",
-    "function_tags": "Education"
+    "disease_tags": [
+      {
+        "p": "Unspecified",
+        "c": null
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Education",
+        "c": null
+      }
+    ]
   },
   "Medical research": {
-    "disease_tags": "",
-    "function_tags": "Research and development"
+    "disease_tags": [
+      {
+        "p": "Unspecified",
+        "c": null
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Research and development",
+        "c": null
+      }
+    ]
   },
   "Medical services": {
-    "disease_tags": "",
-    "function_tags": "Medical services"
+    "disease_tags": [
+      {
+        "p": "Unspecified",
+        "c": null
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Medical services",
+        "c": null
+      }
+    ]
   },
   "Tuberculosis control": {
-    "disease_tags": "Tuberculosis; Infectious disease",
-    "function_tags": "Infection control"
+    "disease_tags": [
+      {
+        "p": "Infectious disease",
+        "c": "Tuberculosis"
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Infection control",
+        "c": null
+      }
+    ]
   },
   "Livestock/veterinary services": {
-    "disease_tags": "",
-    "function_tags": "Animal health"
+    "disease_tags": [
+      {
+        "p": "Unspecified",
+        "c": null
+      }
+    ],
+    "function_tags": [
+      {
+        "p": "Livestock / Veterinary services",
+        "c": null
+      }
+    ]
   }
 };
 

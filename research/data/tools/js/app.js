@@ -96,42 +96,62 @@ const App = {};
 	};
 
 
+	// Define the unspecified function/disease tag to be pushed
+	// if the tag(s) are not defined for the project
+	const unspecTag = {p: "Unspecified", c: null};
+
 	/* getFunctionTags
 	*  gets the function tags for the data
 	*/
 	App.getFunctionTags = (input) => {
-		if (input === null || input === []) return [];
+		if (input === null || input === []) return [unspecTag];
 		// for each tag in the input arr
 		outputTags = [];
 		for (let i = 0; i < input.length; i++) {
 			// get sector code text
 			const sectorTag = Util.iatiSectorCodeHash[input[i]];
-			if (sectorTag === undefined) continue;
-			const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].function_tags;
-			if (outputTmp === undefined) continue;
-			if (outputTmp !== "") outputTags = _.union(outputTags, outputTmp.split('; '));
-			else continue;
+			if (sectorTag === undefined) {
+				outputTags.push(unspecTag);
+				continue;
+			}
+			else {
+				const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].function_tags;
+				if (outputTmp === undefined) {
+					outputTags.push(unspecTag);
+					continue;
+				} else {
+					outputTags.push(outputTmp);
+				}
+			}
 		}
-		return outputTags;
+		return _.unique(outputTags);
 	};
 
 	/* getDiseaseTags
 	*  gets the disease tags for the data
 	*/
 	App.getDiseaseTags = (input) => {
-		if (input === null || input === []) return [];
+		if (input === null || input === []) return [unspecTag];
 		// for each tag in the input arr
 		outputTags = [];
 		for (let i = 0; i < input.length; i++) {
 			// get sector code text
 			const sectorTag = Util.iatiSectorCodeHash[input[i]];
-			if (sectorTag === undefined) continue;
-			const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].disease_tags;
-			if (outputTmp === undefined) continue;
-			if (outputTmp !== "") outputTags = _.union(outputTags, outputTmp.split('; '));
-			else continue;
+			if (sectorTag === undefined) {
+				outputTags.push(unspecTag);
+				continue;
+			}
+			else {
+				const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].disease_tags;
+				if (outputTmp === undefined) {
+					outputTags.push(unspecTag);
+					continue;
+				} else {
+					outputTags.push(outputTmp);
+				}
+			}
 		}
-		return outputTags;
+		return _.unique(outputTags);
 	};
 
 	/* getDonorData
