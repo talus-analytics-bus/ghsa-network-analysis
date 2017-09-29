@@ -5,7 +5,7 @@ const App = {};
 	// Loads the current 'funding_data' dataset to be played with
 	App.loadFundingData = () => {
 		const path = './data/';
-		const fn = 'funding_data-iati_2014_plus-092717-v2-MV.json';
+		const fn = 'funding_data-iati_2014_plus-092817-v4-MV.json';
 		console.log('Loading funding data...');
 			d3.queue()
 				.defer(d3.json, path + fn)
@@ -372,8 +372,12 @@ const App = {};
 					curTrans.currency = 'USD'; // always USD for IATI data
 
 					// add transaction if it's a non-zero amount, otherwise skip it
-					const transactionAmountNullOrZero= curTrans.amount === null || curTrans.amount === 0.0 || curTrans.amount === undefined || isNaN(curTrans.amount);
-					if (!transactionAmountNullOrZero) proj.transactions.push(curTrans);
+					const transactionAmountNullOrZero = curTrans.amount === null || curTrans.amount === 0.0 || curTrans.amount === undefined || isNaN(curTrans.amount);
+
+					// skip transactions with null trans_day
+					const transactionUnknownDay = projCountryTrans[j].trans_day === null;
+
+					if (!transactionAmountNullOrZero && !transactionUnknownDay) proj.transactions.push(curTrans);
 				}
 
 				let someCommitments = false;
