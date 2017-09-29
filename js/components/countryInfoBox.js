@@ -151,9 +151,47 @@
 				}
 			}
 		} else if (currentInfoTab === 'function') {
-
+			const totalByFunction = {};
+			currentPayments.forEach((p) => {
+				p.project_function.forEach((fn) => {
+					if (!totalByFunction[fn.p]) {
+						totalByFunction[fn.p] = {
+							total_committed: 0,
+							total_spent: 0,
+						};
+					}
+					totalByFunction[fn.p].total_committed += p.total_committed;
+					totalByFunction[fn.p].total_spent += p.total_spent;
+				});
+			});
+			for (let fnp in totalByFunction) {
+				paymentTableData.push({
+					function: fnp,
+					total_committed: totalByFunction[fnp].total_committed,
+					total_spent: totalByFunction[fnp].total_spent,
+				});
+			}
 		} else if (currentInfoTab === 'disease') {
-
+			const totalByDisease = {};
+			currentPayments.forEach((p) => {
+				p.project_disease.forEach((fn) => {
+					if (!totalByDisease[fn.p]) {
+						totalByDisease[fn.p] = {
+							total_committed: 0,
+							total_spent: 0,
+						};
+					}
+					totalByDisease[fn.p].total_committed += p.total_committed;
+					totalByDisease[fn.p].total_spent += p.total_spent;
+				});
+			});
+			for (let fnp in totalByDisease) {
+				paymentTableData.push({
+					disease: fnp,
+					total_committed: totalByDisease[fnp].total_committed,
+					total_spent: totalByDisease[fnp].total_spent,
+				});
+			}
 		}
 
 
