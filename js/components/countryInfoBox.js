@@ -19,6 +19,21 @@
 			updateInfoTable();
 		});
 
+		$('.info-more-button').click(function toggleContent() {
+			const $this = $(this);
+
+			// update "show more" text
+			const $arrow = $this.find('.collapse-arrow').toggleClass('rotated');
+			$this.find('span').text($arrow.hasClass('rotated') ? 'show less' : 'show more');
+
+			// toggle width of info box and display of content
+			$('.info-content').slideToggle();
+			$('.info-box').animate({ width: $arrow.hasClass('rotated') ? 800 : 350 }, () => {
+				// populate table after dimension changes
+				updateInfoTable();
+			});
+		});
+
 		updateInfoTab();
 	};
 
@@ -45,11 +60,8 @@
 				'No data for payments received by this country' :
 				'No data for money donated by this country';
 			$('.info-total-value').html(valueText);
-			$('.info-content').slideUp();
 			$('.info-container').slideDown();
 			return;
-		} else {
-			$('.info-content').slideDown();
 		}
 
 		// populate info total value
@@ -59,8 +71,8 @@
 		const valueText = App.formatMoney(totalValue);
 		$('.info-total-value').html(`${valueLabel}: <b>${valueText}</b>`);
 
-		// update table
-		updateInfoTable({ showFirst: true });
+		// display content
+		$('.info-container').slideDown();
 	}
 
 	// update the content shwon based on tab chosen
@@ -71,7 +83,7 @@
 	}
 
 	// update the table content depending on tab chosen
-	function updateInfoTable(param = {}) {
+	function updateInfoTable() {
 		// define column data
 		let headerData = [];
 		if (currentInfoTab === 'all') {
@@ -227,9 +239,6 @@
 				return cellValue;
 			});
 
-		// show container first, so DataTable can render correctly
-		if (param.showFirst) $('.info-container').slideDown();
-
 		// define DataTables plugin parameters
 		let order = [4, 'desc'];
 		let columnDefs = [{ type: 'money', targets: [3, 4] }];
@@ -241,7 +250,7 @@
 		// re-initialize DataTables plugin
 		infoDataTable = $('.info-table').DataTable({
 			scrollY: '30vh',
-			scrollCollapse: false,
+			scrollCollapse: true,
 			order,
 			columnDefs,
 		});

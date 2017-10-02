@@ -56,7 +56,8 @@
 
 			// define legend display toggle behavior
 			$('.legend-display-tab').click(function toggleLegendDIsplay() {
-				$(this).find('.collapse-arrow').toggleClass('rotated');
+				const $arrow = $(this).find('.collapse-arrow').toggleClass('rotated');
+				$(this).find('span').text($arrow.hasClass('rotated') ? 'show legend' : 'hide legend');
 				$('.legend-content').slideToggle();
 			});
 

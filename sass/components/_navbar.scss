@@ -6,6 +6,7 @@
 }
 .navbar .navbar-brand {
 	color: #555;
+	padding: 7px 10px;
 }
 .navbar .navbar-nav > li {
 	&.active,
@@ -15,4 +16,9 @@
 }
 .navbar .navbar-nav > li > a {
 	color: #555;
+}
+.navbar-brand img.logo {
+	display: inline-block;
+	height: 40px;
+	margin-right: 10px;
 }
