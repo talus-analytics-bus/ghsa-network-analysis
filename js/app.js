@@ -120,6 +120,7 @@ const App = {};
 			});
 	};
 
+	// retrieves the value of a category filter in a meaningful structure
 	App.getCategorySelectValue = (selector) => {
 		const value = [];
 		const multiselect = $(selector).next('.btn-group');
@@ -143,6 +144,7 @@ const App = {};
 		return value;
 	};
 
+	// tests whether a payment satisfies a category filter
 	App.passesCategoryFilter = (values, filterValues) => {
 		let pass = false;
 		for (let i = 0; i < values.length; i++) {

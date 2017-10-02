@@ -120,7 +120,7 @@
 					for (let i = 0, n = payments.length; i < n; i++) {
 						const p = payments[i];
 						if (!App.passesCategoryFilter(p.project_function, functions)) continue;
-						//if (!App.passesCategoryFilter(p.project_disease, diseases)) continue;
+						if (!App.passesCategoryFilter(p.project_disease, diseases)) continue;
 						// TODO take year range into account
 						totalValue += p.total_spent || 0;
 					}

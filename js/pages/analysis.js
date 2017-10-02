@@ -121,6 +121,17 @@
 			}
 		}
 
+		// filters a set of given payments based on filters chosen by user
+		function getFilteredPayments(payments) {
+			const functions = App.getCategorySelectValue('.function-select');
+			const diseases = App.getCategorySelectValue('.disease-select');
+			return payments.filter((p) => {
+				if (!App.passesCategoryFilter(p.project_function, functions)) return false;
+				if (!App.passesCategoryFilter(p.project_disease, diseases)) return false;
+				return true;
+			});
+		}
+
 		// populates the filters in the map options box
 		function populateFilters() {
 			// populate dropdowns
