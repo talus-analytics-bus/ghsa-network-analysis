@@ -16,9 +16,7 @@
 		function init() {
 			// build map and initialize search
 			map = buildMap();
-			initFilters();
-			initSlider();
-			initSearch();
+			initMapOptions();
 			App.initCountryInfoBox({ closeFunc: resetMap });
 			updateAll();
 		}
@@ -55,6 +53,12 @@
 						content: d.properties.NAME,
 					});
 				});
+
+			// define legend display toggle behavior
+			$('.legend-display-tab').click(function toggleLegendDIsplay() {
+				$(this).find('.collapse-arrow').toggleClass('rotated');
+				$('.legend-content').slideToggle();
+			});
 
 			return mapObj;
 		}
@@ -230,6 +234,20 @@
 			const payments = dataLookup[country.ISO2];
 
 			App.updateCountryInfoBox(country, moneyType, payments);
+		}
+
+		// initalizes components in the map options, incl. search and display toggle
+		function initMapOptions() {
+			// define display toggle behavior
+			$('.map-options-title').click(function toggleContent() {
+				$(this).find('.collapse-arrow').toggleClass('rotated');
+				$('.map-options-content').slideToggle();
+			});
+
+			// initialize components
+			initFilters();
+			initSlider();
+			initSearch();
 		}
 
 		// initializes search functionality

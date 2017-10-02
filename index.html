@@ -54,31 +54,37 @@
 			<div class="map-container"></div>
 			<div class="right-container">
 				<div class="map-options-container">
-					<div class="filter-section">
-						<div class="filter-box money-type-filter">
-							<div class="dropdown-label">Color countries by:</div>
-							<div class="radio-option">
-								<input type="radio" ind="funded" checked />
-								<span>Amount funded</span>
-							</div>
-							<div class="radio-option">
-								<input type="radio" ind="received" />
-								<span>Amount received</span>
-							</div>
-						</div>
-						<div class="filter-box">
-							<div class="dropdown-label">Select time range:</div>
-							<input class="time-slider slider" />
-						</div>
+					<div class="map-options-title">
+						Map Options
+						<img class="collapse-arrow" src="img/chevron_down.png" />
 					</div>
-					<div class="filter-section">
-						<div class="filter-box">
-							<div class="dropdown-label">Function</div>
-							<select class="function-select form-control" multiple="multiple"></select>
+					<div class="map-options-content">
+						<div class="filter-section">
+							<div class="filter-box money-type-filter">
+								<div class="dropdown-label">Color countries by:</div>
+								<div class="radio-option">
+									<input type="radio" ind="funded" checked />
+									<span>Amount funded</span>
+								</div>
+								<div class="radio-option">
+									<input type="radio" ind="received" />
+									<span>Amount received</span>
+								</div>
+							</div>
+							<div class="filter-box">
+								<div class="dropdown-label">Select time range:</div>
+								<input class="time-slider slider" />
+							</div>
 						</div>
-						<div class="filter-box">
-							<div class="dropdown-label">Disease</div>
-							<select class="disease-select form-control" multiple="multiple"></select>
+						<div class="filter-section">
+							<div class="filter-box">
+								<div class="dropdown-label">Function</div>
+								<select class="function-select form-control" multiple="multiple"></select>
+							</div>
+							<div class="filter-box">
+								<div class="dropdown-label">Disease</div>
+								<select class="disease-select form-control" multiple="multiple"></select>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -94,10 +100,17 @@
 				</div>
 			</div>
 			<div class="legend-container">
-				<div class="legend-box">
-					<svg class="legend">
-						<g></g>
-					</svg>
+				<div class="legend-display-tab">
+					<img class="collapse-arrow rotated" src="img/chevron_down.png" />
+					<span>show legend</span>
+					<img class="collapse-arrow rotated" src="img/chevron_down.png" />
+				</div>
+				<div class="legend-content">
+					<div class="legend-box">
+						<svg class="legend">
+							<g></g>
+						</svg>
+					</div>
 				</div>
 			</div>
 			<div class="info-container">
@@ -113,7 +126,7 @@
 								<div class="btn btn-default" tab="all">All</div>
 								<div class="btn btn-default" tab="country">By Recipient</div>
 								<div class="btn btn-default" tab="function">By Function</div>
-								<div class="btn btn-default" tab="di">By Disease</div>
+								<div class="btn btn-default" tab="disease">By Disease</div>
 							</div>
 						</div>
 						<div class="info-table-container">

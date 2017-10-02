@@ -94,13 +94,6 @@
 					rowContent.append('div')
 						.attr('class', 'tooltip-row')
 						.html(`<b>Total Disbursed:</b> ${App.formatMoney(d.data.total_spent)}`);
-					rowContent.append('div')
-						.attr('class', 'tooltip-row')
-						.html(`<b>Total Committed:</b> ${App.formatMoney(d.data.total_committed)}`);
-					const percDisbursed = d.data.total_spent / d.data.total_committed;
-					rowContent.append('div')
-						.attr('class', 'tooltip-row')
-						.html(`<b>Percent Disbursed:</b> ${d3.format('.1%')(percDisbursed)}`);
 
 					$(this).tooltipster({
 						trigger: 'hover',
@@ -108,26 +101,5 @@
 					});
 				});
 		if (param.onClick) circles.on('click', d => param.onClick(d.data.ISO2));
-
-		// add legend
-		const legendWidth = 320;
-		const legend = chart.append('g')
-			.attr('transform', `translate(${(size - legendWidth) / 2}, ${size + 25})`);
-		legend.append('rect')
-			.attr('width', legendWidth)
-			.attr('height', 20)
-			.attr('fill',  `url(#${selector}-gradient)`);
-		legend.append('text')
-			.attr('class', 'legend-label')
-			.attr('y', 20 + 12)
-			.attr('dy', '.35em')
-			.text('0% Disbursed');
-		legend.append('text')
-			.attr('class', 'legend-label')
-			.attr('x', legendWidth)
-			.attr('y', 20 + 12)
-			.attr('dy', '.35em')
-			.style('text-anchor', 'end')
-			.text('100% Disbursed');
 	};
 })();

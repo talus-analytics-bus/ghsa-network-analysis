@@ -22,23 +22,38 @@
 
 	input {
 		position: relative;
-		left: 2px;
-		width: 298px;
+		width: 300px;
 		padding: 6px 16px;
 		border-color: #999;
-		@include border-radius(6px);
+		@include border-radius(5px);
 	}
 }
 .map-options-container {
 	display: none;
 	width: 300px;
-	padding: 15px 20px;
 	border: $border;
 	text-align: left;
-	background-color: rgba(255,255,255,0.95);
+	background-color: rgba(255,255,255,0.85);
 	z-index: 10;
-	@include border-radius(10px);
 
+	.map-options-title {
+		display: flex;
+		justify-content: space-between;
+		font-weight: 600;
+		padding: 10px 20px;
+		background-color: rgba(255,255,255,0.8);
+		cursor: pointer;
+
+		img { top: 4px; }
+		&:hover {
+			background-color: rgba(255,255,255,0.9);
+		}
+	}
+	.map-options-content {
+		display: none;
+		border-top: $border;
+		padding: 15px 20px;
+	}
 	.filter-section:nth-child(n+2) {
 		margin-top: 15px;
 		border-top: $light-border;
@@ -66,15 +81,26 @@
 .legend-container {
 	display: none;
 	position: absolute;
-	bottom: 20px;
+	bottom: 0;
 	left: 0;
 	width: 100%;
 
+	.legend-display-tab {
+		display: inline-block;
+		padding: 3px 12px;
+		background-color: rgba(255,255,255,0.8);
+		cursor: pointer;
+		@include border-top-radius(5px);
+
+		img { margin: 0 7px; }
+	}
+	.legend-content {
+		display: none;
+	}
 	.legend-box {
 		display: inline-block;
 		padding: 20px 20px 15px;
 		border: $border;
-		background-color: rgba(220,220,220,0.95);
-		@include border-radius(15px);
+		background-color: rgba(255,255,255,0.8);
 	}
 }
