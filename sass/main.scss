@@ -12,10 +12,10 @@
 @import 'components/images';
 @import 'components/maps';
 @import 'components/navbar';
-@import 'components/sankey';
 @import 'components/search';
 @import 'components/sections';
 @import 'components/sliders';
+@import 'components/submitForm';
 @import 'components/tabs';
 @import 'components/tables';
 @import 'components/text';
@@ -27,6 +27,7 @@
 
 @import 'pages/analysis';
 @import 'pages/home';
+@import 'pages/submit';
 
 
 body { font-family: 'Open Sans', sans-serif; }

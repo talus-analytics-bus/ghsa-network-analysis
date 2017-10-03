@@ -22,7 +22,7 @@ const Routing = {};
 			loadPage('analysis', App.initAnalysis, iso);
 		});
 		crossroads.addRoute('/submit', () => {
-			loadPage('submit');
+			loadPage('submit', App.initSubmit);
 		});
 		crossroads.addRoute('/about', () => {
 			loadPage('about');

@@ -12,6 +12,7 @@
 	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="css/bootstrap-slider.min.css" rel="stylesheet" type="text/css">
 	<link href="css/bootstrap-multiselect.css" rel="stylesheet" type="text/css">
+	<link href="css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css">
 	<link href="css/tooltipster.bundle.min.css" rel="stylesheet" type="text/css">
 	<link href="css/tooltipster-sideTip-shadow.css" rel="stylesheet" type="text/css">
 	<link href="css/tooltipster-follower.min.css" rel="stylesheet" type="text/css">
@@ -221,7 +222,30 @@
 				Data will be reviewed and incorporated into the tool if valid.
 			</div>
 			<div class="submit-form-container">
-				
+				<table class="submit-form-table"><tbody>
+					<tr>
+						<td>Project Name</td>
+						<td><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td>Project Date</td>
+						<td>
+							<div class="input-group input-daterange">
+								<input type="text" class="start-date-input form-control" placeholder="mm/dd/yyyy">
+								<div class="input-group-addon">to</div>
+								<input type="text" class="end-date-input form-control" placeholder="mm/dd/yyyy">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>Donor Country</td>
+						<td><input class="form-control" /></td>
+					</tr>
+					<tr>
+						<td>Recipient Country</td>
+						<td><input class="form-control" /></td>
+					</tr>
+				</tbody></table>
 			</div>
 		</div>
 	</script>
@@ -255,6 +279,7 @@
 	<script src="lib/d3-geo-projection.v2.min.js"></script>
 	<script src="lib/bootstrap-slider.min.js"></script>
 	<script src="lib/bootstrap-multiselect.js"></script>
+	<script src="lib/bootstrap-datepicker.min.js"></script>
 	<script src="lib/datatables.min.js"></script>
 	<script src="lib/jquery.noty.packaged.min.js"></script>
 	<script src="lib/tooltipster.bundle.min.js"></script>
@@ -273,6 +298,7 @@
 	<script src="js/components/slider.js"></script>
 	<script src="js/pages/analysis.js"></script>
 	<script src="js/pages/home.js"></script>
+	<script src="js/pages/submit.js"></script>
 	<script src="js/init.js"></script>
 
 	<!--<script src="build/bundle.min.js"></script>-->
