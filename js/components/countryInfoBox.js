@@ -3,6 +3,7 @@
 	let infoTableHasBeenInit = false;  // whether the info table has been initialized
 	let infoDataTable;  // the info data table (DataTable object)
 	let currentInfoTab = 'all';  // the current info tab (all, country, function, disease)
+	let isShowingMore = false;
 	let currentCountry;  // the current country being shown
 	let currentMoneyType;  // the type of money flow for the country chosen (donated, received)
 	let currentPayments;  // an array of all payments corresponding to the country chosen
@@ -20,18 +21,8 @@
 		});
 
 		$('.info-more-button').click(function toggleContent() {
-			const $this = $(this);
-
-			// update "show more" text
-			const $arrow = $this.find('.collapse-arrow').toggleClass('rotated');
-			$this.find('span').text($arrow.hasClass('rotated') ? 'show less' : 'show more');
-
-			// toggle width of info box and display of content
-			$('.info-content').slideToggle();
-			$('.info-box').animate({ width: $arrow.hasClass('rotated') ? 800 : 350 }, () => {
-				// populate table after dimension changes
-				updateInfoTable();
-			});
+			isShowingMore = !isShowingMore;
+			isShowingMore ? expandInfoBox(updateInfoTable) : shrinkInfoBox();
 		});
 
 		updateInfoTab();
@@ -60,8 +51,12 @@
 				'No data for payments received by this country' :
 				'No data for money donated by this country';
 			$('.info-total-value').html(valueText);
+			shrinkInfoBox();
+			$('.info-more-button-container').slideUp();
 			$('.info-container').slideDown();
 			return;
+		} else {
+			$('.info-more-button-container').slideDown();
 		}
 
 		// populate info total value
@@ -70,6 +65,12 @@
 			'Total Received' : 'Total Donated';
 		const valueText = App.formatMoney(totalValue);
 		$('.info-total-value').html(`${valueLabel}: <b>${valueText}</b>`);
+
+		// update the table, if showing it
+		if (isShowingMore) {
+			$('.info-content').slideDown();
+			updateInfoTable();
+		}
 
 		// display content
 		$('.info-container').slideDown();
@@ -256,4 +257,22 @@
 		});
 		infoTableHasBeenInit = true;		
 	};
+
+	// shrinks info box
+	function shrinkInfoBox(callback) {
+		isShowingMore = false;
+		$('.info-more-button .collapse-arrow').removeClass('rotated');
+		$('.info-more-button span').text('show more');
+		$('.info-content').slideUp();
+		$('.info-box').animate({ width: 350 }, callback);
+	}
+
+	// expands info box
+	function expandInfoBox(callback) {
+		isShowingMore = true;
+		$('.info-more-button .collapse-arrow').addClass('rotated');
+		$('.info-more-button span').text('show less');
+		$('.info-content').slideDown();
+		$('.info-box').animate({ width: 800 }, callback);
+	}
 })();
