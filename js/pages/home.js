@@ -290,8 +290,14 @@
 		// populates the filters in the map options box
 		function initFilters() {
 			// populate dropdowns
-			App.initCategorySelect('.function-select', App.functions, { dropRight: true });
-			App.initCategorySelect('.disease-select', App.diseases, { dropRight: true });
+			App.initCategorySelect('.function-select', App.functions, {
+				selected: true,
+				dropRight: true,
+			});
+			App.initCategorySelect('.disease-select', App.diseases, {
+				selected: true,
+				dropRight: true,
+			});
 
 			// attach radio button behavior
 			$('.map-options-container .radio-option').click(function clickedRadio() {

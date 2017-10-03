@@ -82,19 +82,19 @@ const App = {};
 
 
 	/* ------------------ Category Functions ------------------- */
-	App.initCategorySelect = (selector, data, options) => {
+	App.initCategorySelect = (selector, data, options = {}) => {
 		const $select = $(selector);
 		const optgroups = d3.select(selector).selectAll('optgroup')
 			.data(data)
 			.enter().append('optgroup')
 				.attr('label', d => d.tag_name)
 				.text(d => d.tag_name);
-		optgroups.selectAll('option')
+		const optionElements = optgroups.selectAll('option')
 			.data(d => d.children.length ? d.children : [d])
 			.enter().append('option')
-				.attr('selected', true)
 				.attr('value', d => d.tag_name)
 				.text(d => d.tag_name);
+		if (options.selected) optionElements.attr('selected', true);
 
 		// copy options over and initialize multiselect
 		const opts = {

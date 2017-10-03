@@ -141,6 +141,7 @@
 							Source: <b>International Aid Transparency Initiative, 2014-2017.</b>
 						</div>
 						<div class="info-button-container">
+							<button class="info-download-button btn btn-default">Download Data</button>
 							<button class="info-analysis-button btn btn-default">Show in Analysis Page</button>
 						</div>
 					</div>
@@ -219,7 +220,7 @@
 			<h3>Submit Data</h3>
 			<div class="description">
 				Submit project data using the form below.
-				Data will be reviewed and incorporated into the tool if valid.
+				Data will be sent to be reviewed before being incorporated into the tool.
 			</div>
 			<div class="submit-form-container">
 				<table class="submit-form-table"><tbody>
@@ -237,15 +238,62 @@
 							</div>
 						</td>
 					</tr>
+				</tbody></table>
+			</div>
+			<div class="submit-form-container">
+				<table class="submit-form-table"><tbody>
 					<tr>
 						<td>Donor Country</td>
-						<td><input class="form-control" /></td>
+						<td><select class="donor-country-select country-select form-control"></select></td>
 					</tr>
 					<tr>
-						<td>Recipient Country</td>
-						<td><input class="form-control" /></td>
+						<td>Donor Name</td>
+						<td><input class="donor-name-input form-control" /></td>
+					</tr>
+					<tr>
+						<td>Donor Sector</td>
+						<td><select class="donor-sector-select form-control"></select></td>
 					</tr>
 				</tbody></table>
+			</div>
+			<div class="submit-form-container">
+				<table class="submit-form-table"><tbody>
+					<tr>
+						<td>Recipient Country</td>
+						<td><select class="recipient-country-select country-select form-control"></select></td>
+					</tr>
+					<tr>
+						<td>Recipient Name</td>
+						<td><input class="recipient-name-input form-control" /></td>
+					</tr>
+					<tr>
+						<td>Recipient Sector</td>
+						<td><select class="recipient-sector-select form-control"></select></td>
+					</tr>
+				</tbody></table>
+			</div>
+			<div class="submit-form-container">
+				<table class="submit-form-table"><tbody>
+					<tr>
+						<td>Amount Disbursed</td>
+						<td><input class="disbursed-input form-control" /></td>
+					</tr>
+				</tbody></table>
+			</div>
+			<div class="submit-form-container">
+				<table class="submit-form-table"><tbody>
+					<tr>
+						<td>Function</td>
+						<td><select class="function-select form-control" multiple="multiple"></select></td>
+					</tr>
+					<tr>
+						<td>Disease</td>
+						<td><select class="disease-select form-control" multiple="multiple"></select></td>
+					</tr>
+				</tbody></table>
+			</div>
+			<div class="submit-button-container">
+				<button class="submit-button btn btn-primary">Submit Data</button>
 			</div>
 		</div>
 	</script>

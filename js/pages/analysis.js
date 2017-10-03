@@ -135,8 +135,8 @@
 		// populates the filters in the map options box
 		function populateFilters() {
 			// populate dropdowns
-			App.initCategorySelect('.function-select', App.functions);
-			App.initCategorySelect('.disease-select', App.diseases);
+			App.initCategorySelect('.function-select', App.functions, { selected: true });
+			App.initCategorySelect('.disease-select', App.diseases, { selected: true });
 		}
 
 		// initializes search functionality
