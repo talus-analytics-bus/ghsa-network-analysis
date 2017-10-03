@@ -27,24 +27,94 @@
 			// collate the data
 			const fundedData = [];
 			const receivedData = [];
+			const chordData = [];
 			for (let i = 0; i < App.countries.length; i++) {
 				const c = App.countries[i];
+				const fundedPayments = App.fundingLookup[c.ISO2] || [];
+				const receivedPayments = App.recipientLookup[c.ISO2] || [];
+
+				// add country to funding data
 				const fc = Object.assign({}, c);
 				if (App.fundingLookup[c.ISO2]) {
-					fc.total_committed = d3.sum(App.fundingLookup[c.ISO2], d => d.total_committed);
-					fc.total_spent = d3.sum(App.fundingLookup[c.ISO2], d => d.total_spent);
+					fc.total_committed = d3.sum(fundedPayments, d => d.total_committed);
+					fc.total_spent = d3.sum(fundedPayments, d => d.total_spent);
 					fundedData.push(fc);
 				}
 
+				// add country to recipient data
 				const rc = Object.assign({}, c);
 				if (App.recipientLookup[c.ISO2]) {
-					rc.total_committed = d3.sum(App.recipientLookup[c.ISO2], d => d.total_committed);
-					rc.total_spent = d3.sum(App.recipientLookup[c.ISO2], d => d.total_spent);
+					rc.total_committed = d3.sum(receivedPayments, d => d.total_committed);
+					rc.total_spent = d3.sum(receivedPayments, d => d.total_spent);
 					receivedData.push(rc);
 				}
 			}
 
-			// build the chart
+			for (let iso in App.fundingLookup) {
+				const payments = App.fundingLookup[iso];
+				const country = App.countries.find(c => c.ISO2 === iso);
+
+				// add country orgs to chord data
+				const cc = {
+					name: country ? country.NAME : iso,
+					children: [],
+					funds: [],
+				};
+
+				const byOrg = {};
+				payments.forEach((p) => {
+					if (+p.total_spent) {
+						if (!byOrg[p.donor_name]) {
+							byOrg[p.donor_name] = {
+								name: p.donor_name,
+								funds: [],
+							};
+						}
+
+						const recipient = p.recipient_name;
+
+						// add to org funds
+						const er = byOrg[p.donor_name].funds.find(f => f.recipient === recipient);
+						if (er) {
+							er.value += p.total_spent;
+						} else {
+							byOrg[p.donor_name].funds.push({
+								recipient,
+								value: p.total_spent,
+							});
+						}
+
+						// add to country funds
+						const cr = cc.funds.find(f => f.recipient === recipient);
+						if (cr) {
+							cr.value += p.total_spent;
+						} else {
+							cc.funds.push({
+								recipient,
+								value: p.total_spent,
+							});
+						}						
+					}
+				});
+
+				for (let org in byOrg) {
+					cc.children.push(byOrg[org]);
+				}
+				chordData.push(cc);
+			}
+			for (let iso in App.recipientLookup) {
+				const country = App.countries.find(c => c.ISO2 === iso);
+				const name = country ? country.NAME : iso;
+
+				if (!chordData.find(c => c.name === name)) {
+					chordData.push({
+						name,
+					});
+				}
+			}
+
+
+			// build the charts
 			App.buildCirclePack('.global-funded-container', fundedData, {
 				tooltipLabel: 'Total Funded',
 				colors: ['#c6dbef', '#084594'],
@@ -55,6 +125,10 @@
 				colors: ['#feedde', '#8c2d04'],
 				onClick: iso => hasher.setHash(`analysis/${iso}`),
 			});
+
+
+
+			App.buildChordDiagram('.chord-chart', chordData);
 		}
 
 		function drawCountryCharts() {

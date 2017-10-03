@@ -102,4 +102,78 @@
 				});
 		if (param.onClick) circles.on('click', d => param.onClick(d.data.ISO2));
 	};
+
+	App.buildChordDiagram = (selector, data, param = {}) => {
+		// transform data into data to be ingested by d3
+		const nodeData = {
+			name: 'background',
+			children: data,
+		};
+
+		// start building the chart
+		const margin = { top: 180, right: 180, bottom: 180, left: 180 };
+		const radius = param.radius || 300;
+
+		const chartContainer = d3.select(selector).append('svg')
+			.classed('chord-chart', true)
+			.attr('width', 2 * radius + margin.left + margin.right)
+			.attr('height', 2 * radius + margin.top + margin.bottom)
+		const chart = chartContainer.append('g')
+			.attr('transform', `translate(${radius + margin.left}, ${radius + margin.top})`);
+
+		const line = d3.radialLine()
+			.curve(d3.curveBundle.beta(0.85))
+			.radius(d => d.y)
+			.angle(d => d.x * 180 / Math.PI);
+
+		const cluster = d3.cluster()
+			.size([360, radius]);
+
+		const root = d3.hierarchy(nodeData)
+			.sum(d => d.total_spent);
+
+		cluster(root);
+
+		// create node labels
+		chart.append('g').selectAll('.node')
+			.data(root.children)
+			.enter().append('text')
+				.attr('class', 'node')
+				.attr('dy', '0.31em')
+				.attr('transform', (d) => {
+					return `rotate(${d.x - 90})translate(${d.y + 8},0)${(d.x < 180) ? '' : 'rotate(180)'}`;
+				})
+				.attr('text-anchor', d => d.x < 180 ? 'start' : 'end')
+				.text(d => d.data.name);
+
+		// create links
+		chart.append('g').selectAll('.link')
+			.data(getPaths(root.children))
+			.enter().append('path')
+				//.each(d => d.source = d[0], d.target = d[d.length - 1])
+				.attr('class', 'link')
+				.attr('d', line);
+
+
+		function getPaths(nodes) {
+			const map = {};
+			const funds = [];
+
+			// Compute a map from name to node.
+			nodes.forEach(d => map[d.data.name] = d);
+
+			// For each import, construct a link from the source to target node.
+			nodes.forEach((d) => {
+				if (d.data.funds) {
+					d.data.funds.forEach((f) => {
+						if (map[f.recipient]) {
+							funds.push(map[d.data.name].path(map[f.recipient]));
+						}
+					});
+				}
+			});
+
+			return funds;
+		}
+	};
 })();
