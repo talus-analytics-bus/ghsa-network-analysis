@@ -5,6 +5,14 @@
 	.link {
 		fill: none;
 		stroke: steelblue;
-		opacity: 0.7;
+		opacity: 0.1;
+	}
+	.arc-label {
+		font-weight: 600;
+		font-size: 1.1em;
+		text-anchor: middle;
+	}
+	.legend-label {
+		text-anchor: middle;	
 	}
 }

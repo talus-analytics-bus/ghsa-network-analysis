@@ -28,14 +28,16 @@
 			const fundedData = [];
 			const receivedData = [];
 			const chordData = [];
+			const fundsByRegion = {};
 			for (let i = 0; i < App.countries.length; i++) {
 				const c = App.countries[i];
-				const fundedPayments = App.fundingLookup[c.ISO2] || [];
-				const receivedPayments = App.recipientLookup[c.ISO2] || [];
+				const iso = c.ISO2;
+				const fundedPayments = App.fundingLookup[iso];
+				const receivedPayments = App.recipientLookup[iso];
 
 				// add country to funding data
 				const fc = Object.assign({}, c);
-				if (App.fundingLookup[c.ISO2]) {
+				if (fundedPayments) {
 					fc.total_committed = d3.sum(fundedPayments, d => d.total_committed);
 					fc.total_spent = d3.sum(fundedPayments, d => d.total_spent);
 					fundedData.push(fc);
@@ -43,74 +45,71 @@
 
 				// add country to recipient data
 				const rc = Object.assign({}, c);
-				if (App.recipientLookup[c.ISO2]) {
+				if (receivedPayments) {
 					rc.total_committed = d3.sum(receivedPayments, d => d.total_committed);
 					rc.total_spent = d3.sum(receivedPayments, d => d.total_spent);
 					receivedData.push(rc);
 				}
-			}
 
-			for (let iso in App.fundingLookup) {
-				const payments = App.fundingLookup[iso];
-				const country = App.countries.find(c => c.ISO2 === iso);
+				// collect funds by region
+				if (fundedPayments) {
+					const region = c.regionName;
+					const sub = c.subRegionName;
+					if (!fundsByRegion[region]) fundsByRegion[region] = {};
+					if (!fundsByRegion[region][sub]) fundsByRegion[region][sub] = {};
+					fundedPayments.forEach((p) => {
+						if (p.total_spent) {
+							// check that the recipient is a valid country
+							const rIso = p.recipient_country;
+							const rCountry = App.countries.find(c => c.ISO2 === rIso);
+							if (rCountry) {
+								// add recipient country to data, if not already
+								const rRegion = rCountry.regionName;
+								const rSub = rCountry.subRegionName;
+								if (!fundsByRegion[rRegion]) fundsByRegion[rRegion] = {};
+								if (!fundsByRegion[rRegion][sub]) fundsByRegion[rRegion][sub] = {};
+								if (!fundsByRegion[rRegion][sub][rIso]) fundsByRegion[rRegion][sub][rIso] = {};
 
-				// add country orgs to chord data
-				const cc = {
-					name: country ? country.NAME : iso,
-					children: [],
-					funds: [],
-				};
-
-				const byOrg = {};
-				payments.forEach((p) => {
-					if (+p.total_spent) {
-						if (!byOrg[p.donor_name]) {
-							byOrg[p.donor_name] = {
-								name: p.donor_name,
-								funds: [],
-							};
+								// add donor country to data
+								if (!fundsByRegion[region][sub][iso]) fundsByRegion[region][sub][iso] = {};
+								if (!fundsByRegion[region][sub][iso][rIso]) fundsByRegion[region][sub][iso][rIso] = 0;
+								fundsByRegion[region][sub][iso][rIso] += p.total_spent;
+							}
 						}
-
-						const recipient = p.recipient_name;
-
-						// add to org funds
-						const er = byOrg[p.donor_name].funds.find(f => f.recipient === recipient);
-						if (er) {
-							er.value += p.total_spent;
-						} else {
-							byOrg[p.donor_name].funds.push({
-								recipient,
-								value: p.total_spent,
-							});
-						}
-
-						// add to country funds
-						const cr = cc.funds.find(f => f.recipient === recipient);
-						if (cr) {
-							cr.value += p.total_spent;
-						} else {
-							cc.funds.push({
-								recipient,
-								value: p.total_spent,
-							});
-						}						
-					}
-				});
-
-				for (let org in byOrg) {
-					cc.children.push(byOrg[org]);
-				}
-				chordData.push(cc);
-			}
-			for (let iso in App.recipientLookup) {
-				const country = App.countries.find(c => c.ISO2 === iso);
-				const name = country ? country.NAME : iso;
-
-				if (!chordData.find(c => c.name === name)) {
-					chordData.push({
-						name,
 					});
 				}
+			}
+
+			// build chord chart data
+			for (let r in fundsByRegion) {
+				const region = {
+					name: r,
+					children: [],
+				};
+				for (let sub in fundsByRegion[r]) {
+					const subregion = {
+						name: sub,
+						children: [],
+					};
+					for (let iso in fundsByRegion[r][sub]) {
+						const country = App.countries.find(c => c.ISO2 === iso);
+						const funds = [];
+						for (let rIso in fundsByRegion[r][sub][iso]) {
+							const rCountry = App.countries.find(c => c.ISO2 === rIso);
+							funds.push({
+								recipient: rCountry.NAME,
+								value: fundsByRegion[r][sub][iso][rIso],
+							});
+						}
+						subregion.children.push({
+							name: country.NAME,
+							iso: iso,
+							funds,
+						});
+					}
+					region.children.push(subregion);
+				}
+				chordData.push(region);
 			}
 
 
@@ -125,9 +124,6 @@
 				colors: ['#feedde', '#8c2d04'],
 				onClick: iso => hasher.setHash(`analysis/${iso}`),
 			});
-
-
-
 			App.buildChordDiagram('.chord-chart', chordData);
 		}
 

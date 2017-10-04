@@ -104,6 +104,10 @@
 	};
 
 	App.buildChordDiagram = (selector, data, param = {}) => {
+		// define colors
+		const fundColor = '#084594';
+		const receiveColor = '#8c2d04';
+
 		// transform data into data to be ingested by d3
 		const nodeData = {
 			name: 'background',
@@ -111,7 +115,7 @@
 		};
 
 		// start building the chart
-		const margin = { top: 180, right: 180, bottom: 180, left: 180 };
+		const margin = { top: 50, right: 40, bottom: 90, left: 40 };
 		const radius = param.radius || 300;
 
 		const chartContainer = d3.select(selector).append('svg')
@@ -121,21 +125,34 @@
 		const chart = chartContainer.append('g')
 			.attr('transform', `translate(${radius + margin.left}, ${radius + margin.top})`);
 
-		const line = d3.radialLine()
-			.curve(d3.curveBundle.beta(0.85))
-			.radius(d => d.y)
-			.angle(d => d.x * 180 / Math.PI);
+		// add gradient definition
+		const defs = chartContainer.append('defs');
+		const gradient = defs.append('linearGradient')
+			.attr('id', 'fund-gradient')
+			.attr('x1', '0%')
+			.attr('x2', '100%')
+			.attr('y1', '0%')
+			.attr('y2', '0%');
+		gradient.append('stop')
+			.attr('stop-color', fundColor)
+			.attr('offset', '0%');
+		gradient.append('stop')
+			.attr('stop-color', receiveColor)
+			.attr('offset', '100%');
 
+		// add groups for chart
+		const linkG = chart.append('g');
+		const arcG = chart.append('g');
+
+		// cluster data
 		const cluster = d3.cluster()
 			.size([360, radius]);
-
 		const root = d3.hierarchy(nodeData)
 			.sum(d => d.total_spent);
-
 		cluster(root);
 
 		// create node labels
-		chart.append('g').selectAll('.node')
+		/*chart.append('g').selectAll('.node')
 			.data(root.children)
 			.enter().append('text')
 				.attr('class', 'node')
@@ -144,15 +161,101 @@
 					return `rotate(${d.x - 90})translate(${d.y + 8},0)${(d.x < 180) ? '' : 'rotate(180)'}`;
 				})
 				.attr('text-anchor', d => d.x < 180 ? 'start' : 'end')
-				.text(d => d.data.name);
+				.text(d => d.data.name);*/
+
+		// define arc colors and arc paths
+		const regionColorScale = d3.scaleLinear()
+			.range([fundColor, receiveColor]);
+		const arc = d3.arc()
+			.innerRadius(radius)
+			.outerRadius(radius + 12)
+			.startAngle(d => d.children[0].children[0].x * Math.PI / 180)
+			.endAngle((d) => {
+				const lastChild = d.children[d.children.length - 1];
+				return lastChild.children[lastChild.children.length - 1].x * Math.PI / 180;
+			});
+
+		// create arcs
+		console.log(root.children);
+		arcG.selectAll('.arc')
+			.data(root.children)
+			.enter().append('path')
+				.style('fill', () => regionColorScale(Math.random()))
+				.attr('d', arc);
+
+		// create region arc labels
+		arcG.selectAll('.arc-label-path')
+			.data(root.children)
+			.enter().append('path')
+				.attr('id', (d, i) => `arc-path-${i}`)
+				.attr('d', arc)
+				.style('fill', 'none')
+				.each(function positionLabel(d) {
+					const firstArcSection = /(^.+?)L/;
+					let newArc = firstArcSection.exec(d3.select(this).attr('d'))[1];
+					newArc = newArc.replace(/,/g , " ");
+
+					// flip if bottom half of circle
+					if (d.theta1 > Math.PI / 2 && d.theta0 < 5 * Math.PI / 4) {
+						const startLoc = /M(.*?)A/;
+						const middleLoc = /A(.*?)0 0 1/;
+						const endLoc = /0 0 1 (.*?)$/;
+						const newStart = endLoc.exec(newArc)[1];
+						const newEnd = startLoc.exec(newArc)[1];
+						const middleSec = middleLoc.exec(newArc)[1];
+						newArc = `M${newStart}A${middleSec}0 0 0 ${newEnd}`;
+					}
+
+					d3.select(this).attr('d', newArc);
+				});
+		arcG.selectAll('.arc-label')
+			.data(root.children)
+			.enter().append('text')
+				.attr('class', 'arc-label')
+				.attr('dy', (d) => {
+					if (d.theta1 > Math.PI / 2 && d.theta0 < 5 * Math.PI / 4) return 20;
+					return -8;
+				})
+				.append('textPath')
+					.attr('startOffset', '50%')
+					.attr('xlink:href', (d, i) => `#arc-path-${i}`)
+					.text(d => d.data.name);
+
+
+		// define link path
+		const line = d3.radialLine()
+			.curve(d3.curveBundle.beta(0.85))
+			.radius(d => d.y)
+			.angle(d => d.x * 180 / Math.PI);
 
 		// create links
 		chart.append('g').selectAll('.link')
-			.data(getPaths(root.children))
+			.data(getPaths(root.leaves()))
 			.enter().append('path')
 				//.each(d => d.source = d[0], d.target = d[d.length - 1])
 				.attr('class', 'link')
 				.attr('d', line);
+
+		// add legend
+		const barWidth = 450;
+		const barHeight = 14;
+		const legend = chart.append('g')
+			.attr('transform', `translate(${-barWidth / 2}, ${radius + 55})`);
+		legend.append('rect')
+			.attr('width', barWidth)
+			.attr('height', barHeight)
+			.style('fill', 'url(#fund-gradient)');
+		legend.append('text')
+			.attr('class', 'legend-label')
+			.attr('y', barHeight + 12)
+			.attr('dy', '.35em')
+			.text('Funds More');
+		legend.append('text')
+			.attr('class', 'legend-label')
+			.attr('x', barWidth)
+			.attr('y', barHeight + 12)
+			.attr('dy', '.35em')
+			.text('Receives More');
 
 
 		function getPaths(nodes) {

@@ -20,11 +20,12 @@ const App = {};
 		NProgress.start();
 		d3.queue()
 			.defer(d3.json, 'data/world.json')
+			.defer(d3.csv, 'data/unsd_data.csv')
 			.defer(d3.json, 'data/funding_data_092817.json')
 			.defer(d3.json, 'data/project_diseases.json')
 			.defer(d3.json, 'data/project_functions.json')
 			.defer(d3.json, 'data/currencies.json')
-			.await((error, worldData, fundingData, diseases, functions, currencies) => {
+			.await((error, worldData, unsdData, fundingData, diseases, functions, currencies) => {
 				if (error) throw error;
 
 				/* -------- Populate global variables -------- */
@@ -32,6 +33,19 @@ const App = {};
 				App.geoData = worldData;
 				App.countries = worldData.objects.countries.geometries
 					.map(c => c.properties);
+
+				// save region names to countries
+				const regionMap = d3.map();
+				unsdData.forEach((d) => {
+					regionMap.set(d['ISO-alpha3 Code'], d);
+				});
+				App.countries.forEach((c) => {
+					const regionInfo = regionMap.get(c.ISO3);
+					c.regionName = regionInfo['Region Name'];
+					c.subRegionName = regionInfo['Sub-region Name'];
+					c.intermediateRegionName = regionInfo['Intermediate Region Name'];
+					c.developed = regionInfo['Developed / Developing Countries'];
+				});
 
 				// save funding data
 				App.fundingData = fundingData;
