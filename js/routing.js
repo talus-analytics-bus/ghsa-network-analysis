@@ -24,6 +24,9 @@ const Routing = {};
 		crossroads.addRoute('/submit', () => {
 			loadPage('submit', App.initSubmit);
 		});
+		crossroads.addRoute('/settings', () => {
+			loadPage('settings', App.initSettings);
+		});
 		crossroads.addRoute('/about', () => {
 			loadPage('about');
 		});

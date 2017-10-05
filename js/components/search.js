@@ -52,7 +52,7 @@
 		const fuse = new Fuse(App.countries, {
 			threshold: 0.3,
 			distance: 1e5,
-			keys: ['ISO2', 'ISO3', 'FIPS', 'NAME'],
+			keys: ['ISO2', 'ISO3', 'NAME'],
 		});
 
 

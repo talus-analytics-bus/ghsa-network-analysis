@@ -8,5 +8,7 @@
 			nameKey: d => `${Util.capitalize(d.name)} (${d.iso.code})`,
 			valKey: d => d.iso.code,
 		});
+
+		$('.currency-select').val('USD');
 	}
 })();

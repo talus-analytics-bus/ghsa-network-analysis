@@ -40,6 +40,7 @@
 					<li><a href="#">Map</a></li>
 					<li><a href="#analysis">Analysis</a></li>
 					<li><a href="#submit">Submit Data</a></li>
+					<li><a href="#settings">Settings</a></li>
 					<li><a href="#about">About</a></li>
 				</ul>
 			</div><!-- /.navbar-collapse -->
@@ -290,6 +291,19 @@
 		</div>
 	</script>
 
+	<script id="settings-template" type="text/x-handlebars-template">
+		<div class="settings-page-container container container-text">
+			<h3>Settings</h3>
+			<div class="description">
+				Modify settings here.
+			</div>
+			<div class="settings-content">
+				<div class="dropdown-label">Currency</div>
+				<select class="currency-select form-control"></select>
+			</div>
+		</div>
+	</script>
+
 	<script id="about-template" type="text/x-handlebars-template">
 		<div class="about-page-container container container-text">
 			<h3>About</h3>
@@ -340,6 +354,7 @@
 	<script src="js/pages/analysisCountry.js"></script>
 	<script src="js/pages/analysisGlobal.js"></script>
 	<script src="js/pages/home.js"></script>
+	<script src="js/pages/settings.js"></script>
 	<script src="js/pages/submit.js"></script>
 	<script src="js/init.js"></script>
 
