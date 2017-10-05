@@ -115,7 +115,7 @@
 		};
 
 		// start building the chart
-		const margin = { top: 50, right: 40, bottom: 90, left: 40 };
+		const margin = { top: 50, right: 50, bottom: 90, left: 50 };
 		const radius = param.radius || 300;
 
 		const chartContainer = d3.select(selector).append('svg')
@@ -146,7 +146,8 @@
 
 		// cluster data
 		const cluster = d3.cluster()
-			.size([360, radius]);
+			.size([360, radius])
+			.separation((a, b) => a.parent == b.parent ? 2 : 4);
 		const root = d3.hierarchy(nodeData)
 			.sum(d => d.total_spent);
 		cluster(root);
@@ -166,29 +167,46 @@
 		// define arc colors and arc paths
 		const regionColorScale = d3.scaleLinear()
 			.range([fundColor, receiveColor]);
-		const arc = d3.arc()
-			.innerRadius(radius)
-			.outerRadius(radius + 12)
+		const regionArc = d3.arc()
+			.innerRadius(radius + 6)
+			.outerRadius(radius + 6 + 12)
 			.startAngle(d => d.children[0].children[0].x * Math.PI / 180)
 			.endAngle((d) => {
 				const lastChild = d.children[d.children.length - 1];
 				return lastChild.children[lastChild.children.length - 1].x * Math.PI / 180;
 			});
+		const subregionArc = d3.arc()
+			.innerRadius(radius)
+			.outerRadius(radius + 7)
+			.startAngle(d => d.children[0].x * Math.PI / 180)
+			.endAngle(d => d.children[d.children.length - 1].x * Math.PI / 180);
 
-		// create arcs
-		console.log(root.children);
-		arcG.selectAll('.arc')
+		// create groups to house region and subregion arcs
+		const subregionArcG = arcG.append('g');
+		const regionArcG = arcG.append('g');
+
+		// create region arcs
+		regionArcG.selectAll('.arc')
 			.data(root.children)
 			.enter().append('path')
 				.style('fill', () => regionColorScale(Math.random()))
-				.attr('d', arc);
+				.attr('d', regionArc);
+
+		// create subregion arcs
+		let subregions = [];
+		root.children.forEach(r => subregions = subregions.concat(r.children));
+		subregionArcG.selectAll('.arc')
+			.data(subregions)
+			.enter().append('path')
+				.style('fill', () => regionColorScale(Math.random()))
+				.attr('d', subregionArc);
 
 		// create region arc labels
-		arcG.selectAll('.arc-label-path')
+		regionArcG.selectAll('.arc-label-path')
 			.data(root.children)
 			.enter().append('path')
 				.attr('id', (d, i) => `arc-path-${i}`)
-				.attr('d', arc)
+				.attr('d', regionArc)
 				.style('fill', 'none')
 				.each(function positionLabel(d) {
 					const firstArcSection = /(^.+?)L/;
@@ -208,7 +226,7 @@
 
 					d3.select(this).attr('d', newArc);
 				});
-		arcG.selectAll('.arc-label')
+		regionArcG.selectAll('.arc-label')
 			.data(root.children)
 			.enter().append('text')
 				.attr('class', 'arc-label')
@@ -221,10 +239,9 @@
 					.attr('xlink:href', (d, i) => `#arc-path-${i}`)
 					.text(d => d.data.name);
 
-
 		// define link path
 		const line = d3.radialLine()
-			.curve(d3.curveBundle.beta(0.85))
+			.curve(d3.curveBundle.beta(0.7))
 			.radius(d => d.y)
 			.angle(d => d.x * 180 / Math.PI);
 
@@ -234,6 +251,9 @@
 			.enter().append('path')
 				//.each(d => d.source = d[0], d.target = d[d.length - 1])
 				.attr('class', 'link')
+				.style('stroke-width', (d) => {
+					console.log(d);
+				})
 				.attr('d', line);
 
 		// add legend
