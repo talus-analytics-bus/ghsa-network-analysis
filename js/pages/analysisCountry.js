@@ -25,25 +25,11 @@
 				updateInfoTable();
 			});
 
+			// fill table content
 			updateInfoTab();
 			updateInfoTable();
 
-
-			// if there are no payments, return
-			/*if (!payments) {
-				const valueText = (moneyType === 'received') ? 
-					'No data for payments received by this country' :
-					'No data for money donated by this country';
-				$('.info-total-value').html(valueText);
-				shrinkInfoBox();
-				$('.info-more-button-container').slideUp();
-				$('.info-container').slideDown();
-				return;
-			} else {
-				$('.info-more-button-container').slideDown();
-			}*/
-
-
+			// draw charts
 			const country = App.countries.find(c => c.ISO2 === iso);
 			$('.analysis-country-title').text(country.NAME);
 			drawCirclePacks();
@@ -89,64 +75,50 @@
 				paymentTableData = allPayments.slice(0);
 			} else if (currentInfoTab === 'country') {
 				const totalByCountry = {};
-				if (currentMoneyType === 'received') {
-					currentPayments.forEach((p) => {
-						if (!totalByCountry[p.donor_country]) {
-							totalByCountry[p.donor_country] = {
-								total_committed: 0,
-								total_spent: 0,
-							};
-						}
-						totalByCountry[p.donor_country].total_committed += p.total_committed;
-						totalByCountry[p.donor_country].total_spent += p.total_spent;
-					});
-					for (let iso in totalByCountry) {
-						const country = App.countries.find(c => c.ISO2 === iso);
-						paymentTableData.push({
-							donor_country: country ? country.NAME : iso,
-							total_committed: totalByCountry[iso].total_committed,
-							total_spent: totalByCountry[iso].total_spent,
-						});
+				allPayments.forEach((p) => {
+					const dc = p.donor_country;
+					const rc = p.recipient_country;
+					if (!totalByCountry[dc]) totalByCountry[dc] = {};
+					if (!totalByCountry[dc][rc]) {
+						totalByCountry[dc][rc] = {
+							total_committed: 0,
+							total_spent: 0,
+						};
 					}
-				} else {
-					currentPayments.forEach((p) => {
-						if (!totalByCountry[p.recipient_country]) {
-							totalByCountry[p.recipient_country] = {
-								total_committed: 0,
-								total_spent: 0,
-							};
-						}
-						totalByCountry[p.recipient_country].total_committed += p.total_committed;
-						totalByCountry[p.recipient_country].total_spent += p.total_spent;
-					});
-					for (let iso in totalByCountry) {
-						const country = App.countries.find(c => c.ISO2 === iso);					
+					totalByCountry[dc][rc].total_committed += p.total_committed;
+					totalByCountry[dc][rc].total_spent += p.total_spent;
+				});
+				for (let dc in totalByCountry) {
+					for (let rc in totalByCountry[dc]) {
+						const dCountry = App.countries.find(c => c.ISO2 === dc);
+						const rCountry = App.countries.find(c => c.ISO2 === rc);
 						paymentTableData.push({
-							recipient_country: country ? country.NAME : iso,
-							total_committed: totalByCountry[iso].total_committed,
-							total_spent: totalByCountry[iso].total_spent,
+							donor_country: dCountry ? dCountry.NAME : dc,
+							recipient_country: rCountry ? rCountry.NAME : rc,
+							total_committed: totalByCountry[dc][rc].total_committed,
+							total_spent: totalByCountry[dc][rc].total_spent,
 						});
 					}
 				}
 			} else if (currentInfoTab === 'cc') {
-				const totalByFunction = {};
-				currentPayments.forEach((p) => {
+				const totalByCc = {};
+				allPayments.forEach((p) => {
 					p.project_function.forEach((fn) => {
-						if (!totalByFunction[fn.p]) {
-							totalByFunction[fn.p] = {
+						if (!totalByCc[fn.p]) {
+							totalByCc[fn.p] = {
 								total_committed: 0,
 								total_spent: 0,
 							};
 						}
-						totalByFunction[fn.p].total_committed += p.total_committed;
-						totalByFunction[fn.p].total_spent += p.total_spent;
+						totalByCc[fn.p].total_committed += p.total_committed;
+						totalByCc[fn.p].total_spent += p.total_spent;
 					});
 				});
-				for (let fnp in totalByFunction) {
+				for (let fnp in totalByCc) {
 					paymentTableData.push({
 						cc: fnp,
-						total_committed: totalByFunction[fnp].total_committed,
-						total_spent: totalByFunction[fnp].total_spent,
+						total_committed: totalByCc[fnp].total_committed,
+						total_spent: totalByCc[fnp].total_spent,
 					});
 				}
 			}
@@ -187,7 +159,10 @@
 			// define DataTables plugin parameters
 			let order = [4, 'desc'];
 			let columnDefs = [{ type: 'money', targets: [3, 4] }];
-			if (currentInfoTab !== 'all') {
+			if (currentInfoTab === 'country') {
+				order = [3, 'desc'];
+				columnDefs = [{ type: 'money', targets: [2, 3] }];
+			} else if (currentInfoTab === 'cc') {
 				order = [2, 'desc'];
 				columnDefs = [{ type: 'money', targets: [1, 2] }];
 			}

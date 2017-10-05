@@ -4,10 +4,9 @@
 
 	.funds-table-container {
 		display: inline-block;
-		margin-top: 20px;
-		padding: 15px 30px;
-		max-width: 900px;
-		border: $border;
+		padding: 20px 30px 15px;
+		width: 900px;
+		border: $light-border;
 		text-align: left;
 		@include gradient(#fff, #f0f0f0);
 		@include box-shadow(1px 1px 3px rgba(0,0,0,0.2));
