@@ -1,0 +1,26 @@
+.country-funds-content {
+	margin-top: 20px;
+	text-align: center;
+
+	.funds-table-container {
+		display: inline-block;
+		margin-top: 20px;
+		padding: 15px 30px;
+		max-width: 900px;
+		border: $border;
+		text-align: left;
+		@include gradient(#fff, #f0f0f0);
+		@include box-shadow(1px 1px 3px rgba(0,0,0,0.2));
+	}
+	.funds-table {
+		.money-cell {
+			text-align: right;
+			white-space: nowrap;
+		}
+	}
+	.funds-source-text {
+		margin: 10px 0 25px;
+		font-size: 0.9em;
+		text-align: right;
+	}
+}

@@ -106,8 +106,8 @@
 			const dataLookup = getDataLookup();
 
 			// TODO get filter values; need to incorporate parent/child structure correctly
-			let functions = App.getCategorySelectValue('.function-select');
-			let diseases = App.getCategorySelectValue('.disease-select');
+			let ccs = $('.cc-select').val();
+			if (!ccs.length) ccs = App.capacities.map(d => d.id);
 
 			// clear out current data
 			currentNodeDataMap.clear();
@@ -119,8 +119,7 @@
 					let totalValue = 0;
 					for (let i = 0, n = payments.length; i < n; i++) {
 						const p = payments[i];
-						if (!App.passesCategoryFilter(p.project_function, functions)) continue;
-						if (!App.passesCategoryFilter(p.project_disease, diseases)) continue;
+						//if (!App.passesCategoryFilter(p.project_function, functions)) continue;
 						// TODO take year range into account
 						totalValue += p.total_spent || 0;
 					}
@@ -183,7 +182,7 @@
 
 			const legend = d3.select('.legend')
 				.attr('width', barWidth * colors.length + 2 * legendPadding)
-				.attr('height', barHeight + 50)
+				.attr('height', barHeight + 48)
 				.select('g')
 					.attr('transform', `translate(${legendPadding}, 0)`);
 			let legendGroups = legend.selectAll('g')
@@ -221,7 +220,7 @@
 				.attr('class', 'legend-title');
 			legendTitle.merge(nlt)
 				.attr('x', barWidth * colors.length / 2)
-				.attr('y', barHeight + 48)
+				.attr('y', barHeight + 45)
 				.text(d => d);
 
 			$('.legend-container').slideDown();
@@ -287,15 +286,19 @@
 			return slider;
 		}
 
-		// populates the filters in the map options box
+		// populates and initializes behavior for map options
 		function initFilters() {
 			// populate dropdowns
-			App.initCategorySelect('.function-select', App.functions, {
+			Util.populateSelect('.cc-select', App.capacities, {
+				valKey: 'id',
+				nameKey: 'name',
 				selected: true,
-				dropRight: true,
 			});
-			App.initCategorySelect('.disease-select', App.diseases, {
-				selected: true,
+			$('.cc-select').multiselect({
+				maxHeight: 260,
+				includeSelectAllOption: true,
+				enableClickableOptGroups: true,
+				numberDisplayed: 0,
 				dropRight: true,
 			});
 

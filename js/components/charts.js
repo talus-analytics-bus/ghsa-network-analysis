@@ -108,14 +108,76 @@
 		const fundColor = '#084594';
 		const receiveColor = '#8c2d04';
 
-		// transform data into data to be ingested by d3
-		const nodeData = {
-			name: 'background',
-			children: data,
-		};
+		// define geo collection variables and maps
+		const subregions = [];
+		const countries = [];
+		let funds = [];
+		const countryMapByName = d3.map();
+
+		// attach start and end angles to each of the countries/subregions/regions
+		const totalFlow = d3.sum(data, d => d.totalFlow);
+		const regionPadding = 0.02;
+		const subregionPadding = 0.01;
+		let runningTheta = 0;
+		data.forEach((region) => {
+			const rTheta = (2 * Math.PI * region.totalFlow / totalFlow) - (2 * regionPadding);
+			runningTheta += regionPadding;  // add beginning padding
+			region.theta0 = runningTheta;
+			const totalSPadding = (region.children.length - 1) * subregionPadding;
+
+			region.children.forEach((subregion, i) => {
+				subregions.push(subregion);
+
+				let sTheta = (rTheta - totalSPadding) * (subregion.totalFlow / region.totalFlow);
+				if (i > 0) runningTheta += subregionPadding;
+				subregion.theta0 = runningTheta;
+				subregion.children.forEach((country) => {
+					// set map and add country to collection
+					countryMapByName.set(country.name, country);
+					countries.push(country);
+					funds = funds.concat(country.funds);
+
+					// set angles
+					let cTheta = sTheta * (country.totalFlow / subregion.totalFlow);
+					country.theta0 = runningTheta;
+					runningTheta += cTheta;
+					country.theta1 = runningTheta;
+					country.runningTheta = country.theta0;  // used for assigning angles to funds
+				});
+				subregion.theta1 = runningTheta;
+			});
+			region.theta1 = runningTheta;
+			runningTheta += regionPadding;  // add end padding
+		});
+
+		// attach start/end angles to each fund
+		data.forEach((region) => {
+			region.children.forEach((subregion) => {
+				subregion.children.forEach((fc) => {
+					fc.funds.forEach((f) => {
+						const rc = countryMapByName.get(f.recipient);
+						let fundTheta = (fc.theta1 - fc.theta0) * (f.value / fc.totalFlow);
+						if (fundTheta < 0) fundTheta = 0;  // TODO need to fix this!
+						f.source = {
+							startAngle: fc.runningTheta,
+							endAngle: fc.runningTheta + fundTheta,
+						};
+						fc.runningTheta += fundTheta;
+
+						let recTheta = (rc.theta1 - rc.theta0) * (f.value / rc.totalFlow);
+						if (recTheta < 0) recTheta = 0;  // TODO need to fix this!
+						f.target = {
+							startAngle: rc.runningTheta,
+							endAngle: rc.runningTheta + recTheta,
+						};
+						rc.runningTheta += recTheta;
+					});
+				});
+			});
+		});
 
 		// start building the chart
-		const margin = { top: 50, right: 50, bottom: 90, left: 50 };
+		const margin = { top: 60, right: 60, bottom: 100, left: 60 };
 		const radius = param.radius || 300;
 
 		const chartContainer = d3.select(selector).append('svg')
@@ -128,11 +190,7 @@
 		// add gradient definition
 		const defs = chartContainer.append('defs');
 		const gradient = defs.append('linearGradient')
-			.attr('id', 'fund-gradient')
-			.attr('x1', '0%')
-			.attr('x2', '100%')
-			.attr('y1', '0%')
-			.attr('y2', '0%');
+			.attr('id', 'fund-gradient');
 		gradient.append('stop')
 			.attr('stop-color', fundColor)
 			.attr('offset', '0%');
@@ -143,67 +201,66 @@
 		// add groups for chart
 		const linkG = chart.append('g');
 		const arcG = chart.append('g');
-
-		// cluster data
-		const cluster = d3.cluster()
-			.size([360, radius])
-			.separation((a, b) => a.parent == b.parent ? 2 : 4);
-		const root = d3.hierarchy(nodeData)
-			.sum(d => d.total_spent);
-		cluster(root);
-
-		// create node labels
-		/*chart.append('g').selectAll('.node')
-			.data(root.children)
-			.enter().append('text')
-				.attr('class', 'node')
-				.attr('dy', '0.31em')
-				.attr('transform', (d) => {
-					return `rotate(${d.x - 90})translate(${d.y + 8},0)${(d.x < 180) ? '' : 'rotate(180)'}`;
-				})
-				.attr('text-anchor', d => d.x < 180 ? 'start' : 'end')
-				.text(d => d.data.name);*/
-
-		// define arc colors and arc paths
-		const regionColorScale = d3.scaleLinear()
-			.range([fundColor, receiveColor]);
-		const regionArc = d3.arc()
-			.innerRadius(radius + 6)
-			.outerRadius(radius + 6 + 12)
-			.startAngle(d => d.children[0].children[0].x * Math.PI / 180)
-			.endAngle((d) => {
-				const lastChild = d.children[d.children.length - 1];
-				return lastChild.children[lastChild.children.length - 1].x * Math.PI / 180;
-			});
-		const subregionArc = d3.arc()
-			.innerRadius(radius)
-			.outerRadius(radius + 7)
-			.startAngle(d => d.children[0].x * Math.PI / 180)
-			.endAngle(d => d.children[d.children.length - 1].x * Math.PI / 180);
-
-		// create groups to house region and subregion arcs
+		const countryArcG = arcG.append('g');
 		const subregionArcG = arcG.append('g');
 		const regionArcG = arcG.append('g');
 
+		// define arc colors and arc paths
+		const colorScale = d3.scaleLinear()
+			.range([fundColor, receiveColor]);
+		const regionArc = d3.arc()
+			.innerRadius(radius + 22)
+			.outerRadius(radius + 22 + 12)
+			.startAngle(d => d.theta0)
+			.endAngle(d => d.theta1);
+		const subregionArc = d3.arc()
+			.innerRadius(radius + 10)
+			.outerRadius(radius + 10 + 10)
+			.startAngle(d => d.theta0)
+			.endAngle(d => d.theta1);
+		const countryArc = d3.arc()
+			.innerRadius(radius)
+			.outerRadius(radius + 8)
+			.startAngle(d => d.theta0)
+			.endAngle(d => d.theta1);
+
 		// create region arcs
 		regionArcG.selectAll('.arc')
-			.data(root.children)
+			.data(data)
 			.enter().append('path')
-				.style('fill', () => regionColorScale(Math.random()))
+				.style('fill', getFundReceiveColor)
 				.attr('d', regionArc);
 
 		// create subregion arcs
-		let subregions = [];
-		root.children.forEach(r => subregions = subregions.concat(r.children));
 		subregionArcG.selectAll('.arc')
 			.data(subregions)
 			.enter().append('path')
-				.style('fill', () => regionColorScale(Math.random()))
-				.attr('d', subregionArc);
+				.style('fill', getFundReceiveColor)
+				.attr('d', subregionArc)
+				.each(function addTooltip(d) {
+					$(this).tooltipster({
+						plugins: ['follower'],
+						content: d.name,
+					});
+				});
+
+		// create country arcs
+		countryArcG.selectAll('.arc')
+			.data(countries)
+			.enter().append('path')
+				.style('fill', getFundReceiveColor)
+				.style('stroke', '#fff')
+				.attr('d', countryArc)
+				.each(function addTooltip(d) {
+					$(this).tooltipster({
+						plugins: ['follower'],
+						content: d.name,
+					});
+				});	
 
 		// create region arc labels
 		regionArcG.selectAll('.arc-label-path')
-			.data(root.children)
+			.data(data)
 			.enter().append('path')
 				.attr('id', (d, i) => `arc-path-${i}`)
 				.attr('d', regionArc)
@@ -227,7 +284,7 @@
 					d3.select(this).attr('d', newArc);
 				});
 		regionArcG.selectAll('.arc-label')
-			.data(root.children)
+			.data(data)
 			.enter().append('text')
 				.attr('class', 'arc-label')
 				.attr('dy', (d) => {
@@ -237,30 +294,34 @@
 				.append('textPath')
 					.attr('startOffset', '50%')
 					.attr('xlink:href', (d, i) => `#arc-path-${i}`)
-					.text(d => d.data.name);
+					.text(d => d.name);
 
 		// define link path
-		const line = d3.radialLine()
-			.curve(d3.curveBundle.beta(0.7))
-			.radius(d => d.y)
-			.angle(d => d.x * 180 / Math.PI);
+		const ribbon = d3.ribbon()
+			.source(d => d.source)
+			.target(d => d.target)
+			.radius(radius);
 
 		// create links
-		chart.append('g').selectAll('.link')
-			.data(getPaths(root.leaves()))
+		linkG.selectAll('.link')
+			.data(funds)
 			.enter().append('path')
-				//.each(d => d.source = d[0], d.target = d[d.length - 1])
 				.attr('class', 'link')
-				.style('stroke-width', (d) => {
-					console.log(d);
-				})
-				.attr('d', line);
+				.style('fill', 'url(#fund-gradient)')
+				.attr('d', ribbon);
+
+		// function for getting fund/receive color
+		function getFundReceiveColor(d) {
+			const f = d.totalFunded;
+			const r = d.totalReceived;
+			return colorScale(r / (r + f));
+		}
 
 		// add legend
 		const barWidth = 450;
 		const barHeight = 14;
 		const legend = chart.append('g')
-			.attr('transform', `translate(${-barWidth / 2}, ${radius + 55})`);
+			.attr('transform', `translate(${-barWidth / 2}, ${radius + 60})`);
 		legend.append('rect')
 			.attr('width', barWidth)
 			.attr('height', barHeight)
@@ -269,34 +330,16 @@
 			.attr('class', 'legend-label')
 			.attr('y', barHeight + 12)
 			.attr('dy', '.35em')
+			.style('text-anchor', 'start')
 			.text('Funds More');
 		legend.append('text')
 			.attr('class', 'legend-label')
 			.attr('x', barWidth)
 			.attr('y', barHeight + 12)
 			.attr('dy', '.35em')
+			.style('text-anchor', 'end')
 			.text('Receives More');
 
-
-		function getPaths(nodes) {
-			const map = {};
-			const funds = [];
-
-			// Compute a map from name to node.
-			nodes.forEach(d => map[d.data.name] = d);
-
-			// For each import, construct a link from the source to target node.
-			nodes.forEach((d) => {
-				if (d.data.funds) {
-					d.data.funds.forEach((f) => {
-						if (map[f.recipient]) {
-							funds.push(map[d.data.name].path(map[f.recipient]));
-						}
-					});
-				}
-			});
-
-			return funds;
-		}
+		return chart;
 	};
 })();

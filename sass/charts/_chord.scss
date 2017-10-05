@@ -3,9 +3,11 @@
 		font-size: 0.9em;
 	}
 	.link {
-		fill: none;
-		stroke: steelblue;
-		opacity: 0.1;
+		fill: steelblue;
+		fill-opacity: 0.4;
+		&:hover {
+			fill-opacity: 0.8;
+		}
 	}
 	.arc-label {
 		font-weight: 600;

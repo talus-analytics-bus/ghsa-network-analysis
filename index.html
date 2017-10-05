@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta charset="utf-8">
-	<title>GHSA Network Analysis</title>
+	<title>GHS Tracking</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="icon" href="img/favicon.ico">
 		
@@ -32,7 +32,7 @@
 				</button>
 				<a class="navbar-brand" href="#">
 					<img class="logo" alt="Talus Analytics" src="img/talus-logo.png" />
-					GHSA Network Analysis
+					GHS Tracking
 				</a>
 			</div>
 			<div class="collapse navbar-collapse" id="navbar-collapse-1">
@@ -78,12 +78,8 @@
 						</div>
 						<div class="filter-section">
 							<div class="filter-box">
-								<div class="dropdown-label">Function</div>
-								<select class="function-select form-control" multiple="multiple"></select>
-							</div>
-							<div class="filter-box">
-								<div class="dropdown-label">Disease</div>
-								<select class="disease-select form-control" multiple="multiple"></select>
+								<div class="dropdown-label">JEE Core Capacity</div>
+								<select class="cc-select form-control" multiple="multiple"></select>
 							</div>
 						</div>
 					</div>
@@ -119,38 +115,18 @@
 						<img class="close-icon" src="img/close.png" />
 					</div>
 					<div class="info-title"></div>
-					<div class="info-total-value"></div>
-					<div class="info-content">
-						<div class="info-tab-container">
-							<div class="btn-group">
-								<div class="btn btn-default" tab="all">All</div>
-								<div class="btn btn-default" tab="country">By Recipient</div>
-								<div class="btn btn-default" tab="function">By Function</div>
-								<div class="btn btn-default" tab="disease">By Disease</div>
-							</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="info-funded-value"></div>
+							<div class="info-value-label">Total Funded</div>
 						</div>
-						<div class="info-table-container">
-							<table class="info-table table table-condensed table-striped table-bordered">
-								<thead>
-									<tr></tr>
-								</thead>
-								<tbody></tbody>	
-							</table>
-						</div>
-						<div class="info-source-text">
-							Source: <b>International Aid Transparency Initiative, 2014-2017.</b>
-						</div>
-						<div class="info-button-container">
-							<button class="info-download-button btn btn-default">Download Data</button>
-							<button class="info-analysis-button btn btn-default">Show in Analysis Page</button>
+						<div class="col-sm-6">
+							<div class="info-received-value"></div>
+							<div class="info-value-label">Total Received</div>
 						</div>
 					</div>
-					<div class="info-more-button-container">
-						<div class="info-more-button">
-							<img class="collapse-arrow" src="img/chevron_down.png" />
-							<span>show more</span>
-							<img class="collapse-arrow" src="img/chevron_down.png" />
-						</div>
+					<div class="info-button-container">
+						<button class="info-analysis-button btn btn-default">View Funding Details</button>
 					</div>
 				</div>
 			</div>
@@ -161,12 +137,8 @@
 		<div class="analysis-container container">
 			<div class="analysis-filter-bar">
 				<div class="filter-box">
-					<div class="dropdown-label">Function</div>
-					<select class="function-select form-control" multiple="multiple"></select>
-				</div>
-				<div class="filter-box">
-					<div class="dropdown-label">Disease</div>
-					<select class="disease-select form-control" multiple="multiple"></select>
+					<div class="dropdown-label">JEE Core Capacity</div>
+					<select class="cc-select form-control" multiple="multiple"></select>
 				</div>
 				<div class="search-container">
 					<div class="form-group has-feedback">
@@ -179,28 +151,32 @@
 					</div>
 				</div>
 			</div>
-			<div class="analysis-global-content analysis-content row">
-				<div class="col-md-6 col-sm-12">
-					<h3>Donor Countries</h3>
-					<div class="description">
-						The plot below displays each country by amount funded.
-					</div>
-					<div class="global-funded-container circle-pack-container"></div>
-				</div>
-				<div class="col-md-6 col-sm-12">
-					<h3>Recipient Countries</h3>
-					<div class="description">
-						The plot below displays each country by amount received.
-					</div>
-					<div class="global-received-container circle-pack-container"></div>
-				</div>
-				<div class="col-sm-12 center">
-					<h3>Monetary Flow Network by Region</h3>
-					<div class="chord-chart"></div>
-				</div>
+			<div class="analysis-global-content analysis-content">
+				<h3>Monetary Flow Network by Region</h3>
+				<div class="chord-chart"></div>
 			</div>
 			<div class="analysis-country-content analysis-content row">
 				<h3 class="analysis-country-title"></h3>
+				<div class="country-funds-content">
+					<div class="funds-tab-container">
+						<div class="btn-group">
+							<div class="btn btn-default" tab="all">All</div>
+							<div class="btn btn-default" tab="country">By Country</div>
+							<div class="btn btn-default" tab="cc">By JEE Capacity</div>
+						</div>
+					</div>
+					<div class="funds-table-container">
+						<table class="funds-table table table-condensed table-striped table-bordered">
+							<thead>
+								<tr></tr>
+							</thead>
+							<tbody></tbody>	
+						</table>
+					</div>
+					<div class="funds-source-text">
+						Source: <b>International Aid Transparency Initiative, 2014-2017.</b>
+					</div>
+				</div>
 				<div class="col-md-6 col-sm-12">
 					<h3>Countries Donated To</h3>
 					<div class="country-funded-description description">
@@ -349,6 +325,8 @@
 	<script src="js/components/search.js"></script>
 	<script src="js/components/slider.js"></script>
 	<script src="js/pages/analysis.js"></script>
+	<script src="js/pages/analysisCountry.js"></script>
+	<script src="js/pages/analysisGlobal.js"></script>
 	<script src="js/pages/home.js"></script>
 	<script src="js/pages/submit.js"></script>
 	<script src="js/init.js"></script>

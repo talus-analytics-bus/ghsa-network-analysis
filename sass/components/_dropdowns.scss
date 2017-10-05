@@ -20,14 +20,6 @@ select.form-control {
 
 
 /* --- Bootstrap Multiselect --- */
-.multiselect-container > li > a {
-	padding-left: 15px;
-}
-.multiselect-container > li.multiselect-item > a,
-.multiselect-container > li.primary-option > a {
-	padding-left: 0;
-}
-
 .multiselect-container > li.multiselect-group b {
 	position: relative;
 	top: -1px;

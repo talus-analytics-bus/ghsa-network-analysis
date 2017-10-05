@@ -14,6 +14,24 @@ const App = {};
 		App.currencyIso = 'USD';  // the default currency
 		App.fundingLookup = {};  // a lookup of money funded for each country
 		App.recipientLookup = {};  // a lookup of money received for each country
+		App.capacities = [
+			{ id: 'P.1', name: 'P.1 - National Legislation, Policy, and Financing' },
+			{ id: 'P.2', name: 'P.2 - IHR Coordination, Communicaton and Advocacy' },
+			{ id: 'P.3', name: 'P.3 - Antimicrobial Resistance (AMR)' },
+			{ id: 'P.4', name: 'P.4 - Zoonotic Disease' },
+			{ id: 'P.5', name: 'P.5 - Food Safety' },
+			{ id: 'P.6', name: 'P.6 - Biosafety and Biosecurity' },
+			{ id: 'P.7', name: 'P.7 - Immunization' },
+			{ id: 'D.1', name: 'D.1 - National Laboratory System' },
+			{ id: 'D.2', name: 'D.2 - Real Time Surveillance' },
+			{ id: 'D.3', name: 'D.3 - Reporting' },
+			{ id: 'D.4', name: 'D.4 - Workforce Development' },
+			{ id: 'R.1', name: 'R.1 - Preparedness' },
+			{ id: 'R.2', name: 'R.2 - Emergency Response Operations' },
+			{ id: 'R.3', name: 'R.3 - Linking Public Health and Security Authorities' },
+			{ id: 'R.4', name: 'R.4 - Medical Countermeasures and Personnel Deployment' },
+			{ id: 'R.5', name: 'R.5 - Risk Communication' },
+		];
 
 
 		// front-load all the data
@@ -84,7 +102,9 @@ const App = {};
 		const multiplier = App.currencies[App.currencyIso].exchange_rates
 			.find(er => er.convert_from === 'USD')
 			.multiplier;
-		return App.siFormat(usdValue * multiplier);
+		const value = usdValue * multiplier;
+		if (value < 100) return Math.round(value);
+		return App.siFormat(value);
 	};
 	App.formatMoney = (usdValue) => {
 		return `${App.formatMoneyShort(usdValue)} ${App.currencyIso}`;
@@ -96,68 +116,6 @@ const App = {};
 
 
 	/* ------------------ Category Functions ------------------- */
-	App.initCategorySelect = (selector, data, options = {}) => {
-		const $select = $(selector);
-		const optgroups = d3.select(selector).selectAll('optgroup')
-			.data(data)
-			.enter().append('optgroup')
-				.attr('label', d => d.tag_name)
-				.text(d => d.tag_name);
-		const optionElements = optgroups.selectAll('option')
-			.data(d => d.children.length ? d.children : [d])
-			.enter().append('option')
-				.attr('value', d => d.tag_name)
-				.text(d => d.tag_name);
-		if (options.selected) optionElements.attr('selected', true);
-
-		// copy options over and initialize multiselect
-		const opts = {
-			maxHeight: 260,
-			includeSelectAllOption: true,
-			enableClickableOptGroups: true,
-			numberDisplayed: 0,
-		};
-		for (let ind in options) opts[ind] = options[ind];
-		$select.multiselect(opts);
-
-		// hide optgroups with only one option
-		// (this is a workaround fix for optgroup bug in bootstrap multiselect)
-		const multiselect = $select.next('.btn-group');
-		const groups = multiselect.find('.multiselect-group')
-			.each(function loop() {
-				const $optgroup = $(this);
-				const options = $optgroup.nextUntil('.multiselect-group');
-				if (options.length === 1) {
-					$optgroup.hide();
-					options.addClass('primary-option');
-				}
-			});
-	};
-
-	// retrieves the value of a category filter in a meaningful structure
-	App.getCategorySelectValue = (selector) => {
-		const value = [];
-		const multiselect = $(selector).next('.btn-group');
-		const optgroups = multiselect.find('.multiselect-group');
-		optgroups.each(function loop() {
-			const $optgroup = $(this);
-			const children = [];
-			const allOptions = $optgroup.nextUntil('.multiselect-group');
-			const activeOptions = allOptions
-				.filter('.active')
-				.each(function loopChildren() {
-					children.push($(this).find('input').attr('value'));
-				});
-			if (activeOptions.length || ($optgroup.hasClass('active') && !allOptions.length)) {
-				value.push({
-					tag_name: $optgroup.find('b').text().trim(),
-					children,
-				});
-			}
-		});
-		return value;
-	};
-
 	// tests whether a payment satisfies a category filter
 	App.passesCategoryFilter = (values, filterValues) => {
 		let pass = false;

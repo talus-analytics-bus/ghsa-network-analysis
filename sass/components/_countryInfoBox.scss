@@ -9,8 +9,8 @@
 	.info-box {
 		display: inline-block;
 		position: relative;
-		padding-top: 18px;
-		width: 350px;
+		padding: 18px 15px 20px;
+		width: 400px;
 		border: $border;
 		background-color: rgba(255,255,255,0.96);
 		pointer-events: all;
@@ -36,51 +36,21 @@
 		font-weight: 600;
 		text-align: center;
 	}
-	.info-total-value {
+	.info-funded-value,
+	.info-received-value {
 		font-family: 'Raleway', sans-serif;
-		font-size: 1.6em;
-		margin: 10px 20px 20px;
+		font-size: 1.8em;
+		margin-top: 20px;
 		text-align: center;
 	}
-	.info-content {
-		display: none;
-		padding: 0 20px;
-	}
-	.info-tab-container {
-		margin-top: 20px;
-	}
-	.info-table-container {
-		margin-top: 10px;
-		text-align: left;
-	}
-	.info-table {
-		.money-cell {
-			text-align: right;
-			white-space: nowrap;
-		}
-	}
-	.info-source-text {
-		margin: 10px 0 25px;
-		font-size: 0.9em;
-		text-align: right;
+	.info-value-label {
+		margin-top: 5px;
+		text-align: center;
+		font-size: 1.1em;
+		font-weight: 600;
 	}
 	.info-button-container {
 		margin-top: 20px;
 		button { margin: 0 5px; }
-	}
-	.info-more-button-container {
-		margin-top: 20px;
-		padding: 5px 20px;
-		cursor: pointer;
-
-		&:hover {
-			background-color: rgba(0,0,0,0.05);
-		}
-		img {
-			top: 0;
-			width: 10px;
-			height: 8px;
-			margin: 0 7px;
-		}
 	}
 }
