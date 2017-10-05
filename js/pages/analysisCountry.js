@@ -37,7 +37,8 @@
 
 			// draw charts
 			const country = App.countries.find(c => c.ISO2 === iso);
-			$('.analysis-country-title').text(country.NAME);
+			const flagHtml = `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
+			$('.analysis-country-title').html(`${flagHtml} ${country.NAME} ${flagHtml}`);
 			drawCirclePacks();
 		}
 		
