@@ -155,8 +155,18 @@
 				<h3>Monetary Flow Network by Region</h3>
 				<div class="chord-chart"></div>
 			</div>
-			<div class="analysis-country-content analysis-content row">
-				<h3 class="analysis-country-title"></h3>
+			<div class="analysis-country-content analysis-content">
+				<h3 class="analysis-country-title center"></h3>
+				<div class="country-summary-content row">
+					<div class="col-sm-6">
+						<div class="country-summary-label">Total Donated</div>
+						<div class="country-funded-value country-summary-value"></div>
+					</div>
+					<div class="col-sm-6">
+						<div class="country-summary-label">Total Received</div>
+						<div class="country-received-value country-summary-value"></div>
+					</div>
+				</div>
 				<div class="country-funds-content">
 					<div class="funds-tab-container">
 						<div class="btn-group">
@@ -172,24 +182,26 @@
 							</thead>
 							<tbody></tbody>	
 						</table>
-					</div>
-					<div class="funds-source-text">
-						Source: <b>International Aid Transparency Initiative, 2014-2017.</b>
+						<div class="funds-source-text">
+							Source: <b>International Aid Transparency Initiative, 2014-2017.</b>
+						</div>
 					</div>
 				</div>
-				<div class="col-md-6 col-sm-12">
-					<h3>Countries Donated To</h3>
-					<div class="country-funded-description description">
-						The plot below displays the countries this country has funded.
+				<div class="circle-pack-container row">
+					<div class="col-md-6 col-sm-12">
+						<h3>Countries Donated To</h3>
+						<div class="country-funded-description description">
+							The plot below displays the countries this country has funded.
+						</div>
+						<div class="country-funded-container circle-pack-container"></div>
 					</div>
-					<div class="country-funded-container circle-pack-container"></div>
-				</div>
-				<div class="col-md-6 col-sm-12">
-					<h3>Countries Received From</h3>
-					<div class="country-received-description description">
-						The plot below displays the countries this country has received money from.
+					<div class="col-md-6 col-sm-12">
+						<h3>Countries Received From</h3>
+						<div class="country-received-description description">
+							The plot below displays the countries this country has received money from.
+						</div>
+						<div class="country-received-container circle-pack-container"></div>
 					</div>
-					<div class="country-received-container circle-pack-container"></div>
 				</div>
 			</div>
 		</div>

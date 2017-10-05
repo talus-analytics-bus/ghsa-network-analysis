@@ -115,6 +115,19 @@ const App = {};
 	}
 
 
+	/* ------------------ Data Functions ------------------- */
+	// returns the total amount of money donated by a given country
+	App.getTotalFunded = (iso) => {
+		if (!App.fundingLookup[iso]) return 0;
+		return d3.sum(App.fundingLookup[iso], d => d.total_spent);
+	};
+
+	// returns the total amount of money received by a given country
+	App.getTotalReceived = (iso) => {
+		if (!App.recipientLookup[iso]) return 0;
+		return d3.sum(App.recipientLookup[iso], d => d.total_spent);
+	};
+
 	/* ------------------ Category Functions ------------------- */
 	// tests whether a payment satisfies a category filter
 	App.passesCategoryFilter = (values, filterValues) => {

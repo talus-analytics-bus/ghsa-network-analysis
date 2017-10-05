@@ -1,10 +1,24 @@
+.country-summary-content {
+	margin-top: 30px;
+	text-align: center;
+
+	.country-summary-label {
+		font-weight: 600;
+		font-size: 1.2em;
+	}
+	.country-summary-value {
+		margin-top: 5px;
+		font-family: 'Raleway', sans-serif;
+		font-size: 2.4em;
+	}
+}
 .country-funds-content {
-	margin-top: 20px;
+	margin-top: 30px;
 	text-align: center;
 
 	.funds-table-container {
 		display: inline-block;
-		padding: 20px 30px 15px;
+		padding: 20px 30px;
 		width: 900px;
 		border: $light-border;
 		text-align: left;
@@ -18,8 +32,11 @@
 		}
 	}
 	.funds-source-text {
-		margin: 10px 0 25px;
+		margin-top: 15px;
 		font-size: 0.9em;
 		text-align: right;
 	}
+}
+.circle-pack-container {
+	margin-top: 20px;
 }

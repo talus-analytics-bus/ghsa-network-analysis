@@ -18,7 +18,13 @@
 
 		// initializes the whole page
 		function init() {
-			// define tab behavior
+			// fill summary values
+			const totalFunded = App.getTotalFunded(iso);
+			const totalReceived = App.getTotalReceived(iso);
+			$('.country-funded-value').text(App.formatMoney(totalFunded));
+			$('.country-received-value').text(App.formatMoney(totalReceived));
+
+			// define info table tab behavior
 			$('.funds-tab-container .btn').on('click', function changeTab() {
 				currentInfoTab = $(this).attr('tab');
 				updateInfoTab();

@@ -18,14 +18,8 @@
 			});
 
 		// populate info total value
-		let totalFunded = 0;
-		let totalReceived = 0;
-		if (App.fundingLookup[country.ISO2]) {
-			totalFunded = d3.sum(App.fundingLookup[country.ISO2], d => d.total_spent);
-		}
-		if (App.recipientLookup[country.ISO2]) {
-			totalReceived = d3.sum(App.recipientLookup[country.ISO2], d => d.total_spent);
-		}
+		const totalFunded = App.getTotalFunded(country.ISO2);
+		const totalReceived = App.getTotalReceived(country.ISO2);
 		$('.info-funded-value').text(App.formatMoney(totalFunded));
 		$('.info-received-value').text(App.formatMoney(totalReceived));
 
