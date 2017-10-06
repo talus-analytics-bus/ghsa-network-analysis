@@ -137,6 +137,10 @@
 	<script id="analysis-template" type="text/x-handlebars-template">
 		<div class="analysis-container container">
 			<div class="analysis-filter-bar">
+				<div class="slider-box filter-box">
+					<div class="dropdown-label">Time Range</div>
+					<input class="time-slider slider" />
+				</div>
 				<div class="filter-box">
 					<div class="dropdown-label">JEE Core Capacity</div>
 					<select class="cc-select form-control" multiple="multiple"></select>
@@ -171,9 +175,9 @@
 				<div class="country-funds-content">
 					<div class="funds-tab-container">
 						<div class="btn-group">
-							<div class="tab btn btn-default" tab="all">All</div>
-							<div class="tab btn btn-default" tab="country">By Country</div>
-							<div class="tab btn btn-default" tab="cc">By JEE Capacity</div>
+							<div class="tab btn btn-default" tab="all">All Funds</div>
+							<div class="tab btn btn-default" tab="country">Funds By Country</div>
+							<div class="tab btn btn-default" tab="cc">Funds By JEE Capacity</div>
 						</div>
 					</div>
 					<div class="funds-table-container">

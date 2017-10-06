@@ -106,8 +106,6 @@
 			App.buildChordDiagram('.chord-chart', chordData);
 		}
 
-
-
 		init();
 	};
 })();

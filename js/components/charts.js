@@ -198,8 +198,14 @@
 			.attr('stop-color', receiveColor)
 			.attr('offset', '100%');
 
+		// add bounding box
+		const clipPath = defs.append('clipPath').attr('id', 'circle-clip');
+		clipPath.append('circle')
+			.attr('r', radius);
+
 		// add groups for chart
-		const linkG = chart.append('g');
+		const linkG = chart.append('g')
+			.attr('clip-path', 'url(#circle-clip)');
 		const arcG = chart.append('g');
 		const countryArcG = arcG.append('g');
 		const subregionArcG = arcG.append('g');
@@ -307,7 +313,7 @@
 			.data(funds)
 			.enter().append('path')
 				.attr('class', 'link')
-				.style('fill', 'url(#fund-gradient)')
+				.style('fill', colorScale(0))
 				.attr('d', ribbon);
 
 		// function for getting fund/receive color
