@@ -11,14 +11,16 @@
 
 		// populate dropdowns
 		Util.populateSelect('.country-select', App.countries, {
-			nameKey: 'NAME',
 			valKey: 'ISO2',
+			nameKey: 'NAME',
 		});
-		App.initCategorySelect('.function-select', App.functions, {
-			includeSelectAllOption: false,
+		Util.populateSelect('.cc-select', App.capacities, {
+			valKey: 'id',
+			nameKey: 'name',
 		});
-		App.initCategorySelect('.disease-select', App.diseases, {
-			includeSelectAllOption: false,
+		$('.cc-select').multiselect({
+			maxHeight: 260,
+			numberDisplayed: 1,
 		});
 	};
 })();

@@ -1,7 +1,17 @@
 .submit-page-container {
 	position: relative;
-}
-.submit-button-container {
-	margin-top: 30px;
-	text-align: center;
+
+	input[type="file"] { display: none; }
+	.upload-button-container {
+		margin-top: 20px;
+	}
+	.submit-form-content {
+		margin-top: 30px;
+		border-top: $light-border;
+		padding-top: 20px;
+	}
+	.submit-button-container {
+		margin-top: 30px;
+		text-align: center;
+	}
 }

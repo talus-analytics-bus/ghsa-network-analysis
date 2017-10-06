@@ -213,77 +213,84 @@
 			<h3>Submit Data</h3>
 			<div class="description">
 				Submit project data using the form below.
+				Data may be uploaded in the format used in the provided blank template.
 				Data will be sent to be reviewed before being incorporated into the tool.
 			</div>
-			<div class="submit-form-container">
-				<table class="submit-form-table"><tbody>
-					<tr>
-						<td>Project Name</td>
-						<td><input class="form-control" /></td>
-					</tr>
-					<tr>
-						<td>Project Date</td>
-						<td>
-							<div class="input-group input-daterange">
-								<input type="text" class="start-date-input form-control" placeholder="mm/dd/yyyy">
-								<div class="input-group-addon">to</div>
-								<input type="text" class="end-date-input form-control" placeholder="mm/dd/yyyy">
-							</div>
-						</td>
-					</tr>
-				</tbody></table>
+			<div class="upload-button-container">
+				<a class="export-button-link" href="export/template.xlsx">
+					<button type="button" class="btn btn-default">Download Blank Score Report</button>
+				</a>
+				<button type="button" class="btn btn-default btn-score-file">Select Score File</button>
+				<input id="score-file-upload" class="input-score-file" type="file" />
 			</div>
-			<div class="submit-form-container">
-				<table class="submit-form-table"><tbody>
-					<tr>
-						<td>Donor Country</td>
-						<td><select class="donor-country-select country-select form-control"></select></td>
-					</tr>
-					<tr>
-						<td>Donor Name</td>
-						<td><input class="donor-name-input form-control" /></td>
-					</tr>
-					<tr>
-						<td>Donor Sector</td>
-						<td><select class="donor-sector-select form-control"></select></td>
-					</tr>
-				</tbody></table>
-			</div>
-			<div class="submit-form-container">
-				<table class="submit-form-table"><tbody>
-					<tr>
-						<td>Recipient Country</td>
-						<td><select class="recipient-country-select country-select form-control"></select></td>
-					</tr>
-					<tr>
-						<td>Recipient Name</td>
-						<td><input class="recipient-name-input form-control" /></td>
-					</tr>
-					<tr>
-						<td>Recipient Sector</td>
-						<td><select class="recipient-sector-select form-control"></select></td>
-					</tr>
-				</tbody></table>
-			</div>
-			<div class="submit-form-container">
-				<table class="submit-form-table"><tbody>
-					<tr>
-						<td>Amount Disbursed</td>
-						<td><input class="disbursed-input form-control" /></td>
-					</tr>
-				</tbody></table>
-			</div>
-			<div class="submit-form-container">
-				<table class="submit-form-table"><tbody>
-					<tr>
-						<td>Function</td>
-						<td><select class="function-select form-control" multiple="multiple"></select></td>
-					</tr>
-					<tr>
-						<td>Disease</td>
-						<td><select class="disease-select form-control" multiple="multiple"></select></td>
-					</tr>
-				</tbody></table>
+			<div class="submit-form-content">
+				<h3>Add a Single Project</h3>
+				<div class="submit-form-container">
+					<table class="submit-form-table"><tbody>
+						<tr>
+							<td>Project Name</td>
+							<td><input class="form-control" /></td>
+						</tr>
+						<tr>
+							<td>Project Date</td>
+							<td>
+								<div class="input-group input-daterange">
+									<input type="text" class="start-date-input form-control" placeholder="mm/dd/yyyy">
+									<div class="input-group-addon">to</div>
+									<input type="text" class="end-date-input form-control" placeholder="mm/dd/yyyy">
+								</div>
+							</td>
+						</tr>
+					</tbody></table>
+				</div>
+				<div class="submit-form-container">
+					<table class="submit-form-table"><tbody>
+						<tr>
+							<td>Donor Country</td>
+							<td><select class="donor-country-select country-select form-control"></select></td>
+						</tr>
+						<tr>
+							<td>Donor Name</td>
+							<td><input class="donor-name-input form-control" /></td>
+						</tr>
+						<tr>
+							<td>Donor Sector</td>
+							<td><select class="donor-sector-select form-control"></select></td>
+						</tr>
+					</tbody></table>
+				</div>
+				<div class="submit-form-container">
+					<table class="submit-form-table"><tbody>
+						<tr>
+							<td>Recipient Country</td>
+							<td><select class="recipient-country-select country-select form-control"></select></td>
+						</tr>
+						<tr>
+							<td>Recipient Name</td>
+							<td><input class="recipient-name-input form-control" /></td>
+						</tr>
+						<tr>
+							<td>Recipient Sector</td>
+							<td><select class="recipient-sector-select form-control"></select></td>
+						</tr>
+					</tbody></table>
+				</div>
+				<div class="submit-form-container">
+					<table class="submit-form-table"><tbody>
+						<tr>
+							<td>Amount Disbursed</td>
+							<td><input class="disbursed-input form-control" /></td>
+						</tr>
+					</tbody></table>
+				</div>
+				<div class="submit-form-container">
+					<table class="submit-form-table"><tbody>
+						<tr>
+							<td>JEE Core Capacity</td>
+							<td><select class="cc-select form-control" multiple="multiple"></select></td>
+						</tr>
+					</tbody></table>
+				</div>
 			</div>
 			<div class="submit-button-container">
 				<button class="submit-button btn btn-primary">Submit Data</button>

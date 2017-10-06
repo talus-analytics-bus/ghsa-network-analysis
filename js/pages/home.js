@@ -297,7 +297,6 @@
 			$('.cc-select').multiselect({
 				maxHeight: 260,
 				includeSelectAllOption: true,
-				enableClickableOptGroups: true,
 				numberDisplayed: 0,
 				dropRight: true,
 			});

@@ -9,6 +9,10 @@
 			valKey: d => d.iso.code,
 		});
 
-		$('.currency-select').val('USD');
+		$('.currency-select')
+			.val(App.currencyIso)
+			.on('change', function changeCurrency() {
+				App.currencyIso = $(this).val();
+			});
 	}
 })();
