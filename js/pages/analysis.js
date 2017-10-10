@@ -1,15 +1,19 @@
 (() => {
-	App.initAnalysis = (countryIso) => {
+	App.initAnalysis = (countryIso, recCountryIso) => {
 		// define constants
 		let startYear = App.dataStartYear;
 		let endYear = App.dataEndYear;
 
-		//
+		// initialize filters section
 		populateFilters();
 		initSlider();
 		initSearch();
 
-		if (countryIso) {
+		// 
+		if (countryIso && recCountryIso) {
+			$('.analysis-pair-content').slideDown();
+			App.initAnalysisPair(countryIso, recCountryIso);
+		} else if (countryIso) {
 			$('.analysis-country-content').slideDown();
 			App.initAnalysisCountry(countryIso);
 		} else {

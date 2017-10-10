@@ -7,6 +7,10 @@
 	let currentPayments;  // an array of all payments corresponding to the country chosen
 
 	App.initAnalysisCountry = (iso) => {
+		// define content in container
+		const content = d3.select('.analysis-country-content');
+		const $content = $('.analysis-country-content');
+
 		// find all payments funded or received by this country
 		let allPayments = [];
 		if (App.fundingLookup[iso]) allPayments = App.fundingLookup[iso].slice(0);
@@ -18,11 +22,19 @@
 
 		// initializes the whole page
 		function init() {
+			// get country information
+			const country = App.countries.find(c => c.ISO2 === iso);
+
+			// fill title
+			const flagHtml = `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
+			$content.find('.analysis-country-title')
+				.html(`${flagHtml} ${country.NAME} ${flagHtml}`);
+
 			// fill summary values
 			const totalFunded = App.getTotalFunded(iso);
 			const totalReceived = App.getTotalReceived(iso);
-			$('.country-funded-value').text(App.formatMoney(totalFunded));
-			$('.country-received-value').text(App.formatMoney(totalReceived));
+			$content.find('.country-funded-value').text(App.formatMoney(totalFunded));
+			$content.find('.country-received-value').text(App.formatMoney(totalReceived));
 
 			// define info table tab behavior
 			$('.funds-tab-container .btn').on('click', function changeTab() {
@@ -36,16 +48,14 @@
 			updateInfoTable();
 
 			// draw charts
-			const country = App.countries.find(c => c.ISO2 === iso);
-			const flagHtml = `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
-			$('.analysis-country-title').html(`${flagHtml} ${country.NAME} ${flagHtml}`);
 			drawCirclePacks();
 		}
 		
 		// update the content shwon based on tab chosen
 		function updateInfoTab() {
 			// make correct tab active
-			$(`.funds-tab-container .btn[tab="${currentInfoTab}"]`).addClass('active')
+			$content.find(`.funds-tab-container .btn[tab="${currentInfoTab}"]`)
+				.addClass('active')
 				.siblings().removeClass('active');
 		}
 
@@ -135,7 +145,7 @@
 			if (infoTableHasBeenInit) infoDataTable.destroy();
 
 			// populate table
-			const infoTable = d3.select('.funds-table');
+			const infoTable = content.select('.funds-table');
 			const infoThead = infoTable.select('thead tr');
 			const headers = infoThead.selectAll('th')
 				.data(headerData);
@@ -175,7 +185,7 @@
 			}
 
 			// re-initialize DataTables plugin
-			infoDataTable = $('.funds-table').DataTable({
+			infoDataTable = $content.find('.funds-table').DataTable({
 				scrollY: '30vh',
 				scrollCollapse: true,
 				order,
