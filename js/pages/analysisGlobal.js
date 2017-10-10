@@ -1,10 +1,139 @@
 (() => {
 	App.initAnalysisGlobal = () => {
+		let currentTab = 'global';
+		let startYear = App.dataStartYear;
+		let endYear = App.dataEndYear;
+
 		function init() {
-			drawGlobalCharts();
+			initTabs();
+			populateFilters();
+			initSlider();
+			initSearch();
+			updateTab();
+			populateTables('.donor-table', '.recipient-table');
+			drawNetworkMap('.network-map-content');
 		}
 
-		function drawGlobalCharts() {
+		function initTabs() {
+			// define info table tab behavior
+			$('.analysis-global-tab-container .btn').on('click', function changeTab() {
+				currentTab = $(this).attr('tab');
+				updateTab();
+			});
+		}
+
+		function updateTab() {
+			// make correct tab active
+			$(`.analysis-global-tab-container .btn[tab="${currentTab}"]`)
+				.addClass('active')
+				.siblings().removeClass('active');
+			$(`.global-tab-content-container .tab-content[tab="${currentTab}"]`)
+				.slideDown()
+				.siblings().slideUp();
+		}
+
+		// populates the filters in the map options box
+		function populateFilters() {
+			// populate dropdowns
+			Util.populateSelect('.cc-select', App.capacities, {
+				valKey: 'id',
+				nameKey: 'name',
+				selected: true,
+			});
+			$('.cc-select').multiselect({
+				maxHeight: 260,
+				includeSelectAllOption: true,
+				enableClickableOptGroups: true,
+				numberDisplayed: 0,
+			});
+		}
+
+		// initializes slider functionality
+		function initSlider() {
+			const slider = App.initSlider('.time-slider', {
+				min: App.dataStartYear,
+				max: App.dataEndYear,
+				value: [startYear, endYear],
+				tooltip: 'hide',
+			})
+			slider.on('change', (event) => {
+				const years = event.target.value.split(',');
+				if (+years[0] !== startYear || +years[1] !== endYear) {
+					startYear = +years[0];
+					endYear = +years[1];
+					// TODO
+				}
+			});
+			return slider;
+		}
+
+		// initializes search functionality
+		function initSearch() {
+			App.initCountrySearchBar('.network-country-search', (result) => {
+				hasher.setHash(`analysis/${result.ISO2}`);
+			});
+			App.initCountrySearchBar('.table-country-search', (result) => {
+				hasher.setHash(`analysis/${result.ISO2}`);
+			});
+		}
+
+		function populateTables(donorSelector, recSelector) {
+			const numRows = 10;
+
+			// get top funded countries
+			const countriesByFunding = [];
+			for (let iso in App.fundingLookup) {
+				const country = App.countries.find(c => c.ISO2 === iso);
+				countriesByFunding.push({
+					iso,
+					name: country ? country.NAME : iso,
+					total_committed: d3.sum(App.fundingLookup[iso], d => d.total_committed),
+					total_spent: d3.sum(App.fundingLookup[iso], d => d.total_spent),
+				});
+			}
+			Util.sortByKey(countriesByFunding, 'total_spent', true);
+
+			// get top recipient countries
+			const countriesByReceived = [];
+			for (let iso in App.recipientLookup) {
+				const country = App.countries.find(c => c.ISO2 === iso);
+				countriesByReceived.push({
+					iso,
+					name: country ? country.NAME : iso,
+					total_committed: d3.sum(App.recipientLookup[iso], d => d.total_committed),
+					total_spent: d3.sum(App.recipientLookup[iso], d => d.total_spent),
+				});
+			}
+			Util.sortByKey(countriesByReceived, 'total_spent', true);
+
+			// populate tables
+			const dRows = d3.select(donorSelector).select('tbody').selectAll('tr')
+				.data(countriesByFunding.slice(0, numRows))
+				.enter().append('tr')
+					.on('click', (d) => {
+						if (d.iso.length === 2) hasher.setHash(`analysis/${d.iso}`);
+					});
+			dRows.append('td').html((d) => {
+				const country = App.countries.find(c => c.ISO2 === d.iso);
+				const flagHtml = country ? App.getFlagHtml(d.iso) : '';
+				return `<div class="flag-container">${flagHtml}</div><b>${d.name}</b>`;
+			});
+			dRows.append('td').text(d => App.formatMoney(d.total_committed));
+			dRows.append('td').text(d => App.formatMoney(d.total_spent));
+
+			const rRows = d3.select(recSelector).select('tbody').selectAll('tr')
+				.data(countriesByReceived.slice(0, numRows))
+				.enter().append('tr');
+			rRows.append('td').html((d) => {
+				const country = App.countries.find(c => c.ISO2 === d.iso);
+				const flagHtml = country ? App.getFlagHtml(d.iso) : '';
+				return `<div class="flag-container">${flagHtml}</div><b>${d.name}</b>`;
+			});
+			rRows.append('td').text(d => App.formatMoney(d.total_committed));
+			rRows.append('td').text(d => App.formatMoney(d.total_spent));
+		}
+
+		function drawNetworkMap(selector) {
 			// collate the data
 			const fundedData = [];
 			const receivedData = [];
@@ -103,7 +232,7 @@
 			}
 
 			// build the charts
-			App.buildChordDiagram('.chord-chart', chordData);
+			App.buildChordDiagram(selector, chordData);
 		}
 
 		init();

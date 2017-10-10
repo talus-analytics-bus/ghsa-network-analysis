@@ -24,10 +24,15 @@
 
 		function init() {
 			// fill title
-			const fundFlagHtml = `<img class="flag" src="img/flags/${fundIso.toLowerCase()}.png" />`;
-			const recFlagHtml = `<img class="flag" src="img/flags/${recIso.toLowerCase()}.png" />`;
+			const fundFlagHtml = App.getFlagHtml(fundIso);
+			const recFlagHtml = App.getFlagHtml(recIso);
 			$content.find('.analysis-country-title').html(`${fundFlagHtml} ${fundCountry.NAME} ` +
 				`<div class="arrow-html">&rarr;</div>  ${recCountry.NAME} ${recFlagHtml}`);
+
+			// fill summary text
+			const totalFunded = d3.sum(allPayments, d => d.total_spent);
+			const summaryText = `Total Funded/Received: ${App.formatMoney(totalFunded)}`;
+			$('.pair-summary-text').text(summaryText);
 
 			// define info table tab behavior
 			$content.find('.funds-tab-container .btn').on('click', function changeTab() {

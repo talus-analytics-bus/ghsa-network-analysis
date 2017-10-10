@@ -252,7 +252,7 @@
 
 		// initializes search functionality
 		function initSearch() {
-			App.initCountrySearchBar('.country-search-input', (result) => {
+			App.initCountrySearchBar('.search-container', (result) => {
 				// get country element
 				const country = d3.selectAll('.country')
 					.filter(c => result.ISO2 === c.properties.ISO2);

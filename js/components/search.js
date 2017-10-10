@@ -5,10 +5,14 @@
 		const numResultsToDisplay = 3;
 		let results = [];
 		let activeResultNum = -1;
-		const $resultsBox = $('.live-search-results-container');
+
+		// define jquery elements
+		const $container = $(selector);
+		const $input = $container.find('input')
+		const $resultsBox = $container.find('.live-search-results-container');
 
 		// set search bar behavior
-		$(selector)
+		$input
 			.on('focus', function focus() {
 				searchForCountry($(this).val(), searchedFn);
 			})

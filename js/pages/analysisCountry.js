@@ -26,7 +26,7 @@
 			const country = App.countries.find(c => c.ISO2 === iso);
 
 			// fill title
-			const flagHtml = `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
+			const flagHtml = App.getFlagHtml(iso);
 			$content.find('.analysis-country-title')
 				.html(`${flagHtml} ${country.NAME} ${flagHtml}`);
 
@@ -160,6 +160,10 @@
 				.data(paymentTableData);
 			rows.exit().remove();
 			const newRows = rows.enter().append('tr');
+			newRows.merge(rows).on('click', (p) => {
+				// clicking on a row navigates user to country pair page
+				hasher.setHash(`analysis/${p.donor_country}/${p.recipient_country}`);
+			});
 
 			const cells = newRows.merge(rows).selectAll('td')
 				.data(d => headerData.map(c => ({ rowData: d, colData: c })));
@@ -191,7 +195,7 @@
 				order,
 				columnDefs,
 			});
-			infoTableHasBeenInit = true;		
+			infoTableHasBeenInit = true;
 		};
 
 		// draws circle pack charts
