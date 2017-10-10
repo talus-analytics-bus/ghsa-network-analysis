@@ -214,21 +214,21 @@
 
 	<script id="submit-template" type="text/x-handlebars-template">
 		<div class="submit-page-container container container-text">
-			<h3>Submit Data</h3>
+			<h3>Submit Data for Multiple Projects</h3>
 			<div class="description">
-				Submit project data using the form below.
-				Data may be uploaded in the format used in the provided blank template.
-				Data will be sent to be reviewed before being incorporated into the tool.
+				Project data may be submitted using the form below. An empty form can be downloaded by clicking "Download Project Report Template". <br> <br>
+				Using the structure of the project report template, please update the file with relevant, project-level information. Upload completed reports by clicking "Upload Project Report" and selecting the location where the file is saved on your computer. <br> <br>
+				Data will be reviewed before being incorporated into the tool.
 			</div>
 			<div class="upload-button-container">
 				<a class="export-button-link" href="export/template.xlsx">
-					<button type="button" class="btn btn-default">Download Blank Score Report</button>
+					<button type="button" class="btn btn-default">Download Project Report Template</button>
 				</a>
-				<button type="button" class="btn btn-default btn-score-file">Select Score File</button>
+				<button type="button" class="btn btn-default btn-score-file">Upload Project Report</button>
 				<input id="score-file-upload" class="input-score-file" type="file" />
 			</div>
 			<div class="submit-form-content">
-				<h3>Add a Single Project</h3>
+				<h3>Submit Data for a Single Project</h3>
 				<div class="submit-form-container">
 					<table class="submit-form-table"><tbody>
 						<tr>
@@ -290,7 +290,7 @@
 				<div class="submit-form-container">
 					<table class="submit-form-table"><tbody>
 						<tr>
-							<td>Category (JEE Core Capacity)</td>
+							<td>JEE Core Capacity</td>
 							<td><select class="cc-select form-control" multiple="multiple"></select></td>
 						</tr>
 					</tbody></table>
@@ -306,7 +306,7 @@
 		<div class="settings-page-container container container-text">
 			<h3>Settings</h3>
 			<div class="description">
-				Modify settings here.
+				Specify your preferred currency below to update the information shown in data and figures. 
 			</div>
 			<div class="settings-content">
 				<div class="dropdown-label">Currency</div>
