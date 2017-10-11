@@ -40,12 +40,16 @@
 			let maxFunded = 0;
 			let maxReceived = 0;
 			for (let iso in App.fundingLookup) {
-				const sum = d3.sum(App.fundingLookup[iso], d => d.total_spent);
-				if (sum > maxFunded) maxFunded = sum;
+				if (iso !== 'Not reported') {
+					const sum = d3.sum(App.fundingLookup[iso], d => d.total_spent);
+					if (sum > maxFunded) maxFunded = sum;
+				}
 			}
 			for (let iso in App.recipientLookup) {
-				const sum = d3.sum(App.recipientLookup[iso], d => d.total_spent);
-				if (sum > maxReceived) maxReceived = sum;
+				if (iso !== 'Not reported') {
+					const sum = d3.sum(App.recipientLookup[iso], d => d.total_spent);
+					if (sum > maxReceived) maxReceived = sum;
+				}
 			}
 			const relPercFunded = totalFunded / maxFunded;
 			const relPercReceived = totalReceived / maxReceived;
@@ -84,8 +88,46 @@
 		function drawDonorCategoryChart() {
 			// get data
 			if (App.fundingLookup[iso]) {
-				const data = [];
-
+				const catData = [];
+				const fundsByCat = {};
+				App.fundingLookup[iso].forEach((p) => {
+					const recCountry = App.countries.find(c => c.ISO2 === p.recipient_country);
+					if (recCountry) {
+						const region = recCountry.regionName;
+						const catValues = p.core_capacities;
+						catValues.forEach((c) => {
+							if (!fundsByCat[c]) fundsByCat[c] = {};
+							if (!fundsByCat[c][region]) {
+								fundsByCat[c][region] = {
+									name: region,
+									total_committed: 0,
+									total_spent: 0,
+								};
+							}
+							fundsByCat[c][region].total_committed += p.total_committed;
+							fundsByCat[c][region].total_spent += p.total_spent;
+						});
+					}
+				});
+				for (let c in fundsByCat) {
+					const regions = [];
+					let totalCommitted = 0;
+					let totalSpent = 0;
+					for (let r in fundsByCat[c]) {
+						regions.push(fundsByCat[c][r]);
+						totalCommitted += fundsByCat[c][r].total_committed;
+						totalSpent += fundsByCat[c][r].total_spent;
+					}
+					//Util.sortByKey(regions, 'total_spent', true);
+					catData.push({
+						name: c,
+						children: regions,
+						total_committed: totalCommitted,
+						total_spent: totalSpent,
+					});
+				}
+				Util.sortByKey(catData, 'total_spent', true);
+				App.buildCategoryChart('.category-chart-container', catData);
 			} else {
 
 			}

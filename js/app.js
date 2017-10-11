@@ -44,10 +44,8 @@ const App = {};
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
 			.defer(d3.json, 'data/funding_data_092817.json')
-			.defer(d3.json, 'data/project_diseases.json')
-			.defer(d3.json, 'data/project_functions.json')
 			.defer(d3.json, 'data/currencies.json')
-			.await((error, worldData, unsdData, fundingData, diseases, functions, currencies) => {
+			.await((error, worldData, unsdData, fundingData, currencies) => {
 				if (error) throw error;
 
 				/* -------- Populate global variables -------- */
@@ -72,10 +70,6 @@ const App = {};
 				// save funding data
 				App.fundingData = fundingData;
 
-				// save diseases and functions
-				App.diseases = diseases;
-				App.functions = functions;
-
 				// save currencies in namespace; set default currency
 				App.currencies = Object.assign({}, currencies);
 				App.currencyIso = 'USD';
@@ -90,6 +84,10 @@ const App = {};
 					App.fundingLookup[donor].push(d);
 					if (!App.recipientLookup[recipient]) App.recipientLookup[recipient] = [];
 					App.recipientLookup[recipient].push(d);
+
+					// TODO inject random core capacity into each payment
+					const randomIndex = Math.floor(App.capacities.length * Math.random());
+					d.core_capacities = [App.capacities[randomIndex].id];
 
 					// calculate totals by year
 					// TODO should do this outside UI

@@ -83,26 +83,30 @@
 			// get top funded countries
 			const countriesByFunding = [];
 			for (let iso in App.fundingLookup) {
-				const country = App.countries.find(c => c.ISO2 === iso);
-				countriesByFunding.push({
-					iso,
-					name: country ? country.NAME : iso,
-					total_committed: d3.sum(App.fundingLookup[iso], d => d.total_committed),
-					total_spent: d3.sum(App.fundingLookup[iso], d => d.total_spent),
-				});
+				if (iso !== 'Not reported') {
+					const country = App.countries.find(c => c.ISO2 === iso);
+					countriesByFunding.push({
+						iso,
+						name: country ? country.NAME : iso,
+						total_committed: d3.sum(App.fundingLookup[iso], d => d.total_committed),
+						total_spent: d3.sum(App.fundingLookup[iso], d => d.total_spent),
+					});
+				}
 			}
 			Util.sortByKey(countriesByFunding, 'total_spent', true);
 
 			// get top recipient countries
 			const countriesByReceived = [];
 			for (let iso in App.recipientLookup) {
-				const country = App.countries.find(c => c.ISO2 === iso);
-				countriesByReceived.push({
-					iso,
-					name: country ? country.NAME : iso,
-					total_committed: d3.sum(App.recipientLookup[iso], d => d.total_committed),
-					total_spent: d3.sum(App.recipientLookup[iso], d => d.total_spent),
-				});
+				if (iso !== 'Not reported') {
+					const country = App.countries.find(c => c.ISO2 === iso);
+					countriesByReceived.push({
+						iso,
+						name: country ? country.NAME : iso,
+						total_committed: d3.sum(App.recipientLookup[iso], d => d.total_committed),
+						total_spent: d3.sum(App.recipientLookup[iso], d => d.total_spent),
+					});
+				}
 			}
 			Util.sortByKey(countriesByReceived, 'total_spent', true);
 

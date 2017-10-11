@@ -18,7 +18,6 @@
 			.append('g')
 				.attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-		console.log(percentage);
 		for (let i = 0; i < numSquares; i++) {
 			const colored = (i + 1) <= Math.ceil(numSquares * percentage);
 			let xCoord = (sWidth + marginX) * (i % numPerRow);

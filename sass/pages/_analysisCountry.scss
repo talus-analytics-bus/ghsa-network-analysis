@@ -47,7 +47,7 @@
 	.country-flow-summary {
 		padding: 20px 30px;
 		border-bottom: $light-border;
-		margin-bottom: 30px;
+		margin-bottom: 20px;
 	}
 	.show-table-btn {
 		position: absolute;
@@ -57,5 +57,9 @@
 	.circle-pack-content {
 		margin-top: 30px;
 		text-align: center;
+	}
+	.circle-pack-title,
+	.category-chart-title {
+		font-size: 1.5em;
 	}
 }
