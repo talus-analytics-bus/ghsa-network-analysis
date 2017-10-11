@@ -1,9 +1,9 @@
 (() => {
 	App.buildTimeChart = (selector, data, param = {}) => {
 		// start building the chart
-		const margin = { top: 25, right: 20, bottom: 35, left: 60 };
-		const width = 500;
-		const height = 100;
+		const margin = { top: 30, right: 20, bottom: 35, left: 60 };
+		const width = 600;
+		const height = 90;
 
 		const chart = d3.select(selector).append('svg')
 			.classed('time-chart', true)

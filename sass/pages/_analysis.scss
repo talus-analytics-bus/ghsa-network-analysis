@@ -2,6 +2,7 @@
 	padding: 0;
 	border-left: $border;
 	border-right: $border;
+	@include gradient(#fff, #f0f0f0);
 }
 .analysis-filter-bar {
 	position: relative;

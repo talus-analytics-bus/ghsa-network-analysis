@@ -1,5 +1,5 @@
 (() => {
-	App.buildCategoryChart = (selector, data) => {
+	App.buildCategoryChart = (selector, data, param = {}) => {
 		// inject "running x" into data
 		const regions = [];
 		data.forEach((d) => {
@@ -40,7 +40,7 @@
 			.range([0, height]);
 		const colorScale = d3.scaleOrdinal()
 			.domain(regions)
-			.range(['#810f7c', '#8856a7', '#8c96c6', '#b3cde3', '#edf8fb']);
+			.range(['#6a3d9a', '#cab2d6', '#33a02c', '#b2df8a', '#fb9a99']);
 
 		const xAxis = d3.axisTop()
 			.ticks(5)
@@ -55,17 +55,19 @@
 				.attr('class', 'bar-group')
 				.attr('transform', d => `translate(0, ${y(d.name)})`);
 		barGroups.selectAll('rect')
-			.data(d => d.children)
+			.data(d => d.children.map(c => ({ cc: d.name, region: c })))
 			.enter().append('rect')
-				.attr('x', d => x(d.value0))
-				.attr('width', d => x(d.value1) - x(d.value0))
+				.attr('x', d => x(d.region.value0))
+				.attr('width', d => x(d.region.value1) - x(d.region.value0))
 				.attr('height', y.bandwidth())
-				.style('fill', d => colorScale(d.name))
+				.style('fill', d => colorScale(d.region.name))
 				.each(function addTooltip(d) {
+					const capName = App.capacities.find(cc => d.cc === cc.id).name;
 					$(this).tooltipster({
-						content: `<b>Region:</b> ${d.name}` +
-							`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.total_committed)}` +
-							`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.total_spent)}`,
+						content: `<b>Core Capacity:</b> ${capName}` +
+							`<br><b>Region:</b> ${d.region.name}` +
+							`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.region.total_committed)}` +
+							`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.region.total_spent)}`,
 					});
 				});
 		barGroups.append('text')
@@ -94,14 +96,14 @@
 			.attr('class', 'axis-label')
 			.attr('x', width / 2)
 			.attr('y', -35)
-			.text('Total Disbursed');
+			.text(param.xAxisLabel || 'Total Disbursed');
 
 		// add legend
-		const barWidth = 60;
+		const barWidth = 65;
 		const barHeight = 12;
-		const boxWidth = 80;
+		const boxWidth = 90;
 		const legend = chart.append('g')
-			.attr('transform', `translate(30, ${height + 20})`);
+			.attr('transform', `translate(0, ${height + 20})`);
 		const legendGroups = legend.selectAll('g')
 			.data(regions)
 			.enter().append('g')

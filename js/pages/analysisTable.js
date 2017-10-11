@@ -171,13 +171,13 @@
 
 			// define DataTables plugin parameters
 			let order = [4, 'desc'];
-			let columnDefs = [{ type: 'money', targets: [3, 4] }];
+			let columnDefs = [{ type: 'money', targets: [3, 4], width: '120px' }];
 			if (currentInfoTab === 'country') {
 				order = [3, 'desc'];
-				columnDefs = [{ type: 'money', targets: [2, 3] }];
+				columnDefs = [{ type: 'money', targets: [2, 3], width: '120px' }];
 			} else if (currentInfoTab === 'cc') {
 				order = [2, 'desc'];
-				columnDefs = [{ type: 'money', targets: [1, 2] }];
+				columnDefs = [{ type: 'money', targets: [1, 2], width: '120px' }];
 			}
 
 			// re-initialize DataTables plugin

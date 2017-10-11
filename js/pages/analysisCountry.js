@@ -191,7 +191,9 @@
 					});
 				}
 				Util.sortByKey(catData, 'total_spent', true);
-				App.buildCategoryChart('.category-chart-container', catData);
+				App.buildCategoryChart('.category-chart-container', catData, {
+					xAxisLabel: 'Total Funds Disbursed by Core Capacity',
+				});
 			} else {
 
 			}
@@ -239,7 +241,9 @@
 					});
 				}
 				Util.sortByKey(catData, 'total_spent', true);
-				App.buildCategoryChart('.category-chart-container', catData);
+				App.buildCategoryChart('.category-chart-container', catData, {
+					xAxisLabel: 'Total Funds Received by Core Capacity',
+				});
 			} else {
 
 			}
