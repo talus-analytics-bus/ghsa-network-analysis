@@ -69,18 +69,28 @@
 
 			// fill out title and description for circle pack; draw circle pack
 			if (moneyType === 'd') {
+				$('.switch-type-button')
+					.text('Switch to Recipient Profile')
+					.on('click', () => hasher.setHash(`analysis/${iso}/r`));
+
 				const totalFunded = App.getTotalFunded(iso);
 				$('.country-summary-label').text(`Total Funded from ${App.dataStartYear}` +
 					` to ${App.dataEndYear}`);
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
+
 				drawDonorCirclePack();
 				drawDonorCategoryChart();
 				drawDonorTimeChart();
 			} else if (moneyType === 'r') {
+				$('.switch-type-button')
+					.text('Switch to Donor Profile')
+					.on('click', () => hasher.setHash(`analysis/${iso}/d`));
+
 				const totalReceived = App.getTotalReceived(iso);
 				$('.country-summary-label').text(`Total Received from ${App.dataStartYear}` +
 					` to ${App.dataEndYear}`);
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
+
 				drawRecipientCirclePack();
 				drawRecipientCategoryChart();
 				drawRecipientTimeChart();

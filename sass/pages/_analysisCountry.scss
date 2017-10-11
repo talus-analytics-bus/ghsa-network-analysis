@@ -2,6 +2,8 @@
 	.analysis-country-title {
 		text-align: center;
 		cursor: pointer;
+		margin-left: 225px;
+		margin-right: 225px;
 	}
 	.country-summary-label {
 		font-weight: 600;
@@ -45,10 +47,16 @@
 	position: relative;
 	margin-top: 10px;
 
+	.switch-type-button {
+		position: absolute;
+		top: -44px;
+		right: 30px;
+	}
 	.country-flow-summary {
 		padding: 20px 30px;
 		border-bottom: $light-border;
 		margin-bottom: 20px;
+		min-height: 160px;
 	}
 	.country-summary-text {
 		float: left;
