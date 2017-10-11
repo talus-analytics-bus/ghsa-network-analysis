@@ -33,26 +33,24 @@
 	width: 260px;
 	border: $border;
 	text-align: left;
-	background-color: #ccc;
+	background-color: rgba(240,240,240,0.8);
 	z-index: 10;
-	@include opacity(0.95);
+	transition: background-color 1s;
 
 	&:hover {
-		@include opacity(0.975);
+		background-color: rgba(240,240,240,0.925);
 	}
 	.map-options-title {
 		display: flex;
 		justify-content: space-between;
 		font-weight: 600;
 		padding: 10px 20px;
-		background-color: #e0e0e0;
+		background-color: rgba(240,240,240,0.4);
 		cursor: pointer;
-		@include opacity(0.95);
 
 		img { top: 4px; }
 		&:hover {
-			background-color: #f0f0f0;
-			@include opacity(0.975);
+			background-color: rgba(240,240,240,0.6);
 		}
 	}
 	.map-options-content {
