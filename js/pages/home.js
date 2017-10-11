@@ -130,7 +130,7 @@
 			const totalFunc = getTotalFunc();
 			const dataLookup = getDataLookup();
 
-			// TODO get filter values; need to incorporate parent/child structure correctly
+			// get filter values
 			let ccs = $('.cc-select').val();
 			if (!ccs.length) ccs = App.capacities.map(d => d.id);
 
@@ -144,7 +144,7 @@
 					let totalValue = 0;
 					for (let i = 0, n = payments.length; i < n; i++) {
 						const p = payments[i];
-						//if (!App.passesCategoryFilter(p.project_function, functions)) continue;
+						if (!App.passesCategoryFilter(p.core_capacities, ccs)) continue;
 						totalValue += totalFunc(p) || 0;
 					}
 

@@ -79,6 +79,7 @@
 				$('.country-summary-label').text('Total Received');
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
 				drawRecipientCirclePack();
+				drawRecipientCategoryChart();
 			}
 
 			// display content
@@ -94,6 +95,54 @@
 					const recCountry = App.countries.find(c => c.ISO2 === p.recipient_country);
 					if (recCountry) {
 						const region = recCountry.regionName;
+						const catValues = p.core_capacities;
+						catValues.forEach((c) => {
+							if (!fundsByCat[c]) fundsByCat[c] = {};
+							if (!fundsByCat[c][region]) {
+								fundsByCat[c][region] = {
+									name: region,
+									total_committed: 0,
+									total_spent: 0,
+								};
+							}
+							fundsByCat[c][region].total_committed += p.total_committed;
+							fundsByCat[c][region].total_spent += p.total_spent;
+						});
+					}
+				});
+				for (let c in fundsByCat) {
+					const regions = [];
+					let totalCommitted = 0;
+					let totalSpent = 0;
+					for (let r in fundsByCat[c]) {
+						regions.push(fundsByCat[c][r]);
+						totalCommitted += fundsByCat[c][r].total_committed;
+						totalSpent += fundsByCat[c][r].total_spent;
+					}
+					//Util.sortByKey(regions, 'total_spent', true);
+					catData.push({
+						name: c,
+						children: regions,
+						total_committed: totalCommitted,
+						total_spent: totalSpent,
+					});
+				}
+				Util.sortByKey(catData, 'total_spent', true);
+				App.buildCategoryChart('.category-chart-container', catData);
+			} else {
+
+			}
+		}
+
+		function drawRecipientCategoryChart() {
+			// get data
+			if (App.recipientLookup[iso]) {
+				const catData = [];
+				const fundsByCat = {};
+				App.recipientLookup[iso].forEach((p) => {
+					const donCountry = App.countries.find(c => c.ISO2 === p.donor_country);
+					if (donCountry) {
+						const region = donCountry.regionName;
 						const catValues = p.core_capacities;
 						catValues.forEach((c) => {
 							if (!fundsByCat[c]) fundsByCat[c] = {};
