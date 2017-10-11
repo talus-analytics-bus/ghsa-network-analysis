@@ -30,8 +30,11 @@
   .slider-tick-vert {
     position: absolute;
     width: 2px;
-    height: 3px;
+    height: 4px;
     background-color: #999;
+  }
+  .slider-tick-text-container {
+    position: absolute;
   }
   .slider-tick-text {
     position: absolute;

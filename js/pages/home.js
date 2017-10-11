@@ -3,9 +3,9 @@
 		// variables used throughout home page
 		let map;  // the world map
 		let activeCountry = d3.select(null);  // the active country
-		const currentNodeDataMap = d3.map();  // maps each country to the current monetary value
+		const currentNodeDataMap = d3.map();  // maps country iso to the value on map
 		let startYear = App.dataStartYear;  // the start year of the time range shown
-		let endYear = App.dataEndYear;  // the end year of the time range shown
+		let endYear = App.dataEndYear + 1;  // the end year of the time range shown
 
 		// colors
 		const purples = ['#e0ecf4', '#bfd3e6', '#9ebcda',
@@ -17,7 +17,7 @@
 			// build map and initialize search
 			map = buildMap();
 			initMapOptions();
-			App.initCountryInfoBox({ closeFunc: resetMap });
+			initCountryInfoBox();
 			updateAll();
 		}
 
@@ -77,9 +77,27 @@
 		}
 
 		function getMoneyType() {
-			const moneyType = $('.money-type-filter input:checked').attr('ind');
-			if (moneyType === 'committed') return 'total_committed';
-			return 'total_spent';
+			return $('.money-type-filter input:checked').attr('ind');
+		}
+
+		function getTotalFunc() {
+			const moneyType = getMoneyType();
+			if (moneyType === 'committed') {
+				return (p) => {
+					let total = 0;
+					for (let i = startYear; i < endYear; i++) {
+						total += p.committed_by_year[i];
+					}
+					return total;
+				};
+			}
+			return (p) => {
+				let total = 0;
+				for (let i = startYear; i < endYear; i++) {
+					total += p.spent_by_year[i];
+				}
+				return total;
+			};
 		}
 
 		// returns color scale based on map settings
@@ -109,7 +127,7 @@
 		function updateDataMaps() {
 			// get lookup (has all data)
 			const moneyFlow = getMoneyFlowType();
-			const moneyType = getMoneyType();
+			const totalFunc = getTotalFunc();
 			const dataLookup = getDataLookup();
 
 			// TODO get filter values; need to incorporate parent/child structure correctly
@@ -127,8 +145,7 @@
 					for (let i = 0, n = payments.length; i < n; i++) {
 						const p = payments[i];
 						//if (!App.passesCategoryFilter(p.project_function, functions)) continue;
-						// TODO take year range into account
-						totalValue += p[moneyType] || 0;
+						totalValue += totalFunc(p) || 0;
 					}
 
 					// set in node map
@@ -237,10 +254,41 @@
 		function displayCountryInfo() {
 			const country = activeCountry.datum().properties;
 			const moneyFlow = getMoneyFlowType();
-			const dataLookup = getDataLookup();
-			const payments = dataLookup[country.ISO2];
+			const moneyType = getMoneyType();
 
-			App.updateCountryInfoBox(country, moneyFlow, payments);
+			// populate info title
+			$('.info-title').text(country.NAME);
+
+			// define "go to analysis" button behavior
+			$('.info-analysis-button')
+				.off('click')
+				.on('click', () => {
+					hasher.setHash(`analysis/${country.ISO2}`);
+				});
+
+			// populate info total value
+			let value = 0;
+			if (currentNodeDataMap.has(country.ISO2)) {
+				value = currentNodeDataMap.get(country.ISO2);
+			}
+			$('.info-value').text(App.formatMoney(value));
+
+			// construct label for value
+			let label = '';
+			if (moneyFlow === 'funded' && moneyType === 'committed') {
+				label = 'Total Committed Funds';
+			} else if (moneyFlow === 'funded' && moneyType === 'disbursed') {
+				label = 'Total Disbursed Funds';
+			} else if (moneyFlow === 'received' && moneyType === 'committed') {
+				label = 'Total Funds Committed to Receive';
+			} else if (moneyFlow === 'received' && moneyType === 'disbursed') {
+				label = 'Total Funds Received';
+			}
+			label += `<br>from <b>${startYear}</b> to <b>${endYear - 1}</b>`;
+			$('.info-value-label').html(label);
+
+			// display content
+			$('.info-container').slideDown();
 		}
 
 		// initalizes components in the map options, incl. search and display toggle
@@ -278,7 +326,7 @@
 		function initSlider() {
 			const slider = App.initSlider('.time-slider', {
 				min: App.dataStartYear,
-				max: App.dataEndYear,
+				max: App.dataEndYear + 1,
 				value: [startYear, endYear],
 				tooltip: 'hide',
 			})
@@ -341,6 +389,11 @@
 
 			// show map options
 			$('.map-options-container').show();
+		}
+
+		function initCountryInfoBox() {
+			// define info close button behavior
+			$('.info-close-button').on('click', resetMap);
 		}
 
 		init();
