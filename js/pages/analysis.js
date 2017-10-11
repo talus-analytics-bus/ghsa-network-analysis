@@ -1,5 +1,5 @@
 (() => {
-	App.initAnalysis = (countryIso, recCountryIso) => {
+	App.initAnalysis = (countryIso, typeOrRecCountryIso) => {
 		// define constants
 		let startYear = App.dataStartYear;
 		let endYear = App.dataEndYear;
@@ -10,9 +10,14 @@
 		initSearch();*/
 
 		// show correct content
-		if (countryIso && recCountryIso) {
-			$('.analysis-pair-content').slideDown();
-			App.initAnalysisPair(countryIso, recCountryIso);
+		if (countryIso && typeOrRecCountryIso) {
+			if (typeOrRecCountryIso === 'd' || typeOrRecCountryIso === 'r') {
+				$('.analysis-country-content').slideDown();
+				App.initAnalysisCountry(countryIso, typeOrRecCountryIso);
+			} else {
+				$('.analysis-pair-content').slideDown();
+				App.initAnalysisPair(countryIso, typeOrRecCountryIso);
+			}
 		} else if (countryIso) {
 			$('.analysis-country-content').slideDown();
 			App.initAnalysisCountry(countryIso);

@@ -44,13 +44,13 @@
 	@include box-shadow(1px 1px 3px rgba(0,0,0,0.2));
 
 	thead tr { background-color: #fafafa; }
-	tbody tr {
-		background-color: #fff;
-		cursor: pointer;
-	}
 	thead td { font-weight: 600; }
 	thead td:first-child {
 		padding-left: 62px;
+	}
+	tbody tr {
+		background-color: #fff;
+		cursor: pointer;
 	}
 	td:nth-child(n+2) {
 		text-align: right;

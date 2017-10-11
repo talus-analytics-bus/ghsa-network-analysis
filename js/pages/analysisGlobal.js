@@ -106,10 +106,13 @@
 			}
 			Util.sortByKey(countriesByReceived, 'total_spent', true);
 
-			// populate tables
+			// populate funding table
+			const blues = ['#08519c', '#3182bd', '#6baed6', '#bdd7e7', '#eff3ff'];
 			const dRows = d3.select(donorSelector).select('tbody').selectAll('tr')
 				.data(countriesByFunding.slice(0, numRows))
 				.enter().append('tr')
+					.style('background-color', (d, i) => blues[Math.floor(i / 2)])
+					.style('color', (d, i) => (i < 4) ? '#fff' : 'black')
 					.on('click', (d) => {
 						if (d.iso.length === 2) hasher.setHash(`analysis/${d.iso}`);
 					});
@@ -121,9 +124,16 @@
 			dRows.append('td').text(d => App.formatMoney(d.total_committed));
 			dRows.append('td').text(d => App.formatMoney(d.total_spent));
 
+			// populate recipient table
+			const oranges = ['#993404', '#d95f0e', '#fe9929', '#fed98e', '#ffffd4'];
 			const rRows = d3.select(recSelector).select('tbody').selectAll('tr')
 				.data(countriesByReceived.slice(0, numRows))
-				.enter().append('tr');
+				.enter().append('tr')
+					.style('background-color', (d, i) => oranges[Math.floor(i / 2)])
+					.style('color', (d, i) => (i < 4) ? '#fff' : 'black')
+					.on('click', (d) => {
+						if (d.iso.length === 2) hasher.setHash(`analysis/${d.iso}`);
+					});
 			rRows.append('td').html((d) => {
 				const country = App.countries.find(c => c.ISO2 === d.iso);
 				const flagHtml = country ? App.getFlagHtml(d.iso) : '';
@@ -232,7 +242,7 @@
 			}
 
 			// build the charts
-			App.buildChordDiagram(selector, chordData);
+			App.buildNetworkMap(selector, chordData);
 		}
 
 		init();

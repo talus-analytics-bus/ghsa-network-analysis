@@ -21,8 +21,8 @@ const Routing = {};
 		crossroads.addRoute('/analysis/{iso}', (iso) => {
 			loadPage('analysis', App.initAnalysis, iso);
 		});
-		crossroads.addRoute('/analysis/{fundIso}/{recIso}', (fundIso, recIso) => {
-			loadPage('analysis', App.initAnalysis, fundIso, recIso);
+		crossroads.addRoute('/analysis/{fundIso}/{typeOrRecIso}', (fundIso, typeOrRecIso) => {
+			loadPage('analysis', App.initAnalysis, fundIso, typeOrRecIso);
 		});
 		crossroads.addRoute('/submit', () => {
 			loadPage('submit', App.initSubmit);

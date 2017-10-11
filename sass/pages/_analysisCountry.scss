@@ -1,9 +1,13 @@
 .analysis-country-content {
+	.country-funds-content {
+		display: none;
+	}
 	.funds-table tr {
 		cursor: pointer;
 	}
 }
 .country-summary-content {
+	display: none;
 	margin-top: 30px;
 	text-align: center;
 
@@ -18,5 +22,6 @@
 	}
 }
 .circle-pack-container {
-	margin-top: 20px;
+	margin-top: 30px;
+	text-align: center;
 }

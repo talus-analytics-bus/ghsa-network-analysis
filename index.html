@@ -225,10 +225,16 @@
 					<div class="col-sm-6">
 						<div class="country-summary-label">Total Donated</div>
 						<div class="country-funded-value country-summary-value"></div>
+						<div>
+							<div class="show-donor-btn btn btn-default">Show Donor Profile</div>
+						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="country-summary-label">Total Received</div>
 						<div class="country-received-value country-summary-value"></div>
+						<div>
+							<div class="show-recipient-btn btn btn-default">Show Recipient Profile</div>
+						</div>
 					</div>
 				</div>
 				<div class="country-funds-content">
@@ -251,21 +257,10 @@
 						</div>
 					</div>
 				</div>
-				<div class="circle-pack-container row">
-					<div class="col-md-6 col-sm-12">
-						<h3>Countries Donated To</h3>
-						<div class="country-funded-description description">
-							The plot below displays the countries this country has funded.
-						</div>
-						<div class="country-funded-container circle-pack-container"></div>
-					</div>
-					<div class="col-md-6 col-sm-12">
-						<h3>Countries Received From</h3>
-						<div class="country-received-description description">
-							The plot below displays the countries this country has received money from.
-						</div>
-						<div class="country-received-container circle-pack-container"></div>
-					</div>
+				<div class="circle-pack-container">
+					<h3 class="circle-pack-title"></h3>
+					<div class="circle-pack-description description"></div>
+					<div class="circle-pack-container"></div>
 				</div>
 			</div>
 			<div class="analysis-pair-content analysis-content">
@@ -438,10 +433,11 @@
 	<script src="js/utility.js"></script>
 	<script src="js/routing.js"></script>
 	<script src="js/app.js"></script>
-	<script src="js/components/charts.js"></script>
+	<script src="js/components/circlePack.js"></script>
 	<script src="js/components/countryInfoBox.js"></script>
 	<script src="js/components/filters.js"></script>
 	<script src="js/components/map.js"></script>
+	<script src="js/components/networkMap.js"></script>
 	<script src="js/components/search.js"></script>
 	<script src="js/components/slider.js"></script>
 	<script src="js/pages/analysis.js"></script>

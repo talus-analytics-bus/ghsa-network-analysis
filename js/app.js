@@ -6,6 +6,10 @@ const App = {};
 		App.dataStartYear = 2014;
 		App.dataEndYear = 2017;
 
+		// colors
+		App.fundColor = '#084594';
+		App.receiveColor = '#8c2d04';
+
 		// define global variables used throughout
 		App.geoData = null;  // geographic data of the world
 		App.countries = [];  // an array of all countries and their properties

@@ -6,18 +6,18 @@
 	let currentMoneyType;  // the type of money flow for the country chosen (donated, received)
 	let currentPayments;  // an array of all payments corresponding to the country chosen
 
-	App.initAnalysisCountry = (iso) => {
+	App.initAnalysisCountry = (iso, moneyType) => {
 		// define content in container
 		const content = d3.select('.analysis-country-content');
 		const $content = $('.analysis-country-content');
 
 		// find all payments funded or received by this country
 		let allPayments = [];
-		if (App.fundingLookup[iso]) allPayments = App.fundingLookup[iso].slice(0);
-		if (App.recipientLookup[iso]) {
-			allPayments = allPayments.concat(App.recipientLookup[iso].filter((p) => {
-				return p.donor_country !== iso;
-			}));
+		if (moneyType === 'd' && App.fundingLookup[iso]) {
+			allPayments = App.fundingLookup[iso].slice(0);
+		}
+		if (moneyType === 'r' && App.recipientLookup[iso]) {
+			allPayments = App.recipientLookup[iso].slice(0);
 		}
 
 		// initializes the whole page
@@ -30,25 +30,48 @@
 			$content.find('.analysis-country-title')
 				.html(`${flagHtml} ${country.NAME} ${flagHtml}`);
 
+			if (moneyType) initDonorOrRecipientProfile();
+			else initBasicProfile();
+		}
+
+		function initBasicProfile() {
 			// fill summary values
 			const totalFunded = App.getTotalFunded(iso);
 			const totalReceived = App.getTotalReceived(iso);
 			$content.find('.country-funded-value').text(App.formatMoney(totalFunded));
 			$content.find('.country-received-value').text(App.formatMoney(totalReceived));
 
-			// define info table tab behavior
+			// button behavior for getting to donor and recipient profile
+			$('.show-donor-btn').click(() => hasher.setHash(`analysis/${iso}/d`));
+			$('.show-recipient-btn').click(() => hasher.setHash(`analysis/${iso}/r`));
+
+			// display content
+			$('.country-summary-content').slideDown();
+		}
+
+		function initDonorOrRecipientProfile() {
+			initInfoTabs();
+			updateInfoTab();
+
+			// fill out title and description for circle pack; draw circle pack
+			if (moneyType === 'd') {
+				drawDonorCirclePack();
+			} else if (moneyType === 'r') {
+				drawRecipientCirclePack();
+			}
+
+			// display content
+			$('.country-funds-content').slideDown();
+			updateInfoTable();
+		}
+
+		// define info table tab behavior
+		function initInfoTabs() {
 			$('.funds-tab-container .btn').on('click', function changeTab() {
 				currentInfoTab = $(this).attr('tab');
 				updateInfoTab();
 				updateInfoTable();
 			});
-
-			// fill table content
-			updateInfoTab();
-			updateInfoTable();
-
-			// draw charts
-			drawCirclePacks();
 		}
 		
 		// update the content shwon based on tab chosen
@@ -199,8 +222,14 @@
 		};
 
 		// draws circle pack charts
-		function drawCirclePacks() {
+		function drawDonorCirclePack() {
+			$('.circle-pack-title').text('Countries Donated To');
+
 			if (App.fundingLookup[iso]) {
+				$('.circle-pack-description').text('The plot below displays ' +
+					'the countries this country has funded.');
+
+				// get data
 				const fundedData = [];
 				const fundedByCountry = {};
 				App.fundingLookup[iso].forEach((p) => {
@@ -221,17 +250,25 @@
 						fundedData.push(cCopy);
 					}
 				});
-				App.buildCirclePack('.country-funded-container', fundedData, {
+				App.buildCirclePack('.circle-pack-container', fundedData, {
 					tooltipLabel: 'Total Funded',
 					colors: ['#c6dbef', '#084594'],
 					onClick: iso => hasher.setHash(`analysis/${iso}`),
 				});
 			} else {
-				d3.select('.country-funded-description')
+				d3.select('.circle-pack-description')
 					.html('<i>There are no data for countries funded by this country.</i>');
 			}
+		}
+
+		function drawRecipientCirclePack() {
+			$('.circle-pack-title').text('Countries Received From');
 
 			if (App.recipientLookup[iso]) {
+				$('.circle-pack-description').text('The plot below displays ' +
+					'the countries this country has received money from.');
+
+				// get data
 				const receivedData = [];
 				const receivedByCountry = {};
 				App.recipientLookup[iso].forEach((p) => {
@@ -252,13 +289,13 @@
 						receivedData.push(cCopy);
 					}
 				});
-				App.buildCirclePack('.country-received-container', receivedData, {
+				App.buildCirclePack('.circle-pack-container', receivedData, {
 					tooltipLabel: 'Total Received',
 					colors: ['#feedde', '#8c2d04'],
 					onClick: iso => hasher.setHash(`analysis/${iso}`),
 				});
 			} else {
-				d3.select('.country-received-description')
+				d3.select('.circle-pack-description')
 					.html('<i>There are no data for funds received by this country.</i>');
 			}
 		}
