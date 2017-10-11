@@ -1,9 +1,16 @@
 .analysis-country-content {
-	.country-funds-content {
-		display: none;
-	}
-	.funds-table tr {
+	.analysis-country-title {
+		text-align: center;
 		cursor: pointer;
+	}
+	.country-summary-label {
+		font-weight: 600;
+		font-size: 1.2em;
+	}
+	.country-summary-value {
+		margin-top: 5px;
+		font-family: 'Raleway', sans-serif;
+		font-size: 2.4em;
 	}
 }
 .country-summary-content {
@@ -23,29 +30,32 @@
 		vertical-align: top;
 		text-align: center;
 	}
-	.country-summary-label {
-		font-weight: 600;
-		font-size: 1.2em;
-	}
-	.country-summary-value {
-		margin-top: 5px;
-		font-family: 'Raleway', sans-serif;
-		font-size: 2.4em;
-	}
 	.show-donor-btn,
 	.show-recipient-btn {
 		margin-top: 15px;
 	}
 }
 .country-details {
-	.country-details-row {
-
-	}
 	.country-details-row > span:first-child {
 		font-weight: 600;
 	}
 }
-.circle-pack-container {
-	margin-top: 30px;
-	text-align: center;
+.country-flow-content {
+	display: none;
+	position: relative;
+
+	.country-flow-summary {
+		padding: 20px 30px;
+		border-bottom: $light-border;
+		margin-bottom: 30px;
+	}
+	.show-table-btn {
+		position: absolute;
+		top: 50px;
+		right: 30px;
+	}
+	.circle-pack-content {
+		margin-top: 30px;
+		text-align: center;
+	}
 }

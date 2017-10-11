@@ -224,27 +224,32 @@
 					</div>
 				</div>
 			</div>
+		</div>
+	</script>
+
+	<script id="analysis-country-template" type="text/x-handlebars-template">
+		<div class="analysis-container container">
 			<div class="analysis-country-content analysis-content">
-				<h3 class="analysis-country-title center"></h3>
-				<!--<div class="country-details">
-					<div class="country-details-row">
-						<span>Region:</span>
-						<span class="country-region"></span>
-					</div>
-					<div class="country-details-row">
-						<span>Subregion:</span>
-						<span class="country-subregion"></span>
-					</div>
-					<div class="country-details-row">
-						<span>Intermediate Region:</span>
-						<span class="country-intermediate"></span>
-					</div>
-					<div class="country-details-row">
-						<span>Population:</span>
-						<span class="country-population"></span>
-					</div>
-				</div>-->
+				<h3 class="analysis-country-title"></h3>
 				<div class="country-summary-content row">
+					<!--<div class="country-details">
+						<div class="country-details-row">
+							<span>Region:</span>
+							<span class="country-region"></span>
+						</div>
+						<div class="country-details-row">
+							<span>Subregion:</span>
+							<span class="country-subregion"></span>
+						</div>
+						<div class="country-details-row">
+							<span>Intermediate Region:</span>
+							<span class="country-intermediate"></span>
+						</div>
+						<div class="country-details-row">
+							<span>Population:</span>
+							<span class="country-population"></span>
+						</div>
+					</div>-->
 					<div class="donor-column col-sm-6">
 						<div class="donor-squares squares-chart"></div>
 						<div class="summary-value-box">
@@ -266,6 +271,33 @@
 						<div class="recipient-squares squares-chart"></div>
 					</div>
 				</div>
+				<div class="country-flow-content">
+					<div class="country-flow-summary">
+						<div class="country-summary-label"></div>
+						<div class="country-summary-value"></div>						
+					</div>
+					<div class="show-table-btn btn btn-default">Show All Funds</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="circle-pack-container">
+								<h3 class="circle-pack-title"></h3>
+								<div class="circle-pack-description description"></div>
+								<div class="circle-pack-content"></div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="category-chart-container"></div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script id="analysis-table-template" type="text/x-handlebars-template">
+		<div class="analysis-container container">
+			<div class="analysis-table-content">
+				<h3 class="analysis-country-title"></h3>
+				<div class="back-button btn btn-default">Back to Country Summary</div>
 				<div class="country-funds-content">
 					<div class="funds-tab-container">
 						<div class="btn-group">
@@ -286,12 +318,12 @@
 						</div>
 					</div>
 				</div>
-				<div class="circle-pack-container">
-					<h3 class="circle-pack-title"></h3>
-					<div class="circle-pack-description description"></div>
-					<div class="circle-pack-container"></div>
-				</div>
 			</div>
+		</div>
+	</script>
+
+	<script id="analysis-pair-template" type="text/x-handlebars-template">
+		<div class="analysis-container container">
 			<div class="analysis-pair-content analysis-content">
 				<h3 class="analysis-country-title center"></h3>
 				<div class="country-funds-content">
@@ -471,8 +503,8 @@
 	<script src="js/components/valueSquares.js"></script>
 	<script src="js/pages/analysis.js"></script>
 	<script src="js/pages/analysisCountry.js"></script>
-	<script src="js/pages/analysisGlobal.js"></script>
 	<script src="js/pages/analysisPair.js"></script>
+	<script src="js/pages/analysisTable.js"></script>
 	<script src="js/pages/home.js"></script>
 	<script src="js/pages/settings.js"></script>
 	<script src="js/pages/submit.js"></script>
