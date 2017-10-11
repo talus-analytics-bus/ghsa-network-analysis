@@ -72,8 +72,14 @@
 		}
 
 		// gets the money type being displayed (donor vs recipient)
+		function getMoneyFlowType() {
+			return $('.money-flow-type-filter input:checked').attr('ind');
+		}
+
 		function getMoneyType() {
-			return $('.money-type-filter input:checked').attr('ind');
+			const moneyType = $('.money-type-filter input:checked').attr('ind');
+			if (moneyType === 'committed') return 'total_committed';
+			return 'total_spent';
 		}
 
 		// returns color scale based on map settings
@@ -83,7 +89,7 @@
 
 		// gets the lookup object currently being used
 		function getDataLookup() {
-			if (getMoneyType() === 'received') return App.recipientLookup;
+			if (getMoneyFlowType() === 'received') return App.recipientLookup;
 			return App.fundingLookup;
 		}
 
@@ -102,6 +108,7 @@
 		// updates the country to value data map based on user settings
 		function updateDataMaps() {
 			// get lookup (has all data)
+			const moneyFlow = getMoneyFlowType();
 			const moneyType = getMoneyType();
 			const dataLookup = getDataLookup();
 
@@ -121,7 +128,7 @@
 						const p = payments[i];
 						//if (!App.passesCategoryFilter(p.project_function, functions)) continue;
 						// TODO take year range into account
-						totalValue += p.total_spent || 0;
+						totalValue += p[moneyType] || 0;
 					}
 
 					// set in node map
@@ -132,7 +139,7 @@
 
 		// updates map colors
 		function updateMap() {
-			const moneyType = getMoneyType();
+			const moneyFlow = getMoneyFlowType();
 
 			// get color scale and set domain
 			const nodeColorScale = getColorScale();
@@ -162,7 +169,7 @@
 						.text(App.formatMoney(d.value));
 					container.append('div')
 						.attr('class', 'tooltip-main-value-label')
-						.text(moneyType === 'funded' ? 'Donated' : 'Received');
+						.text(moneyFlow === 'funded' ? 'Donated' : 'Received');
 
 					$(this).tooltipster('content', container.html());
 				});
@@ -211,7 +218,7 @@
 				});
 
 			// update legend title
-			let titleText = getMoneyType() === 'funded' ?
+			let titleText = getMoneyFlowType() === 'funded' ?
 				'Funds Donated' : 'Funds Received';
 			titleText += ` (in ${App.currencyIso})`;
 			const legendTitle = legend.selectAll('.legend-title')
@@ -229,11 +236,11 @@
 		// displays detailed country information
 		function displayCountryInfo() {
 			const country = activeCountry.datum().properties;
-			const moneyType = getMoneyType();
+			const moneyFlow = getMoneyFlowType();
 			const dataLookup = getDataLookup();
 			const payments = dataLookup[country.ISO2];
 
-			App.updateCountryInfoBox(country, moneyType, payments);
+			App.updateCountryInfoBox(country, moneyFlow, payments);
 		}
 
 		// initalizes components in the map options, incl. search and display toggle
@@ -309,20 +316,28 @@
 			});
 
 			// attach change behavior
-			$('.money-type-filter .radio-option').click(() => {
-				const moneyType = getMoneyType();
-
+			$('.money-flow-type-filter .radio-option').click(() => {
 				// change button title in country info box
+				const moneyFlow = getMoneyFlowType();
 				$('.info-tab-container .btn[tab="country"]')
-					.text(moneyType === 'received' ? 'By Donor' : 'By Recipient');
+					.text(moneyFlow === 'received' ? 'By Donor' : 'By Recipient');
 
-				// update map
 				updateAll();
 			});
+			$('.money-type-filter .radio-option').click(updateAll);
 			$('.links-filter .radio-option').click(() => {
 				$('.country-link').toggle();
 			});
 			$('.map-options-container select').on('change', updateAll);
+
+			// add info tooltips
+			$('.committed-info-img').tooltipster({
+				content: 'The <b>amount committed</b> refers to the amount of money committed.',
+			});
+			$('.disbursed-info-img').tooltipster({
+				content: 'The <b>amount disbursed</b> refers to the amount of money the ' +
+					'recipient country has received.',
+			});
 
 			// show map options
 			$('.map-options-container').show();
