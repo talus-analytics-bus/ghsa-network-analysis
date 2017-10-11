@@ -112,7 +112,10 @@ const App = {};
 
 
 	/* ------------------ Global Functions ------------------- */
-	App.siFormat = num => d3.format(',.3s')(num).replace('G', 'B');
+	App.siFormat = (num) => {
+		if (!num) return '0';
+		return d3.format(',.3s')(num).replace('G', 'B');
+	}
 	App.formatMoneyShort = (usdValue) => {
 		const multiplier = App.currencies[App.currencyIso].exchange_rates
 			.find(er => er.convert_from === 'USD')

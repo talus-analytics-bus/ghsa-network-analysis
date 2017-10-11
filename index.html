@@ -273,10 +273,13 @@
 				</div>
 				<div class="country-flow-content">
 					<div class="country-flow-summary">
-						<div class="country-summary-label"></div>
-						<div class="country-summary-value"></div>						
+						<div class="country-summary-text">
+							<div class="country-summary-label"></div>
+							<div class="country-summary-value"></div>						
+							<div class="show-table-btn btn btn-default">Show Fund Details</div>
+						</div>
+						<div class="time-chart-container"></div>
 					</div>
-					<div class="show-table-btn btn btn-default">Show All Funds</div>
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="circle-pack-container">
@@ -287,6 +290,11 @@
 						</div>
 						<div class="col-sm-6">
 							<h3 class="category-chart-title">Funds by Category</h3>
+							<div class="description">
+								The chart below shows the amount of money disbursed by this country by core capacity. Colors represent the region of the world of the recipient.
+								<br><br>
+								<i>Hover over a core capacity to see its full name.</i>
+							</div>
 							<div class="category-chart-container"></div>
 						</div>
 				</div>
@@ -502,6 +510,7 @@
 	<script src="js/components/networkMap.js"></script>
 	<script src="js/components/search.js"></script>
 	<script src="js/components/slider.js"></script>
+	<script src="js/components/timeChart.js"></script>
 	<script src="js/components/valueSquares.js"></script>
 	<script src="js/pages/analysis.js"></script>
 	<script src="js/pages/analysisCountry.js"></script>

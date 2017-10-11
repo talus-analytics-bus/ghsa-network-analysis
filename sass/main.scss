@@ -21,10 +21,12 @@
 @import 'components/text';
 @import 'components/tooltips';
 
+@import 'charts/categoryChart';
 @import 'charts/charts';
 @import 'charts/chord';
 @import 'charts/circlePack';
 @import 'charts/scatterplot';
+@import 'charts/timeChart';
 
 @import 'pages/analysis';
 @import 'pages/analysisCountry';

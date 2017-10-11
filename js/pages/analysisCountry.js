@@ -70,20 +70,83 @@
 			// fill out title and description for circle pack; draw circle pack
 			if (moneyType === 'd') {
 				const totalFunded = App.getTotalFunded(iso);
-				$('.country-summary-label').text('Total Funded');
+				$('.country-summary-label').text(`Total Funded from ${App.dataStartYear}` +
+					` to ${App.dataEndYear}`);
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
 				drawDonorCirclePack();
 				drawDonorCategoryChart();
+				drawDonorTimeChart();
 			} else if (moneyType === 'r') {
 				const totalReceived = App.getTotalReceived(iso);
-				$('.country-summary-label').text('Total Received');
+				$('.country-summary-label').text(`Total Received from ${App.dataStartYear}` +
+					` to ${App.dataEndYear}`);
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
 				drawRecipientCirclePack();
 				drawRecipientCategoryChart();
+				drawRecipientTimeChart();
 			}
 
 			// display content
 			$('.country-flow-content').slideDown();
+		}
+
+		function drawDonorTimeChart() {
+			// get data
+			if (App.fundingLookup[iso]) {
+				const timeData = [];
+				const fundsByYear = {};
+				for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
+					fundsByYear[i] = {
+						year: i,
+						total_committed: 0,
+						total_spent: 0,
+					};
+				}
+				App.fundingLookup[iso].forEach((p) => {
+					for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
+						fundsByYear[i].total_committed += p.committed_by_year[i];
+						fundsByYear[i].total_spent += p.spent_by_year[i];
+					}
+				});
+				for (let y in fundsByYear) {
+					timeData.push(fundsByYear[y]);
+				}
+				App.buildTimeChart('.time-chart-container', timeData, {
+					color: App.fundColor,
+				});
+			} else {
+
+			}
+		}
+
+		function drawRecipientTimeChart() {
+			// get data
+			if (App.recipientLookup[iso]) {
+				const timeData = [];
+				const fundsByYear = {};
+				for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
+					fundsByYear[i] = {
+						year: i,
+						total_committed: 0,
+						total_spent: 0,
+					};
+				}
+				App.recipientLookup[iso].forEach((p) => {
+					for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
+						fundsByYear[i].total_committed += p.committed_by_year[i];
+						fundsByYear[i].total_spent += p.spent_by_year[i];
+					}
+				});
+				for (let y in fundsByYear) {
+					timeData.push(fundsByYear[y]);
+				}
+				App.buildTimeChart('.time-chart-container', timeData, {
+					color: App.receiveColor,
+				});
+			} else {
+
+			}
+
 		}
 
 		function drawDonorCategoryChart() {

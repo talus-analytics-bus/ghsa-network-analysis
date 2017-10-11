@@ -19,11 +19,12 @@
 		});
 
 		// start building the chart
-		const margin = { top: 50, right: 20, bottom: 50, left: 40 };
+		const margin = { top: 70, right: 80, bottom: 80, left: 40 };
 		const width = 400;
-		const height = 400;
+		const height = 450;
 
 		const chart = d3.select(selector).append('svg')
+			.classed('category-chart', true)
 			.attr('width', width + margin.left + margin.right)
 			.attr('height', height + margin.top + margin.bottom)
 			.append('g')
@@ -31,15 +32,15 @@
 
 		const maxValue = d3.max(data, d => d.total_spent);
 		const x = d3.scaleLinear()
-			.domain([0, maxValue])
+			.domain([0, 1.1 * maxValue])
 			.range([0, width]);
 		const y = d3.scaleBand()
-			.padding(0.2)
+			.padding(0.25)
 			.domain(capacities)
 			.range([0, height]);
 		const colorScale = d3.scaleOrdinal()
 			.domain(regions)
-			.range(d3.schemeCategory10);
+			.range(['#810f7c', '#8856a7', '#8c96c6', '#b3cde3', '#edf8fb']);
 
 		const xAxis = d3.axisTop()
 			.ticks(5)
@@ -47,13 +48,6 @@
 			.scale(x);
 		const yAxis = d3.axisLeft()
 			.scale(y);
-
-		chart.append('g')
-			.attr('class', 'x axis')
-			.call(xAxis);
-		chart.append('g')
-			.attr('class', 'y axis')
-			.call(yAxis);
 
 		const barGroups = chart.selectAll('.bar-group')
 			.data(data)
@@ -66,6 +60,62 @@
 				.attr('x', d => x(d.value0))
 				.attr('width', d => x(d.value1) - x(d.value0))
 				.attr('height', y.bandwidth())
-				.style('fill', d => colorScale(d.name));
+				.style('fill', d => colorScale(d.name))
+				.each(function addTooltip(d) {
+					$(this).tooltipster({
+						content: `<b>Region:</b> ${d.name}` +
+							`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.total_committed)}` +
+							`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.total_spent)}`,
+					});
+				});
+		barGroups.append('text')
+			.attr('class', 'bar-label')
+			.attr('x', d => x(d.total_spent) + 5)
+			.attr('y', y.bandwidth() / 2)
+			.attr('dy', '.35em')
+			.text(d => App.formatMoney(d.total_spent));
+
+		// add axes
+		chart.append('g')
+			.attr('class', 'x axis')
+			.call(xAxis);
+		chart.append('g')
+			.attr('class', 'y axis')
+			.call(yAxis);
+
+		// attach tooltips to y-axis labels
+		d3.selectAll('.y.axis .tick text').each(function attachTooltip(d) {
+			const capName = App.capacities.find(c => c.id === d).name;
+			$(this).tooltipster({ content: `<b>${capName}</b>` });
+		});
+
+		// add axes labels
+		chart.append('text')
+			.attr('class', 'axis-label')
+			.attr('x', width / 2)
+			.attr('y', -35)
+			.text('Total Disbursed');
+
+		// add legend
+		const barWidth = 60;
+		const barHeight = 12;
+		const boxWidth = 80;
+		const legend = chart.append('g')
+			.attr('transform', `translate(30, ${height + 20})`);
+		const legendGroups = legend.selectAll('g')
+			.data(regions)
+			.enter().append('g')
+				.attr('transform', (d, i) => `translate(${boxWidth * i}, 0)`);
+		legendGroups.append('rect')
+			.attr('x', (boxWidth - barWidth) / 2)
+			.attr('width', barWidth)
+			.attr('height', barHeight)
+			.style('fill', d => colorScale(d));
+		legendGroups.append('text')
+			.attr('class', 'legend-label')
+			.attr('x', boxWidth / 2)
+			.attr('y', barHeight + 10)
+			.attr('dy', '.35em')
+			.text(d => d);
 	};
 })();

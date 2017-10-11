@@ -43,16 +43,21 @@
 .country-flow-content {
 	display: none;
 	position: relative;
+	margin-top: 10px;
 
 	.country-flow-summary {
 		padding: 20px 30px;
 		border-bottom: $light-border;
 		margin-bottom: 20px;
 	}
+	.country-summary-text {
+		float: left;
+	}
+	.time-chart-container {
+		margin-left: 300px;
+	}
 	.show-table-btn {
-		position: absolute;
-		top: 50px;
-		right: 30px;
+		margin-top: 10px;
 	}
 	.circle-pack-content {
 		margin-top: 30px;
