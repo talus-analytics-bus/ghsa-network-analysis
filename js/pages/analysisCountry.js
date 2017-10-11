@@ -7,6 +7,9 @@
 	let currentPayments;  // an array of all payments corresponding to the country chosen
 
 	App.initAnalysisCountry = (iso, moneyType) => {
+		// get country information
+		const country = App.countries.find(c => c.ISO2 === iso);
+
 		// define content in container
 		const content = d3.select('.analysis-country-content');
 		const $content = $('.analysis-country-content');
@@ -22,8 +25,6 @@
 
 		// initializes the whole page
 		function init() {
-			// get country information
-			const country = App.countries.find(c => c.ISO2 === iso);
 
 			// fill title
 			const flagHtml = App.getFlagHtml(iso);
@@ -35,6 +36,16 @@
 		}
 
 		function initBasicProfile() {
+			// fill details
+			$('.country-region').text(country.regionName);
+			$('.country-subregion').text(country.subRegionName);
+			if (country.intermediateRegionName) {
+				$('.country-intermediate').text(country.intermediateRegionName);
+			} else {
+				$('.country-intermediate').closest('.country-details-row').hide();
+			}
+			$('.country-population').text(d3.format(',')(country.POP2005));
+
 			// fill summary values
 			const totalFunded = App.getTotalFunded(iso);
 			const totalReceived = App.getTotalReceived(iso);
@@ -44,6 +55,24 @@
 			// button behavior for getting to donor and recipient profile
 			$('.show-donor-btn').click(() => hasher.setHash(`analysis/${iso}/d`));
 			$('.show-recipient-btn').click(() => hasher.setHash(`analysis/${iso}/r`));
+
+			// draw charts
+			let maxFunded = 0;
+			let maxReceived = 0;
+			for (let iso in App.fundingLookup) {
+				const sum = d3.sum(App.fundingLookup[iso], d => d.total_spent);
+				if (sum > maxFunded) maxFunded = sum;
+			}
+			for (let iso in App.recipientLookup) {
+				const sum = d3.sum(App.recipientLookup[iso], d => d.total_spent);
+				if (sum > maxReceived) maxReceived = sum;
+			}
+			const relPercFunded = totalFunded / maxFunded;
+			const relPercReceived = totalReceived / maxReceived;
+			App.drawValueSquares('.donor-squares', relPercFunded, App.fundColor, {
+				right: true,
+			});
+			App.drawValueSquares('.recipient-squares', relPercReceived, App.receiveColor);
 
 			// display content
 			$('.country-summary-content').slideDown();

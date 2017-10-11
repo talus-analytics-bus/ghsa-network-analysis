@@ -8,9 +8,21 @@
 }
 .country-summary-content {
 	display: none;
-	margin-top: 30px;
-	text-align: center;
+	margin-top: 40px;
 
+	.donor-column { text-align: right; }
+	.squares-chart {
+		display: inline-block;
+		vertical-align: top;
+		margin-top: 5px;
+	}
+	.donor-squares { margin-right: 35px; }
+	.recipient-squares { margin-left: 35px; }
+	.summary-value-box {
+		display: inline-block;
+		vertical-align: top;
+		text-align: center;
+	}
 	.country-summary-label {
 		font-weight: 600;
 		font-size: 1.2em;
@@ -19,6 +31,18 @@
 		margin-top: 5px;
 		font-family: 'Raleway', sans-serif;
 		font-size: 2.4em;
+	}
+	.show-donor-btn,
+	.show-recipient-btn {
+		margin-top: 15px;
+	}
+}
+.country-details {
+	.country-details-row {
+
+	}
+	.country-details-row > span:first-child {
+		font-weight: 600;
 	}
 }
 .circle-pack-container {
