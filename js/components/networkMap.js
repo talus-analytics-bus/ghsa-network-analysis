@@ -11,14 +11,14 @@
 		const countryMapByName = d3.map();
 
 		// establish chart constants
-		const margin = { top: 60, right: 60, bottom: 100, left: 60 };
+		const margin = { top: 60, right: 60, bottom: 120, left: 60 };
 		const radius = param.radius || 300;
 		const regionPadding = 0.02;
 		const subregionPadding = 0.01;
 
 		// start building the chart
 		const chartContainer = d3.select(selector).append('svg')
-			.classed('chord-chart', true)
+			.classed('network-map-chart', true)
 			.attr('width', 2 * radius + margin.left + margin.right)
 			.attr('height', 2 * radius + margin.top + margin.bottom)
 		const chart = chartContainer.append('g')
@@ -53,18 +53,18 @@
 		const colorScale = d3.scaleLinear()
 			.range([fundColor, receiveColor]);
 		const regionArc = d3.arc()
-			.innerRadius(radius + 22)
-			.outerRadius(radius + 22 + 12)
+			.innerRadius(radius + 28)
+			.outerRadius(radius + 28 + 12)
 			.startAngle(d => d.theta0)
 			.endAngle(d => d.theta1);
 		const subregionArc = d3.arc()
-			.innerRadius(radius + 10)
-			.outerRadius(radius + 10 + 10)
+			.innerRadius(radius + 14)
+			.outerRadius(radius + 14 + 12)
 			.startAngle(d => d.theta0)
 			.endAngle(d => d.theta1);
 		const countryArc = d3.arc()
 			.innerRadius(radius)
-			.outerRadius(radius + 8)
+			.outerRadius(radius + 12)
 			.startAngle(d => d.theta0)
 			.endAngle(d => d.theta1);
 
@@ -79,7 +79,7 @@
 		const barWidth = 450;
 		const barHeight = 14;
 		const legend = chart.append('g')
-			.attr('transform', `translate(${-barWidth / 2}, ${radius + 60})`);
+			.attr('transform', `translate(${-barWidth / 2}, ${radius + 80})`);
 		legend.append('rect')
 			.attr('width', barWidth)
 			.attr('height', barHeight)
@@ -110,7 +110,7 @@
 				.data(data);
 			rArcs.exit().remove();
 			rArcs.enter().append('path')
-				.attr('class', 'arc')
+				.attr('class', 'region-arc arc')
 				.merge(rArcs)
 					.transition()
 					.style('fill', getFundReceiveColor)
@@ -121,43 +121,61 @@
 				.data(subregions);
 			sArcs.exit().remove();
 			sArcs.enter().append('path')
-				.attr('class', 'arc')
+				.attr('class', 'subregion-arc arc')
 				.each(function addTooltip(d) {
-					$(this).tooltipster({
-						plugins: ['follower'],
-						content: d.name,
-					});
+					$(this).tooltipster({ plugins: ['follower'] });
 				})
 				.merge(sArcs)
+					.each(function updateTooltip(d) {
+						let contentStr = `<div class="nm-tooltip-title">${d.name}</div>`;
+						if (d.totalFunded) {
+							contentStr += `<div><b>Disbursed Funds:</b> ${App.formatMoney(d.totalFunded)}</div>`;
+						}
+						if (d.totalReceived) {
+							contentStr += `<div><b>Received Funds:</b> ${App.formatMoney(d.totalReceived)}</div>`;
+						}
+						$(this).tooltipster('content', contentStr);
+					})
 					.transition()
 					.style('fill', getFundReceiveColor)
 					.attr('d', subregionArc);
 
 			// create country arcs
-			const cArcs = countryArcG.selectAll('.arc')
+			let cArcs = countryArcG.selectAll('.arc')
 				.data(countries);
 			cArcs.exit().remove();
-			cArcs.enter().append('path')
-				.attr('class', 'arc')
+			cArcs = cArcs.enter().append('path')
+				.attr('class', 'country-arc arc')
 				.each(function addTooltip(d) {
-					$(this).tooltipster({
-						plugins: ['follower'],
-						content: d.name,
-					});
+					$(this).tooltipster({ plugins: ['follower'] });
 				})
-				.merge(cArcs)
-					.on('mouseover', (d) => {
-						d3.selectAll('.link')
-							.filter(l => l.donor === d.name || l.recipient === d.name)
-							.classed('active', true);
-					})
-					.on('mouseout', (d) => {
-						d3.selectAll('.link').classed('active', false);
-					})
-					.transition()
-						.style('fill', getFundReceiveColor)
-						.style('stroke', '#fff')
-						.attr('d', countryArc);
+				.merge(cArcs);
+			cArcs
+				.on('mouseover', (d) => {
+					d3.selectAll('.link')
+						.filter(l => l.donor === d.name || l.recipient === d.name)
+						.classed('country-hover', true);
+				})
+				.on('mouseout', (d) => {
+					d3.selectAll('.link').classed('country-hover', false);
+				})
+				.each(function updateTooltip(d) {
+					let contentStr = `<div class="nm-tooltip-title">${d.name}</div>`;
+					if (d.totalFunded) {
+						contentStr += `<div><b>Disbursed Funds:</b> ${App.formatMoney(d.totalFunded)}</div>`;
+					}
+					if (d.totalReceived) {
+						contentStr += `<div><b>Received Funds:</b> ${App.formatMoney(d.totalReceived)}</div>`;
+					}
+					$(this).tooltipster('content', contentStr);
+				})
+				.transition()
+					.style('fill', getFundReceiveColor)
+					.style('stroke', '#fff')
+					.attr('d', countryArc);
+			if (param.countryClickFn) {
+				cArcs.on('click', d => param.countryClickFn(d.name));
+			}
 
 			// create region arc labels
 			const labelPaths = regionArcG.selectAll('.arc-label-path')
@@ -196,8 +214,8 @@
 				.attr('startOffset', '50%');
 			labels = newLabels.merge(labels)
 				.attr('dy', (d) => {
-					if (d.theta1 > Math.PI / 2 && d.theta0 < 5 * Math.PI / 4) return 20;
-					return -8;
+					if (d.theta1 > Math.PI / 2 && d.theta0 < 5 * Math.PI / 4) return 18;
+					return -6;
 				});
 			labels.select('textPath')
 				.attr('xlink:href', (d, i) => `#arc-path-${i}`)
@@ -211,8 +229,17 @@
 			links.exit().remove();
 			links.enter().append('path')
 				.attr('class', 'link')
+				.each(function addTooltip(d) {
+					$(this).tooltipster({ plugins: ['follower'] });
+				})
 				.merge(links)
 					.attr('d', ribbon)
+					.each(function updateTooltip(d) {
+						const contentStr = `<b>Donor:</b> ${d.donor}` +
+							`<br><b>Recipient:</b> ${d.recipient}` +
+							`<br><b>Disbursed Funds:</b> ${App.formatMoney(d.value)}`;
+						$(this).tooltipster('content', contentStr);
+					})
 					.transition().style('fill', colorScale(0));
 		}
 

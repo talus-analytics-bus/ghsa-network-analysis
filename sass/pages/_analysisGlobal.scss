@@ -25,21 +25,74 @@
 		font-style: italic;
 		font-size: 1.1em;
 	}
-	.network-map-options {
+}
+.network-right-column {
+	position: relative;
+	top: 25px;
+	margin-left: 750px;
+}
+.network-map-options {
+	border: $border;
+	padding: 10px 30px;
+	@include gradient(#fff, #f6f6f6);
+	@include box-shadow(1px 1px 3px rgba(0,0,0,0.2));
+
+	.search-container {
 		position: relative;
-		top: 25px;
-		margin-left: 750px;
-		border: $border;
-		padding: 10px 30px;
-		@include gradient(#fff, #f6f6f6);
-		@include box-shadow(1px 1px 3px rgba(0,0,0,0.2));
+		z-index: 100;
+	}
+	.slider-box {
+		margin: 25px 0 40px;
 	}
 	.filter-box {
-		margin: 40px 0;
+		margin: 25px 0 20px;
 	}
 	.slider {
 		margin-top: 5px;
 		margin-left: 15px;
+	}
+	.info-img {
+		position: relative;
+		top: -1px;
+		width: 13px;
+		height: 13px;
+		margin-left: 5px;
+	}
+}
+.network-country-info {
+	display: none;
+	position: relative;
+	margin-top: 20px;
+	border: $border;
+	padding: 10px 30px;
+	text-align: center;
+	@include gradient(#fff, #f6f6f6);
+	@include box-shadow(1px 1px 3px rgba(0,0,0,0.2));
+
+	.nci-title {
+		padding: 0 10px;
+		font-size: 1.4em;
+		font-weight: 600;
+	}
+	.nci-section {
+		margin-top: 15px;
+	}
+	.nci-value {
+		font-family: 'Raleway', sans-serif;
+		font-size: 1.8em;
+	}
+	.nci-value-label {
+		margin-top: 3px;
+	}
+	.info-close-button {
+		position: absolute;
+		top: 12.5px;
+		right: 12.5px;
+		cursor: pointer;
+		img {
+			width: 18px;
+			height: 18px;
+		}
 	}
 }
 
