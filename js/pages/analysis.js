@@ -47,6 +47,7 @@
 				enableClickableOptGroups: true,
 				numberDisplayed: 0,
 			});
+			$('.cc-select').on('change', updateNetworkMap);
 		}
 
 		// initializes slider functionality
@@ -149,7 +150,12 @@
 		}
 
 		function getTotalFunc() {
+			const ccs = $('.cc-select').val();
 			return (p) => {
+				// run through filter first
+				if (!App.passesCategoryFilter(p.core_capacities, ccs)) return 0;
+
+				// get total for years
 				let total = 0;
 				for (let i = startYear; i < endYear; i++) {
 					total += p.spent_by_year[i];
@@ -268,7 +274,15 @@
 		}
 
 		function updateNetworkMap() {
-			networkMap.update(getNetworkData());
+			const networkData = getNetworkData();
+			if (!networkData.length) {
+				$('.network-map-content').hide();
+				$('.network-map-no-content').show();
+			} else {
+				$('.network-map-content').show();
+				$('.network-map-no-content').hide();
+			}
+			networkMap.update(networkData);
 		}
 
 		init();

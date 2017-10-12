@@ -19,6 +19,12 @@
 	.network-map-content {
 		float: left;
 	}
+	.network-map-no-content {
+		display: none;
+		text-align: center;
+		font-style: italic;
+		font-size: 1.1em;
+	}
 	.network-map-options {
 		position: relative;
 		top: 25px;
