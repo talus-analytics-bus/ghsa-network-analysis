@@ -11,7 +11,7 @@
 			initSearch();
 			updateTab();
 			populateTables('.donor-table', '.recipient-table');
-			drawNetworkMap('.network-map-content');
+			const networkMap = drawNetworkMap('.network-map-content');
 		}
 
 		function initTabs() {
@@ -246,7 +246,7 @@
 			}
 
 			// build the charts
-			App.buildNetworkMap(selector, chordData);
+			return App.buildNetworkMap(selector, chordData);
 		}
 
 		init();

@@ -1,5 +1,5 @@
 (() => {
-	App.buildNetworkMap = (selector, data, param = {}) => {
+	App.buildNetworkMap = (selector, initData, param = {}) => {
 		// define colors
 		const fundColor = App.fundColor;
 		const receiveColor = App.receiveColor;
@@ -10,72 +10,13 @@
 		let funds = [];
 		const countryMapByName = d3.map();
 
-		// attach start and end angles to each of the countries/subregions/regions
-		const totalFlow = d3.sum(data, d => d.totalFlow);
-		const regionPadding = 0.02;
-		const subregionPadding = 0.01;
-		let runningTheta = 0;
-		data.forEach((region) => {
-			const rTheta = (2 * Math.PI * region.totalFlow / totalFlow) - (2 * regionPadding);
-			runningTheta += regionPadding;  // add beginning padding
-			region.theta0 = runningTheta;
-			const totalSPadding = (region.children.length - 1) * subregionPadding;
-
-			region.children.forEach((subregion, i) => {
-				subregions.push(subregion);
-
-				let sTheta = (rTheta - totalSPadding) * (subregion.totalFlow / region.totalFlow);
-				if (i > 0) runningTheta += subregionPadding;
-				subregion.theta0 = runningTheta;
-				subregion.children.forEach((country) => {
-					// set map and add country to collection
-					countryMapByName.set(country.name, country);
-					countries.push(country);
-					funds = funds.concat(country.funds);
-
-					// set angles
-					let cTheta = sTheta * (country.totalFlow / subregion.totalFlow);
-					country.theta0 = runningTheta;
-					runningTheta += cTheta;
-					country.theta1 = runningTheta;
-					country.runningTheta = country.theta0;  // used for assigning angles to funds
-				});
-				subregion.theta1 = runningTheta;
-			});
-			region.theta1 = runningTheta;
-			runningTheta += regionPadding;  // add end padding
-		});
-
-		// attach start/end angles to each fund
-		data.forEach((region) => {
-			region.children.forEach((subregion) => {
-				subregion.children.forEach((fc) => {
-					fc.funds.forEach((f) => {
-						const rc = countryMapByName.get(f.recipient);
-						let fundTheta = (fc.theta1 - fc.theta0) * (f.value / fc.totalFlow);
-						if (fundTheta < 0) fundTheta = 0;  // TODO need to fix this!
-						f.source = {
-							startAngle: fc.runningTheta,
-							endAngle: fc.runningTheta + fundTheta,
-						};
-						fc.runningTheta += fundTheta;
-
-						let recTheta = (rc.theta1 - rc.theta0) * (f.value / rc.totalFlow);
-						if (recTheta < 0) recTheta = 0;  // TODO need to fix this!
-						f.target = {
-							startAngle: rc.runningTheta,
-							endAngle: rc.runningTheta + recTheta,
-						};
-						rc.runningTheta += recTheta;
-					});
-				});
-			});
-		});
-
-		// start building the chart
+		// establish chart constants
 		const margin = { top: 60, right: 60, bottom: 100, left: 60 };
 		const radius = param.radius || 300;
+		const regionPadding = 0.02;
+		const subregionPadding = 0.01;
 
+		// start building the chart
 		const chartContainer = d3.select(selector).append('svg')
 			.classed('chord-chart', true)
 			.attr('width', 2 * radius + margin.left + margin.right)
@@ -126,106 +67,12 @@
 			.startAngle(d => d.theta0)
 			.endAngle(d => d.theta1);
 
-		// create region arcs
-		regionArcG.selectAll('.arc')
-			.data(data)
-			.enter().append('path')
-				.style('fill', getFundReceiveColor)
-				.attr('d', regionArc);
-
-		// create subregion arcs
-		subregionArcG.selectAll('.arc')
-			.data(subregions)
-			.enter().append('path')
-				.style('fill', getFundReceiveColor)
-				.attr('d', subregionArc)
-				.each(function addTooltip(d) {
-					$(this).tooltipster({
-						plugins: ['follower'],
-						content: d.name,
-					});
-				});
-
-		// create country arcs
-		countryArcG.selectAll('.arc')
-			.data(countries)
-			.enter().append('path')
-				.style('fill', getFundReceiveColor)
-				.style('stroke', '#fff')
-				.attr('d', countryArc)
-				.on('mouseover', (d) => {
-					d3.selectAll('.link')
-						.filter(l => l.donor === d.name || l.recipient === d.name)
-						.classed('active', true);
-				})
-				.on('mouseout', (d) => {
-					d3.selectAll('.link').classed('active', false);
-				})
-				.each(function addTooltip(d) {
-					$(this).tooltipster({
-						plugins: ['follower'],
-						content: d.name,
-					});
-				});	
-
-		// create region arc labels
-		regionArcG.selectAll('.arc-label-path')
-			.data(data)
-			.enter().append('path')
-				.attr('id', (d, i) => `arc-path-${i}`)
-				.attr('d', regionArc)
-				.style('fill', 'none')
-				.each(function positionLabel(d) {
-					const firstArcSection = /(^.+?)L/;
-					let newArc = firstArcSection.exec(d3.select(this).attr('d'))[1];
-					newArc = newArc.replace(/,/g , " ");
-
-					// flip if bottom half of circle
-					if (d.theta1 > Math.PI / 2 && d.theta0 < 5 * Math.PI / 4) {
-						const startLoc = /M(.*?)A/;
-						const middleLoc = /A(.*?)0 0 1/;
-						const endLoc = /0 0 1 (.*?)$/;
-						const newStart = endLoc.exec(newArc)[1];
-						const newEnd = startLoc.exec(newArc)[1];
-						const middleSec = middleLoc.exec(newArc)[1];
-						newArc = `M${newStart}A${middleSec}0 0 0 ${newEnd}`;
-					}
-
-					d3.select(this).attr('d', newArc);
-				});
-		regionArcG.selectAll('.arc-label')
-			.data(data)
-			.enter().append('text')
-				.attr('class', 'arc-label')
-				.attr('dy', (d) => {
-					if (d.theta1 > Math.PI / 2 && d.theta0 < 5 * Math.PI / 4) return 20;
-					return -8;
-				})
-				.append('textPath')
-					.attr('startOffset', '50%')
-					.attr('xlink:href', (d, i) => `#arc-path-${i}`)
-					.text(d => d.name);
-
 		// define link path
 		const ribbon = d3.ribbon()
 			.source(d => d.source)
 			.target(d => d.target)
 			.radius(radius);
 
-		// create links
-		linkG.selectAll('.link')
-			.data(funds)
-			.enter().append('path')
-				.attr('class', 'link')
-				.style('fill', colorScale(0))
-				.attr('d', ribbon);
-
-		// function for getting fund/receive color
-		function getFundReceiveColor(d) {
-			const f = d.totalFunded;
-			const r = d.totalReceived;
-			return colorScale(r / (r + f));
-		}
 
 		// add legend
 		const barWidth = 450;
@@ -250,6 +97,187 @@
 			.style('text-anchor', 'end')
 			.text('Receives More');
 
+		chart.update = (data) => {
+			addAnglesToData(data);
+			drawArcs(data);
+			drawLinks(data);
+		}
+
+		function drawArcs(data) {
+			// create region arcs
+			const rArcs = regionArcG.selectAll('.arc')
+				.data(data);
+			rArcs.exit().remove();
+			rArcs.enter().append('path')
+				.merge(rArcs)
+					.style('fill', getFundReceiveColor)
+					.attr('d', regionArc);
+
+			// create subregion arcs
+			const sArcs = subregionArcG.selectAll('.arc')
+				.data(subregions);
+			sArcs.exit().remove();
+			sArcs.enter().append('path')
+				.each(function addTooltip(d) {
+					$(this).tooltipster({
+						plugins: ['follower'],
+						content: d.name,
+					});
+				})
+				.merge(sArcs)
+					.style('fill', getFundReceiveColor)
+					.attr('d', subregionArc);
+
+			// create country arcs
+			const cArcs = countryArcG.selectAll('.arc')
+				.data(countries);
+			cArcs.exit().remove();
+			cArcs.enter().append('path')
+				.each(function addTooltip(d) {
+					$(this).tooltipster({
+						plugins: ['follower'],
+						content: d.name,
+					});
+				})
+				.merge(cArcs)			
+					.style('fill', getFundReceiveColor)
+					.style('stroke', '#fff')
+					.attr('d', countryArc)
+					.on('mouseover', (d) => {
+						d3.selectAll('.link')
+							.filter(l => l.donor === d.name || l.recipient === d.name)
+							.classed('active', true);
+					})
+					.on('mouseout', (d) => {
+						d3.selectAll('.link').classed('active', false);
+					});
+
+			// create region arc labels
+			const labelPaths = regionArcG.selectAll('.arc-label-path')
+				.data(data);
+			labelPaths.exit().remove();
+			labelPaths.enter().append('path')
+				.merge(labelPaths)
+					.attr('id', (d, i) => `arc-path-${i}`)
+					.attr('d', regionArc)
+					.style('fill', 'none')
+					.each(function positionLabel(d) {
+						const firstArcSection = /(^.+?)L/;
+						let newArc = firstArcSection.exec(d3.select(this).attr('d'))[1];
+						newArc = newArc.replace(/,/g , " ");
+
+						// flip if bottom half of circle
+						if (d.theta1 > Math.PI / 2 && d.theta0 < 5 * Math.PI / 4) {
+							const startLoc = /M(.*?)A/;
+							const middleLoc = /A(.*?)0 0 1/;
+							const endLoc = /0 0 1 (.*?)$/;
+							const newStart = endLoc.exec(newArc)[1];
+							const newEnd = startLoc.exec(newArc)[1];
+							const middleSec = middleLoc.exec(newArc)[1];
+							newArc = `M${newStart}A${middleSec}0 0 0 ${newEnd}`;
+						}
+
+						d3.select(this).attr('d', newArc);
+					});
+			let labels = regionArcG.selectAll('.arc-label')
+				.data(data);
+			labels.exit().remove();
+			const newLabels = labels.enter().append('text')
+				.attr('class', 'arc-label');
+			newLabels.append('textPath')
+				.attr('startOffset', '50%');
+			labels = newLabels.merge(labels)
+				.attr('dy', (d) => {
+					if (d.theta1 > Math.PI / 2 && d.theta0 < 5 * Math.PI / 4) return 20;
+					return -8;
+				});
+			labels.select('textPath')
+				.attr('xlink:href', (d, i) => `#arc-path-${i}`)
+				.text(d => d.name);
+		}
+
+		function drawLinks(data) {
+			// create links
+			const links = linkG.selectAll('.link')
+				.data(funds);
+			links.exit().remove();
+			links.enter().append('path')
+				.attr('class', 'link')
+				.merge(links)
+					.style('fill', colorScale(0))
+					.attr('d', ribbon);
+		}
+
+		function addAnglesToData(data) {
+			// attach start and end angles to each of the countries/subregions/regions
+			const totalFlow = d3.sum(data, d => d.totalFlow);
+			let runningTheta = 0;
+			data.forEach((region) => {
+				const rTheta = (2 * Math.PI * region.totalFlow / totalFlow) - (2 * regionPadding);
+				runningTheta += regionPadding;  // add beginning padding
+				region.theta0 = runningTheta;
+				const totalSPadding = (region.children.length - 1) * subregionPadding;
+
+				region.children.forEach((subregion, i) => {
+					subregions.push(subregion);
+
+					let sTheta = (rTheta - totalSPadding) * (subregion.totalFlow / region.totalFlow);
+					if (i > 0) runningTheta += subregionPadding;
+					subregion.theta0 = runningTheta;
+					subregion.children.forEach((country) => {
+						// set map and add country to collection
+						countryMapByName.set(country.name, country);
+						countries.push(country);
+						funds = funds.concat(country.funds);
+
+						// set angles
+						let cTheta = sTheta * (country.totalFlow / subregion.totalFlow);
+						country.theta0 = runningTheta;
+						runningTheta += cTheta;
+						country.theta1 = runningTheta;
+						country.runningTheta = country.theta0;  // used for assigning angles to funds
+					});
+					subregion.theta1 = runningTheta;
+				});
+				region.theta1 = runningTheta;
+				runningTheta += regionPadding;  // add end padding
+			});
+
+			// attach start/end angles to each fund
+			data.forEach((region) => {
+				region.children.forEach((subregion) => {
+					subregion.children.forEach((fc) => {
+						fc.funds.forEach((f) => {
+							const rc = countryMapByName.get(f.recipient);
+							let fundTheta = (fc.theta1 - fc.theta0) * (f.value / fc.totalFlow);
+							if (fundTheta < 0) fundTheta = 0;  // TODO need to fix this!
+							f.source = {
+								startAngle: fc.runningTheta,
+								endAngle: fc.runningTheta + fundTheta,
+							};
+							fc.runningTheta += fundTheta;
+
+							let recTheta = (rc.theta1 - rc.theta0) * (f.value / rc.totalFlow);
+							if (recTheta < 0) recTheta = 0;  // TODO need to fix this!
+							f.target = {
+								startAngle: rc.runningTheta,
+								endAngle: rc.runningTheta + recTheta,
+							};
+							rc.runningTheta += recTheta;
+						});
+					});
+				});
+			});
+		}
+
+		// function for getting fund/receive color
+		function getFundReceiveColor(d) {
+			const f = d.totalFunded;
+			const r = d.totalReceived;
+			return colorScale(r / (r + f));
+		}
+
+		chart.update(initData);
 		return chart;
 	};
 })();
