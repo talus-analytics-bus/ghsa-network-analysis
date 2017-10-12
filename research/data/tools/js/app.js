@@ -23,6 +23,7 @@ const App = {};
 	*  Activity is tagged with sector code 31195 (Livestock/Veterinary services)
 	*  Activity funder_ref is the World Health Organisation (funder_ref === )
 	*/
+	App.aidCodesForSteph = [];
 	App.filterTransactionsBySector = () => {
 		console.log('Loading transactions data...');
 		d3.queue()
@@ -40,6 +41,7 @@ const App = {};
 				const filteredTransactions = data.filter((d) => {
 					const isRightSector = sectorAid.indexOf(d.aid) > -1; // keep correct sector
 					const isWhoFunderRef = d.funder_ref === "XM-DAC-928"; // keep if WHO was funder regardless of sector
+					if (isRightSector || isWhoFunderRef) App.aidCodesForSteph.push(d.aid);
 					return isRightSector || isWhoFunderRef;
 				});
 
@@ -96,9 +98,43 @@ const App = {};
 	App.getIatiActivities = () => {
 		console.log('Running App.getIatiActivities');
 
+		const queryJson = {
+		  "limit": "90000",
+		  "from": "sector,act",
+		  "flags": "0",
+		  "select": "aid,sector_code,day_start,day_end,spend,commitment,flags,funder_ref,title,description",
+		  "sector_code": [
+		    "12110",
+		    "12181",
+		    "12182",
+		    "12191",
+		    "12220",
+		    "12230",
+		    "12240",
+		    "12250",
+		    "12261",
+		    "12262",
+		    "12263",
+		    "12281",
+		    "13010",
+		    "13020",
+		    "13030",
+		    "13040",
+		    "13081",
+		    "31195",
+		    "16064",	// Social mitigation of HIV/AIDS (don't include in application data yet)
+		    "32168",	// Pharmaceutical production (don't include in application data yet)
+		    "14050",	// Waste management / disposal (don't include in application data yet)
+		  ]
+		};
+
+		const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+		const url = Util.getQueryUrl(proxyUrl, queryJson);
+
 		$.ajax({
 			type: 'post',
-			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&flags=0&sector_code=12110&sector_code=12181&sector_code=12182&sector_code=12191&sector_code=12220&sector_code=12230&sector_code=12240&sector_code=12250&sector_code=12261&sector_code=12262&sector_code=12263&sector_code=12281&sector_code=13010&sector_code=13020&sector_code=13030&sector_code=13040&sector_code=13081&sector_code=31195&select=aid,sector_code,day_start,day_end,spend,commitment,flags,funder_ref',
+			url: url,
+			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&flags=0&sector_code=12110&sector_code=12181&sector_code=12182&sector_code=12191&sector_code=12220&sector_code=12230&sector_code=12240&sector_code=12250&sector_code=12261&sector_code=12262&sector_code=12263&sector_code=12281&sector_code=13010&sector_code=13020&sector_code=13030&sector_code=13040&sector_code=13081&sector_code=31195&select=aid,sector_code,day_start,day_end,spend,commitment,flags,funder_ref',
 			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&sector_code=12110&sector_code=12181&sector_code=12182&sector_code=12191&sector_code=12220&sector_code=12230&sector_code=12240&sector_code=12250&sector_code=12261&sector_code=12262&sector_code=12263&sector_code=12281&sector_code=31195&flags=0&select=aid,sector_code,day_start,day_end,spend,commitment,flags',
 			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&sector_group=121&sector_group=122&select=aid,sector_code,day_start,day_end,spend,commitment',
 			success: function(data) {
@@ -438,6 +474,94 @@ const App = {};
 		};
 		xhr.send(JSON.stringify({
 			dataFn: dataFn
+		}));
+	};
+
+
+	/* translateBatch
+	*  translates titles and descs in the activity data
+	*/
+	App.translateBatch = (text) => {
+
+		const xhr = new XMLHttpRequest();
+		xhr.open('POST', '/translateBatch', true);
+		xhr.responseType = 'application/json';
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.onload = function(e) {
+			if (this.status == 200) {
+				// console.log(JSON.parse(this.response)[0]);
+				const callback = console.log;
+				App.translateBatchResult = this.response;
+				// callback(this.response);
+				// callback(JSON.parse(this.response)); // do stuff with the returned data
+			}
+			// if (callback) callback(this.status);
+		};
+		xhr.send(JSON.stringify({
+			text: text
+		}));
+	};
+
+	/* translateDescs
+	*  translates titles and descs in the activity data
+	*/
+	App.translateDescs = () => {
+
+
+
+		d3.queue()
+				.defer(d3.json, './data/activity_descs.json')
+				.await((error, data) => {
+
+
+
+					getTranslationTitle = (i) => {
+						console.log(i);
+						if (i > data.length) return;
+						if (data[i].title === null) {
+							getTranslationTitle(i + 1);
+							return;
+						}
+						App.translate(data[i].title, (result_tmp) => {
+							result = JSON.parse(result_tmp);
+							data[i].title_trns = result.text;
+							data[i].title_lang = result.from.language.iso;
+							getTranslationTitle(i + 1);
+						});
+						// App.translate(data[i].description, (result_tmp) => {
+						// 	result = JSON.parse(result_tmp);
+						// 	data[i].description_trns = result.text;
+						// 	data[i].description_lang = result.from.language.iso;
+						// 	console.log(n++);
+						// });
+					};
+
+					App.translationResults = data;
+					getTranslationTitle(0);
+
+					
+			});
+	};
+
+
+	/* translate
+	*  gets translation of text and returns orig language ISO
+	*/
+	App.translate = (text, callback) => {
+		const xhr = new XMLHttpRequest();
+		xhr.open('POST', '/translate', true);
+		xhr.responseType = 'application/json';
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.onload = function(e) {
+			if (this.status == 200) {
+				// console.log(JSON.parse(this.response)[0]);
+				callback(this.response);
+				// callback(JSON.parse(this.response)); // do stuff with the returned data
+			}
+			// if (callback) callback(this.status);
+		};
+		xhr.send(JSON.stringify({
+			text: text
 		}));
 	};
 

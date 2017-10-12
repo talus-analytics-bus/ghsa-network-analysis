@@ -8,6 +8,33 @@
 
 const Util = {};
 
+String.prototype.replaceAt=function(index, replacement) {
+    return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
+}
+
+Util.getQueryUrl = (proxyUrl, queryJson) => {
+
+    let queryUrl = '';
+    _.mapObject(queryJson, (val, key) => {
+        // if (queryUrl === '') {
+        //     queryUrl += '?';
+        // }
+        if (key !== 'sector_code') {
+            queryUrl = `${queryUrl}&${key}=${val}`;
+            // queryUrl = queryUrl + '&' + val;
+        } else {
+            // add all sector codes in array
+            queryUrl = queryUrl + '&sector' + val.join("&sector_code=");
+        }
+    });
+
+    // make first question mark
+    if (queryUrl.length > 0) queryUrl = queryUrl.replaceAt(0,'?');
+    else console.log('oops: ' + queryUrl);
+
+    return proxyUrl + 'https://d-portal.org/q.json' + queryUrl;
+};
+
 Util.calculateAge = (birthday) => { // birthday is a date
     var ageDifMs = Date.now() - birthday.getTime();
     var ageDate = new Date(ageDifMs); // miliseconds from epoch
