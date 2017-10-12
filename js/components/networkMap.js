@@ -40,6 +40,13 @@
 		clipPath.append('circle')
 			.attr('r', radius);
 
+		// add overlay
+		chart.append('rect')
+			.attr('class', 'overlay')
+			.attr('transform', `translate(${-radius - margin.left}, ${-radius - margin.top})`)
+			.attr('width', 2 * radius + margin.left + margin.right)
+			.attr('height', 2 * radius + margin.top + margin.bottom);
+
 		// add groups for chart
 		const linkG = chart.append('g')
 			.attr('class', 'link-g')
@@ -111,7 +118,20 @@
 			rArcs.exit().remove();
 			rArcs.enter().append('path')
 				.attr('class', 'region-arc arc')
+				.each(function addTooltip(d) {
+					$(this).tooltipster({ plugins: ['follower'] });
+				})
 				.merge(rArcs)
+					.each(function updateTooltip(d) {
+						let contentStr = `<div class="nm-tooltip-title">${d.name}</div>`;
+						if (d.totalFunded) {
+							contentStr += `<div><b>Disbursed Funds:</b> ${App.formatMoney(d.totalFunded)}</div>`;
+						}
+						if (d.totalReceived) {
+							contentStr += `<div><b>Received Funds:</b> ${App.formatMoney(d.totalReceived)}</div>`;
+						}
+						$(this).tooltipster('content', contentStr);
+					})
 					.transition()
 					.style('fill', getFundReceiveColor)
 					.attr('d', regionArc);
@@ -151,14 +171,14 @@
 				})
 				.merge(cArcs);
 			cArcs
-				.on('mouseover', (d) => {
+				/*.on('mouseover', (d) => {
 					d3.selectAll('.link')
 						.filter(l => l.donor === d.name || l.recipient === d.name)
 						.classed('country-hover', true);
 				})
 				.on('mouseout', (d) => {
 					d3.selectAll('.link').classed('country-hover', false);
-				})
+				})*/
 				.each(function updateTooltip(d) {
 					let contentStr = `<div class="nm-tooltip-title">${d.name}</div>`;
 					if (d.totalFunded) {

@@ -4,6 +4,7 @@
 		let startYear = App.dataStartYear;
 		let endYear = App.dataEndYear + 1;
 		let networkMap;
+		let activeCountry;
 
 		function init() {
 			initTabs();
@@ -49,6 +50,14 @@
 				numberDisplayed: 0,
 			});
 			$('.cc-select').on('change', updateNetworkMap);
+
+			// initialize radio button functionality
+			$('.network-map-options .radio-option').click(function clickedRadio() {
+				const $option = $(this);
+				$option.find('input').prop('checked', true);
+				$option.siblings().find('input').prop('checked', false);
+				updateNetworkMap();
+			});
 		}
 
 		// initializes slider functionality
@@ -152,6 +161,8 @@
 
 		function getTotalFunc() {
 			const ccs = $('.cc-select').val();
+			const ind = $('.money-type-filter input:checked').attr('ind');
+			const indName = (ind === 'committed') ? 'committed_by_year' : 'spent_by_year';
 			return (p) => {
 				// run through filter first
 				if (!App.passesCategoryFilter(p.core_capacities, ccs)) return 0;
@@ -159,7 +170,7 @@
 				// get total for years
 				let total = 0;
 				for (let i = startYear; i < endYear; i++) {
-					total += p.spent_by_year[i];
+					total += p[indName][i];
 				}
 				return total;
 			};			
@@ -271,9 +282,11 @@
 
 		function buildNetworkMap() {
 			const networkData = getNetworkData();
-			return App.buildNetworkMap('.network-map-content', networkData, {
+			const networkMap = App.buildNetworkMap('.network-map-content', networkData, {
 				countryClickFn: displayCountryInNetwork,
 			});
+			networkMap.select('.overlay').on('click', unselectNetworkCountry);
+			return networkMap;
 		}
 
 		function updateNetworkMap() {
@@ -286,15 +299,20 @@
 				$('.network-map-no-content').hide();
 			}
 			networkMap.update(networkData);
+			if ($('.network-country-info').is(':visible')) {
+				displayCountryInNetwork(activeCountry);
+			}
 		}
 
 		function initNetworkCountryBox() {
-			$('.info-close-button').click(() => {
-				unhighlightNetwork();
+			$('.info-close-button').click(unselectNetworkCountry);
+		}
 
-				// hide country info display
-				$('.network-country-info').slideUp();
-			});
+		function unselectNetworkCountry() {
+			unhighlightNetwork();
+
+			// hide country info display
+			$('.network-country-info').slideUp();
 		}
 
 		function unhighlightNetwork() {
@@ -323,6 +341,7 @@
 
 			// populate country info
 			const data = arc.datum();
+			activeCountry = countryName;
 			$('.nci-title').text(countryName);
 			if (data.totalFunded) {
 				$('.nci-donor-value').text(App.formatMoney(data.totalFunded));

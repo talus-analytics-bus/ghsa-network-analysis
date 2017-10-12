@@ -14,7 +14,7 @@
 	/* --- Network Map Section --- */
 .network-map-container {
 	margin-top: 30px;
-	min-height: 760px;
+	min-height: 780px;
 
 	.network-map-content {
 		float: left;
@@ -46,6 +46,15 @@
 	}
 	.filter-box {
 		margin: 25px 0 20px;
+	}
+	.radio-option {
+		margin-left: 10px;
+		cursor: pointer;
+	}
+	.radio-option input {
+		position: relative;
+		top: 2px;
+		margin-right: 3px;
 	}
 	.slider {
 		margin-top: 5px;
