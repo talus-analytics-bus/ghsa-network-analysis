@@ -23,6 +23,7 @@ const App = {};
 	*  Activity is tagged with sector code 31195 (Livestock/Veterinary services)
 	*  Activity funder_ref is the World Health Organisation (funder_ref === )
 	*/
+	App.aidCodesForSteph = [];
 	App.filterTransactionsBySector = () => {
 		console.log('Loading transactions data...');
 		d3.queue()
@@ -40,6 +41,7 @@ const App = {};
 				const filteredTransactions = data.filter((d) => {
 					const isRightSector = sectorAid.indexOf(d.aid) > -1; // keep correct sector
 					const isWhoFunderRef = d.funder_ref === "XM-DAC-928"; // keep if WHO was funder regardless of sector
+					if (isRightSector || isWhoFunderRef) App.aidCodesForSteph.push(d.aid);
 					return isRightSector || isWhoFunderRef;
 				});
 
@@ -96,9 +98,43 @@ const App = {};
 	App.getIatiActivities = () => {
 		console.log('Running App.getIatiActivities');
 
+		const queryJson = {
+		  "limit": "90000",
+		  "from": "sector,act",
+		  "flags": "0",
+		  "select": "aid,sector_code,day_start,day_end,spend,commitment,flags,funder_ref,title,description",
+		  "sector_code": [
+		    "12110",
+		    "12181",
+		    "12182",
+		    "12191",
+		    "12220",
+		    "12230",
+		    "12240",
+		    "12250",
+		    "12261",
+		    "12262",
+		    "12263",
+		    "12281",
+		    "13010",
+		    "13020",
+		    "13030",
+		    "13040",
+		    "13081",
+		    "31195",
+		    "16064",	// Social mitigation of HIV/AIDS (don't include in application data yet)
+		    "32168",	// Pharmaceutical production (don't include in application data yet)
+		    "14050",	// Waste management / disposal (don't include in application data yet)
+		  ]
+		};
+
+		const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+		const url = Util.getQueryUrl(proxyUrl, queryJson);
+
 		$.ajax({
 			type: 'post',
-			url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&flags=0&sector_code=12110&sector_code=12181&sector_code=12182&sector_code=12191&sector_code=12220&sector_code=12230&sector_code=12240&sector_code=12250&sector_code=12261&sector_code=12262&sector_code=12263&sector_code=12281&sector_code=13010&sector_code=13020&sector_code=13030&sector_code=13040&sector_code=13081&sector_code=31195&select=aid,sector_code,day_start,day_end,spend,commitment,flags,funder_ref',
+			url: url,
+			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&flags=0&sector_code=12110&sector_code=12181&sector_code=12182&sector_code=12191&sector_code=12220&sector_code=12230&sector_code=12240&sector_code=12250&sector_code=12261&sector_code=12262&sector_code=12263&sector_code=12281&sector_code=13010&sector_code=13020&sector_code=13030&sector_code=13040&sector_code=13081&sector_code=31195&select=aid,sector_code,day_start,day_end,spend,commitment,flags,funder_ref',
 			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&sector_code=12110&sector_code=12181&sector_code=12182&sector_code=12191&sector_code=12220&sector_code=12230&sector_code=12240&sector_code=12250&sector_code=12261&sector_code=12262&sector_code=12263&sector_code=12281&sector_code=31195&flags=0&select=aid,sector_code,day_start,day_end,spend,commitment,flags',
 			// url: 'https://cors-anywhere.herokuapp.com/https://d-portal.org/q.json?limit=90000&from=sector,act&sector_group=121&sector_group=122&select=aid,sector_code,day_start,day_end,spend,commitment',
 			success: function(data) {
@@ -441,152 +477,92 @@ const App = {};
 		}));
 	};
 
-	App.hashDisease = {
-		"Health - General": "General",
-		"Maternal and Child Health": "Maternal and child health",
-		"Nutrition": "Nutrition",
-		"Water Supply and Sanitation": "Water supply and sanitation",
-		"HIV/AIDS": "HIV/AIDS",
-		"Malaria": "Malaria",
-		"Other Public Health Threats": "Other",
-		"Pandemic Influenza and Other Emerging Threats (PIOET)": "Pandemic influenza",
-		"Tuberculosis": "Tuberculosis"
-	};
 
-	App.hashFunction = {
-		"Project-type interventions": "Project-type interventions"
-	};
+	/* translateBatch
+	*  translates titles and descs in the activity data
+	*/
+	App.translateBatch = (text) => {
 
-	App.hashAidType = {
-		"Contributions to specific-purpose programmes and funds managed by international organisations (multilateral, INGO)": "Contributions to specific-purpose programmes and funds managed by international organisations (multilateral, INGO)",
-		"Core contributions to multilateral institutions": "Core contributions to multilateral institutions",
-		"Donor country personnel": "Donor country personnel",
-		"Other technical assistance": "Other technical assistance",
-		"Project-type interventions": "Project-type interventions",
-		"Sector budget support": "Sector budget support"
-	};
-
-	App.mapDisease = (input) => {
-		const outputTmp = App.hashDisease[input];
-
-		if (outputTmp !== undefined) return outputTmp;
-		else return input; // TODO don't return input here, since it should throw an error
-	};
-
-	App.mapFunction = (input) => {
-		const outputTmp = App.hashFunction[input];
-
-		if (outputTmp !== undefined) return outputTmp;
-		else return input; // TODO don't return input here, since it should throw an error
-	};
-
-	App.tagFaRecipient = (record, transaction) => {
-		const specifiesCountry = transaction['Award Transaction - Recipient Country - Name'] !== "";
-		const specifiesRegion = transaction['Award Transaction - Recipient Region - Name'] !== "";
-		if (specifiesCountry) {
-			const recipient_country = transaction['Award Transaction - Recipient Country - Name'];
-			record.recipient_country = recipient_country;
-			record.recipient_sector = "Country";
-			record.recipient_name = recipient_country;
-		} else if (specifiesRegion) {
-			const recipient_region = transaction['Award Transaction - Recipient Region - Name'];
-			if (recipient_region === "Worldwide") {
-				// worldwide case
-				record.recipient_country = 'Multiple countries (unspecified)';
-				record.recipient_sector = "Country";
-				record.recipient_name = 'Multiple countries (unspecified)';
-			} else if (recipient_region === "Developing countries, unspecified") {
-				// multiple countries case without region
-				record.recipient_country = 'Multiple countries (unspecified)';
-				record.recipient_sector = "Country";
-				record.recipient_name = 'Multiple countries (unspecified)';
-			} else {
-				// region specified and really is region
-				record.recipient_country = 'Multiple countries (regional)';
-				record.recipient_sector = "Region";
-				record.recipient_name = recipient_region;
+		const xhr = new XMLHttpRequest();
+		xhr.open('POST', '/translateBatch', true);
+		xhr.responseType = 'application/json';
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.onload = function(e) {
+			if (this.status == 200) {
+				// console.log(JSON.parse(this.response)[0]);
+				const callback = console.log;
+				App.translateBatchResult = this.response;
+				// callback(this.response);
+				// callback(JSON.parse(this.response)); // do stuff with the returned data
 			}
-		}
+			// if (callback) callback(this.status);
+		};
+		xhr.send(JSON.stringify({
+			text: text
+		}));
 	};
 
-
-	App.mapDataFa = (rawData) => {
-		console.log('record count = ' + rawData.length);
-
-		// // EXAMPLE do AID-680-A-11-00001
-		// const proj = rawData.filter(d => d['Award Identifier'] === "AID-680-A-11-00001");
-
-		// get unique project IDs
-		const uniqueProjectIds = _.unique(_.pluck(rawData, 'Award Identifier'));
-		let id = 0;
-		const allRecords = [];
-		for (let i = 0; i < uniqueProjectIds.length; i++) {
-			const proj = rawData.filter(d => d['Award Identifier'] === uniqueProjectIds[i]);
-			if (proj.length === 0) continue;
-
-			// match award location
-			// write new record			
-			const newRecord = {"project_id":"","project_name":"","project_function":"","project_disease":"","donor_country":"","donor_sector":"","donor_name":"","recipient_country":"","recipient_sector":"","recipient_name":"","cy_award_start":"","cy_award_end":"","total_committed":"","total_disbursed":"","transactions":[],"source":{"dataset_name":"","date_added_mmddyyyy":""}};
-			id++;
-			proj.forEach(transaction => {
-				// get the transactions that match this one's recipient country
-				const recipient_country = transaction['Award Transaction - Recipient Country - Name'];
-				const this_country_transactions = proj.filter(d => d['Award Transaction - Recipient Country - Name'] === recipient_country && d.processed === undefined);
-				
-				if (this_country_transactions.length === 0) return;
-
-				
-				newRecord.donor_country = "United States of America";
-				newRecord.donor_sector = "Government";
-				newRecord.donor_name = transaction['Award Accountable Organization - Name'];
-
-				// tag recipient country or region
-				App.tagFaRecipient(newRecord, transaction);
-				
-				const cy_award_start = new Date(transaction['Award Date - Start Date - Date']).getFullYear().toString();
-				const cy_award_end = new Date(transaction['Award Date - Start Date - Date']).getFullYear().toString();
-				newRecord.cy_award_start = (cy_award_start !== "NaN") ? cy_award_start : "";
-				newRecord.cy_award_end = (cy_award_end !== "NaN") ? cy_award_start : "";
-
-				newRecord.source.dataset_name = "ForeignAssistance.gov";
-				newRecord.source.date_added_mmddyyyy = "09122017"; // TODO auto date
-
-				newRecord.project_disease = App.mapDisease(transaction['Award Transaction - Sector']);
-				// newRecord.project_function = App.mapFunction(transaction['Award Transaction - Aid Type']);
-				newRecord.project_function = App.hashAidType[transaction['Award Transaction - Aid Type']];
-				newRecord.project_name = transaction['Award Title'];
-				newRecord.project_id = id.toString(); // TODO find better ID to use
-				newRecord.award_id = transaction['Award Identifier']; // TODO find better ID to use
+	/* translateDescs
+	*  translates titles and descs in the activity data
+	*/
+	App.translateDescs = () => {
 
 
-				let total_committed_tmp = null;
-				let total_disbursed_tmp = null;
 
-				this_country_transactions.forEach(curTransaction => {
-					curTransaction.processed = true;
-					let cyForTransaction = new Date(transaction['Award Transaction - Value Date']).getFullYear().toString();
-					if (cyForTransaction === "NaN") cyForTransaction = "";
-					
-					const newTransactionBlob = {
-						type: curTransaction['Award Transaction - Type'].toLowerCase().trim(),
-						amount: parseFloat(curTransaction['Award Transaction - Value']),
-						cy: cyForTransaction
+		d3.queue()
+				.defer(d3.json, './data/activity_descs.json')
+				.await((error, data) => {
+
+
+
+					getTranslationTitle = (i) => {
+						console.log(i);
+						if (i > data.length) return;
+						if (data[i].title === null) {
+							getTranslationTitle(i + 1);
+							return;
+						}
+						App.translate(data[i].title, (result_tmp) => {
+							result = JSON.parse(result_tmp);
+							data[i].title_trns = result.text;
+							data[i].title_lang = result.from.language.iso;
+							getTranslationTitle(i + 1);
+						});
+						// App.translate(data[i].description, (result_tmp) => {
+						// 	result = JSON.parse(result_tmp);
+						// 	data[i].description_trns = result.text;
+						// 	data[i].description_lang = result.from.language.iso;
+						// 	console.log(n++);
+						// });
 					};
-					if (newTransactionBlob.type === 'disbursement') {
-						if (total_disbursed_tmp === null) total_disbursed_tmp = newTransactionBlob.amount;
-						else total_disbursed_tmp = total_disbursed_tmp + newTransactionBlob.amount;
-					} else if (newTransactionBlob.type === 'commitment') {
-						if (total_committed_tmp === null) total_committed_tmp = newTransactionBlob.amount;
-						else total_committed_tmp = total_committed_tmp + newTransactionBlob.amount;
-					}
-					newRecord.transactions.push(newTransactionBlob);
-				});
 
-				newRecord.total_committed = total_committed_tmp;
-				newRecord.total_disbursed = total_disbursed_tmp;
+					App.translationResults = data;
+					getTranslationTitle(0);
+
+					
 			});
-			allRecords.push(newRecord);
-		}
-		console.log(allRecords);
 	};
+
+
+	/* translate
+	*  gets translation of text and returns orig language ISO
+	*/
+	App.translate = (text, callback) => {
+		const xhr = new XMLHttpRequest();
+		xhr.open('POST', '/translate', true);
+		xhr.responseType = 'application/json';
+		xhr.setRequestHeader('Content-type', 'application/json');
+		xhr.onload = function(e) {
+			if (this.status == 200) {
+				// console.log(JSON.parse(this.response)[0]);
+				callback(this.response);
+				// callback(JSON.parse(this.response)); // do stuff with the returned data
+			}
+			// if (callback) callback(this.status);
+		};
+		xhr.send(JSON.stringify({
+			text: text
+		}));
+	};
+
 })();
