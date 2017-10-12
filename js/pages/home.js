@@ -203,6 +203,7 @@
 
 			const colors = colorScale.range();
 			const quantiles = colorScale.quantiles();
+			const maxValue = d3.max(currentNodeDataMap.values());
 
 			const legend = d3.select('.legend')
 				.attr('width', barWidth * colors.length + 2 * legendPadding)
@@ -230,9 +231,16 @@
 				.attr('y', barHeight + 12)
 				.attr('dy', '.35em')
 				.text((d, i) => {
-					if (i >= quantiles.length) return '';
+					if (i === quantiles.length) return App.formatMoneyShort(maxValue);
 					return App.formatMoneyShort(quantiles[i]);
 				});
+			legend.selectAll('.legend-start-label')
+				.data([true])
+				.enter().append('text')
+					.attr('class', 'legend-start-label')
+					.attr('y', barHeight + 12)
+					.attr('dy', '.35em')
+					.text(0);
 
 			// update legend title
 			let titleText = getMoneyFlowType() === 'funded' ?
