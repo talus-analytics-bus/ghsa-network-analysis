@@ -58,6 +58,15 @@
 				$option.siblings().find('input').prop('checked', false);
 				updateNetworkMap();
 			});
+			
+			// add info tooltips
+			$('.committed-info-img').tooltipster({
+				content: 'The <b>amount committed</b> refers to the amount of money committed.',
+			});
+			$('.disbursed-info-img').tooltipster({
+				content: 'The <b>amount disbursed</b> refers to the amount of money the ' +
+					'recipient country has received.',
+			});
 		}
 
 		// initializes slider functionality

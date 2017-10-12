@@ -75,9 +75,13 @@
 		}
 
 		function initDonorOrRecipientProfile() {
+			// initialize "go to table" button
 			$('.show-table-btn').click(() => {
 				hasher.setHash(`analysis/${iso}/${moneyType}/table`);
 			});
+
+			// fill out generic text
+			$('.money-type').text(moneyType === 'd' ? 'disbursed' : 'received');
 
 			// fill out title and description for circle pack; draw circle pack
 			if (moneyType === 'd') {
@@ -98,6 +102,7 @@
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
 
 				// draw charts
+				drawDonorProgressCircles();
 				drawDonorCirclePack();
 				drawDonorCategoryChart();
 				drawDonorTimeChart();
@@ -119,6 +124,7 @@
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
 
 				// draw charts
+				drawRecipientProgressCircles();
 				drawRecipientCirclePack();
 				drawRecipientCategoryChart();
 				drawRecipientTimeChart();
@@ -184,6 +190,14 @@
 			} else {
 
 			}
+		}
+
+		function drawDonorProgressCircles() {
+			
+		}
+
+		function drawRecipientProgressCircles() {
+			
 		}
 
 		function drawDonorCategoryChart() {

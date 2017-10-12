@@ -5,15 +5,6 @@
 		margin-left: 225px;
 		margin-right: 225px;
 	}
-	.country-summary-label {
-		font-weight: 600;
-		font-size: 1.2em;
-	}
-	.country-summary-value {
-		margin-top: 5px;
-		font-family: 'Raleway', sans-serif;
-		font-size: 2.4em;
-	}
 }
 .country-summary-content {
 	display: none;
@@ -46,17 +37,38 @@
 		top: -44px;
 		right: 30px;
 	}
-	.country-flow-summary {
+	.country-flow-summary,
+	.progress-circle-section {
 		padding: 20px 30px;
 		border-bottom: $light-border;
 		margin-bottom: 20px;
 		min-height: 160px;
 	}
-	.country-summary-text {
+	.country-summary-text,
+	.progress-circle-text {
 		float: left;
+		max-width: 400px;
 	}
-	.time-chart-container {
+	.time-chart-container,
+	.progress-circle-container {
 		margin-left: 300px;
+	}
+	.country-summary-label,
+	.progress-circle-title {
+		font-weight: 600;
+		font-size: 1.2em;
+	}
+	.progress-circle-description {
+		margin-top: 15px;
+	}
+	.country-summary-value {
+		margin-top: 5px;
+		font-family: 'Raleway', sans-serif;
+		font-size: 2.4em;
+	}
+	.circle-chart {
+		display: inline-block;
+		margin: 0 20px;
 	}
 	.show-table-btn {
 		margin-top: 10px;
