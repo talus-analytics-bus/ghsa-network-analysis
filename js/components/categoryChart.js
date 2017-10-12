@@ -1,11 +1,9 @@
 (() => {
 	App.buildCategoryChart = (selector, data, param = {}) => {
 		// inject "running x" into data
-		const regions = [];
 		data.forEach((d) => {
 			let runningValue = 0;
 			d.children.forEach((c) => {
-				if (!regions.includes(c.name)) regions.push(c.name);
 				c.value0 = runningValue;
 				runningValue += c.total_spent;
 				c.value1 = runningValue;
@@ -39,8 +37,7 @@
 			.domain(capacities)
 			.range([0, height]);
 		const colorScale = d3.scaleOrdinal()
-			.domain(regions)
-			.range(['#6a3d9a', '#cab2d6', '#33a02c', '#b2df8a', '#fb9a99']);
+			.range(d3.schemeCategory20c);
 
 		const xAxis = d3.axisTop()
 			.ticks(5)
@@ -55,19 +52,21 @@
 				.attr('class', 'bar-group')
 				.attr('transform', d => `translate(0, ${y(d.name)})`);
 		barGroups.selectAll('rect')
-			.data(d => d.children.map(c => ({ cc: d.name, region: c })))
+			.data(d => d.children.map(c => ({ cc: d.name, country: c })))
 			.enter().append('rect')
-				.attr('x', d => x(d.region.value0))
-				.attr('width', d => x(d.region.value1) - x(d.region.value0))
+				.attr('x', d => x(d.country.value0))
+				.attr('width', d => x(d.country.value1) - x(d.country.value0))
 				.attr('height', y.bandwidth())
-				.style('fill', d => colorScale(d.region.name))
+				.style('fill', d => colorScale(d.country.iso))
 				.each(function addTooltip(d) {
+					const country = App.countries.find(c => c.ISO2 === d.country.iso);
+					const countryName = country ? country.NAME : d.country.iso;
 					const capName = App.capacities.find(cc => d.cc === cc.id).name;
 					$(this).tooltipster({
 						content: `<b>Core Capacity:</b> ${capName}` +
-							`<br><b>Region:</b> ${d.region.name}` +
-							`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.region.total_committed)}` +
-							`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.region.total_spent)}`,
+							`<br><b>Country:</b> ${countryName}` +
+							`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.country.total_committed)}` +
+							`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.country.total_spent)}`,
 					});
 				});
 		barGroups.append('text')
@@ -97,27 +96,5 @@
 			.attr('x', width / 2)
 			.attr('y', -35)
 			.text(param.xAxisLabel || 'Total Disbursed');
-
-		// add legend
-		const barWidth = 65;
-		const barHeight = 12;
-		const boxWidth = 90;
-		const legend = chart.append('g')
-			.attr('transform', `translate(0, ${height + 20})`);
-		const legendGroups = legend.selectAll('g')
-			.data(regions)
-			.enter().append('g')
-				.attr('transform', (d, i) => `translate(${boxWidth * i}, 0)`);
-		legendGroups.append('rect')
-			.attr('x', (boxWidth - barWidth) / 2)
-			.attr('width', barWidth)
-			.attr('height', barHeight)
-			.style('fill', d => colorScale(d));
-		legendGroups.append('text')
-			.attr('class', 'legend-label')
-			.attr('x', boxWidth / 2)
-			.attr('y', barHeight + 10)
-			.attr('dy', '.35em')
-			.text(d => d);
 	};
 })();

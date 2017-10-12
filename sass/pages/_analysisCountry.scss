@@ -19,14 +19,8 @@
 	display: none;
 	margin-top: 40px;
 
+	.column { padding: 0 30px; }
 	.donor-column { text-align: right; }
-	.squares-chart {
-		display: inline-block;
-		vertical-align: top;
-		margin-top: 5px;
-	}
-	.donor-squares { margin-right: 35px; }
-	.recipient-squares { margin-left: 35px; }
 	.summary-value-box {
 		display: inline-block;
 		vertical-align: top;

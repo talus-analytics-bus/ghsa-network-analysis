@@ -16,6 +16,20 @@
 		}
 
 		function initBasicProfile() {
+			// calculate total funded and received
+			const totalFunded = App.getTotalFunded(iso);
+			const totalReceived = App.getTotalReceived(iso);
+
+			// if either funding or receiving is 0, go to non-zero profile
+			if (!totalFunded && totalReceived) {
+				hasher.setHash(`analysis/${iso}/r`);
+				return;
+			}
+			if (!totalReceived && totalFunded) {
+				hasher.setHash(`analysis/${iso}/d`);
+				return;
+			}
+
 			// fill details
 			$('.country-region').text(country.regionName);
 			$('.country-subregion').text(country.subRegionName);
@@ -27,8 +41,6 @@
 			$('.country-population').text(d3.format(',')(country.POP2005));
 
 			// fill summary values
-			const totalFunded = App.getTotalFunded(iso);
-			const totalReceived = App.getTotalReceived(iso);
 			$('.country-funded-value').text(App.formatMoney(totalFunded));
 			$('.country-received-value').text(App.formatMoney(totalReceived));
 
@@ -69,28 +81,44 @@
 
 			// fill out title and description for circle pack; draw circle pack
 			if (moneyType === 'd') {
-				$('.switch-type-button')
-					.text('Switch to Recipient Profile')
-					.on('click', () => hasher.setHash(`analysis/${iso}/r`));
+				// if country has received funds, include "switch to recipient profile" button
+				const totalReceived = App.getTotalReceived(iso);
+				if (totalReceived) {
+					$('.switch-type-button')
+						.text('Switch to Recipient Profile')
+						.on('click', () => hasher.setHash(`analysis/${iso}/r`));
+				} else {
+					$('.switch-type-button').hide();
+				}
 
+				// fill summary text
 				const totalFunded = App.getTotalFunded(iso);
 				$('.country-summary-label').text(`Total Funded from ${App.dataStartYear}` +
 					` to ${App.dataEndYear}`);
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
 
+				// draw charts
 				drawDonorCirclePack();
 				drawDonorCategoryChart();
 				drawDonorTimeChart();
 			} else if (moneyType === 'r') {
-				$('.switch-type-button')
-					.text('Switch to Donor Profile')
-					.on('click', () => hasher.setHash(`analysis/${iso}/d`));
+				// if country has donated funds, include "switch to donor profile" button
+				const totalFunded = App.getTotalFunded(iso);
+				if (totalFunded) {
+					$('.switch-type-button')
+						.text('Switch to Donor Profile')
+						.on('click', () => hasher.setHash(`analysis/${iso}/d`));
+				} else {
+					$('.switch-type-button').hide();
+				}
 
+				// fill summary text
 				const totalReceived = App.getTotalReceived(iso);
 				$('.country-summary-label').text(`Total Received from ${App.dataStartYear}` +
 					` to ${App.dataEndYear}`);
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
 
+				// draw charts
 				drawRecipientCirclePack();
 				drawRecipientCategoryChart();
 				drawRecipientTimeChart();
@@ -156,7 +184,6 @@
 			} else {
 
 			}
-
 		}
 
 		function drawDonorCategoryChart() {
@@ -165,37 +192,34 @@
 				const catData = [];
 				const fundsByCat = {};
 				App.fundingLookup[iso].forEach((p) => {
-					const recCountry = App.countries.find(c => c.ISO2 === p.recipient_country);
-					if (recCountry) {
-						const region = recCountry.regionName;
-						const catValues = p.core_capacities;
-						catValues.forEach((c) => {
-							if (!fundsByCat[c]) fundsByCat[c] = {};
-							if (!fundsByCat[c][region]) {
-								fundsByCat[c][region] = {
-									name: region,
-									total_committed: 0,
-									total_spent: 0,
-								};
-							}
-							fundsByCat[c][region].total_committed += p.total_committed;
-							fundsByCat[c][region].total_spent += p.total_spent;
-						});
-					}
+					const iso = p.recipient_country;
+					const catValues = p.core_capacities;
+					catValues.forEach((c) => {
+						if (!fundsByCat[c]) fundsByCat[c] = {};
+						if (!fundsByCat[c][iso]) {
+							fundsByCat[c][iso] = {
+								iso,
+								total_committed: 0,
+								total_spent: 0,
+							};
+						}
+						fundsByCat[c][iso].total_committed += p.total_committed;
+						fundsByCat[c][iso].total_spent += p.total_spent;
+					});
 				});
 				for (let c in fundsByCat) {
-					const regions = [];
+					const countries = [];
 					let totalCommitted = 0;
 					let totalSpent = 0;
-					for (let r in fundsByCat[c]) {
-						regions.push(fundsByCat[c][r]);
-						totalCommitted += fundsByCat[c][r].total_committed;
-						totalSpent += fundsByCat[c][r].total_spent;
+					for (let iso in fundsByCat[c]) {
+						countries.push(fundsByCat[c][iso]);
+						totalCommitted += fundsByCat[c][iso].total_committed;
+						totalSpent += fundsByCat[c][iso].total_spent;
 					}
 					//Util.sortByKey(regions, 'total_spent', true);
 					catData.push({
 						name: c,
-						children: regions,
+						children: countries,
 						total_committed: totalCommitted,
 						total_spent: totalSpent,
 					});
@@ -215,37 +239,34 @@
 				const catData = [];
 				const fundsByCat = {};
 				App.recipientLookup[iso].forEach((p) => {
-					const donCountry = App.countries.find(c => c.ISO2 === p.donor_country);
-					if (donCountry) {
-						const region = donCountry.regionName;
-						const catValues = p.core_capacities;
-						catValues.forEach((c) => {
-							if (!fundsByCat[c]) fundsByCat[c] = {};
-							if (!fundsByCat[c][region]) {
-								fundsByCat[c][region] = {
-									name: region,
-									total_committed: 0,
-									total_spent: 0,
-								};
-							}
-							fundsByCat[c][region].total_committed += p.total_committed;
-							fundsByCat[c][region].total_spent += p.total_spent;
-						});
-					}
+					const iso = p.donor_country;
+					const catValues = p.core_capacities;
+					catValues.forEach((c) => {
+						if (!fundsByCat[c]) fundsByCat[c] = {};
+						if (!fundsByCat[c][iso]) {
+							fundsByCat[c][iso] = {
+								iso,
+								total_committed: 0,
+								total_spent: 0,
+							};
+						}
+						fundsByCat[c][iso].total_committed += p.total_committed;
+						fundsByCat[c][iso].total_spent += p.total_spent;
+					});
 				});
 				for (let c in fundsByCat) {
-					const regions = [];
+					const countries = [];
 					let totalCommitted = 0;
 					let totalSpent = 0;
-					for (let r in fundsByCat[c]) {
-						regions.push(fundsByCat[c][r]);
-						totalCommitted += fundsByCat[c][r].total_committed;
-						totalSpent += fundsByCat[c][r].total_spent;
+					for (let iso in fundsByCat[c]) {
+						countries.push(fundsByCat[c][iso]);
+						totalCommitted += fundsByCat[c][iso].total_committed;
+						totalSpent += fundsByCat[c][iso].total_spent;
 					}
 					//Util.sortByKey(regions, 'total_spent', true);
 					catData.push({
 						name: c,
-						children: regions,
+						children: countries,
 						total_committed: totalCommitted,
 						total_spent: totalSpent,
 					});
