@@ -9,16 +9,22 @@
 	function addSliderTicks(sliderSelector, values) {
 		const tickContainer = d3.selectAll('.slider').append('div')
 			.attr('class', 'slider-tick-box');
-		const tickGroups = tickContainer.selectAll('.slider-tick-vert')
+		tickContainer.selectAll('.slider-tick-vert')
 			.data(values)
 			.enter().append('div')
-				.attr('class', 'slider-tick-group')
-				.style('left', function(d, i) {
+				.attr('class', 'slider-tick-vert')
+				.style('left', (d, i) => {
 					return (100 * i / (values.length - 1)) + '%';
 				});
-		tickGroups.append('div').attr('class', 'slider-tick-vert');
-		tickGroups.append('div')
+		const tickTextContainers = tickContainer.selectAll('.slider-tick-text-container')
+			.data(values)
+			.enter().append('div')
+				.attr('class', 'slider-tick-text-container')
+				.style('left', (d, i) => {
+					return (100 * (2 * i + 1) / (2 * (values.length - 1))) + '%';
+				});
+		tickTextContainers.append('div')
 			.attr('class', 'slider-tick-text')
-			.text(d => d);
+			.text((d, i) => (i === values.length - 1) ? '' : d);
 	}
 })();

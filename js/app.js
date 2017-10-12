@@ -6,6 +6,10 @@ const App = {};
 		App.dataStartYear = 2014;
 		App.dataEndYear = 2017;
 
+		// colors
+		App.fundColor = '#084594';
+		App.receiveColor = '#8c2d04';
+
 		// define global variables used throughout
 		App.geoData = null;  // geographic data of the world
 		App.countries = [];  // an array of all countries and their properties
@@ -40,10 +44,8 @@ const App = {};
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
 			.defer(d3.json, 'data/funding_data_092817.json')
-			.defer(d3.json, 'data/project_diseases.json')
-			.defer(d3.json, 'data/project_functions.json')
 			.defer(d3.json, 'data/currencies.json')
-			.await((error, worldData, unsdData, fundingData, diseases, functions, currencies) => {
+			.await((error, worldData, unsdData, fundingData, currencies) => {
 				if (error) throw error;
 
 				/* -------- Populate global variables -------- */
@@ -68,10 +70,6 @@ const App = {};
 				// save funding data
 				App.fundingData = fundingData;
 
-				// save diseases and functions
-				App.diseases = diseases;
-				App.functions = functions;
-
 				// save currencies in namespace; set default currency
 				App.currencies = Object.assign({}, currencies);
 				App.currencyIso = 'USD';
@@ -86,8 +84,25 @@ const App = {};
 					App.fundingLookup[donor].push(d);
 					if (!App.recipientLookup[recipient]) App.recipientLookup[recipient] = [];
 					App.recipientLookup[recipient].push(d);
-				});
 
+					// TODO inject random core capacity into each payment
+					const randomIndex = Math.floor(App.capacities.length * Math.random());
+					d.core_capacities = [App.capacities[randomIndex].id];
+
+					// calculate totals by year
+					// TODO should do this outside UI
+					d.committed_by_year = {};
+					d.spent_by_year = {};
+					for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
+						const transactions = d.transactions.filter(t => +t.cy === i);
+						const ct = transactions.filter(t => t.type === 'commitment');
+						const dt = transactions.filter((t) => {
+							return t.type === 'disbursement' || t.type === 'expenditure';
+						});
+						d.committed_by_year[i] = d3.sum(ct, d => d.amount);
+						d.spent_by_year[i] = d3.sum(dt, d => d.amount);
+					}
+				});
 
 				// call callback and finish progress bar
 				if (callback) callback();
@@ -97,7 +112,10 @@ const App = {};
 
 
 	/* ------------------ Global Functions ------------------- */
-	App.siFormat = num => d3.format(',.3s')(num).replace('G', 'B');
+	App.siFormat = (num) => {
+		if (!num) return '0';
+		return d3.format(',.3s')(num).replace('G', 'B');
+	}
 	App.formatMoneyShort = (usdValue) => {
 		const multiplier = App.currencies[App.currencyIso].exchange_rates
 			.find(er => er.convert_from === 'USD')
@@ -128,22 +146,11 @@ const App = {};
 		return d3.sum(App.recipientLookup[iso], d => d.total_spent);
 	};
 
-	/* ------------------ Category Functions ------------------- */
-	// tests whether a payment satisfies a category filter
-	App.passesCategoryFilter = (values, filterValues) => {
-		let pass = false;
-		for (let i = 0; i < values.length; i++) {
-			const value = values[i];
-			const parent = filterValues.find(d => d.tag_name === value.p);
-			if (parent) {
-				if (!value.c || (value.c && parent.children.includes(value.c))) {
-					pass = true;
-					break;
-				}
-			}
-		}
-		return pass;
-	};
+
+	/* ------------------ Misc Functions ------------------- */
+	App.getFlagHtml = (iso) => {
+		return `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
+	}
 
 
 	/* ------------------ Vendor Defaults ------------------- */

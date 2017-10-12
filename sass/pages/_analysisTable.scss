@@ -1,0 +1,45 @@
+.analysis-table-content {
+	position: relative;
+	margin-top: 30px;
+	text-align: center;
+
+	.analysis-country-title {
+		margin: 0 225px;
+		text-align: center;
+		cursor: pointer;
+	}
+	.back-button {
+		position: absolute;
+		top: -3px;
+		right: 50px;
+	}
+	.country-funds-content {
+		margin-top: 30px;
+		padding: 0 50px 50px;
+		border-bottom: $border;
+	}
+	.funds-table-container {
+		display: inline-block;
+		padding: 20px 30px;
+		width: 100%;
+		border: $light-border;
+		text-align: left;
+		background-color: white;
+		@include box-shadow(1px 1px 3px rgba(0,0,0,0.2));
+	}
+	.funds-table {
+		.money-cell {
+			width: 120px;
+			text-align: right;
+			white-space: nowrap;
+		}
+	}
+	.funds-table tr {
+		cursor: pointer;
+	}
+	.funds-source-text {
+		margin-top: 15px;
+		font-size: 0.9em;
+		text-align: right;
+	}
+}

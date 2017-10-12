@@ -1,9 +1,8 @@
-$analysis-white: rgba(255,255,255,0.85);
-
 .analysis-container {
 	padding: 0;
 	border-left: $border;
 	border-right: $border;
+	@include gradient(#fff, #f0f0f0);
 }
 .analysis-filter-bar {
 	position: relative;
@@ -30,10 +29,14 @@ $analysis-white: rgba(255,255,255,0.85);
 	}
 }
 .analysis-content {
-	display: none;
 	position: relative;
 	margin: 0;
 	padding: 20px 30px 50px;
 	z-index: 100;
-	@include gradient(#f0f0f0, #e0e0e0);
+}
+.flag {
+	position: relative;
+	top: -2px;
+	height: 30px;
+	margin: 0 20px;
 }

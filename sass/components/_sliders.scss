@@ -2,7 +2,7 @@
   position: relative;
 
   .slider-track {
-    @include gradient(#d0d0d0, #fdfdfd);
+    @include gradient(#a0a0a0, #c0c0c0);
   }
   .slider-selection {
     @include gradient(#fff, #c6c6c6);
@@ -30,8 +30,11 @@
   .slider-tick-vert {
     position: absolute;
     width: 2px;
-    height: 3px;
+    height: 4px;
     background-color: #999;
+  }
+  .slider-tick-text-container {
+    position: absolute;
   }
   .slider-tick-text {
     position: absolute;

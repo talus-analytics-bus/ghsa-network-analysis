@@ -33,20 +33,24 @@
 	width: 260px;
 	border: $border;
 	text-align: left;
-	background-color: rgba(255,255,255,0.85);
+	background-color: rgba(240,240,240,0.8);
 	z-index: 10;
+	transition: background-color 1s;
 
+	&:hover {
+		background-color: rgba(240,240,240,0.925);
+	}
 	.map-options-title {
 		display: flex;
 		justify-content: space-between;
 		font-weight: 600;
 		padding: 10px 20px;
-		background-color: rgba(255,255,255,0.8);
+		background-color: rgba(240,240,240,0.4);
 		cursor: pointer;
 
 		img { top: 4px; }
 		&:hover {
-			background-color: rgba(255,255,255,0.9);
+			background-color: rgba(240,240,240,0.6);
 		}
 	}
 	.map-options-content {
@@ -56,7 +60,7 @@
 	}
 	.filter-section:nth-child(n+2) {
 		margin-top: 15px;
-		border-top: $light-border;
+		border-top: $border;
 		padding-top: 15px;
 	}
 	.filter-box:nth-child(n+2) {
@@ -74,8 +78,15 @@
 		top: 2px;
 	}
 	.slider {
-		margin: 5px 0 15px 20px;
-		width: 170px;
+		margin: 5px 0 15px 15px;
+		width: 190px;
+	}
+	.info-img {
+		position: relative;
+		top: -1px;
+		width: 13px;
+		height: 13px;
+		margin-left: 5px;
 	}
 }
 .legend-container {

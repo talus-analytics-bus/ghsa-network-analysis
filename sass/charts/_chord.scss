@@ -4,8 +4,9 @@
 	}
 	.link {
 		fill: steelblue;
-		fill-opacity: 0.4;
-		&:hover {
+		fill-opacity: 0.3;
+		&:hover,
+		&.active {
 			fill-opacity: 0.8;
 		}
 	}

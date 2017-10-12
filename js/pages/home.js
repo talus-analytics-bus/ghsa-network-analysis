@@ -3,9 +3,9 @@
 		// variables used throughout home page
 		let map;  // the world map
 		let activeCountry = d3.select(null);  // the active country
-		const currentNodeDataMap = d3.map();  // maps each country to the current monetary value
+		const currentNodeDataMap = d3.map();  // maps country iso to the value on map
 		let startYear = App.dataStartYear;  // the start year of the time range shown
-		let endYear = App.dataEndYear;  // the end year of the time range shown
+		let endYear = App.dataEndYear + 1;  // the end year of the time range shown
 
 		// colors
 		const purples = ['#e0ecf4', '#bfd3e6', '#9ebcda',
@@ -17,7 +17,7 @@
 			// build map and initialize search
 			map = buildMap();
 			initMapOptions();
-			App.initCountryInfoBox({ closeFunc: resetMap });
+			initCountryInfoBox();
 			updateAll();
 		}
 
@@ -72,8 +72,32 @@
 		}
 
 		// gets the money type being displayed (donor vs recipient)
+		function getMoneyFlowType() {
+			return $('.money-flow-type-filter input:checked').attr('ind');
+		}
+
 		function getMoneyType() {
 			return $('.money-type-filter input:checked').attr('ind');
+		}
+
+		function getTotalFunc() {
+			const moneyType = getMoneyType();
+			if (moneyType === 'committed') {
+				return (p) => {
+					let total = 0;
+					for (let i = startYear; i < endYear; i++) {
+						total += p.committed_by_year[i];
+					}
+					return total;
+				};
+			}
+			return (p) => {
+				let total = 0;
+				for (let i = startYear; i < endYear; i++) {
+					total += p.spent_by_year[i];
+				}
+				return total;
+			};
 		}
 
 		// returns color scale based on map settings
@@ -83,7 +107,7 @@
 
 		// gets the lookup object currently being used
 		function getDataLookup() {
-			if (getMoneyType() === 'received') return App.recipientLookup;
+			if (getMoneyFlowType() === 'received') return App.recipientLookup;
 			return App.fundingLookup;
 		}
 
@@ -102,10 +126,11 @@
 		// updates the country to value data map based on user settings
 		function updateDataMaps() {
 			// get lookup (has all data)
-			const moneyType = getMoneyType();
+			const moneyFlow = getMoneyFlowType();
+			const totalFunc = getTotalFunc();
 			const dataLookup = getDataLookup();
 
-			// TODO get filter values; need to incorporate parent/child structure correctly
+			// get filter values
 			let ccs = $('.cc-select').val();
 			if (!ccs.length) ccs = App.capacities.map(d => d.id);
 
@@ -119,9 +144,8 @@
 					let totalValue = 0;
 					for (let i = 0, n = payments.length; i < n; i++) {
 						const p = payments[i];
-						//if (!App.passesCategoryFilter(p.project_function, functions)) continue;
-						// TODO take year range into account
-						totalValue += p.total_spent || 0;
+						if (!App.passesCategoryFilter(p.core_capacities, ccs)) continue;
+						totalValue += totalFunc(p) || 0;
 					}
 
 					// set in node map
@@ -132,7 +156,7 @@
 
 		// updates map colors
 		function updateMap() {
-			const moneyType = getMoneyType();
+			const moneyFlow = getMoneyFlowType();
 
 			// get color scale and set domain
 			const nodeColorScale = getColorScale();
@@ -162,7 +186,7 @@
 						.text(App.formatMoney(d.value));
 					container.append('div')
 						.attr('class', 'tooltip-main-value-label')
-						.text(moneyType === 'funded' ? 'Donated' : 'Received');
+						.text(moneyFlow === 'funded' ? 'Donated' : 'Received');
 
 					$(this).tooltipster('content', container.html());
 				});
@@ -179,6 +203,7 @@
 
 			const colors = colorScale.range();
 			const quantiles = colorScale.quantiles();
+			const maxValue = d3.max(currentNodeDataMap.values());
 
 			const legend = d3.select('.legend')
 				.attr('width', barWidth * colors.length + 2 * legendPadding)
@@ -206,12 +231,19 @@
 				.attr('y', barHeight + 12)
 				.attr('dy', '.35em')
 				.text((d, i) => {
-					if (i >= quantiles.length) return '';
+					if (i === quantiles.length) return App.formatMoneyShort(maxValue);
 					return App.formatMoneyShort(quantiles[i]);
 				});
+			legend.selectAll('.legend-start-label')
+				.data([true])
+				.enter().append('text')
+					.attr('class', 'legend-start-label')
+					.attr('y', barHeight + 12)
+					.attr('dy', '.35em')
+					.text(0);
 
 			// update legend title
-			let titleText = getMoneyType() === 'funded' ?
+			let titleText = getMoneyFlowType() === 'funded' ?
 				'Funds Donated' : 'Funds Received';
 			titleText += ` (in ${App.currencyIso})`;
 			const legendTitle = legend.selectAll('.legend-title')
@@ -229,11 +261,42 @@
 		// displays detailed country information
 		function displayCountryInfo() {
 			const country = activeCountry.datum().properties;
+			const moneyFlow = getMoneyFlowType();
 			const moneyType = getMoneyType();
-			const dataLookup = getDataLookup();
-			const payments = dataLookup[country.ISO2];
 
-			App.updateCountryInfoBox(country, moneyType, payments);
+			// populate info title
+			$('.info-title').text(country.NAME);
+
+			// define "go to analysis" button behavior
+			$('.info-analysis-button')
+				.off('click')
+				.on('click', () => {
+					hasher.setHash(`analysis/${country.ISO2}`);
+				});
+
+			// populate info total value
+			let value = 0;
+			if (currentNodeDataMap.has(country.ISO2)) {
+				value = currentNodeDataMap.get(country.ISO2);
+			}
+			$('.info-value').text(App.formatMoney(value));
+
+			// construct label for value
+			let label = '';
+			if (moneyFlow === 'funded' && moneyType === 'committed') {
+				label = 'Total Committed Funds';
+			} else if (moneyFlow === 'funded' && moneyType === 'disbursed') {
+				label = 'Total Disbursed Funds';
+			} else if (moneyFlow === 'received' && moneyType === 'committed') {
+				label = 'Total Funds Committed to Receive';
+			} else if (moneyFlow === 'received' && moneyType === 'disbursed') {
+				label = 'Total Funds Received';
+			}
+			label += `<br>from <b>${startYear}</b> to <b>${endYear - 1}</b>`;
+			$('.info-value-label').html(label);
+
+			// display content
+			$('.info-container').slideDown();
 		}
 
 		// initalizes components in the map options, incl. search and display toggle
@@ -252,7 +315,7 @@
 
 		// initializes search functionality
 		function initSearch() {
-			App.initCountrySearchBar('.country-search-input', (result) => {
+			App.initCountrySearchBar('.search-container', (result) => {
 				// get country element
 				const country = d3.selectAll('.country')
 					.filter(c => result.ISO2 === c.properties.ISO2);
@@ -271,7 +334,7 @@
 		function initSlider() {
 			const slider = App.initSlider('.time-slider', {
 				min: App.dataStartYear,
-				max: App.dataEndYear,
+				max: App.dataEndYear + 1,
 				value: [startYear, endYear],
 				tooltip: 'hide',
 			})
@@ -309,23 +372,36 @@
 			});
 
 			// attach change behavior
-			$('.money-type-filter .radio-option').click(() => {
-				const moneyType = getMoneyType();
-
+			$('.money-flow-type-filter .radio-option').click(() => {
 				// change button title in country info box
+				const moneyFlow = getMoneyFlowType();
 				$('.info-tab-container .btn[tab="country"]')
-					.text(moneyType === 'received' ? 'By Donor' : 'By Recipient');
+					.text(moneyFlow === 'received' ? 'By Donor' : 'By Recipient');
 
-				// update map
 				updateAll();
 			});
+			$('.money-type-filter .radio-option').click(updateAll);
 			$('.links-filter .radio-option').click(() => {
 				$('.country-link').toggle();
 			});
 			$('.map-options-container select').on('change', updateAll);
 
+			// add info tooltips
+			$('.committed-info-img').tooltipster({
+				content: 'The <b>amount committed</b> refers to the amount of money committed.',
+			});
+			$('.disbursed-info-img').tooltipster({
+				content: 'The <b>amount disbursed</b> refers to the amount of money the ' +
+					'recipient country has received.',
+			});
+
 			// show map options
 			$('.map-options-container').show();
+		}
+
+		function initCountryInfoBox() {
+			// define info close button behavior
+			$('.info-close-button').on('click', resetMap);
 		}
 
 		init();

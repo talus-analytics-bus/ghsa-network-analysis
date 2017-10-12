@@ -1,13 +1,10 @@
-.flag {
-	position: relative;
-	top: -2px;
-	height: 30px;
-	margin: 0 20px;
-}
-.country-summary-content {
-	margin-top: 30px;
-	text-align: center;
-
+.analysis-country-content {
+	.analysis-country-title {
+		text-align: center;
+		cursor: pointer;
+		margin-left: 225px;
+		margin-right: 225px;
+	}
 	.country-summary-label {
 		font-weight: 600;
 		font-size: 1.2em;
@@ -18,31 +15,58 @@
 		font-size: 2.4em;
 	}
 }
-.country-funds-content {
-	margin-top: 30px;
-	text-align: center;
+.country-summary-content {
+	display: none;
+	margin-top: 40px;
 
-	.funds-table-container {
+	.column { padding: 0 30px; }
+	.donor-column { text-align: right; }
+	.summary-value-box {
 		display: inline-block;
-		padding: 20px 30px;
-		width: 900px;
-		border: $light-border;
-		text-align: left;
-		@include gradient(#fff, #f0f0f0);
-		@include box-shadow(1px 1px 3px rgba(0,0,0,0.2));
+		vertical-align: top;
+		text-align: center;
 	}
-	.funds-table {
-		.money-cell {
-			text-align: right;
-			white-space: nowrap;
-		}
-	}
-	.funds-source-text {
+	.show-donor-btn,
+	.show-recipient-btn {
 		margin-top: 15px;
-		font-size: 0.9em;
-		text-align: right;
 	}
 }
-.circle-pack-container {
-	margin-top: 20px;
+.country-details {
+	.country-details-row > span:first-child {
+		font-weight: 600;
+	}
+}
+.country-flow-content {
+	display: none;
+	position: relative;
+	margin-top: 10px;
+
+	.switch-type-button {
+		position: absolute;
+		top: -44px;
+		right: 30px;
+	}
+	.country-flow-summary {
+		padding: 20px 30px;
+		border-bottom: $light-border;
+		margin-bottom: 20px;
+		min-height: 160px;
+	}
+	.country-summary-text {
+		float: left;
+	}
+	.time-chart-container {
+		margin-left: 300px;
+	}
+	.show-table-btn {
+		margin-top: 10px;
+	}
+	.circle-pack-content {
+		margin-top: 30px;
+		text-align: center;
+	}
+	.circle-pack-title,
+	.category-chart-title {
+		font-size: 1.5em;
+	}
 }

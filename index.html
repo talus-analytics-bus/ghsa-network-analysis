@@ -61,8 +61,8 @@
 					</div>
 					<div class="map-options-content">
 						<div class="filter-section">
-							<div class="filter-box money-type-filter">
-								<div class="dropdown-label">Color countries by:</div>
+							<div class="filter-box money-flow-type-filter">
+								<div class="dropdown-label">Select money flow type:</div>
 								<div class="radio-option">
 									<input type="radio" ind="funded" checked />
 									<span>Amount funded</span>
@@ -72,6 +72,19 @@
 									<span>Amount received</span>
 								</div>
 							</div>
+							<div class="filter-box money-type-filter">
+								<div class="dropdown-label">Select money type:</div>
+								<div class="radio-option">
+									<input type="radio" ind="committed" />
+									<span>Amount committed</span>
+									<img class="committed-info-img info-img" src="img/info.png" />
+								</div>
+								<div class="radio-option">
+									<input type="radio" ind="disbursed" checked />
+									<span>Amount disbursed</span>
+									<img class="disbursed-info-img info-img" src="img/info.png" />
+								</div>
+							</div>
 							<div class="filter-box">
 								<div class="dropdown-label">Select time range:</div>
 								<input class="time-slider slider" />
@@ -79,7 +92,7 @@
 						</div>
 						<div class="filter-section">
 							<div class="filter-box">
-								<div class="dropdown-label">Category</div>
+								<div class="dropdown-label">Core Capacity</div>
 								<select class="cc-select form-control" multiple="multiple"></select>
 							</div>
 						</div>
@@ -116,16 +129,8 @@
 						<img class="close-icon" src="img/close.png" />
 					</div>
 					<div class="info-title"></div>
-					<div class="row">
-						<div class="col-sm-6">
-							<div class="info-funded-value"></div>
-							<div class="info-value-label">Total Funded</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="info-received-value"></div>
-							<div class="info-value-label">Total Received</div>
-						</div>
-					</div>
+					<div class="info-value"></div>
+					<div class="info-value-label">Total Funded</div>
 					<div class="info-button-container">
 						<button class="info-analysis-button btn btn-default">View Funding Details</button>
 					</div>
@@ -136,48 +141,180 @@
 
 	<script id="analysis-template" type="text/x-handlebars-template">
 		<div class="analysis-container container">
-			<div class="analysis-filter-bar">
-				<div class="slider-box filter-box">
-					<div class="dropdown-label">Time Range</div>
-					<input class="time-slider slider" />
-				</div>
-				<div class="filter-box">
-					<div class="dropdown-label">Category</div>
-					<select class="cc-select form-control" multiple="multiple"></select>
-				</div>
-				<div class="search-container">
-					<div class="form-group has-feedback">
-						<input type="text" class="country-search-input form-control" placeholder="search for a country...">
-						<i class="glyphicon glyphicon-search form-control-feedback"></i>
-					</div>
-					<div class="live-search-results-container">
-						<div class="live-search-no-results-text">No results found</div>
-						<div class="live-search-results-contents"></div>
-					</div>
-				</div>
-			</div>
 			<div class="analysis-global-content analysis-content">
-				<h3>Monetary Flow Network by Region</h3>
-				<div class="chord-chart"></div>
-			</div>
-			<div class="analysis-country-content analysis-content">
-				<h3 class="analysis-country-title center"></h3>
-				<div class="country-summary-content row">
-					<div class="col-sm-6">
-						<div class="country-summary-label">Total Donated</div>
-						<div class="country-funded-value country-summary-value"></div>
-					</div>
-					<div class="col-sm-6">
-						<div class="country-summary-label">Total Received</div>
-						<div class="country-received-value country-summary-value"></div>
+				<h3>Analysis</h3>
+				<div class="instructions">
+					View global funding network analysis or explore funding by country.
+				</div>
+				<div class="analysis-global-tab-container">
+					<div class="btn-group">
+						<div class="tab btn btn-default" tab="global">Global Network</div>
+						<div class="tab btn btn-default" tab="country">Funding by Country</div>
 					</div>
 				</div>
+				<div class="global-tab-content-container tab-content-container">
+					<div class="global-tab-content tab-content" tab="global"> 
+						<h3>Monetary Flow Network by Region</h3>
+						<div class="network-map-container">
+							<div class="network-map-content"></div>
+							<div class="network-map-no-content">
+								There are no data with the combination of filters chosen.
+							</div>
+							<div class="network-map-options">
+								<div class="network-country-search search-container">
+									<div class="form-group has-feedback">
+										<input type="text" class="country-search-input form-control" placeholder="search for a country...">
+										<i class="glyphicon glyphicon-search form-control-feedback"></i>
+									</div>
+									<div class="live-search-results-container">
+										<div class="live-search-no-results-text">No results found</div>
+										<div class="live-search-results-contents"></div>
+									</div>
+								</div>
+								<div class="slider-box filter-box">
+									<div class="dropdown-label">Time Range</div>
+									<input class="time-slider slider" />
+								</div>
+								<div class="filter-box">
+									<div class="dropdown-label">Core Capacity</div>
+									<select class="cc-select form-control" multiple="multiple"></select>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="global-tab-content tab-content" tab="country">
+						<div class="row">
+							<div class="col-sm-6">
+								<h3 class="fund-table-title">Top Donor Countries</h3>
+								<table class="donor-table table table-bordered table-hover">
+									<thead>
+										<tr>
+											<td>Donor Country</td>
+											<td>Committed</td>
+											<td>Disbursed</td>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+							<div class="col-sm-6">
+								<h3 class="fund-table-title">Top Recipient Countries</h3>
+								<table class="recipient-table table table-bordered table-hover">
+									<thead>
+										<tr>
+											<td>Recipient Country</td>
+											<td>Committed</td>
+											<td>Disbursed</td>
+										</tr>
+									</thead>
+									<tbody></tbody>
+								</table>
+							</div>
+						</div>
+						<div class="table-country-search">
+							<span>Search for a country:</span>
+							<div class="search-container">
+								<div class="form-group has-feedback">
+									<input type="text" class="country-search-input form-control" placeholder="search for a country...">
+									<i class="glyphicon glyphicon-search form-control-feedback"></i>
+								</div>
+								<div class="live-search-results-container">
+									<div class="live-search-no-results-text">No results found</div>
+									<div class="live-search-results-contents"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script id="analysis-country-template" type="text/x-handlebars-template">
+		<div class="analysis-container container">
+			<div class="analysis-country-content analysis-content">
+				<h3 class="analysis-country-title"></h3>
+				<div class="country-summary-content row">
+					<!--<div class="country-details">
+						<div class="country-details-row">
+							<span>Region:</span>
+							<span class="country-region"></span>
+						</div>
+						<div class="country-details-row">
+							<span>Subregion:</span>
+							<span class="country-subregion"></span>
+						</div>
+						<div class="country-details-row">
+							<span>Intermediate Region:</span>
+							<span class="country-intermediate"></span>
+						</div>
+						<div class="country-details-row">
+							<span>Population:</span>
+							<span class="country-population"></span>
+						</div>
+					</div>-->
+					<div class="donor-column column col-sm-6">
+						<div class="summary-value-box">
+							<div class="country-summary-label">Total Funded</div>
+							<div class="country-funded-value country-summary-value"></div>
+							<div>
+								<div class="show-donor-btn btn btn-default">Show Donor Profile</div>
+							</div>
+						</div>
+					</div>
+					<div class="recipient-column column col-sm-6">
+						<div class="summary-value-box">
+							<div class="country-summary-label">Total Received</div>
+							<div class="country-received-value country-summary-value"></div>
+							<div>
+								<div class="show-recipient-btn btn btn-default">Show Recipient Profile</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="country-flow-content">
+					<div class="switch-type-button btn btn-default"></div>
+					<div class="country-flow-summary">
+						<div class="country-summary-text">
+							<div class="country-summary-label"></div>
+							<div class="country-summary-value"></div>						
+							<div class="show-table-btn btn btn-default">Show All Funds</div>
+						</div>
+						<div class="time-chart-container"></div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="circle-pack-container">
+								<h3 class="circle-pack-title"></h3>
+								<div class="circle-pack-description description"></div>
+								<div class="circle-pack-content"></div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<h3 class="category-chart-title">Funds Disbursed by Core Capacity</h3>
+							<div class="description">
+								The chart below shows the amount of money disbursed by this country for each core capacity. Colors represent the region of the world of the recipient.
+								<br><br>
+								<i>Hover over a core capacity to see its full name.</i>
+							</div>
+							<div class="category-chart-container"></div>
+						</div>
+				</div>
+			</div>
+		</div>
+	</script>
+
+	<script id="analysis-table-template" type="text/x-handlebars-template">
+		<div class="analysis-container container">
+			<div class="analysis-table-content">
+				<h3 class="analysis-country-title"></h3>
+				<div class="back-button btn btn-default">Back to Country Summary</div>
 				<div class="country-funds-content">
 					<div class="funds-tab-container">
 						<div class="btn-group">
 							<div class="tab btn btn-default" tab="all">All Funds</div>
 							<div class="tab btn btn-default" tab="country">Funds By Country</div>
-							<div class="tab btn btn-default" tab="cc">Funds By Category</div>
+							<div class="tab btn btn-default" tab="cc">Funds By Core Capacity</div>
 						</div>
 					</div>
 					<div class="funds-table-container">
@@ -192,20 +329,32 @@
 						</div>
 					</div>
 				</div>
-				<div class="circle-pack-container row">
-					<div class="col-md-6 col-sm-12">
-						<h3>Countries Donated To</h3>
-						<div class="country-funded-description description">
-							The plot below displays the countries this country has funded.
+			</div>
+		</div>
+	</script>
+
+	<script id="analysis-pair-template" type="text/x-handlebars-template">
+		<div class="analysis-container container">
+			<div class="analysis-pair-content analysis-content">
+				<h3 class="analysis-country-title center"></h3>
+				<div class="country-funds-content">
+					<div class="pair-summary-text"></div>
+					<div class="funds-tab-container">
+						<div class="btn-group">
+							<div class="tab btn btn-default" tab="all">All Funds</div>
+							<div class="tab btn btn-default" tab="cc">Funds By Core Capacity</div>
 						</div>
-						<div class="country-funded-container circle-pack-container"></div>
 					</div>
-					<div class="col-md-6 col-sm-12">
-						<h3>Countries Received From</h3>
-						<div class="country-received-description description">
-							The plot below displays the countries this country has received money from.
+					<div class="funds-table-container">
+						<table class="funds-table table table-condensed table-striped table-bordered">
+							<thead>
+								<tr></tr>
+							</thead>
+							<tbody></tbody>	
+						</table>
+						<div class="funds-source-text">
+							Source: <b>International Aid Transparency Initiative, 2014-2017.</b>
 						</div>
-						<div class="country-received-container circle-pack-container"></div>
 					</div>
 				</div>
 			</div>
@@ -214,21 +363,21 @@
 
 	<script id="submit-template" type="text/x-handlebars-template">
 		<div class="submit-page-container container container-text">
-			<h3>Submit Data</h3>
+			<h3>Submit Data for Multiple Projects</h3>
 			<div class="description">
-				Submit project data using the form below.
-				Data may be uploaded in the format used in the provided blank template.
-				Data will be sent to be reviewed before being incorporated into the tool.
+				Project data may be submitted using the form below. An empty form can be downloaded by clicking "Download Project Report Template". <br> <br>
+				Using the structure of the project report template, please update the file with relevant, project-level information. Upload completed reports by clicking "Upload Project Report" and selecting the location where the file is saved on your computer. <br> <br>
+				Data will be reviewed before being incorporated into the tool.
 			</div>
 			<div class="upload-button-container">
 				<a class="export-button-link" href="export/template.xlsx">
-					<button type="button" class="btn btn-default">Download Blank Score Report</button>
+					<button type="button" class="btn btn-default">Download Project Report Template</button>
 				</a>
-				<button type="button" class="btn btn-default btn-score-file">Select Score File</button>
+				<button type="button" class="btn btn-default btn-score-file">Upload Project Report</button>
 				<input id="score-file-upload" class="input-score-file" type="file" />
 			</div>
 			<div class="submit-form-content">
-				<h3>Add a Single Project</h3>
+				<h3>Submit Data for a Single Project</h3>
 				<div class="submit-form-container">
 					<table class="submit-form-table"><tbody>
 						<tr>
@@ -290,7 +439,7 @@
 				<div class="submit-form-container">
 					<table class="submit-form-table"><tbody>
 						<tr>
-							<td>Category (JEE Core Capacity)</td>
+							<td>Core Capacity</td>
 							<td><select class="cc-select form-control" multiple="multiple"></select></td>
 						</tr>
 					</tbody></table>
@@ -306,7 +455,7 @@
 		<div class="settings-page-container container container-text">
 			<h3>Settings</h3>
 			<div class="description">
-				Modify settings here.
+				Specify your preferred currency below to update the information shown in data and figures. 
 			</div>
 			<div class="settings-content">
 				<div class="dropdown-label">Currency</div>
@@ -319,7 +468,10 @@
 		<div class="about-page-container container container-text">
 			<h3>About</h3>
 			<div class="description">
-				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce luctus sed nulla eu placerat. Cras sed neque sit amet ipsum dignissim dignissim. Phasellus ante turpis, viverra ut dui efficitur, viverra venenatis libero.
+				The Global Health Security Agenda (GHSA), launched in 2014, is an international partnership with the goal of strengthening global capacity to prevent, detect, and respond to infectious disease threats. Ensuring adequate funding for health security initiatives is paramount to the GHSA’s success in advancing global health security. The Global Health Security Tracking Dashboard was developed to provide a shared resource which maps the flow of committed and dispersed funds for global health security. By considering these flows of funding, it is possible to identify patterns of influence and success in global health security funding implementation. It is also possible to highlight gaps, which helps to define and prioritize targets for future funding. This platform and effort will serve as the basis for mutual accountability within the global health security community, promoting public accounting, and providing an opportunity for countries, organizations, and other funders to showcase their successes and identify priorities for future investments. <br> <br>
+				The Global Health Security Tracking Dashboard was developed by Talus Analytics and the Georgetown University Center for Global Health Science and Security.
+
+
 			</div>
 		</div>
 	</script>
@@ -356,14 +508,19 @@
 	<script src="js/utility.js"></script>
 	<script src="js/routing.js"></script>
 	<script src="js/app.js"></script>
-	<script src="js/components/charts.js"></script>
-	<script src="js/components/countryInfoBox.js"></script>
+	<script src="js/components/categoryChart.js"></script>
+	<script src="js/components/circlePack.js"></script>
+	<script src="js/components/filters.js"></script>
 	<script src="js/components/map.js"></script>
+	<script src="js/components/networkMap.js"></script>
 	<script src="js/components/search.js"></script>
 	<script src="js/components/slider.js"></script>
+	<script src="js/components/timeChart.js"></script>
+	<script src="js/components/valueSquares.js"></script>
 	<script src="js/pages/analysis.js"></script>
 	<script src="js/pages/analysisCountry.js"></script>
-	<script src="js/pages/analysisGlobal.js"></script>
+	<script src="js/pages/analysisPair.js"></script>
+	<script src="js/pages/analysisTable.js"></script>
 	<script src="js/pages/home.js"></script>
 	<script src="js/pages/settings.js"></script>
 	<script src="js/pages/submit.js"></script>

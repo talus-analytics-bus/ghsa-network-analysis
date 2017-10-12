@@ -19,7 +19,19 @@ const Routing = {};
 			loadPage('analysis', App.initAnalysis);
 		});
 		crossroads.addRoute('/analysis/{iso}', (iso) => {
-			loadPage('analysis', App.initAnalysis, iso);
+			loadPage('analysis-country', App.initAnalysisCountry, iso);
+		});
+		crossroads.addRoute('/analysis/{iso}/d', (iso) => {
+			loadPage('analysis-country', App.initAnalysisCountry, iso, 'd');
+		});
+		crossroads.addRoute('/analysis/{iso}/r', (iso) => {
+			loadPage('analysis-country', App.initAnalysisCountry, iso, 'r');
+		});
+		crossroads.addRoute('/analysis/{iso}/{type}/table', (iso, type) => {
+			loadPage('analysis-table', App.initAnalysisTable, iso, type);
+		});
+		crossroads.addRoute('/analysis/{fundIso}/{recIso}', (fundIso, recIso) => {
+			loadPage('analysis-pair', App.initAnalysisPair, fundIso, recIso);
 		});
 		crossroads.addRoute('/submit', () => {
 			loadPage('submit', App.initSubmit);
