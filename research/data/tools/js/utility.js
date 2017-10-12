@@ -12,6 +12,39 @@ String.prototype.replaceAt=function(index, replacement) {
     return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
 }
 
+// Hashes text strings (title, desc of activity) to JEE Core Capacities
+Util.ccHash = {
+  "legislation": "P.1",
+  "legislature": "P.1",
+  "policy": "P.1",
+  "law ": "P.1",
+  " law": "P.1",
+  " law ": "P.1",
+  "laws": "P.1",
+  "IHR": "P.2",
+  "international health regulations": "P.2",
+  "antimicro": "P.3",
+  "AMR transmission": "P.3",
+  "zoono": "P.4",
+  "animal disease": "P.4",
+  "One Health": "P.4",
+  "OIE": "P.4",
+  "food safety": "P.5",
+  "biosec": "P.6",
+  "biosaf": "P.6",
+  "immun": "P.7",
+  "vacc": "P.7",
+  "lab ": "D.1",
+  " lab": "D.1",
+  " lab ": "D.1",
+  "surveil": "D.2",
+  "WAHIS": "D.3",
+  "International Reporting Requirements": "D.3",
+  "surge capacity": "R.1",
+  "response plan": "R.1",
+  "prepared": "R.1"
+};
+
 Util.getQueryUrl = (proxyUrl, queryJson) => {
 
     let queryUrl = '';
