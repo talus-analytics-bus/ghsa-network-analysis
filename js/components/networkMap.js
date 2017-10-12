@@ -5,8 +5,8 @@
 		const receiveColor = App.receiveColor;
 
 		// define geo collection variables and maps
-		const subregions = [];
-		const countries = [];
+		let subregions = [];
+		let countries = [];
 		let funds = [];
 		const countryMapByName = d3.map();
 
@@ -42,6 +42,7 @@
 
 		// add groups for chart
 		const linkG = chart.append('g')
+			.attr('class', 'link-g')
 			.attr('clip-path', 'url(#circle-clip)');
 		const arcG = chart.append('g');
 		const countryArcG = arcG.append('g');
@@ -109,7 +110,9 @@
 				.data(data);
 			rArcs.exit().remove();
 			rArcs.enter().append('path')
+				.attr('class', 'arc')
 				.merge(rArcs)
+					.transition()
 					.style('fill', getFundReceiveColor)
 					.attr('d', regionArc);
 
@@ -118,6 +121,7 @@
 				.data(subregions);
 			sArcs.exit().remove();
 			sArcs.enter().append('path')
+				.attr('class', 'arc')
 				.each(function addTooltip(d) {
 					$(this).tooltipster({
 						plugins: ['follower'],
@@ -125,6 +129,7 @@
 					});
 				})
 				.merge(sArcs)
+					.transition()
 					.style('fill', getFundReceiveColor)
 					.attr('d', subregionArc);
 
@@ -133,16 +138,14 @@
 				.data(countries);
 			cArcs.exit().remove();
 			cArcs.enter().append('path')
+				.attr('class', 'arc')
 				.each(function addTooltip(d) {
 					$(this).tooltipster({
 						plugins: ['follower'],
 						content: d.name,
 					});
 				})
-				.merge(cArcs)			
-					.style('fill', getFundReceiveColor)
-					.style('stroke', '#fff')
-					.attr('d', countryArc)
+				.merge(cArcs)
 					.on('mouseover', (d) => {
 						d3.selectAll('.link')
 							.filter(l => l.donor === d.name || l.recipient === d.name)
@@ -150,13 +153,18 @@
 					})
 					.on('mouseout', (d) => {
 						d3.selectAll('.link').classed('active', false);
-					});
+					})
+					.transition()
+						.style('fill', getFundReceiveColor)
+						.style('stroke', '#fff')
+						.attr('d', countryArc);
 
 			// create region arc labels
 			const labelPaths = regionArcG.selectAll('.arc-label-path')
 				.data(data);
 			labelPaths.exit().remove();
 			labelPaths.enter().append('path')
+				.attr('class', 'arc-label-path')
 				.merge(labelPaths)
 					.attr('id', (d, i) => `arc-path-${i}`)
 					.attr('d', regionArc)
@@ -204,11 +212,17 @@
 			links.enter().append('path')
 				.attr('class', 'link')
 				.merge(links)
-					.style('fill', colorScale(0))
-					.attr('d', ribbon);
+					.attr('d', ribbon)
+					.transition().style('fill', colorScale(0));
 		}
 
 		function addAnglesToData(data) {
+			// empty collection variables and empty maps
+			subregions = [];
+			countries = [];
+			funds = [];
+			countryMapByName.empty();
+
 			// attach start and end angles to each of the countries/subregions/regions
 			const totalFlow = d3.sum(data, d => d.totalFlow);
 			let runningTheta = 0;

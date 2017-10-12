@@ -3,6 +3,7 @@
 		let currentTab = 'global';
 		let startYear = App.dataStartYear;
 		let endYear = App.dataEndYear + 1;
+		let networkMap;
 
 		function init() {
 			initTabs();
@@ -11,7 +12,7 @@
 			initSearch();
 			updateTab();
 			populateTables('.donor-table', '.recipient-table');
-			const networkMap = drawNetworkMap('.network-map-content');
+			networkMap = buildNetworkMap();
 		}
 
 		function initTabs() {
@@ -61,7 +62,7 @@
 				if (+years[0] !== startYear || +years[1] !== endYear) {
 					startYear = +years[0];
 					endYear = +years[1];
-					// TODO
+					updateNetworkMap();
 				}
 			});
 			return slider;
@@ -147,8 +148,21 @@
 			rRows.append('td').text(d => App.formatMoney(d.total_spent));
 		}
 
-		function drawNetworkMap(selector) {
-			// collate the data
+		function getTotalFunc() {
+			return (p) => {
+				let total = 0;
+				for (let i = startYear; i < endYear; i++) {
+					total += p.spent_by_year[i];
+				}
+				return total;
+			};			
+		}
+
+		function getNetworkData() {
+			// get data function
+			const totalFunc = getTotalFunc();
+
+			// separate the data by region, subregion, country
 			const fundedData = [];
 			const receivedData = [];
 			const chordData = [];
@@ -162,8 +176,8 @@
 				// construct chord data; sort by region and subregion
 				let totalFunded = 0;
 				let totalReceived = 0;
-				if (fundedPayments) totalFunded = d3.sum(fundedPayments, d => d.total_spent);
-				if (receivedPayments) totalReceived = d3.sum(receivedPayments, d => d.total_spent);
+				if (fundedPayments) totalFunded = d3.sum(fundedPayments, d => totalFunc(d));
+				if (receivedPayments) totalReceived = d3.sum(receivedPayments, d => totalFunc(d));
 				if (totalFunded || totalReceived) {
 					const region = c.regionName;
 					const sub = c.subRegionName;
@@ -179,7 +193,8 @@
 					
 					if (fundedPayments) {
 						fundedPayments.forEach((p) => {
-							if (p.total_spent) {
+							const value = totalFunc(p);
+							if (value) {
 								// check that the recipient is a valid country
 								const rIso = p.recipient_country;
 								const rCountry = App.countries.find(c => c.ISO2 === rIso);
@@ -188,7 +203,7 @@
 									if (!fundsByRegion[region][sub][iso].fundsByC[rName]) {
 										fundsByRegion[region][sub][iso].fundsByC[rName] = 0;
 									}
-									fundsByRegion[region][sub][iso].fundsByC[rName] += p.total_spent;
+									fundsByRegion[region][sub][iso].fundsByC[rName] += value;
 								}
 							}
 						});
@@ -244,9 +259,16 @@
 				}
 				chordData.push(region);
 			}
+			return chordData;
+		}
 
-			// build the charts
-			return App.buildNetworkMap(selector, chordData);
+		function buildNetworkMap() {
+			const networkData = getNetworkData();
+			return App.buildNetworkMap('.network-map-content', networkData);
+		}
+
+		function updateNetworkMap() {
+			networkMap.update(getNetworkData());
 		}
 
 		init();
