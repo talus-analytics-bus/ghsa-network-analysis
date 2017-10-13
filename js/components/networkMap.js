@@ -171,14 +171,14 @@
 				})
 				.merge(cArcs);
 			cArcs
-				/*.on('mouseover', (d) => {
+				.on('mouseover', (d) => {
 					d3.selectAll('.link')
 						.filter(l => l.donor === d.name || l.recipient === d.name)
 						.classed('country-hover', true);
 				})
 				.on('mouseout', (d) => {
 					d3.selectAll('.link').classed('country-hover', false);
-				})*/
+				})
 				.each(function updateTooltip(d) {
 					let contentStr = `<div class="nm-tooltip-title">${d.name}</div>`;
 					if (d.totalFunded) {
@@ -213,7 +213,8 @@
 						newArc = newArc.replace(/,/g , " ");
 
 						// flip if bottom half of circle
-						if (d.theta1 > Math.PI / 2 && d.theta0 < 5 * Math.PI / 4) {
+						const avgTheta = (d.theta0 + d.theta1) / 2;
+						if (avgTheta > Math.PI / 2 && avgTheta < 3 * Math.PI / 2) {
 							const startLoc = /M(.*?)A/;
 							const middleLoc = /A(.*?)0 0 1/;
 							const endLoc = /0 0 1 (.*?)$/;
@@ -234,7 +235,8 @@
 				.attr('startOffset', '50%');
 			labels = newLabels.merge(labels)
 				.attr('dy', (d) => {
-					if (d.theta1 > Math.PI / 2 && d.theta0 < 5 * Math.PI / 4) return 18;
+					const avgTheta = (d.theta0 + d.theta1) / 2;
+					if (avgTheta > Math.PI / 2 && avgTheta < 3 * Math.PI / 2) return 18;
 					return -6;
 				});
 			labels.select('textPath')
