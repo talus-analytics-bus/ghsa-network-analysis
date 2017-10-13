@@ -202,34 +202,49 @@
 
 		function drawCountryTable() {
 			if (moneyType === 'd') {
-				$('.circle-pack-title').text('Countries Donated To');
+				$('.circle-pack-title').text('Top Countries Donated To');
 			} else {
-				$('.circle-pack-title').text('Countries Received From');
+				$('.circle-pack-title').text('Top Countries Received From');
 			}
 
+			// get table data
 			if (lookup[iso]) {
-				// get data
+				const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_country';
 				const fundedData = [];
 				const fundedByCountry = {};
-				App.fundingLookup[iso].forEach((p) => {
-					if (!fundedByCountry[p.recipient_country]) {
-						fundedByCountry[p.recipient_country] = {
+				lookup[iso].forEach((p) => {
+					const recIso = p[countryInd];
+					if (!fundedByCountry[recIso]) {
+						fundedByCountry[recIso] = {
+							iso: recIso,
 							total_committed: 0,
 							total_spent: 0,
 						};
 					}
-					fundedByCountry[p.recipient_country].total_committed += p.total_committed;
-					fundedByCountry[p.recipient_country].total_spent += p.total_spent;
+					fundedByCountry[recIso].total_committed += p.total_committed;
+					fundedByCountry[recIso].total_spent += p.total_spent;
 				});
-				App.countries.forEach((c) => {
-					if (fundedByCountry[c.ISO2]) {
-						const cCopy = Object.assign({}, c);
-						cCopy.total_committed = fundedByCountry[c.ISO2].total_committed;
-						cCopy.total_spent = fundedByCountry[c.ISO2].total_spent;
-						fundedData.push(cCopy);
-					}
-				});
+				for (let iso in fundedByCountry) {
+					fundedData.push(fundedByCountry[iso]);
+				}
 				Util.sortByKey(fundedData, 'total_spent', true);
+
+				// draw table
+				let firstColLabel = (moneyType === 'd') ? 'Recipient Country' : 'Donor Country';
+				$('.country-table thead tr td:first-child').text(firstColLabel);
+
+				const rows = d3.select('.country-table tbody').selectAll('tr')
+					.data(fundedData.slice(0, 10))
+					.enter().append('tr');
+				rows.append('td').html((d) => {
+					const country = App.countries.find(c => c.ISO2 === d.iso);
+					const flagHtml = country ? App.getFlagHtml(d.iso) : '';
+					const name = country ? country.NAME : d.iso;
+					return `<div class="flag-container">${flagHtml}</div><b>${name}</b>`;
+				});
+;
+				rows.append('td').text(d => App.formatMoney(d.total_committed));
+				rows.append('td').text(d => App.formatMoney(d.total_spent));
 			} else {
 				d3.select('.circle-pack-description')
 					.html('<i>There are no data for countries funded by this country.</i>');
@@ -269,6 +284,7 @@
 							totalSpent += fundsByCat[cap.id][iso].total_spent;
 						}
 						catData.push({
+							id: cap.id,
 							name: cap.name,
 							children: countries,
 							total_committed: totalCommitted,
@@ -276,6 +292,7 @@
 						});
 					} else {
 						catData.push({
+							id: cap.id,
 							name: cap.name,
 							children: [],
 							total_committed: 0,

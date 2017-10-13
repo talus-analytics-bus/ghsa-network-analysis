@@ -74,7 +74,7 @@ const App = {};
 				App.currencyIso = 'USD';
 
 				// populate lookup variables from funding data
-				App.fundingData.forEach((d) => {
+				App.fundingData.forEach((d, j) => {
 					const donor = d.donor_country;
 					const recipient = d.recipient_country;
 
@@ -87,20 +87,6 @@ const App = {};
 					App.fundingLookup[donor].push(d);
 					if (!App.recipientLookup[recipient]) App.recipientLookup[recipient] = [];
 					App.recipientLookup[recipient].push(d);
-
-					// calculate totals by year
-					// TODO should do this outside UI
-					d.committed_by_year = {};
-					d.spent_by_year = {};
-					for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
-						const transactions = d.transactions.filter(t => +t.cy === i);
-						const ct = transactions.filter(t => t.type === 'commitment');
-						const dt = transactions.filter((t) => {
-							return t.type === 'disbursement' || t.type === 'expenditure';
-						});
-						d.committed_by_year[i] = d3.sum(ct, d => d.amount);
-						d.spent_by_year[i] = d3.sum(dt, d => d.amount);
-					}
 				});
 
 				// call callback and finish progress bar
