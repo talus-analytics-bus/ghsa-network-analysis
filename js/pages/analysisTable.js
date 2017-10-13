@@ -26,6 +26,7 @@
 				.on('click', () => hasher.setHash(`analysis/${iso}`));
 
 			// fill in other text
+			$('.money-type-noun').text(moneyFlow === 'd' ? 'Donor' : 'Recipient');
 			$('.money-type-cap').text(moneyFlow === 'd' ? 'Disbursed' : 'Received');
 			$('.commit-noun').text(moneyFlow === 'd' ? 'Committed Funds' :
 				'Committed Funds to Receive');
@@ -78,7 +79,7 @@
 				];
 			} else if (currentInfoTab === 'country') {
 				headerData = [
-					{ name: 'Donor', value: 'donor_country' },
+					{ name: 'Donor', value: 'donor_code' },
 					{ name: 'Recipient', value: 'recipient_country' },
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
@@ -98,7 +99,7 @@
 			} else if (currentInfoTab === 'country') {
 				const totalByCountry = {};
 				allPayments.forEach((p) => {
-					const dc = p.donor_country;
+					const dc = p.donor_code;
 					const rc = p.recipient_country;
 					if (!totalByCountry[dc]) totalByCountry[dc] = {};
 					if (!totalByCountry[dc][rc]) {
@@ -112,11 +113,9 @@
 				});
 				for (let dc in totalByCountry) {
 					for (let rc in totalByCountry[dc]) {
-						const dCountry = App.countries.find(c => c.ISO2 === dc);
-						const rCountry = App.countries.find(c => c.ISO2 === rc);
 						paymentTableData.push({
-							donor_country: dCountry ? dCountry.NAME : dc,
-							recipient_country: rCountry ? rCountry.NAME : rc,
+							donor_code: App.codeToNameMap.get(dc),
+							recipient_country: App.codeToNameMap.get(rc),
 							total_committed: totalByCountry[dc][rc].total_committed,
 							total_spent: totalByCountry[dc][rc].total_spent,
 						});
@@ -167,7 +166,7 @@
 			const newRows = rows.enter().append('tr');
 			newRows.merge(rows).on('click', (p) => {
 				// clicking on a row navigates user to country pair page
-				hasher.setHash(`analysis/${p.donor_country}/${p.recipient_country}`);
+				hasher.setHash(`analysis/${p.donor_code}/${p.recipient_country}`);
 			});
 
 			const cells = newRows.merge(rows).selectAll('td')

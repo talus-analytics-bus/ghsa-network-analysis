@@ -116,10 +116,9 @@
 			const countriesByFunding = [];
 			for (let iso in App.fundingLookup) {
 				if (iso !== 'Not reported') {
-					const country = App.countries.find(c => c.ISO2 === iso);
 					countriesByFunding.push({
 						iso,
-						name: country ? country.NAME : iso,
+						name: App.codeToNameMap.get(iso),
 						total_committed: d3.sum(App.fundingLookup[iso], d => d.total_committed),
 						total_spent: d3.sum(App.fundingLookup[iso], d => d.total_spent),
 					});
@@ -131,10 +130,9 @@
 			const countriesByReceived = [];
 			for (let iso in App.recipientLookup) {
 				if (iso !== 'Not reported') {
-					const country = App.countries.find(c => c.ISO2 === iso);
 					countriesByReceived.push({
 						iso,
-						name: country ? country.NAME : iso,
+						name: App.codeToNameMap.get(iso),
 						total_committed: d3.sum(App.recipientLookup[iso], d => d.total_committed),
 						total_spent: d3.sum(App.recipientLookup[iso], d => d.total_spent),
 					});
@@ -155,7 +153,9 @@
 			dRows.append('td').html((d) => {
 				const country = App.countries.find(c => c.ISO2 === d.iso);
 				const flagHtml = country ? App.getFlagHtml(d.iso) : '';
-				return `<div class="flag-container">${flagHtml}</div><b>${d.name}</b>`;
+				const name = App.codeToNameMap.get(d.iso);
+				return `<div class="flag-container">${flagHtml}</div>` +
+					`<div class="name-container">${name}</div>`;
 			});
 			dRows.append('td').text(d => App.formatMoney(d.total_committed));
 			dRows.append('td').text(d => App.formatMoney(d.total_spent));
@@ -173,7 +173,9 @@
 			rRows.append('td').html((d) => {
 				const country = App.countries.find(c => c.ISO2 === d.iso);
 				const flagHtml = country ? App.getFlagHtml(d.iso) : '';
-				return `<div class="flag-container">${flagHtml}</div><b>${d.name}</b>`;
+				const name = country ? country.NAME : d.iso;
+				return `<div class="flag-container">${flagHtml}</div>` +
+					`<div class="name-container">${name}</div>`;
 			});
 			rRows.append('td').text(d => App.formatMoney(d.total_committed));
 			rRows.append('td').text(d => App.formatMoney(d.total_spent));

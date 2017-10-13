@@ -221,7 +221,7 @@
 
 			// get table data
 			if (lookup[iso]) {
-				const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_country';
+				const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_code';
 				const fundedData = [];
 				const fundedByCountry = {};
 				lookup[iso].forEach((p) => {
@@ -258,7 +258,7 @@
 				rows.append('td').html((d) => {
 					const country = App.countries.find(c => c.ISO2 === d.iso);
 					const flagHtml = country ? App.getFlagHtml(d.iso) : '';
-					const name = country ? country.NAME : d.iso;
+					const name = App.codeToNameMap.get(d.iso);
 					return `<div class="flag-container">${flagHtml}</div>` +
 						`<div class="name-container">${name}</div>`;
 				});
@@ -273,7 +273,7 @@
 
 		function drawCategoryChart() {
 			// get data
-			const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_country';
+			const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_code';
 			if (lookup[iso]) {
 				const catData = [];
 				const fundsByCat = {};

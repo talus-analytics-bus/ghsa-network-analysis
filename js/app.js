@@ -18,6 +18,7 @@ const App = {};
 		App.currencyIso = 'USD';  // the default currency
 		App.fundingLookup = {};  // a lookup of money funded for each country
 		App.recipientLookup = {};  // a lookup of money received for each country
+		App.codeToNameMap = d3.map();  // a lookup map of a donor_code to the country name
 		App.capacities = [
 			{ id: 'P.1', name: 'P.1 - National Legislation, Policy, and Financing' },
 			{ id: 'P.2', name: 'P.2 - IHR Coordination, Communicaton and Advocacy' },
@@ -43,9 +44,10 @@ const App = {};
 		d3.queue()
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
+			.defer(d3.json, 'data/donor_codes.json')
 			.defer(d3.json, 'data/funding_data_101317.json')
 			.defer(d3.json, 'data/currencies.json')
-			.await((error, worldData, unsdData, fundingData, currencies) => {
+			.await((error, worldData, unsdData, donorCodeData, fundingData, currencies) => {
 				if (error) throw error;
 
 				/* -------- Populate global variables -------- */
@@ -64,6 +66,14 @@ const App = {};
 					c.regionName = regionInfo['Region Name'];
 					c.subRegionName = regionInfo['Sub-region Name'];
 					c.intermediateRegionName = regionInfo['Intermediate Region Name'];
+					App.codeToNameMap.set(c.ISO2, c.NAME);
+				});
+
+				// fill code to name map
+				donorCodeData.forEach((d) => {
+					if (!App.codeToNameMap.has(d.donor_code)) {
+						App.codeToNameMap.set(d.donor_code, d.donor_name);
+					}
 				});
 
 				// save funding data
@@ -75,7 +85,7 @@ const App = {};
 
 				// populate lookup variables from funding data
 				App.fundingData.forEach((d, j) => {
-					const donor = d.donor_country;
+					const donor = d.donor_code;
 					const recipient = d.recipient_country;
 
 					// zero out negative values
