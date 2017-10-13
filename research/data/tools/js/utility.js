@@ -13,37 +13,7 @@ String.prototype.replaceAt=function(index, replacement) {
 }
 
 // Hashes text strings (title, desc of activity) to JEE Core Capacities
-Util.ccHash = {
-  "legislation": "P.1",
-  "legislature": "P.1",
-  "policy": "P.1",
-  "law ": "P.1",
-  " law": "P.1",
-  " law ": "P.1",
-  "laws": "P.1",
-  "IHR": "P.2",
-  "international health regulations": "P.2",
-  "antimicro": "P.3",
-  "AMR transmission": "P.3",
-  "zoono": "P.4",
-  "animal disease": "P.4",
-  "One Health": "P.4",
-  "OIE": "P.4",
-  "food safety": "P.5",
-  "biosec": "P.6",
-  "biosaf": "P.6",
-  "immun": "P.7",
-  "vacc": "P.7",
-  "lab ": "D.1",
-  " lab": "D.1",
-  " lab ": "D.1",
-  "surveil": "D.2",
-  "WAHIS": "D.3",
-  "International Reporting Requirements": "D.3",
-  "surge capacity": "R.1",
-  "response plan": "R.1",
-  "prepared": "R.1"
-};
+Util.ccHash = [{"kw":"legislation","cc":"P.1"},{"kw":"legislature","cc":"P.1"},{"kw":"policy","cc":"P.1"},{"kw":"law ","cc":"P.1"},{"kw":" law","cc":"P.1"},{"kw":" law ","cc":"P.1"},{"kw":"laws","cc":"P.1"},{"kw":"IHR","cc":"P.2"},{"kw":"international health regulations","cc":"P.2"},{"kw":"antimicro","cc":"P.3"},{"kw":"AMR transmission","cc":"P.3"},{"kw":"zoono","cc":"P.4"},{"kw":"animal disease","cc":"P.4"},{"kw":"One Health","cc":"P.4"},{"kw":"OIE","cc":"P.4"},{"kw":"food safety","cc":"P.5"},{"kw":"biosec","cc":"P.6"},{"kw":"biosaf","cc":"P.6"},{"kw":"immun","cc":"P.7"},{"kw":"vacc","cc":"P.7"},{"kw":"lab ","cc":"D.1"},{"kw":" lab","cc":"D.1"},{"kw":" lab ","cc":"D.1"},{"kw":"surveil","cc":"D.2"},{"kw":"WAHIS","cc":"D.3"},{"kw":"International Reporting Requirements","cc":"D.3"},{"kw":"surge capacity","cc":"R.1"},{"kw":"response plan","cc":"R.1"},{"kw":"prepared","cc":"R.1"}];
 
 Util.getQueryUrl = (proxyUrl, queryJson) => {
 
@@ -313,6 +283,21 @@ Util.iatiDiseaseFunctionHash = {
         "c": "Family health"
       }
     ]
+  },
+  "Social mitigation of HIV/AIDS": {
+    "disease_tags": {
+        "p": "Infectious disease",
+        "c": "HIV/AIDS"
+      },
+    "function_tags": undefined
+  },
+  "Waste management / disposal": {
+    "disease_tags": undefined,
+    "function_tags": undefined
+  },
+  "Pharmaceutical production": {
+    "disease_tags": undefined,
+    "function_tags": undefined
   }
 };
 
