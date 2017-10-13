@@ -108,7 +108,6 @@
 
 				// draw charts
 				drawDonorCirclePack();
-				drawDonorCategoryChart();
 				drawDonorTimeChart();
 			} else if (moneyType === 'r') {
 				// if country has donated funds, include "switch to donor profile" button
@@ -129,7 +128,6 @@
 
 				// draw charts
 				drawRecipientCirclePack();
-				drawRecipientCategoryChart();
 				drawRecipientTimeChart();
 			}
 
@@ -138,6 +136,8 @@
 
 			// display content
 			$('.country-flow-content').slideDown();
+
+			drawCategoryChart();
 		}
 
 		function drawDonorTimeChart() {
@@ -235,13 +235,15 @@
 
 		}
 
-		function drawDonorCategoryChart() {
+		function drawCategoryChart() {
 			// get data
-			if (App.fundingLookup[iso]) {
+			const lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
+			const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_country';
+			if (lookup[iso]) {
 				const catData = [];
 				const fundsByCat = {};
-				App.fundingLookup[iso].forEach((p) => {
-					const iso = p.recipient_country;
+				lookup[iso].forEach((p) => {
+					const iso = p[countryInd];
 					const catValues = p.core_capacities;
 					catValues.forEach((c) => {
 						if (!fundsByCat[c]) fundsByCat[c] = {};
@@ -256,73 +258,38 @@
 						fundsByCat[c][iso].total_spent += p.total_spent;
 					});
 				});
-				for (let c in fundsByCat) {
-					const countries = [];
-					let totalCommitted = 0;
-					let totalSpent = 0;
-					for (let iso in fundsByCat[c]) {
-						countries.push(fundsByCat[c][iso]);
-						totalCommitted += fundsByCat[c][iso].total_committed;
-						totalSpent += fundsByCat[c][iso].total_spent;
-					}
-					//Util.sortByKey(regions, 'total_spent', true);
-					catData.push({
-						name: c,
-						children: countries,
-						total_committed: totalCommitted,
-						total_spent: totalSpent,
-					});
-				}
-				Util.sortByKey(catData, 'total_spent', true);
-				App.buildCategoryChart('.category-chart-container', catData, {
-					xAxisLabel: 'Total Funds Disbursed by Core Capacity',
-				});
-			} else {
-
-			}
-		}
-
-		function drawRecipientCategoryChart() {
-			// get data
-			if (App.recipientLookup[iso]) {
-				const catData = [];
-				const fundsByCat = {};
-				App.recipientLookup[iso].forEach((p) => {
-					const iso = p.donor_country;
-					const catValues = p.core_capacities;
-					catValues.forEach((c) => {
-						if (!fundsByCat[c]) fundsByCat[c] = {};
-						if (!fundsByCat[c][iso]) {
-							fundsByCat[c][iso] = {
-								iso,
-								total_committed: 0,
-								total_spent: 0,
-							};
+				App.capacities.forEach((cap) => {
+					if (fundsByCat[cap.id]) {
+						const countries = [];
+						let totalCommitted = 0;
+						let totalSpent = 0;
+						for (let iso in fundsByCat[cap.id]) {
+							countries.push(fundsByCat[cap.id][iso]);
+							totalCommitted += fundsByCat[cap.id][iso].total_committed;
+							totalSpent += fundsByCat[cap.id][iso].total_spent;
 						}
-						fundsByCat[c][iso].total_committed += p.total_committed;
-						fundsByCat[c][iso].total_spent += p.total_spent;
-					});
-				});
-				for (let c in fundsByCat) {
-					const countries = [];
-					let totalCommitted = 0;
-					let totalSpent = 0;
-					for (let iso in fundsByCat[c]) {
-						countries.push(fundsByCat[c][iso]);
-						totalCommitted += fundsByCat[c][iso].total_committed;
-						totalSpent += fundsByCat[c][iso].total_spent;
+						catData.push({
+							name: cap.name,
+							children: countries,
+							total_committed: totalCommitted,
+							total_spent: totalSpent,
+						});
+					} else {
+						catData.push({
+							name: cap.name,
+							children: [],
+							total_committed: 0,
+							total_spent: 0,
+						});
 					}
-					//Util.sortByKey(regions, 'total_spent', true);
-					catData.push({
-						name: c,
-						children: countries,
-						total_committed: totalCommitted,
-						total_spent: totalSpent,
-					});
-				}
+				});
 				Util.sortByKey(catData, 'total_spent', true);
+
+				let xAxisLabel = 'Total Funds Disbursed by Core Capacity';
+				if (moneyType === 'r') xAxisLabel = 'Total Funds Received by Core Capacity';
+
 				App.buildCategoryChart('.category-chart-container', catData, {
-					xAxisLabel: 'Total Funds Received by Core Capacity',
+					xAxisLabel,
 				});
 			} else {
 

@@ -10,16 +10,10 @@
 			});
 		});
 
-		// get capacities in order
-		const capacities = data.map(d => d.name);
-		App.capacities.forEach((c) => {
-			if (!capacities.includes(c.id)) capacities.push(c.id);
-		});
-
 		// start building the chart
-		const margin = { top: 70, right: 80, bottom: 80, left: 140 };
-		const width = 400;
-		const height = 450;
+		const margin = { top: 70, right: 80, bottom: 80, left: 190 };
+		const width = 320;
+		const height = 500;
 
 		const chart = d3.select(selector).append('svg')
 			.classed('category-chart', true)
@@ -34,7 +28,7 @@
 			.range([0, width]);
 		const y = d3.scaleBand()
 			.padding(0.25)
-			.domain(capacities)
+			.domain(data.map(d => d.name))
 			.range([0, height]);
 		const colorScale = d3.scaleOrdinal()
 			.range(d3.schemeCategory20c);
@@ -61,9 +55,8 @@
 				.each(function addTooltip(d) {
 					const country = App.countries.find(c => c.ISO2 === d.country.iso);
 					const countryName = country ? country.NAME : d.country.iso;
-					const capName = App.capacities.find(cc => d.cc === cc.id).name;
 					$(this).tooltipster({
-						content: `<b>Core Capacity:</b> ${capName}` +
+						content: `<b>Core Capacity:</b> ${d.cc}` +
 							`<br><b>Country:</b> ${countryName}` +
 							`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.country.total_committed)}` +
 							`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.country.total_spent)}`,
@@ -82,13 +75,16 @@
 			.call(xAxis);
 		chart.append('g')
 			.attr('class', 'y axis')
-			.call(yAxis);
-
-		// attach tooltips to y-axis labels
-		d3.selectAll('.y.axis .tick text').each(function attachTooltip(d) {
-			const capName = App.capacities.find(c => c.id === d).name;
-			$(this).tooltipster({ content: `<b>${capName}</b>` });
-		});
+			.call(yAxis)
+			.selectAll('.tick text')
+				.call(wrap, 180)
+				.each(function adjustLabel() {
+					const tspans = $(this).children()
+						.attr('x', -10);
+					if (tspans.length === 2) {
+						tspans.attr('y', '-5');
+					}
+				})
 
 		// add axes labels
 		chart.append('text')
