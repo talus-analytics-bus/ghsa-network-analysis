@@ -64,7 +64,6 @@ const App = {};
 					c.regionName = regionInfo['Region Name'];
 					c.subRegionName = regionInfo['Sub-region Name'];
 					c.intermediateRegionName = regionInfo['Intermediate Region Name'];
-					c.developed = regionInfo['Developed / Developing Countries'];
 				});
 
 				// save funding data
@@ -138,6 +137,16 @@ const App = {};
 	App.getTotalFunded = (iso) => {
 		if (!App.fundingLookup[iso]) return 0;
 		return d3.sum(App.fundingLookup[iso], d => d.total_spent);
+	};
+	App.getTotalFunded2 = (iso) => {
+		if (!App.fundingLookup[iso]) return 0;
+		return d3.sum(App.fundingLookup[iso], (p) => {
+			let total = 0;
+			for (let i = App.dataStartYear; i < App.dataEndYear + 1; i++) {
+				total += p.spent_by_year[i];
+			}
+			return total;
+		});
 	};
 
 	// returns the total amount of money received by a given country

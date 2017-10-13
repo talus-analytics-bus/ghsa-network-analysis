@@ -31,11 +31,6 @@
 		font-size: 2.4em;
 	}
 }
-.country-details {
-	.country-details-row > span:first-child {
-		font-weight: 600;
-	}
-}
 .country-flow-content {
 	display: none;
 	position: relative;
@@ -72,7 +67,7 @@
 		max-width: 400px;
 	}
 	.time-chart-container {
-		margin-left: 300px;
+		margin-left: 310px;
 	}
 	.progress-circle-container {
 		margin-left: 430px;
@@ -83,12 +78,18 @@
 	.circle-chart-content {
 		display: inline-block;
 		margin: 0 20px;
+		max-width: 160px;
+		text-align: center;
 	}
 	.circle-chart-label {
 		margin-top: 5px;
 		font-size: 1.1em;
 		font-weight: 600;
-		text-align: center;
+	}
+	.circle-chart-sublabel {
+		font-size: 0.95em;
+		line-height: 1.25;
+		margin-top: 4px;
 	}
 	.show-table-btn {
 		margin-top: 10px;
