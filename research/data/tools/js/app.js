@@ -402,7 +402,7 @@ const sectorAid = [
 		let matchingCcs = [];
 		console.log('getting matches...')
 		Util.ccHash.forEach(test => {
-			const caseSensitive = test.kw.toLowerCase() === test.kw;
+			const caseSensitive = test.kw.toLowerCase() !== test.kw;
 			if (caseSensitive) {
 				const caseSensitiveMatch = stringToMatchOn.indexOf(test.kw) > -1;
 				if (caseSensitiveMatch) {
@@ -461,7 +461,6 @@ const sectorAid = [
 
 	// add the D.4 Workforce Development JEE CC if the right sectors are tagged
 	App.tagJeeCcsBasedOnSector = (projects) => {
-		let counter = 0;
 		projects.forEach(project => {
 			// remove D.4 if present
 			project.core_capacities = _.without(project.core_capacities, "D.4");
@@ -476,17 +475,28 @@ const sectorAid = [
 				"12281",
 				"13081"
 			];
+
+			const p1_dac_code = "12110";
 			const matchingCodes = _.intersection(d4_dac_codes, curSectorCodes);
 			// console.log(curSectorCodes)
 			if (matchingCodes.length > 0) {
 				project.core_capacities = _.union(project.core_capacities,["D.4"]);
-				console.log('match: ' + project.source.id);
-				console.log('codes: ' + matchingCodes.join(', '));
-				console.log('')
-				counter++;
+			}
+
+			// p.1 match
+			if (curSectorCodes.indexOf(p1_dac_code) > -1) {
+				project.core_capacities = _.union(project.core_capacities,["P.1"]);
 			}
 		});
 		console.log('counter = ' + counter);
+	};
+
+	// removes spurious 3MDG projects for now until we know how to process them
+	App.removeUnhealthyRecords = (projects) => {
+		const projNameToRemove = "Three Millennium Development Goal Fund (3MDG Multi Donor Fund)";
+		projects = projects.filter(project => {
+			return project.project_name !== projNameToRemove;
+		});
 	};
 
 	/* mapDataIati
