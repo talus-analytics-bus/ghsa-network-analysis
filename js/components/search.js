@@ -1,5 +1,5 @@
 (() => {
-	App.initCountrySearchBar = (selector, searchedFn) => {
+	App.initCountrySearchBar = (selector, searchedFn, param = {}) => {
 		// timeout for country search
 		let liveSearchTimeout;
 		const numResultsToDisplay = 3;
@@ -10,6 +10,8 @@
 		const $container = $(selector);
 		const $input = $container.find('input')
 		const $resultsBox = $container.find('.live-search-results-container');
+		if (param.topLayout) $resultsBox.addClass('top-layout');
+		else $resultsBox.addClass('bottom-layout');
 
 		// set search bar behavior
 		$input

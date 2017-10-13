@@ -1,6 +1,6 @@
 (() => {
-	App.initAnalysis = () => {
-		let currentTab = 'global';
+	App.initAnalysis = (tab) => {
+		let currentTab = tab;
 		let startYear = App.dataStartYear;
 		let endYear = App.dataEndYear + 1;
 		let networkMap;
@@ -8,20 +8,26 @@
 
 		function init() {
 			initTabs();
-			populateFilters();
-			initSlider();
-			initSearch();
 			updateTab();
-			populateTables('.donor-table', '.recipient-table');
-			initNetworkCountryBox();
-			networkMap = buildNetworkMap();
+
+			if (tab === 'network') {
+				populateFilters();
+				initSlider();
+				initNetworkSearch();
+				initNetworkCountryBox();
+				networkMap = buildNetworkMap();
+			} else if (tab === 'country') {
+				initTableSearch();
+				populateTables('.donor-table', '.recipient-table');
+			}
 		}
 
 		function initTabs() {
 			// define info table tab behavior
 			$('.analysis-global-tab-container .btn').on('click', function changeTab() {
 				currentTab = $(this).attr('tab');
-				updateTab();
+				if (currentTab === 'network') hasher.setHash('analysis');
+				else hasher.setHash(`analysis/${currentTab}`);
 			});
 		}
 
@@ -89,12 +95,17 @@
 		}
 
 		// initializes search functionality
-		function initSearch() {
+		function initNetworkSearch() {
 			App.initCountrySearchBar('.network-country-search', (result) => {
 				displayCountryInNetwork(result.NAME);
 			});
+		}
+
+		function initTableSearch() {
 			App.initCountrySearchBar('.table-country-search', (result) => {
 				hasher.setHash(`analysis/${result.ISO2}`);
+			}, {
+				topLayout: true,
 			});
 		}
 

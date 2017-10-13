@@ -89,6 +89,8 @@
 			// fill out generic text
 			$('.money-type').text(moneyType === 'd' ? 'disbursed' : 'received');
 			$('.money-type-cap').text(moneyType === 'd' ? 'Disbursed' : 'Received');
+			$('.opp-money-type-noun').text(moneyType === 'd' ? 'recipient' : 'donor');
+			$('.opp-money-type-verb').text(moneyType === 'd' ? 'received' : 'donated');
 
 			// fill out title and description for circle pack; draw circle pack
 			if (moneyType === 'd') {
@@ -189,12 +191,18 @@
 				App.drawProgressCircles('.respond-circle-chart', fundsByCc.R, color);
 
 				const percFormat = d3.format('.0%');
-				const pValue = fundsByCc.P.total_spent / fundsByCc.P.total_committed;
-				const dValue = fundsByCc.D.total_spent / fundsByCc.D.total_committed;
-				const rValue = fundsByCc.R.total_spent / fundsByCc.R.total_committed;
-				$('.prevent-value').text(percFormat(pValue));
-				$('.detect-value').text(percFormat(dValue));
-				$('.respond-value').text(percFormat(rValue));
+				function fillValueText(valueSelector, ind) {
+					if (fundsByCc[ind].total_committed) {
+						const pValue = fundsByCc[ind].total_spent / fundsByCc[ind].total_committed;
+						$(valueSelector).text(percFormat(pValue));
+					} else {
+						$(valueSelector).parent().text('No funds committed for this core element');
+					}
+				}
+
+				fillValueText('.prevent-value', 'P');
+				fillValueText('.detect-value', 'D');
+				fillValueText('.respond-value', 'R');
 			} else {
 
 			}
@@ -240,17 +248,20 @@
 				const rows = d3.select('.country-table tbody').selectAll('tr')
 					.data(fundedData.slice(0, 10))
 					.enter().append('tr')
-						.style('background-color', (d, i) => colors[Math.floor(i / 2)])
-						.style('color', (d, i) => (i < 4) ? '#fff' : 'black');
-				rows.append('td')
-					.html((d) => {
-						const country = App.countries.find(c => c.ISO2 === d.iso);
-						const flagHtml = country ? App.getFlagHtml(d.iso) : '';
-						const name = country ? country.NAME : d.iso;
-						return `<div class="flag-container">${flagHtml}</div>` +
-							`<div class="name-container">${name}</div>`;
-					})
-					.on('click', (d) => hasher.setHash(`analysis/${iso}/${d.iso}`));
+						//.style('background-color', (d, i) => colors[Math.floor(i / 2)])
+						//.style('color', (d, i) => (i < 4) ? '#fff' : 'black')
+						.on('click', (d) => {
+							if (d.iso.length === 2) {
+								hasher.setHash(`analysis/${iso}/${d.iso}`)
+							}
+						});
+				rows.append('td').html((d) => {
+					const country = App.countries.find(c => c.ISO2 === d.iso);
+					const flagHtml = country ? App.getFlagHtml(d.iso) : '';
+					const name = country ? country.NAME : d.iso;
+					return `<div class="flag-container">${flagHtml}</div>` +
+						`<div class="name-container">${name}</div>`;
+				});
 
 				rows.append('td').text(d => App.formatMoney(d.total_committed));
 				rows.append('td').text(d => App.formatMoney(d.total_spent));

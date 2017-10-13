@@ -16,7 +16,10 @@ const Routing = {};
 			loadPage('home', App.initHome);
 		});
 		crossroads.addRoute('/analysis', () => {
-			loadPage('analysis', App.initAnalysis);
+			loadPage('analysis', App.initAnalysis, 'network');
+		});
+		crossroads.addRoute('/analysis/country', () => {
+			loadPage('analysis', App.initAnalysis, 'country');
 		});
 		crossroads.addRoute('/analysis/{iso}', (iso) => {
 			loadPage('analysis-country', App.initAnalysisCountry, iso);
