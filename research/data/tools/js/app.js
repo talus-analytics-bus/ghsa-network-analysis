@@ -462,8 +462,8 @@ const sectorAid = [
 	// add the D.4 Workforce Development JEE CC if the right sectors are tagged
 	App.tagJeeCcsBasedOnSector = (projects) => {
 		projects.forEach(project => {
-			// remove D.4 if present
-			project.core_capacities = _.without(project.core_capacities, "D.4");
+			// // remove D.4 if present
+			// project.core_capacities = _.without(project.core_capacities, "D.4");
 
 			// get project sectors
 			const activities_for_proj = iatiActivities.filter(d => d.aid === project.source.id);
@@ -486,9 +486,9 @@ const sectorAid = [
 			// p.1 match
 			if (curSectorCodes.indexOf(p1_dac_code) > -1) {
 				project.core_capacities = _.union(project.core_capacities,["P.1"]);
+
 			}
 		});
-		console.log('counter = ' + counter);
 	};
 
 	// removes spurious 3MDG projects for now until we know how to process them
