@@ -3,15 +3,18 @@
 		margin-top: 20px;
 		text-align: center;
 	}
-	.global-tab-content-container h3 {
-		text-align: center;
-	}
 	.tab-content-container {
 		@include gradient(#f3f3f3, #e9e9e9);
 	}
 }
 
 	/* --- Network Map Section --- */
+.global-tab-content[tab="network"] {
+	.title-container {
+		display: inline-block;
+		text-align: left;
+	}
+}
 .network-map-container {
 	margin-top: 30px;
 	min-height: 780px;
@@ -110,6 +113,7 @@
 .global-tab-content[tab="country"] {
 	.fund-table-title {
 		font-size: 1.5em;
+		text-align: center;
 	}
 	.description-container {
 		margin: 10px 10px;
@@ -136,18 +140,6 @@
 		}
 		td:nth-child(n+2) {
 			text-align: right;
-		}
-	}
-	.table {
-		.flag-container {
-			display: inline-block;
-			width: 40px;
-			margin-right: 15px;
-			text-align: right;
-		}
-		.flag {
-			height: 16px;
-			margin: 0;
 		}
 	}
 	.table-country-search {
