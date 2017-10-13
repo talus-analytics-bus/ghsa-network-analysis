@@ -4,6 +4,7 @@
 		let startYear = App.dataStartYear;
 		let endYear = App.dataEndYear + 1;
 		let networkMap;
+		let activeCountry;
 
 		function init() {
 			initTabs();
@@ -12,6 +13,7 @@
 			initSearch();
 			updateTab();
 			populateTables('.donor-table', '.recipient-table');
+			initNetworkCountryBox();
 			networkMap = buildNetworkMap();
 		}
 
@@ -48,6 +50,23 @@
 				numberDisplayed: 0,
 			});
 			$('.cc-select').on('change', updateNetworkMap);
+
+			// initialize radio button functionality
+			$('.network-map-options .radio-option').click(function clickedRadio() {
+				const $option = $(this);
+				$option.find('input').prop('checked', true);
+				$option.siblings().find('input').prop('checked', false);
+				updateNetworkMap();
+			});
+			
+			// add info tooltips
+			$('.committed-info-img').tooltipster({
+				content: 'The <b>amount committed</b> refers to the amount of money committed.',
+			});
+			$('.disbursed-info-img').tooltipster({
+				content: 'The <b>amount disbursed</b> refers to the amount of money the ' +
+					'recipient country has received.',
+			});
 		}
 
 		// initializes slider functionality
@@ -72,7 +91,7 @@
 		// initializes search functionality
 		function initSearch() {
 			App.initCountrySearchBar('.network-country-search', (result) => {
-				hasher.setHash(`analysis/${result.ISO2}`);
+				displayCountryInNetwork(result.NAME);
 			});
 			App.initCountrySearchBar('.table-country-search', (result) => {
 				hasher.setHash(`analysis/${result.ISO2}`);
@@ -151,6 +170,8 @@
 
 		function getTotalFunc() {
 			const ccs = $('.cc-select').val();
+			const ind = $('.money-type-filter input:checked').attr('ind');
+			const indName = (ind === 'committed') ? 'committed_by_year' : 'spent_by_year';
 			return (p) => {
 				// run through filter first
 				if (!App.passesCategoryFilter(p.core_capacities, ccs)) return 0;
@@ -158,7 +179,7 @@
 				// get total for years
 				let total = 0;
 				for (let i = startYear; i < endYear; i++) {
-					total += p.spent_by_year[i];
+					total += p[indName][i];
 				}
 				return total;
 			};			
@@ -270,7 +291,11 @@
 
 		function buildNetworkMap() {
 			const networkData = getNetworkData();
-			return App.buildNetworkMap('.network-map-content', networkData);
+			const networkMap = App.buildNetworkMap('.network-map-content', networkData, {
+				countryClickFn: displayCountryInNetwork,
+			});
+			networkMap.select('.overlay').on('click', unselectNetworkCountry);
+			return networkMap;
 		}
 
 		function updateNetworkMap() {
@@ -283,6 +308,65 @@
 				$('.network-map-no-content').hide();
 			}
 			networkMap.update(networkData);
+			if ($('.network-country-info').is(':visible')) {
+				displayCountryInNetwork(activeCountry);
+			}
+		}
+
+		function initNetworkCountryBox() {
+			$('.info-close-button').click(unselectNetworkCountry);
+		}
+
+		function unselectNetworkCountry() {
+			unhighlightNetwork();
+
+			// hide country info display
+			$('.network-country-info').slideUp();
+		}
+
+		function unhighlightNetwork() {
+			// unhighlight arcs and links
+			d3.selectAll('.country-arc, .link').classed('active', false);
+		}
+
+		function displayCountryInNetwork(countryName) {
+			unhighlightNetwork();
+
+			// highlight arc and links
+			const arc = d3.selectAll('.country-arc')
+				.filter(c => c.name === countryName)
+				.classed('active', true);
+			d3.selectAll('.link')
+				.filter(l => l.donor === countryName || l.recipient === countryName)
+				.classed('active', true);
+
+			// if not found, display warning message
+			if (arc.empty()) {
+				noty({
+					text: `<b>There are no funding data for ${countryName} in this time range.`,
+				});
+				return;
+			}
+
+			// populate country info
+			const data = arc.datum();
+			activeCountry = countryName;
+			$('.nci-title').text(countryName);
+			if (data.totalFunded) {
+				$('.nci-donor-value').text(App.formatMoney(data.totalFunded));
+				$('.nci-donor-section').slideDown();
+			} else {
+				$('.nci-donor-section').slideUp();
+			}
+			if (data.totalReceived) {
+				$('.nci-recipient-value').text(App.formatMoney(data.totalReceived));
+				$('.nci-recipient-section').slideDown();
+			} else {
+				$('.nci-recipient-section').slideUp();
+			}
+
+			// display country info
+			$('.network-country-info').slideDown();
 		}
 
 		init();

@@ -162,10 +162,14 @@
 			const nodeColorScale = getColorScale();
 			nodeColorScale.domain(currentNodeDataMap.values());
 
+			// check if there are non-zero values
+			const allEmpty = currentNodeDataMap.values().every(v => !v);
+
 			// color countries and update tooltip content
 			map.element.selectAll('.country').transition()
 				.duration(500)
 				.style('fill', (d) => {
+					if (allEmpty) return '#ccc';
 					const isoCode = d.properties.ISO2;
 					if (currentNodeDataMap.has(isoCode)) {
 						d.value = currentNodeDataMap.get(isoCode);

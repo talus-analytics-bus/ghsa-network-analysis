@@ -160,24 +160,53 @@
 							<div class="network-map-no-content">
 								There are no data with the combination of filters chosen.
 							</div>
-							<div class="network-map-options">
-								<div class="network-country-search search-container">
-									<div class="form-group has-feedback">
-										<input type="text" class="country-search-input form-control" placeholder="search for a country...">
-										<i class="glyphicon glyphicon-search form-control-feedback"></i>
+							<div class="network-right-column">
+								<div class="network-map-options">
+									<div class="network-country-search search-container">
+										<div class="form-group has-feedback">
+											<input type="text" class="country-search-input form-control" placeholder="search for a country...">
+											<i class="glyphicon glyphicon-search form-control-feedback"></i>
+										</div>
+										<div class="live-search-results-container">
+											<div class="live-search-no-results-text">No results found</div>
+											<div class="live-search-results-contents"></div>
+										</div>
 									</div>
-									<div class="live-search-results-container">
-										<div class="live-search-no-results-text">No results found</div>
-										<div class="live-search-results-contents"></div>
+									<div class="slider-box">
+										<div class="dropdown-label">Time Range</div>
+										<input class="time-slider slider" />
+									</div>
+									<div class="filter-box money-type-filter">
+										<div class="dropdown-label">Select money type:</div>
+										<div class="radio-option">
+											<input type="radio" ind="committed" />
+											<span>Amount committed</span>
+											<img class="committed-info-img info-img" src="img/info.png" />
+										</div>
+										<div class="radio-option">
+											<input type="radio" ind="disbursed" checked />
+											<span>Amount disbursed</span>
+											<img class="disbursed-info-img info-img" src="img/info.png" />
+										</div>
+									</div>
+									<div class="filter-box">
+										<div class="dropdown-label">Core Capacity</div>
+										<select class="cc-select form-control" multiple="multiple"></select>
 									</div>
 								</div>
-								<div class="slider-box filter-box">
-									<div class="dropdown-label">Time Range</div>
-									<input class="time-slider slider" />
-								</div>
-								<div class="filter-box">
-									<div class="dropdown-label">Core Capacity</div>
-									<select class="cc-select form-control" multiple="multiple"></select>
+								<div class="network-country-info">
+									<div class="nci-title"></div>
+									<div class="info-close-button">
+										<img class="close-icon" src="img/close.png" />
+									</div>
+									<div class="nci-donor-section nci-section">
+										<div class="nci-donor-value nci-value"></div>
+										<div class="nci-value-label">Total Disbursed Funds</div>
+									</div>
+									<div class="nci-recipient-section nci-section">
+										<div class="nci-recipient-value nci-value"></div>
+										<div class="nci-value-label">Total Received Funds</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -282,7 +311,20 @@
 						</div>
 						<div class="time-chart-container"></div>
 					</div>
-					<div class="row">
+					<div class="progress-circle-section">
+						<div class="progress-circle-text">
+							<div class="progress-circle-title">% Disbursed by Core Capacity</div>
+							<div class="progress-circle-description description">
+								The circles to the right show the percent of committed funds that were <span class="money-type"></span>. Percentages are shown by the three core capacity categories: Prevent, Detect, and Respond.
+							</div>
+						</div>
+						<div class="progress-circle-container">
+							<div class="prevent-circle-chart circle-chart"></div>
+							<div class="detect-circle-chart circle-chart"></div>
+							<div class="respond-circle-chart circle-chart"></div>
+						</div>
+					</div>
+					<div class="country-chart-container row">
 						<div class="col-sm-6">
 							<div class="circle-pack-container">
 								<h3 class="circle-pack-title"></h3>
