@@ -207,6 +207,10 @@
 				$('.circle-pack-title').text('Top Countries Received From');
 			}
 
+			const blues = ['#08519c', '#3182bd', '#6baed6', '#bdd7e7', '#eff3ff'];
+			const oranges = ['#993404', '#d95f0e', '#fe9929', '#fed98e', '#ffffd4'];
+			const colors = (moneyType === 'd') ? blues : oranges;
+
 			// get table data
 			if (lookup[iso]) {
 				const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_country';
@@ -235,14 +239,19 @@
 
 				const rows = d3.select('.country-table tbody').selectAll('tr')
 					.data(fundedData.slice(0, 10))
-					.enter().append('tr');
-				rows.append('td').html((d) => {
-					const country = App.countries.find(c => c.ISO2 === d.iso);
-					const flagHtml = country ? App.getFlagHtml(d.iso) : '';
-					const name = country ? country.NAME : d.iso;
-					return `<div class="flag-container">${flagHtml}</div><b>${name}</b>`;
-				});
-;
+					.enter().append('tr')
+						.style('background-color', (d, i) => colors[Math.floor(i / 2)])
+						.style('color', (d, i) => (i < 4) ? '#fff' : 'black');
+				rows.append('td')
+					.html((d) => {
+						const country = App.countries.find(c => c.ISO2 === d.iso);
+						const flagHtml = country ? App.getFlagHtml(d.iso) : '';
+						const name = country ? country.NAME : d.iso;
+						return `<div class="flag-container">${flagHtml}</div>` +
+							`<div class="name-container">${name}</div>`;
+					})
+					.on('click', (d) => hasher.setHash(`analysis/${iso}/${d.iso}`));
+
 				rows.append('td').text(d => App.formatMoney(d.total_committed));
 				rows.append('td').text(d => App.formatMoney(d.total_spent));
 			} else {

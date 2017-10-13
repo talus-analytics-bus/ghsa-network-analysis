@@ -381,6 +381,16 @@
 				<h3 class="analysis-country-title"></h3>
 				<div class="back-button btn btn-default">Back to Country Summary</div>
 				<div class="country-funds-content">
+					<div class="summary-text">
+						<div>
+							Total <span class="commit-noun"></span> from <span class="start-year"></span> to <span class="end-year"></span>:
+							<b><span class="committed-value"></span></b>
+						</div>
+						<div>
+							Total <span class="money-type-cap"></span> Funds from <span class="start-year"></span> to <span class="end-year"></span>:
+							<b><span class="spent-value"></span></b>
+						</div>
+					</div>
 					<div class="funds-tab-container">
 						<div class="btn-group">
 							<div class="tab btn btn-default" tab="all">All Funds</div>
@@ -406,10 +416,19 @@
 
 	<script id="analysis-pair-template" type="text/x-handlebars-template">
 		<div class="analysis-container container">
-			<div class="analysis-pair-content analysis-content">
+			<div class="analysis-pair-content">
 				<h3 class="analysis-country-title center"></h3>
 				<div class="country-funds-content">
-					<div class="pair-summary-text"></div>
+					<div class="summary-text">
+						<div>
+							Total Committed Funds from <span class="start-year"></span> to <span class="end-year"></span>:
+							<b><span class="committed-value"></span></b>
+						</div>
+						<div>
+							Total Disbursed Funds from <span class="start-year"></span> to <span class="end-year"></span>:
+							<b><span class="spent-value"></span></b>
+						</div>
+					</div>
 					<div class="funds-tab-container">
 						<div class="btn-group">
 							<div class="tab btn btn-default" tab="all">All Funds</div>

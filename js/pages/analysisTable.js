@@ -25,6 +25,19 @@
 				.html(`${flagHtml} ${country.NAME} ${flagHtml}`)
 				.on('click', () => hasher.setHash(`analysis/${iso}`));
 
+			// fill in other text
+			$('.money-type-cap').text(moneyFlow === 'd' ? 'Disbursed' : 'Received');
+			$('.commit-noun').text(moneyFlow === 'd' ? 'Committed Funds' :
+				'Committed Funds to Receive');
+			$('.start-year').text(App.dataStartYear);
+			$('.end-year').text(App.dataEndYear);
+
+			// fill summary text
+			const totalCommitted = d3.sum(allPayments, d => d.total_committed);
+			const totalSpent = d3.sum(allPayments, d => d.total_spent);
+			$('.committed-value').text(App.formatMoney(totalCommitted));
+			$('.spent-value').text(App.formatMoney(totalSpent));
+
 			// back button behavior
 			$('.back-button').click(() => hasher.setHash(`analysis/${iso}/${moneyFlow}`));
 
@@ -171,10 +184,18 @@
 
 			// define DataTables plugin parameters
 			let order = [4, 'desc'];
-			let columnDefs = [{ type: 'money', targets: [3, 4], width: '120px' }];
-			if (currentInfoTab === 'country') {
+			let columnDefs = [];
+			if (currentInfoTab === 'all') {
+				columnDefs = [
+					{ targets: [0, 1], width: '140px' },
+					{ type: 'money', targets: [3, 4], width: '110px' },
+				]
+			} else if (currentInfoTab === 'country') {
 				order = [3, 'desc'];
-				columnDefs = [{ type: 'money', targets: [2, 3], width: '120px' }];
+				columnDefs = [
+					{ targets: [0, 1], width: '150px' },
+					{ type: 'money', targets: [2, 3], width: '120px' },
+				];
 			} else if (currentInfoTab === 'cc') {
 				order = [2, 'desc'];
 				columnDefs = [{ type: 'money', targets: [1, 2], width: '120px' }];
