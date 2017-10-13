@@ -444,10 +444,12 @@ const sectorAid = [
 						App.translate(matchAct.title, (result) => {
 							// do JEE lookup on this text;
 							stringToMatchOn = result;
+							project.title_trns = stringToMatchOn;
 							project.core_capacities = App.searchForJeeCcs(stringToMatchOn);
 						});
 					} else {
 						stringToMatchOn = matchTrns.desc_trns;
+						project.desc_trns = stringToMatchOn;
 						project.core_capacities = App.searchForJeeCcs(stringToMatchOn);
 					}
 
@@ -455,6 +457,36 @@ const sectorAid = [
 					// TODO
 				});
 			});
+	};
+
+	// add the D.4 Workforce Development JEE CC if the right sectors are tagged
+	App.tagJeeCcsBasedOnSector = (projects) => {
+		let counter = 0;
+		projects.forEach(project => {
+			// remove D.4 if present
+			project.core_capacities = _.without(project.core_capacities, "D.4");
+
+			// get project sectors
+			const activities_for_proj = iatiActivities.filter(d => d.aid === project.source.id);
+			const curSectorCodes = _.unique(_.pluck(activities_for_proj, 'sector_code'));
+
+			// if any are a match for D.4, add it to the project's CCs
+			const d4_dac_codes = [
+				"12181",
+				"12281",
+				"13081"
+			];
+			const matchingCodes = _.intersection(d4_dac_codes, curSectorCodes);
+			// console.log(curSectorCodes)
+			if (matchingCodes.length > 0) {
+				project.core_capacities = _.union(project.core_capacities,["D.4"]);
+				console.log('match: ' + project.source.id);
+				console.log('codes: ' + matchingCodes.join(', '));
+				console.log('')
+				counter++;
+			}
+		});
+		console.log('counter = ' + counter);
 	};
 
 	/* mapDataIati
