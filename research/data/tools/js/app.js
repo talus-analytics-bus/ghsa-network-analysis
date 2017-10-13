@@ -7,7 +7,7 @@ const App = {};
 	// Loads the current 'funding_data' dataset to be played with
 	App.loadFundingData = () => {
 		const path = './data/';
-		const fn = 'funding_data-iati_2014_plus-101217-v4.1-MV.json';
+		const fn = 'allData_v6.json';
 		console.log('Loading funding data...');
 			d3.queue()
 				.defer(d3.json, path + fn)
@@ -590,11 +590,15 @@ const sectorAid = [
 				// process transactions data
 				proj.transactions = [];
 
+				// transaction types to include
+				const transactionTypes = [];
+
 				for (let j = 0; j < projCountryTrans.length; j++) {
 					const curTrans = {};
 
 					// transactions[0].type
 					curTrans.type = App.getTransType(projCountryTrans[j].trans_code);
+					if (curTrans.type)
 					
 					// transactions[0].amount
 					curTrans.amount = parseFloat(projCountryTrans[j].trans_usd) * parseFloat(projCountryTrans[j].country_percent) / 100.0;
