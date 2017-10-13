@@ -2,6 +2,8 @@
 	App.initAnalysisCountry = (iso, moneyType) => {
 		// get country information
 		const country = App.countries.find(c => c.ISO2 === iso);
+		const lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
+		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
 
 		// initializes the whole page
 		function init() {
@@ -10,6 +12,10 @@
 			$('.analysis-country-title')
 				.html(`${flagHtml} ${country.NAME} ${flagHtml}`)
 				.on('click', () => hasher.setHash(`analysis/${iso}`));
+
+			// fill out generic text
+			$('.start-year').text(App.dataStartYear);
+			$('.end-year').text(App.dataEndYear);
 
 			if (moneyType) initDonorOrRecipientProfile();
 			else initBasicProfile();
@@ -82,6 +88,7 @@
 
 			// fill out generic text
 			$('.money-type').text(moneyType === 'd' ? 'disbursed' : 'received');
+			$('.money-type-cap').text(moneyType === 'd' ? 'Disbursed' : 'Received');
 
 			// fill out title and description for circle pack; draw circle pack
 			if (moneyType === 'd') {
@@ -97,15 +104,7 @@
 
 				// fill summary text
 				const totalFunded = App.getTotalFunded(iso);
-				$('.country-summary-label').text(`Total Funded from ${App.dataStartYear}` +
-					` to ${App.dataEndYear}`);
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
-
-				// draw charts
-				drawDonorProgressCircles();
-				drawDonorCirclePack();
-				drawDonorCategoryChart();
-				drawDonorTimeChart();
 			} else if (moneyType === 'r') {
 				// if country has donated funds, include "switch to donor profile" button
 				const totalFunded = App.getTotalFunded(iso);
@@ -119,24 +118,23 @@
 
 				// fill summary text
 				const totalReceived = App.getTotalReceived(iso);
-				$('.country-summary-label').text(`Total Received from ${App.dataStartYear}` +
-					` to ${App.dataEndYear}`);
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
-
-				// draw charts
-				drawRecipientProgressCircles();
-				drawRecipientCirclePack();
-				drawRecipientCategoryChart();
-				drawRecipientTimeChart();
 			}
+
+			// draw charts
+			drawTimeChart();
+			drawProgressCircles();
+			drawCountryTable();
 
 			// display content
 			$('.country-flow-content').slideDown();
+
+			drawCategoryChart();
 		}
 
-		function drawDonorTimeChart() {
+		function drawTimeChart() {
 			// get data
-			if (App.fundingLookup[iso]) {
+			if (lookup[iso]) {
 				const timeData = [];
 				const fundsByYear = {};
 				for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
@@ -146,7 +144,7 @@
 						total_spent: 0,
 					};
 				}
-				App.fundingLookup[iso].forEach((p) => {
+				lookup[iso].forEach((p) => {
 					for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
 						fundsByYear[i].total_committed += p.committed_by_year[i];
 						fundsByYear[i].total_spent += p.spent_by_year[i];
@@ -156,152 +154,60 @@
 					timeData.push(fundsByYear[y]);
 				}
 				App.buildTimeChart('.time-chart-container', timeData, {
-					color: App.fundColor,
+					color,
 				});
 			} else {
 
 			}
 		}
 
-		function drawRecipientTimeChart() {
-			// get data
-			if (App.recipientLookup[iso]) {
-				const timeData = [];
-				const fundsByYear = {};
-				for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
-					fundsByYear[i] = {
-						year: i,
+		function drawProgressCircles() {
+			const ccs = ['P', 'D', 'R'];
+			if (lookup[iso]) {
+				const pData = [];
+				const fundsByCc = {};
+				ccs.forEach((cc) => {
+					fundsByCc[cc] = {
+						cc,
 						total_committed: 0,
 						total_spent: 0,
 					};
-				}
-				App.recipientLookup[iso].forEach((p) => {
-					for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
-						fundsByYear[i].total_committed += p.committed_by_year[i];
-						fundsByYear[i].total_spent += p.spent_by_year[i];
-					}
 				});
-				for (let y in fundsByYear) {
-					timeData.push(fundsByYear[y]);
-				}
-				App.buildTimeChart('.time-chart-container', timeData, {
-					color: App.receiveColor,
-				});
-			} else {
-
-			}
-		}
-
-		function drawDonorProgressCircles() {
-			
-		}
-
-		function drawRecipientProgressCircles() {
-			
-		}
-
-		function drawDonorCategoryChart() {
-			// get data
-			if (App.fundingLookup[iso]) {
-				const catData = [];
-				const fundsByCat = {};
-				App.fundingLookup[iso].forEach((p) => {
-					const iso = p.recipient_country;
-					const catValues = p.core_capacities;
-					catValues.forEach((c) => {
-						if (!fundsByCat[c]) fundsByCat[c] = {};
-						if (!fundsByCat[c][iso]) {
-							fundsByCat[c][iso] = {
-								iso,
-								total_committed: 0,
-								total_spent: 0,
-							};
+				lookup[iso].forEach((p) => {
+					ccs.forEach((cc) => {
+						if (p.core_capacities.some(pcc => cc === pcc.charAt(0))) {
+							let committed = p.total_committed;
+							const spent = p.total_spent;
+							if (committed < spent) committed = spent;
+							fundsByCc[cc].total_committed += committed;
+							fundsByCc[cc].total_spent += spent;
 						}
-						fundsByCat[c][iso].total_committed += p.total_committed;
-						fundsByCat[c][iso].total_spent += p.total_spent;
 					});
 				});
-				for (let c in fundsByCat) {
-					const countries = [];
-					let totalCommitted = 0;
-					let totalSpent = 0;
-					for (let iso in fundsByCat[c]) {
-						countries.push(fundsByCat[c][iso]);
-						totalCommitted += fundsByCat[c][iso].total_committed;
-						totalSpent += fundsByCat[c][iso].total_spent;
-					}
-					//Util.sortByKey(regions, 'total_spent', true);
-					catData.push({
-						name: c,
-						children: countries,
-						total_committed: totalCommitted,
-						total_spent: totalSpent,
-					});
-				}
-				Util.sortByKey(catData, 'total_spent', true);
-				App.buildCategoryChart('.category-chart-container', catData, {
-					xAxisLabel: 'Total Funds Disbursed by Core Capacity',
-				});
+				App.drawProgressCircles('.prevent-circle-chart', fundsByCc.P, color);
+				App.drawProgressCircles('.detect-circle-chart', fundsByCc.D, color);
+				App.drawProgressCircles('.respond-circle-chart', fundsByCc.R, color);
+
+				const percFormat = d3.format('.0%');
+				const pValue = fundsByCc.P.total_spent / fundsByCc.P.total_committed;
+				const dValue = fundsByCc.D.total_spent / fundsByCc.D.total_committed;
+				const rValue = fundsByCc.R.total_spent / fundsByCc.R.total_committed;
+				$('.prevent-value').text(percFormat(pValue));
+				$('.detect-value').text(percFormat(dValue));
+				$('.respond-value').text(percFormat(rValue));
 			} else {
 
 			}
 		}
 
-		function drawRecipientCategoryChart() {
-			// get data
-			if (App.recipientLookup[iso]) {
-				const catData = [];
-				const fundsByCat = {};
-				App.recipientLookup[iso].forEach((p) => {
-					const iso = p.donor_country;
-					const catValues = p.core_capacities;
-					catValues.forEach((c) => {
-						if (!fundsByCat[c]) fundsByCat[c] = {};
-						if (!fundsByCat[c][iso]) {
-							fundsByCat[c][iso] = {
-								iso,
-								total_committed: 0,
-								total_spent: 0,
-							};
-						}
-						fundsByCat[c][iso].total_committed += p.total_committed;
-						fundsByCat[c][iso].total_spent += p.total_spent;
-					});
-				});
-				for (let c in fundsByCat) {
-					const countries = [];
-					let totalCommitted = 0;
-					let totalSpent = 0;
-					for (let iso in fundsByCat[c]) {
-						countries.push(fundsByCat[c][iso]);
-						totalCommitted += fundsByCat[c][iso].total_committed;
-						totalSpent += fundsByCat[c][iso].total_spent;
-					}
-					//Util.sortByKey(regions, 'total_spent', true);
-					catData.push({
-						name: c,
-						children: countries,
-						total_committed: totalCommitted,
-						total_spent: totalSpent,
-					});
-				}
-				Util.sortByKey(catData, 'total_spent', true);
-				App.buildCategoryChart('.category-chart-container', catData, {
-					xAxisLabel: 'Total Funds Received by Core Capacity',
-				});
+		function drawCountryTable() {
+			if (moneyType === 'd') {
+				$('.circle-pack-title').text('Countries Donated To');
 			} else {
-
+				$('.circle-pack-title').text('Countries Received From');
 			}
-		}
 
-		// draws circle pack charts
-		function drawDonorCirclePack() {
-			$('.circle-pack-title').text('Countries Donated To');
-
-			if (App.fundingLookup[iso]) {
-				$('.circle-pack-description').text('The plot below displays ' +
-					'the countries this country has funded.');
-
+			if (lookup[iso]) {
 				// get data
 				const fundedData = [];
 				const fundedByCountry = {};
@@ -323,53 +229,70 @@
 						fundedData.push(cCopy);
 					}
 				});
-				App.buildCirclePack('.circle-pack-content', fundedData, {
-					tooltipLabel: 'Total Funded',
-					colors: ['#c6dbef', '#084594'],
-					onClick: iso => hasher.setHash(`analysis/${iso}`),
-				});
+				Util.sortByKey(fundedData, 'total_spent', true);
 			} else {
 				d3.select('.circle-pack-description')
 					.html('<i>There are no data for countries funded by this country.</i>');
 			}
 		}
 
-		function drawRecipientCirclePack() {
-			$('.circle-pack-title').text('Countries Received From');
-
-			if (App.recipientLookup[iso]) {
-				$('.circle-pack-description').text('The plot below displays ' +
-					'the countries this country has received money from.');
-
-				// get data
-				const receivedData = [];
-				const receivedByCountry = {};
-				App.recipientLookup[iso].forEach((p) => {
-					if (!receivedByCountry[p.donor_country]) {
-						receivedByCountry[p.donor_country] = {
+		function drawCategoryChart() {
+			// get data
+			const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_country';
+			if (lookup[iso]) {
+				const catData = [];
+				const fundsByCat = {};
+				lookup[iso].forEach((p) => {
+					const iso = p[countryInd];
+					const catValues = p.core_capacities;
+					catValues.forEach((c) => {
+						if (!fundsByCat[c]) fundsByCat[c] = {};
+						if (!fundsByCat[c][iso]) {
+							fundsByCat[c][iso] = {
+								iso,
+								total_committed: 0,
+								total_spent: 0,
+							};
+						}
+						fundsByCat[c][iso].total_committed += p.total_committed;
+						fundsByCat[c][iso].total_spent += p.total_spent;
+					});
+				});
+				App.capacities.forEach((cap) => {
+					if (fundsByCat[cap.id]) {
+						const countries = [];
+						let totalCommitted = 0;
+						let totalSpent = 0;
+						for (let iso in fundsByCat[cap.id]) {
+							countries.push(fundsByCat[cap.id][iso]);
+							totalCommitted += fundsByCat[cap.id][iso].total_committed;
+							totalSpent += fundsByCat[cap.id][iso].total_spent;
+						}
+						catData.push({
+							name: cap.name,
+							children: countries,
+							total_committed: totalCommitted,
+							total_spent: totalSpent,
+						});
+					} else {
+						catData.push({
+							name: cap.name,
+							children: [],
 							total_committed: 0,
 							total_spent: 0,
-						};
-					}
-					receivedByCountry[p.donor_country].total_committed += p.total_committed;
-					receivedByCountry[p.donor_country].total_spent += p.total_spent;
-				});
-				App.countries.forEach((c) => {
-					if (receivedByCountry[c.ISO2]) {
-						const cCopy = Object.assign({}, c);
-						cCopy.total_committed = receivedByCountry[c.ISO2].total_committed;
-						cCopy.total_spent = receivedByCountry[c.ISO2].total_spent;
-						receivedData.push(cCopy);
+						});
 					}
 				});
-				App.buildCirclePack('.circle-pack-content', receivedData, {
-					tooltipLabel: 'Total Received',
-					colors: ['#feedde', '#8c2d04'],
-					onClick: iso => hasher.setHash(`analysis/${iso}`),
+				Util.sortByKey(catData, 'total_spent', true);
+
+				let xAxisLabel = 'Total Funds Disbursed by Core Capacity';
+				if (moneyType === 'r') xAxisLabel = 'Total Funds Received by Core Capacity';
+
+				App.buildCategoryChart('.category-chart-container', catData, {
+					xAxisLabel,
 				});
 			} else {
-				d3.select('.circle-pack-description')
-					.html('<i>There are no data for funds received by this country.</i>');
+
 			}
 		}
 

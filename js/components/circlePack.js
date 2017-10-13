@@ -5,7 +5,7 @@
 		const colors = param.colors || blues;
 
 		// start building the chart
-		const margin = { top: 30, right: 30, bottom: 80, left: 30 };
+		const margin = { top: 0, right: 30, bottom: 0, left: 30 };
 		const size = param.size || 300;
 
 		const chartContainer = d3.select(selector).append('svg')

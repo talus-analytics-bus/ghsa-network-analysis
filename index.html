@@ -130,7 +130,7 @@
 					</div>
 					<div class="info-title"></div>
 					<div class="info-value"></div>
-					<div class="info-value-label">Total Funded</div>
+					<div class="info-value-label"></div>
 					<div class="info-button-container">
 						<button class="info-analysis-button btn btn-default">View Funding Details</button>
 					</div>
@@ -264,27 +264,12 @@
 			<div class="analysis-country-content analysis-content">
 				<h3 class="analysis-country-title"></h3>
 				<div class="country-summary-content row">
-					<!--<div class="country-details">
-						<div class="country-details-row">
-							<span>Region:</span>
-							<span class="country-region"></span>
-						</div>
-						<div class="country-details-row">
-							<span>Subregion:</span>
-							<span class="country-subregion"></span>
-						</div>
-						<div class="country-details-row">
-							<span>Intermediate Region:</span>
-							<span class="country-intermediate"></span>
-						</div>
-						<div class="country-details-row">
-							<span>Population:</span>
-							<span class="country-population"></span>
-						</div>
-					</div>-->
 					<div class="donor-column column col-sm-6">
 						<div class="summary-value-box">
-							<div class="country-summary-label">Total Funded</div>
+							<div class="country-summary-label">
+								Funds Disbursed<br>
+								from <span class="start-year"></span> to <span class="end-year"></span>
+							</div>
 							<div class="country-funded-value country-summary-value"></div>
 							<div>
 								<div class="show-donor-btn btn btn-default">Show Donor Profile</div>
@@ -293,7 +278,10 @@
 					</div>
 					<div class="recipient-column column col-sm-6">
 						<div class="summary-value-box">
-							<div class="country-summary-label">Total Received</div>
+							<div class="country-summary-label">
+								Funds Received<br>
+								from <span class="start-year"></span> to <span class="end-year"></span>
+							</div>
 							<div class="country-received-value country-summary-value"></div>
 							<div>
 								<div class="show-recipient-btn btn btn-default">Show Recipient Profile</div>
@@ -305,7 +293,10 @@
 					<div class="switch-type-button btn btn-default"></div>
 					<div class="country-flow-summary">
 						<div class="country-summary-text">
-							<div class="country-summary-label"></div>
+							<div class="country-summary-label">
+								Total Funds <span class="money-type-cap"></span>
+								from <span class="start-year"></span> to <span class="end-year"></span>
+							</div>
 							<div class="country-summary-value"></div>						
 							<div class="show-table-btn btn btn-default">Show All Funds</div>
 						</div>
@@ -313,31 +304,55 @@
 					</div>
 					<div class="progress-circle-section">
 						<div class="progress-circle-text">
-							<div class="progress-circle-title">% Disbursed by Core Elements</div>
+							<div class="progress-circle-title">
+								% Funds <span class="money-type-cap"></span> by Core Element
+							</div>
 							<div class="progress-circle-description description">
-								The circles to the right show the percent of committed funds that were <span class="money-type"></span>. Percentages are shown for each of the three core elements of global health security: Prevent, Detect, and Respond.
+								The circles to the right show the percent of committed funds that were <span class="money-type"></span>. Percentages are shown for each of the three core elements of global health security: <b>Prevent</b>, <b>Detect</b>, and <b>Respond</b>.
 							</div>
 						</div>
 						<div class="progress-circle-container">
-							<div class="prevent-circle-chart circle-chart"></div>
-							<div class="detect-circle-chart circle-chart"></div>
-							<div class="respond-circle-chart circle-chart"></div>
+							<div class="circle-chart-content">
+								<div class="prevent-circle-chart circle-chart"></div>
+								<div class="circle-chart-label">Prevent</div>
+								<div class="circle-chart-sublabel">
+									<span class="prevent-value"></span> of funds committed were <span class="money-type"></span>
+								</div>
+							</div>
+							<div class="circle-chart-content">
+								<div class="detect-circle-chart circle-chart"></div>
+								<div class="circle-chart-label">Detect</div>
+								<div class="circle-chart-sublabel">
+									<span class="detect-value"></span> of funds committed were <span class="money-type"></span>
+								</div>
+							</div>
+							<div class="circle-chart-content">
+								<div class="respond-circle-chart circle-chart"></div>
+								<div class="circle-chart-label">Respond</div>
+								<div class="circle-chart-sublabel">
+									<span class="respond-value"></span> of funds committed were <span class="money-type"></span>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="country-chart-container row">
 						<div class="col-sm-6">
 							<div class="circle-pack-container">
 								<h3 class="circle-pack-title"></h3>
-								<div class="circle-pack-description description"></div>
+								<div class="circle-pack-description description">
+									The table below displays recipients by order of funds received.
+								</div>
 								<div class="circle-pack-content"></div>
 							</div>
 						</div>
 						<div class="col-sm-6">
-							<h3 class="category-chart-title">Funds Disbursed by Core Capacity</h3>
+							<h3 class="category-chart-title">
+								Funds <span class="money-type-cap"></span> by Core Capacity
+							</h3>
 							<div class="description">
-								The chart below shows the amount of money disbursed by this country for each core capacity. Colors represent the region of the world of the recipient.
+								The chart below shows the amount of money <span class="money-type"></span> by this country for each core capacity. Colors represent each recipient.
 								<br><br>
-								<i>Hover over a core capacity to see its full name.</i>
+								<i>Hover over a bar to see funding details.</i>
 							</div>
 							<div class="category-chart-container"></div>
 						</div>
@@ -529,6 +544,7 @@
 	<script src="lib/handlebars-v3.0.0.js"></script>	
 
 	<!-- Miscellaneous Libraries -->
+	<script src="lib/wrap.js"></script>
 	<script src="lib/fuse.min.js"></script>
 	<script src="lib/nprogress.min.js"></script>
 	<script src="lib/topojson.v2.min.js"></script>
@@ -552,6 +568,7 @@
 	<script src="js/components/filters.js"></script>
 	<script src="js/components/map.js"></script>
 	<script src="js/components/networkMap.js"></script>
+	<script src="js/components/progressCircles.js"></script>
 	<script src="js/components/search.js"></script>
 	<script src="js/components/slider.js"></script>
 	<script src="js/components/timeChart.js"></script>

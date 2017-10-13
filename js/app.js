@@ -43,7 +43,7 @@ const App = {};
 		d3.queue()
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
-			.defer(d3.json, 'data/funding_data_092817.json')
+			.defer(d3.json, 'data/funding_data_101317.json')
 			.defer(d3.json, 'data/currencies.json')
 			.await((error, worldData, unsdData, fundingData, currencies) => {
 				if (error) throw error;
@@ -64,7 +64,6 @@ const App = {};
 					c.regionName = regionInfo['Region Name'];
 					c.subRegionName = regionInfo['Sub-region Name'];
 					c.intermediateRegionName = regionInfo['Intermediate Region Name'];
-					c.developed = regionInfo['Developed / Developing Countries'];
 				});
 
 				// save funding data
@@ -79,15 +78,15 @@ const App = {};
 					const donor = d.donor_country;
 					const recipient = d.recipient_country;
 
+					// zero out negative values
+					if (d.total_committed < 0) d.total_committed = 0;
+					if (d.total_spent < 0) d.total_spent = 0;
+
 					// store payments in lookup objects
 					if (!App.fundingLookup[donor]) App.fundingLookup[donor] = [];
 					App.fundingLookup[donor].push(d);
 					if (!App.recipientLookup[recipient]) App.recipientLookup[recipient] = [];
 					App.recipientLookup[recipient].push(d);
-
-					// TODO inject random core capacity into each payment
-					const randomIndex = Math.floor(App.capacities.length * Math.random());
-					d.core_capacities = [App.capacities[randomIndex].id];
 
 					// calculate totals by year
 					// TODO should do this outside UI
@@ -138,6 +137,16 @@ const App = {};
 	App.getTotalFunded = (iso) => {
 		if (!App.fundingLookup[iso]) return 0;
 		return d3.sum(App.fundingLookup[iso], d => d.total_spent);
+	};
+	App.getTotalFunded2 = (iso) => {
+		if (!App.fundingLookup[iso]) return 0;
+		return d3.sum(App.fundingLookup[iso], (p) => {
+			let total = 0;
+			for (let i = App.dataStartYear; i < App.dataEndYear + 1; i++) {
+				total += p.spent_by_year[i];
+			}
+			return total;
+		});
 	};
 
 	// returns the total amount of money received by a given country
