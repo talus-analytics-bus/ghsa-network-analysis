@@ -131,8 +131,7 @@
 			const dataLookup = getDataLookup();
 
 			// get filter values
-			let ccs = $('.cc-select').val();
-			if (!ccs.length) ccs = App.capacities.map(d => d.id);
+			const ccs = $('.cc-select').val();
 
 			// clear out current data
 			currentNodeDataMap.clear();
