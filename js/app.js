@@ -43,7 +43,7 @@ const App = {};
 		d3.queue()
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
-			.defer(d3.json, 'data/funding_data_092817.json')
+			.defer(d3.json, 'data/funding_data_101317.json')
 			.defer(d3.json, 'data/currencies.json')
 			.await((error, worldData, unsdData, fundingData, currencies) => {
 				if (error) throw error;
@@ -88,10 +88,6 @@ const App = {};
 					App.fundingLookup[donor].push(d);
 					if (!App.recipientLookup[recipient]) App.recipientLookup[recipient] = [];
 					App.recipientLookup[recipient].push(d);
-
-					// TODO inject random core capacity into each payment
-					const randomIndex = Math.floor(App.capacities.length * Math.random());
-					d.core_capacities = [App.capacities[randomIndex].id];
 
 					// calculate totals by year
 					// TODO should do this outside UI

@@ -1,7 +1,8 @@
 (() => {
 	App.drawProgressCircles = (selector, data, color) => {
 		const tau = 2 * Math.PI;
-		const percSpent = data.total_spent / data.total_committed;
+		let percSpent = data.total_spent / data.total_committed;
+		if (!data.total_committed) percSpent = 0;
 
 		// start building the chart
 		const margin = { top: 0, right: 10, bottom: 0, left: 10 };
@@ -47,7 +48,7 @@
 		chart.append('text')
 			.attr('class', 'progress-circle-value')
 			.attr('dy', '.35em')
-			.text(d3.format('.0%')(percSpent));
+			.text(data.total_committed ? d3.format('.0%')(percSpent) : 'N/A');
 
 		// animate progress circle filling
 		foreground.transition()

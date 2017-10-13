@@ -5,16 +5,6 @@
 		margin-left: 225px;
 		margin-right: 225px;
 	}
-	.country-summary-label,
-	.progress-circle-title {
-		font-weight: 600;
-		font-size: 1.2em;
-	}
-	.country-summary-value {
-		margin-top: 5px;
-		font-family: 'Raleway', sans-serif;
-		font-size: 2.4em;
-	}
 }
 .country-summary-content {
 	display: none;
@@ -30,6 +20,15 @@
 	.show-donor-btn,
 	.show-recipient-btn {
 		margin-top: 15px;
+	}
+	.country-summary-label {
+		font-weight: 400;
+		font-size: 1.2em;
+	}
+	.country-summary-value {
+		margin-top: 10px;
+		font-family: 'Raleway', sans-serif;
+		font-size: 2.4em;
 	}
 }
 .country-details {
@@ -53,6 +52,19 @@
 		border-bottom: $light-border;
 		margin-bottom: 20px;
 		min-height: 160px;
+	}
+	.progress-circle-title {
+		font-weight: 600;
+		font-size: 1.2em;
+	}
+	.country-summary-label {
+		font-weight: 600;
+		font-size: 1.2em;
+	}
+	.country-summary-value {
+		margin-top: 5px;
+		font-family: 'Raleway', sans-serif;
+		font-size: 2.4em;
 	}
 	.country-summary-text,
 	.progress-circle-text {

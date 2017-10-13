@@ -11,6 +11,10 @@
 				.html(`${flagHtml} ${country.NAME} ${flagHtml}`)
 				.on('click', () => hasher.setHash(`analysis/${iso}`));
 
+			// fill out generic text
+			$('.start-year').text(App.dataStartYear);
+			$('.end-year').text(App.dataEndYear);
+
 			if (moneyType) initDonorOrRecipientProfile();
 			else initBasicProfile();
 		}
@@ -82,6 +86,7 @@
 
 			// fill out generic text
 			$('.money-type').text(moneyType === 'd' ? 'disbursed' : 'received');
+			$('.money-type-cap').text(moneyType === 'd' ? 'Disbursed' : 'Received');
 
 			// fill out title and description for circle pack; draw circle pack
 			if (moneyType === 'd') {
@@ -102,7 +107,6 @@
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
 
 				// draw charts
-				drawDonorProgressCircles();
 				drawDonorCirclePack();
 				drawDonorCategoryChart();
 				drawDonorTimeChart();
@@ -124,11 +128,13 @@
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
 
 				// draw charts
-				drawRecipientProgressCircles();
 				drawRecipientCirclePack();
 				drawRecipientCategoryChart();
 				drawRecipientTimeChart();
 			}
+
+			// draw charts
+			drawProgressCircles();
 
 			// display content
 			$('.country-flow-content').slideDown();
@@ -192,9 +198,11 @@
 			}
 		}
 
-		function drawDonorProgressCircles() {
+		function drawProgressCircles() {
+			const lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
+			const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
 			const ccs = ['P', 'D', 'R'];
-			if (App.fundingLookup[iso]) {
+			if (lookup[iso]) {
 				const pData = [];
 				const fundsByCc = {};
 				ccs.forEach((cc) => {
@@ -204,7 +212,7 @@
 						total_spent: 0,
 					};
 				});
-				App.fundingLookup[iso].forEach((p) => {
+				lookup[iso].forEach((p) => {
 					ccs.forEach((cc) => {
 						if (p.core_capacities.some(pcc => cc === pcc.charAt(0))) {
 							let committed = p.total_committed;
@@ -215,9 +223,9 @@
 						}
 					});
 				});
-				App.drawProgressCircles('.prevent-circle-chart', fundsByCc.P, App.fundColor);
-				App.drawProgressCircles('.detect-circle-chart', fundsByCc.D, App.fundColor);
-				App.drawProgressCircles('.respond-circle-chart', fundsByCc.R, App.fundColor);
+				App.drawProgressCircles('.prevent-circle-chart', fundsByCc.P, color);
+				App.drawProgressCircles('.detect-circle-chart', fundsByCc.D, color);
+				App.drawProgressCircles('.respond-circle-chart', fundsByCc.R, color);
 			} else {
 
 			}
