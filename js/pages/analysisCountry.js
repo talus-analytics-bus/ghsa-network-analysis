@@ -2,15 +2,16 @@
 	App.initAnalysisCountry = (iso, moneyType) => {
 		// get country information
 		const country = App.countries.find(c => c.ISO2 === iso);
+		const name = App.codeToNameMap.get(iso);
 		const lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
 		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
 
 		// initializes the whole page
 		function init() {
 			// fill title
-			const flagHtml = App.getFlagHtml(iso);
+			const flagHtml = country ? App.getFlagHtml(iso) : '';
 			$('.analysis-country-title')
-				.html(`${flagHtml} ${country.NAME} ${flagHtml}`)
+				.html(`${flagHtml} ${name} ${flagHtml}`)
 				.on('click', () => hasher.setHash(`analysis/${iso}`));
 
 			// fill out generic text
@@ -251,8 +252,12 @@
 						//.style('background-color', (d, i) => colors[Math.floor(i / 2)])
 						//.style('color', (d, i) => (i < 4) ? '#fff' : 'black')
 						.on('click', (d) => {
-							if (d.iso.length === 2) {
-								hasher.setHash(`analysis/${iso}/${d.iso}`)
+							if (d.iso !== 'Not reported') {
+								if (moneyType === 'd') {
+									hasher.setHash(`analysis/${iso}/${d.iso}`);
+								} else {
+									hasher.setHash(`analysis/${d.iso}/${iso}`);
+								}
 							}
 						});
 				rows.append('td').html((d) => {

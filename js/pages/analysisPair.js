@@ -12,8 +12,10 @@
 		const $content = $('.analysis-pair-content');
 
 		// get country info
-		const fundCountry = App.countries.find(c => c.ISO2 === fundIso);
-		const recCountry = App.countries.find(c => c.ISO2 === recIso);
+		const donorCountry = App.countries.find(c => c.ISO2 === fundIso);
+		const recipientCountry = App.countries.find(c => c.ISO2 === recIso);
+		const donorName = App.codeToNameMap.get(fundIso);
+		const recipientName = App.codeToNameMap.get(recIso);
 
 		// get payments between the countries
 		let allPayments = [];
@@ -24,10 +26,12 @@
 
 		function init() {
 			// fill title
-			const fundFlagHtml = App.getFlagHtml(fundIso);
-			const recFlagHtml = App.getFlagHtml(recIso);
-			$content.find('.analysis-country-title').html(`${fundFlagHtml} ${fundCountry.NAME} ` +
-				`<div class="arrow-html">&rarr;</div>  ${recCountry.NAME} ${recFlagHtml}`);
+			const fundFlagHtml = donorCountry ? App.getFlagHtml(fundIso) : '';
+			const recFlagHtml = recipientCountry ? App.getFlagHtml(recIso) : '';
+			const donorNameHtml = `<span onclick="hasher.setHash('analysis/${fundIso}')">${donorName}</span>`;
+			const recipientNameHtml = `<span onclick="hasher.setHash('analysis/${recIso}')">${recipientName}</span>`;
+			$content.find('.analysis-country-title').html(`${fundFlagHtml} ${donorNameHtml} ` +
+				`<div class="arrow-html">&rarr;</div> ${recipientNameHtml} ${recFlagHtml}`);
 
 			// fill out generic text
 			$('.start-year').text(App.dataStartYear);

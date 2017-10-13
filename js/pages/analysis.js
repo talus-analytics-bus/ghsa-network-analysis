@@ -148,7 +148,9 @@
 					.style('background-color', (d, i) => blues[Math.floor(i / 2)])
 					.style('color', (d, i) => (i < 4) ? '#fff' : 'black')
 					.on('click', (d) => {
-						if (d.iso.length === 2) hasher.setHash(`analysis/${d.iso}`);
+						if (d.iso !== 'Not reported') {
+							hasher.setHash(`analysis/${d.iso}`);
+						}
 					});
 			dRows.append('td').html((d) => {
 				const country = App.countries.find(c => c.ISO2 === d.iso);
@@ -168,7 +170,9 @@
 					.style('background-color', (d, i) => oranges[Math.floor(i / 2)])
 					.style('color', (d, i) => (i < 4) ? '#fff' : 'black')
 					.on('click', (d) => {
-						if (d.iso.length === 2) hasher.setHash(`analysis/${d.iso}`);
+						if (d.iso !== 'Not reported') {
+							hasher.setHash(`analysis/${d.iso}`);
+						}
 					});
 			rRows.append('td').html((d) => {
 				const country = App.countries.find(c => c.ISO2 === d.iso);
