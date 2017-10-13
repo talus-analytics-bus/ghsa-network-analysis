@@ -2,16 +2,57 @@ const App = {};
 
 (() => {
 
+	const DEBUG = false;
+
 	// Loads the current 'funding_data' dataset to be played with
 	App.loadFundingData = () => {
 		const path = './data/';
-		const fn = 'funding_data-iati_2014_plus-092817-v4-MV.json';
+		const fn = 'funding_data-iati_2014_plus-101217-v4.1-MV.json';
 		console.log('Loading funding data...');
 			d3.queue()
 				.defer(d3.json, path + fn)
 				.await((error, data) => {
 					console.log('loading complete:');
 					console.log(data);
+			});
+	};
+const sectorAid = [
+    "12110",
+    "12181",
+    "12182",
+    "12191",
+    "12220",
+    "12230",
+    "12240",
+    "12250",
+    "12261",
+    "12262",
+    "12263",
+    "12281",
+    "13010",
+    "13020",
+    "13030",
+    "13040",
+    "13081",
+    "31195",
+    "16064",	// Social mitigation of HIV/AIDS 
+    "32168",	// Pharmaceutical production 
+    // "14050"	// Waste management / disposal (don't include in application data yet)
+  ];
+
+	// Keep only activities from iati_activities.json
+	// that have the right sector *OR* are WHO funder_ref
+	App.filterActivities = () => {
+		d3.queue()
+			.defer(d3.json, 'data/iati_activities-101217-MV.json')
+			.await((error, data) => {
+				console.log('Activities data loaded');
+				console.log('filtering...');
+				const filteredActs = data.rows.filter(d => {
+					return sectorAid.indexOf(d.sector_code) > -1 || d.funder_ref === "XM-DAC-928";
+				});
+				console.log('done!');
+				Util.save(filteredActs, 'filtered_activities.json');
 			});
 	};
 
@@ -25,6 +66,10 @@ const App = {};
 	*/
 	App.aidCodesForSteph = [];
 	App.filterTransactionsBySector = () => {
+
+
+		
+
 		console.log('Loading transactions data...');
 		d3.queue()
 			.defer(d3.json, 'data/rawTransactions.json')
@@ -33,21 +78,59 @@ const App = {};
 				console.log(data);
 
 				// Get list of activities with right sectors
-				console.log("Getting list of 'aid' values that are correct sector...")
-				const sectorAid = _.unique(_.pluck(iatiActivities.rows,'aid'));
+				console.log("Getting list of 'aid' values that should be included in data...")
+				const aidCodesToUse = _.unique(_.pluck(iatiActivities,'aid'));
+				console.log(aidCodesToUse);
 
-				console.log("Filtering transactions data...");
+				console.log("Filtering transactions data for only those 'aid' values...");
 
 				const filteredTransactions = data.filter((d) => {
-					const isRightSector = sectorAid.indexOf(d.aid) > -1; // keep correct sector
-					const isWhoFunderRef = d.funder_ref === "XM-DAC-928"; // keep if WHO was funder regardless of sector
-					if (isRightSector || isWhoFunderRef) App.aidCodesForSteph.push(d.aid);
-					return isRightSector || isWhoFunderRef;
+					// const isRightSector = sectorAid.indexOf(d.aid) > -1; // keep correct sector
+					// const isWhoFunderRef = d.funder_ref === "XM-DAC-928"; // keep if WHO was funder regardless of sector
+					// if (isRightSector || isWhoFunderRef) App.aidCodesForSteph.push(d.aid);
+					// return isRightSector || isWhoFunderRef;
+					return aidCodesToUse.indexOf(d.aid) > 1;
 				});
 
 				console.log('Filtered transactions data loaded:');
-				console.log(filteredTransactions);
+				console.log(filteredTransactions.length);
 				Util.save(filteredTransactions, 'filteredTransactions.json');
+			});
+	};
+
+
+		// App.aidCodesForSteph = [];
+	App.loadRawTransactions = () => {
+
+
+		
+
+		console.log('Loading transactions data...');
+		d3.queue()
+			.defer(d3.json, 'data/rawTransactions.json')
+			.await((error, data) => {
+				console.log('Transactions data loaded:');
+				console.log(data)
+				// console.log(data);
+
+				// // Get list of activities with right sectors
+				// console.log("Getting list of 'aid' values that should be included in data...")
+				// const aidCodesToUse = _.unique(_.pluck(iatiActivities,'aid'));
+				// console.log(aidCodesToUse);
+
+				// console.log("Filtering transactions data for only those 'aid' values...");
+
+				// const filteredTransactions = data.filter((d) => {
+				// 	// const isRightSector = sectorAid.indexOf(d.aid) > -1; // keep correct sector
+				// 	// const isWhoFunderRef = d.funder_ref === "XM-DAC-928"; // keep if WHO was funder regardless of sector
+				// 	// if (isRightSector || isWhoFunderRef) App.aidCodesForSteph.push(d.aid);
+				// 	// return isRightSector || isWhoFunderRef;
+				// 	return aidCodesToUse.indexOf(d.aid) > 1;
+				// });
+
+				// console.log('Filtered transactions data loaded:');
+				// console.log(filteredTransactions.length);
+				// Util.save(filteredTransactions, 'filteredTransactions.json');
 			});
 	};
 
@@ -99,10 +182,11 @@ const App = {};
 		console.log('Running App.getIatiActivities');
 
 		const queryJson = {
-		  "limit": "90000",
+		  "limit": "2000000",
 		  "from": "sector,act",
 		  "flags": "0",
-		  "select": "aid,sector_code,day_start,day_end,spend,commitment,flags,funder_ref,title,description",
+		  "day_start_gt": "2014-01-01",
+		  "select": "aid,sector_code,funder_ref,title,description"/*,
 		  "sector_code": [
 		    "12110",
 		    "12181",
@@ -125,7 +209,7 @@ const App = {};
 		    "16064",	// Social mitigation of HIV/AIDS (don't include in application data yet)
 		    "32168",	// Pharmaceutical production (don't include in application data yet)
 		    "14050",	// Waste management / disposal (don't include in application data yet)
-		  ]
+		  ]*/
 		};
 
 		const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
@@ -169,7 +253,10 @@ const App = {};
 				continue;
 			}
 			else {
-				if (Util.iatiDiseaseFunctionHash[sectorTag] === undefined) console.log(sectorTag);
+				if (Util.iatiDiseaseFunctionHash[sectorTag] === undefined) {
+					// console.log(sectorTag);
+					continue;
+				}
 				const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].function_tags;
 				if (outputTmp === undefined) {
 					// outputTags = _.union(outputTags, unspecTag);
@@ -198,8 +285,12 @@ const App = {};
 				continue;
 			}
 			else {
-				if (Util.iatiDiseaseFunctionHash[sectorTag] === undefined) console.log(sectorTag);
+				if (Util.iatiDiseaseFunctionHash[sectorTag] === undefined) {
+					// console.log(sectorTag);
+					continue;
+				}
 				const outputTmp = Util.iatiDiseaseFunctionHash[sectorTag].disease_tags;
+
 				if (outputTmp === undefined) {
 					// outputTags = _.union(outputTags, unspecTag);
 					continue;
@@ -224,14 +315,15 @@ const App = {};
 		else if (input === "XI-IATI-BWCO20151011") input = "BW-CIPA-CO20151011" // code for ITPC changed
 		else if (input === "UNDP") input = "XM-DAC-41114" // code for UNDP; sometimes people just write "UNDP"
 		else if (input === "UNFPA") input = "41119" // code for UNFPA; sometimes people just write "UNFPA"
+		else if (input === "UNICEF") input = "41122" // code for UNICEF; sometimes people just write "UNFPA"
 		let donorData = publishers_data.find(d => d.publisher_iati_id === input);
 		if (donorData === undefined) {
 			donorData = Util.funder_aux_hash[input];
 			if (donorData === undefined) {
 				App.undefinedDonorNames.push(input);
-				donorData = Util.funder_aux_hash[input];
+				// donorData = Util.funder_aux_hash[input];
+					donorData = {name: 'error', sector: 'error', country:'error'};
 			}
-			// donorData = {name: 'error', sector: 'error', country:'error'};
 			output.donor_name = donorData.name;
 			output.donor_sector = donorData.sector;
 			const donor_country_tmp = countries_json.find(d => d.NAME === donorData.country);
@@ -305,14 +397,118 @@ const App = {};
 	};
 
 
+	// perform text matching on a string to see what JEE CCs to tag the project with
+	App.searchForJeeCcs = (stringToMatchOn) => {
+		let matchingCcs = [];
+		console.log('getting matches...')
+		Util.ccHash.forEach(test => {
+			const caseSensitive = test.kw.toLowerCase() !== test.kw;
+			if (caseSensitive) {
+				const caseSensitiveMatch = stringToMatchOn.indexOf(test.kw) > -1;
+				if (caseSensitiveMatch) {
+					matchingCcs = _.union(matchingCcs, [test.cc]);
+				}
+			} else {
+				const caseInsensitiveMatch = stringToMatchOn.toLowerCase().indexOf(test.kw) > -1;
+				if (caseInsensitiveMatch) {
+					matchingCcs = _.union(matchingCcs, [test.cc]);
+				}
+			}
+		});
+		return matchingCcs;
+	};
+
+	// tag JEE CCs for each project using text matching and sector keyword
+	// hashing
+	App.missingAid = [];
+	App.tagJeeCcs = (projects) => {
+		// if (DEBUG) projects = projects.slice(0,100); // DEBUG sample only
+		d3.queue()
+			.defer(d3.json, './data/translated_descs2.json')
+			.await((error, translated_descs) => {
+				// console.log(translated_descs[0]);
+				// for each proj
+				projects.forEach(project => {
+					// get aid for cur prj
+					const curAid = project.source.id;
+
+					// find matching activity to get the translated descs
+					// DESCRIPTIONS
+					const matchTrns = translated_descs.find(d => d.aid === curAid);
+
+					let stringToMatchOn = '';
+					if (matchTrns === undefined) {
+						// console.log('missing desc trans for: ' + curAid);
+						// if no match for project description, do one for its title and use that
+						const matchAct = iatiActivities.find(d => d.aid === curAid);
+						App.translate(matchAct.title, (result) => {
+							// do JEE lookup on this text;
+							stringToMatchOn = result;
+							project.title_trns = stringToMatchOn;
+							project.core_capacities = App.searchForJeeCcs(stringToMatchOn);
+						});
+					} else {
+						stringToMatchOn = matchTrns.desc_trns;
+						project.desc_trns = stringToMatchOn;
+						project.core_capacities = App.searchForJeeCcs(stringToMatchOn);
+					}
+
+					// TITLES (todo)
+					// TODO
+				});
+			});
+	};
+
+	// add the D.4 Workforce Development JEE CC if the right sectors are tagged
+	App.tagJeeCcsBasedOnSector = (projects) => {
+		projects.forEach(project => {
+			// remove D.4 if present
+			project.core_capacities = _.without(project.core_capacities, "D.4");
+
+			// get project sectors
+			const activities_for_proj = iatiActivities.filter(d => d.aid === project.source.id);
+			const curSectorCodes = _.unique(_.pluck(activities_for_proj, 'sector_code'));
+
+			// if any are a match for D.4, add it to the project's CCs
+			const d4_dac_codes = [
+				"12181",
+				"12281",
+				"13081"
+			];
+
+			const p1_dac_code = "12110";
+			const matchingCodes = _.intersection(d4_dac_codes, curSectorCodes);
+			// console.log(curSectorCodes)
+			if (matchingCodes.length > 0) {
+				project.core_capacities = _.union(project.core_capacities,["D.4"]);
+			}
+
+			// p.1 match
+			if (curSectorCodes.indexOf(p1_dac_code) > -1) {
+				project.core_capacities = _.union(project.core_capacities,["P.1"]);
+			}
+		});
+		console.log('counter = ' + counter);
+	};
+
+	// removes spurious 3MDG projects for now until we know how to process them
+	App.removeUnhealthyRecords = (projects) => {
+		const projNameToRemove = "Three Millennium Development Goal Fund (3MDG Multi Donor Fund)";
+		projects = projects.filter(project => {
+			return project.project_name !== projNameToRemove;
+		});
+	};
+
 	/* mapDataIati
 	*  map the IATI data downloaded into JSON format into the app data structure
 	*/
 	App.mapDataIati = () => {
+		
 		console.log('Running App.mapDataIati');
 
 		// grab transactions
 		let transactions = iatiRaw;
+		if (DEBUG) transactions = transactions.slice(0,100000);
 
 		const output = [];
 		let projId = 0;
@@ -321,7 +517,7 @@ const App = {};
 		let projNames = _.unique(_.pluck(transactions, 'aid'));
 		
 		for (let i  = 0; i < projNames.length; i++) {
-
+				if (i % 1000 === 0) console.log('i = ' + i);
 			// get current project name ("aid" data field)
 			const curProj_aid = projNames[i];
 
@@ -353,13 +549,15 @@ const App = {};
 				// // DEBUG store aid data
 				// proj.aid = firstProjTrans.aid;
 
-				// project_name
-				proj.project_name = firstProjTrans.title;
 				
 				// project_function
 				// get sector codes for this activity (project)
-				const curSectorCodes = _.unique(_.pluck(iatiActivities.rows.filter(d => d.aid === firstProjTrans.aid), 'sector_code'));
+				const activities_for_proj = iatiActivities.filter(d => d.aid === firstProjTrans.aid);
+				const curSectorCodes = _.unique(_.pluck(activities_for_proj, 'sector_code'));
 				proj.project_function = App.getFunctionTags(curSectorCodes);
+				
+				// project_name
+				proj.project_name = activities_for_proj[0].title;
 
 				// project_disease
 				proj.project_disease = App.getDiseaseTags(curSectorCodes);
@@ -454,6 +652,11 @@ const App = {};
 		}
 
 		console.log(output);
+
+		// tag each project with one or more JEE Core Capacities using the hash table
+		// in Util.ccHash
+		App.tagJeeCcs(output);
+
 		Util.save(output, 'funding_data-iati_2014_plus-092717-v2-MV.json');
 	};
 
@@ -564,5 +767,38 @@ const App = {};
 			text: text
 		}));
 	};
+
+	App.translateBatch2Results = [];
+
+	// list of unique activities from latest data
+	
+
+	App.translateBatch2 = (i) => {
+		if (i % 100 === 0) console.log('i = ' + i);
+		if (i >= iatiActivitiesUniqueAid.length) return;
+		// if current iati activity has a translation available, use it and move on
+		const curAct = iatiActivitiesUniqueAid[i];
+		const transMatch = translatedDescs.find(d => d.aid === curAct);
+		if (transMatch !== undefined) {
+			curAct.desc_trns = transMatch.desc_trns;
+			App.translateBatch2Results.push({aid: curAct, desc_trns: transMatch.desc_trns});
+			App.translateBatch2(i + 1);
+		} else {
+			// do translation
+			const curActObj = iatiActivities.find(d => d.aid === curAct);
+			if (curActObj.description === null || curActObj.description.length > 4000) {
+				// curAct.desc_trns = null;
+				App.translateBatch2(i + 1);
+			} else {
+				App.translate(curActObj.description, (result) => {
+					// console.log(result);
+					// curAct.desc_trns = result;
+					App.translateBatch2Results.push({aid: curAct, desc_trns: result});
+					App.translateBatch2(i + 1);
+				});
+			}
+		}
+		// otherwise, perform the translation on its description and add it
+	}; 
 
 })();

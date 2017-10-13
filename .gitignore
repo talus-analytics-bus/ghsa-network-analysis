@@ -14,3 +14,7 @@ node_modules/
 # Large data files
 research/data/tools/data/test.json
 research/data/tools/data/rawTransactions.json
+research/data/tools/data/iati_activities-101217-MV.json
+research/data/tools/data/iati_activities-101217-MV.js
+research/data/tools/data/iati_transactions-101217-MV.json
+research/data/tools/data/iati_transactions-101217-MV.js

@@ -13,37 +13,8 @@ String.prototype.replaceAt=function(index, replacement) {
 }
 
 // Hashes text strings (title, desc of activity) to JEE Core Capacities
-Util.ccHash = {
-  "legislation": "P.1",
-  "legislature": "P.1",
-  "policy": "P.1",
-  "law ": "P.1",
-  " law": "P.1",
-  " law ": "P.1",
-  "laws": "P.1",
-  "IHR": "P.2",
-  "international health regulations": "P.2",
-  "antimicro": "P.3",
-  "AMR transmission": "P.3",
-  "zoono": "P.4",
-  "animal disease": "P.4",
-  "One Health": "P.4",
-  "OIE": "P.4",
-  "food safety": "P.5",
-  "biosec": "P.6",
-  "biosaf": "P.6",
-  "immun": "P.7",
-  "vacc": "P.7",
-  "lab ": "D.1",
-  " lab": "D.1",
-  " lab ": "D.1",
-  "surveil": "D.2",
-  "WAHIS": "D.3",
-  "International Reporting Requirements": "D.3",
-  "surge capacity": "R.1",
-  "response plan": "R.1",
-  "prepared": "R.1"
-};
+Util.ccHash = [{"kw":"legislation","cc":"P.1"},{"kw":"legislature","cc":"P.1"},{"kw":"policy","cc":"P.1"},{"kw":"law ","cc":"P.1"},{"kw":" law","cc":"P.1"},{"kw":"laws","cc":"P.1"},{"kw":"governance","cc":"P.1"},{"kw":"IHR","cc":"P.2"},{"kw":"international health regulations","cc":"P.2"},{"kw":"country level coordination","cc":"P.2"},{"kw":"antimicro","cc":"P.3"},{"kw":"amr transmission","cc":"P.3"},{"kw":"antibiotic resis","cc":"P.3"},{"kw":"dr-tb resistant tuberculosis","cc":"P.3"},{"kw":"resistant tb","cc":"P.3"},{"kw":"resistant malaria","cc":"P.3"},{"kw":"resistant bacteria","cc":"P.3"},{"kw":"antibiotic treatment","cc":"P.3"},{"kw":"abuse of antimicrobials","cc":"P.3"},{"kw":"reduce the consumption of antibiotics","cc":"P.3"},{"kw":"zoono","cc":"P.4"},{"kw":"animal disease","cc":"P.4"},{"kw":"One Health","cc":"P.4"},{"kw":"OIE","cc":"P.4"},{"kw":"animal health","cc":"P.4"},{"kw":"swine fever","cc":"P.4"},{"kw":"avian influenza","cc":"P.4"},{"kw":"veterin","cc":"P.4"},{"kw":"influenza a","cc":"P.4"},{"kw":"sheep and goat pox","cc":"P.4"},{"kw":"disease response capabilities at the human-wildlife-ecosystem interface","cc":"P.4"},{"kw":"food-and-mouth disease","cc":"P.4"},{"kw":"foot and mouth disease","cc":"P.4"},{"kw":"rabies","cc":"P.4"},{"kw":"leishmania","cc":"P.4"},{"kw":"chagas","cc":"P.4"},{"kw":"food safety","cc":"P.5"},{"kw":"biosec","cc":"P.6"},{"kw":"biosaf","cc":"P.6"},{"kw":"immun","cc":"P.7"},{"kw":"vacc","cc":"P.7"},{"kw":"cold chain","cc":"P.7"},{"kw":"cold stores","cc":"P.7"},{"kw":"lab ","cc":"D.1"},{"kw":" lab","cc":"D.1"},{"kw":"rapid test","cc":"D.1"},{"kw":"rapid detection","cc":"D.1"},{"kw":"diagnostic","cc":"D.1"},{"kw":"surveil","cc":"D.2"},{"kw":"national screening program","cc":"D.2"},{"kw":"early detection","cc":"D.2"},{"kw":"national health information management system","cc":"D.2"},{"kw":"data management system","cc":"D.2"},{"kw":"WAHIS","cc":"D.3"},{"kw":"reporting","cc":"D.3"},{"kw":"personne","cc":"D.4"},{"kw":"staff","cc":"D.4"},{"kw":"training","cc":"D.4"},{"kw":"surge capacity","cc":"R.1"},{"kw":"response plan","cc":"R.1"},{"kw":"prepared","cc":"R.1"},{"kw":"emergency","cc":"R.2"},{"kw":"ambulance","cc":"R.2"},{"kw":"deliberate","cc":"R.3"},{"kw":"inderdict","cc":"R.3"},{"kw":"terrorism","cc":"R.3"},{"kw":"police","cc":"R.3"},{"kw":"law enforcement","cc":"R.3"},{"kw":"deploy","cc":"R.4"},{"kw":"stockpile","cc":"R.4"},{"kw":"supply management","cc":"R.4"},{"kw":"warehousing and distributing drugs","cc":"R.4"},{"kw":"risk communic","cc":"R.5"},{"kw":"public communic","cc":"R.5"},{"kw":"community engage","cc":"R.5"},{"kw":"increase public awareness","cc":"R.5"}];
+// Util.ccHash = [{"kw":"legislation","cc":"P.1"},{"kw":"legislature","cc":"P.1"},{"kw":"policy","cc":"P.1"},{"kw":"law ","cc":"P.1"},{"kw":" law","cc":"P.1"},{"kw":" law ","cc":"P.1"},{"kw":"laws","cc":"P.1"},{"kw":"IHR","cc":"P.2"},{"kw":"international health regulations","cc":"P.2"},{"kw":"antimicro","cc":"P.3"},{"kw":"AMR transmission","cc":"P.3"},{"kw":"zoono","cc":"P.4"},{"kw":"animal disease","cc":"P.4"},{"kw":"One Health","cc":"P.4"},{"kw":"OIE","cc":"P.4"},{"kw":"food safety","cc":"P.5"},{"kw":"biosec","cc":"P.6"},{"kw":"biosaf","cc":"P.6"},{"kw":"immun","cc":"P.7"},{"kw":"vacc","cc":"P.7"},{"kw":"lab ","cc":"D.1"},{"kw":" lab","cc":"D.1"},{"kw":" lab ","cc":"D.1"},{"kw":"surveil","cc":"D.2"},{"kw":"WAHIS","cc":"D.3"},{"kw":"International Reporting Requirements","cc":"D.3"},{"kw":"surge capacity","cc":"R.1"},{"kw":"response plan","cc":"R.1"},{"kw":"prepared","cc":"R.1"}];
 
 Util.getQueryUrl = (proxyUrl, queryJson) => {
 
@@ -313,6 +284,21 @@ Util.iatiDiseaseFunctionHash = {
         "c": "Family health"
       }
     ]
+  },
+  "Social mitigation of HIV/AIDS": {
+    "disease_tags": {
+        "p": "Infectious disease",
+        "c": "HIV/AIDS"
+      },
+    "function_tags": undefined
+  },
+  "Waste management / disposal": {
+    "disease_tags": undefined,
+    "function_tags": undefined
+  },
+  "Pharmaceutical production": {
+    "disease_tags": undefined,
+    "function_tags": undefined
   }
 };
 

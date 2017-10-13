@@ -42,7 +42,7 @@ const translate = require('google-translate-api');
 app.post('/translate', function(req, res) {
 	// console.log("running translate POST");
 	translate(req.body.text, {to: 'en'}).then(res2 => {
-	    res.send(res2);
+	    res.send(res2.text);
 	}).catch(err => {
 	    console.error(err);
 	});
