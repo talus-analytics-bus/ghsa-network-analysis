@@ -75,6 +75,13 @@
 			.startAngle(d => d.theta0)
 			.endAngle(d => d.theta1);
 
+		// define label arc
+		const regionLabelArc = d3.arc()
+			.innerRadius(radius + 28)
+			.outerRadius(radius + 28 + 12)
+			.startAngle(d => (d.theta1 - d.theta0 > 1) ? d.theta0 : d.theta0 - 1)
+			.endAngle(d => (d.theta1 - d.theta0 > 1) ? d.theta1 : d.theta1 + 1);
+
 		// define link path
 		const ribbon = d3.ribbon()
 			.source(d => d.source)
@@ -205,12 +212,12 @@
 				.attr('class', 'arc-label-path')
 				.merge(labelPaths)
 					.attr('id', (d, i) => `arc-path-${i}`)
-					.attr('d', regionArc)
+					.attr('d', regionLabelArc)
 					.style('fill', 'none')
 					.each(function positionLabel(d) {
 						const firstArcSection = /(^.+?)L/;
 						let newArc = firstArcSection.exec(d3.select(this).attr('d'))[1];
-						newArc = newArc.replace(/,/g , " ");
+						newArc = newArc.replace(/,/g , ' ');
 
 						// flip if bottom half of circle
 						const avgTheta = (d.theta0 + d.theta1) / 2;
