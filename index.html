@@ -364,9 +364,9 @@
 								Funds <span class="money-type-cap"></span> by Core Capacity
 							</h3>
 							<div class="description">
-								The chart below shows the amount of money <span class="money-type"></span> by this country for each core capacity. Colors represent each recipient.
+								The chart below shows the amount of money <span class="money-type"></span> by this country for each core capacity. Colors represent each recipient. Note that a single funding commitment or disbursal may map to multiple core capacities.
 								<br><br>
-								<i>Hover over a bar to see funding details.</i>
+								<i>Hover over a bar to see additional funding details.</i>
 							</div>
 							<div class="category-chart-container"></div>
 						</div>
@@ -463,7 +463,7 @@
 				<a class="export-button-link" href="export/template.xlsx">
 					<button type="button" class="btn btn-default">Download Project Report Template</button>
 				</a>
-				<button type="button" class="btn btn-default btn-score-file">Upload Project Report</button>
+				<button type="button" class="btn btn-default btn-score-file">Upload Completed Project Report</button>
 				<input id="score-file-upload" class="input-score-file" type="file" />
 			</div>
 			<div class="submit-form-content">
@@ -496,10 +496,6 @@
 							<td>Donor Name</td>
 							<td><input class="donor-name-input form-control" /></td>
 						</tr>
-						<tr>
-							<td>Donor Sector</td>
-							<td><select class="donor-sector-select form-control"></select></td>
-						</tr>
 					</tbody></table>
 				</div>
 				<div class="submit-form-container">
@@ -512,14 +508,14 @@
 							<td>Recipient Name</td>
 							<td><input class="recipient-name-input form-control" /></td>
 						</tr>
-						<tr>
-							<td>Recipient Sector</td>
-							<td><select class="recipient-sector-select form-control"></select></td>
-						</tr>
 					</tbody></table>
 				</div>
 				<div class="submit-form-container">
 					<table class="submit-form-table"><tbody>
+						<tr>
+							<td>Amount Committed</td>
+							<td><input class="committed-input form-control" /></td>
+						</tr>
 						<tr>
 							<td>Amount Disbursed</td>
 							<td><input class="disbursed-input form-control" /></td>
