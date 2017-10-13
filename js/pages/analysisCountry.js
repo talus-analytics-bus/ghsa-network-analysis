@@ -193,11 +193,38 @@
 		}
 
 		function drawDonorProgressCircles() {
-			
+			const ccs = ['P', 'D', 'R'];
+			if (App.fundingLookup[iso]) {
+				const pData = [];
+				const fundsByCc = {};
+				ccs.forEach((cc) => {
+					fundsByCc[cc] = {
+						cc,
+						total_committed: 0,
+						total_spent: 0,
+					};
+				});
+				App.fundingLookup[iso].forEach((p) => {
+					ccs.forEach((cc) => {
+						if (p.core_capacities.some(pcc => cc === pcc.charAt(0))) {
+							let committed = p.total_committed;
+							const spent = p.total_spent;
+							if (committed < spent) committed = spent;
+							fundsByCc[cc].total_committed += committed;
+							fundsByCc[cc].total_spent += spent;
+						}
+					});
+				});
+				App.drawProgressCircles('.prevent-circle-chart', fundsByCc.P, App.fundColor);
+				App.drawProgressCircles('.detect-circle-chart', fundsByCc.D, App.fundColor);
+				App.drawProgressCircles('.respond-circle-chart', fundsByCc.R, App.fundColor);
+			} else {
+
+			}
 		}
 
 		function drawRecipientProgressCircles() {
-			
+
 		}
 
 		function drawDonorCategoryChart() {

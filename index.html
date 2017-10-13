@@ -315,13 +315,22 @@
 						<div class="progress-circle-text">
 							<div class="progress-circle-title">% Disbursed by Core Capacity</div>
 							<div class="progress-circle-description description">
-								The circles to the right show the percent of committed funds that were <span class="money-type"></span>. Percentages are shown by the three core capacity categories: Prevent, Detect, and Respond.
+								The circles to the right show the percent of committed funds that were <span class="money-type"></span>. Percentages are shown by the three core capacity categories: <b>Prevent</b>, <b>Detect</b>, and <b>Respond</b>.
 							</div>
 						</div>
 						<div class="progress-circle-container">
-							<div class="prevent-circle-chart circle-chart"></div>
-							<div class="detect-circle-chart circle-chart"></div>
-							<div class="respond-circle-chart circle-chart"></div>
+							<div class="circle-chart-content">
+								<div class="prevent-circle-chart circle-chart"></div>
+								<div class="circle-chart-label">Prevent</div>
+							</div>
+							<div class="circle-chart-content">
+								<div class="detect-circle-chart circle-chart"></div>
+								<div class="circle-chart-label">Detect</div>
+							</div>
+							<div class="circle-chart-content">
+								<div class="respond-circle-chart circle-chart"></div>
+								<div class="circle-chart-label">Respond</div>
+							</div>
 						</div>
 					</div>
 					<div class="country-chart-container row">
@@ -555,6 +564,7 @@
 	<script src="js/components/filters.js"></script>
 	<script src="js/components/map.js"></script>
 	<script src="js/components/networkMap.js"></script>
+	<script src="js/components/progressCircles.js"></script>
 	<script src="js/components/search.js"></script>
 	<script src="js/components/slider.js"></script>
 	<script src="js/components/timeChart.js"></script>

@@ -79,6 +79,10 @@ const App = {};
 					const donor = d.donor_country;
 					const recipient = d.recipient_country;
 
+					// zero out negative values
+					if (d.total_committed < 0) d.total_committed = 0;
+					if (d.total_spent < 0) d.total_spent = 0;
+
 					// store payments in lookup objects
 					if (!App.fundingLookup[donor]) App.fundingLookup[donor] = [];
 					App.fundingLookup[donor].push(d);
