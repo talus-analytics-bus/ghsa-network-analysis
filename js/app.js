@@ -103,6 +103,9 @@ const App = {};
 				if (callback) callback();
 				NProgress.done();
 			});
+
+		// links
+		$('.navbar-brand span').click(() => hasher.setHash(''));
 	};
 
 
