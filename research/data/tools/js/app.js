@@ -7,7 +7,7 @@ const App = {};
 	// Loads the current 'funding_data' dataset to be played with
 	App.loadFundingData = () => {
 		const path = './data/';
-		const fn = 'allData_v6.json';
+		const fn = 'jeeData-v9.json';
 		console.log('Loading funding data...');
 			d3.queue()
 				.defer(d3.json, path + fn)
@@ -804,5 +804,16 @@ const sectorAid = [
 		}
 		// otherwise, perform the translation on its description and add it
 	}; 
+
+	// translate each project name
+	App.translateProjectNames = (i, projectNames) => {
+		console.log(i);
+		if (i >= projectNames.length || projectNames[i] === null) return;
+		console.log(projectNames[i])
+		App.translate(projectNames[i], (eng_name) => {
+			projectNames[i] = eng_name;
+			App.translateProjectNames(i + 1, projectNames);
+		});
+	};
 
 })();

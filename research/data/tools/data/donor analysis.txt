@@ -1,0 +1,61 @@
+// Gets list of all donors in system, by type, with their name and country
+App.getDonorList = (projects) => {
+	const output = [];
+	const donorListTmp = _.countBy(projects, function(d){ return d.donor_name + '; ' + d.donor_sector + '; ' + d.donor_country});
+	_.map(donorListTmp, (value, key) => {
+		const who = key.split('; ');
+		const toPush = {
+			donor_name: who[0],
+			donor_sector: who[1],
+			donor_country: who[2],
+			num_projects: value
+		};
+		output.push(toPush);
+	});
+	return output;
+};
+
+
+// get slug for donor
+var donorNames = ["Sightsavers",
+"International NGO",
+"International Treatment Preparedness Coalition (ITPC)",
+"AFEW International ",
+"Global Fund",
+"Indigo Trust",
+"PHASE Worldwide",
+"Sense International",
+"Cyan International",
+"interburns",
+"Action Against Hunger",
+"Terre des Hommes Netherlands",
+"EMMS International",
+"The Joint United Nations Programme on HIV and AIDS (UNAIDS) Secretariat",
+"Options Consultancy Services",
+"Palladium International Ltd (UK)",
+"Welbodi Partnership",
+"World Vision International",
+"European Bank for Reconstruction and Development",
+"International Development Law Organization",
+"Crown Agents Limited"];
+var slugList = [];
+donorNames.forEach(donorName => {
+var donorSlug = _.findKey(test,d => d.display_name === donorName)
+console.log(donorSlug);
+slugList.push(donorSlug);
+});
+
+// retag using donor codes
+no_match = [];
+temp1.forEach(project => {
+	const donor_code_match = donor_codes.find(code => code.donor_name === project.donor_name);
+	if (donor_code_match !== undefined) {
+		project.donor_country = donor_code_match.donor_code;
+		// console.log(`changing ${project.donor_name} slug to ${donor_code_match.donor_country}`);
+	} else {
+		console.log('no match!')
+		no_match.push(project.donor_name);
+	}
+	
+});
+no_match = _.unique(no_match);

@@ -16,3 +16,11 @@ allData.forEach(project => {
 	output.push(obj);
 });
 copy(output)
+
+
+
+jeeData.forEach(project => {
+	delete project.desc_trns;
+	delete project.title_trns;
+	project.source.mmddyyyy_added = "101317";
+});

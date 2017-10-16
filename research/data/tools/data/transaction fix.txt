@@ -51,6 +51,7 @@ allData.forEach(project => {
 	project.total_spent = d3.sum(_.values(project.spent_by_year));
 	project.total_committed = d3.sum(_.values(project.committed_by_year));
 	
+	if (project.total_spent === 0.0 && project.total_committed === 0.0) return;
 
 	// push to output
 	allDataCleaned.push(project);
