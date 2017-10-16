@@ -172,9 +172,11 @@
 
 			// get color scale and set domain
 			const domain = currentNodeDataMap.values().filter(d => d);
+			if (domain.length === 1) domain.push(0);
 			const nodeColorScale = d3.scaleQuantile()
 				.domain(domain)
 				.range(purples);
+			console.log(domain);
 
 			// color countries and update tooltip content
 			map.element.selectAll('.country').transition()

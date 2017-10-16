@@ -382,6 +382,12 @@
 				$('.nci-recipient-section').slideUp();
 			}
 
+			// clicking the "show more" button takes user to country page
+			$('.nci-more-button').off('click').on('click', () => {
+				console.log(data);
+				hasher.setHash(`analysis/${data.iso}`);
+			});
+
 			// display country info
 			$('.network-country-info').slideDown();
 		}

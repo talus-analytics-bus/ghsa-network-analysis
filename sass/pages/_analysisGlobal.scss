@@ -31,7 +31,7 @@
 }
 .network-right-column {
 	position: relative;
-	top: 25px;
+	top: 10px;
 	margin-left: 750px;
 }
 .network-map-options {
@@ -76,7 +76,7 @@
 	position: relative;
 	margin-top: 20px;
 	border: $border;
-	padding: 10px 30px;
+	padding: 15px 30px;
 	text-align: center;
 	@include gradient(#fff, #f6f6f6);
 	@include box-shadow(1px 1px 3px rgba(0,0,0,0.2));
@@ -95,6 +95,9 @@
 	}
 	.nci-value-label {
 		margin-top: 3px;
+	}
+	.nci-button-container {
+		margin-top: 20px;
 	}
 	.info-close-button {
 		position: absolute;
