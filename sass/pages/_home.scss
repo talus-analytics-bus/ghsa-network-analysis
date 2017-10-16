@@ -22,7 +22,7 @@
 
 	input {
 		position: relative;
-		width: 260px;
+		width: 280px;
 		padding: 6px 16px;
 		border-color: #999;
 		@include border-radius(5px);
@@ -30,7 +30,7 @@
 }
 .map-options-container {
 	display: none;
-	width: 260px;
+	width: 280px;
 	border: $border;
 	text-align: left;
 	background-color: rgba(240,240,240,0.8);
@@ -66,8 +66,14 @@
 	.filter-box:nth-child(n+2) {
 		margin-top: 15px;
 	}
+	.money-flow-type-filter {
+		float: left;
+	}
+	.money-type-filter {
+		margin-left: 102px;
+	}
 	.multiselect {
-		width: 170px;
+		width: 190px;
 	}
 	.radio-option {
 		margin-left: 10px;
@@ -79,7 +85,7 @@
 	}
 	.slider {
 		margin: 5px 0 15px 15px;
-		width: 190px;
+		width: 210px;
 	}
 	.info-img {
 		position: relative;

@@ -45,7 +45,7 @@ const App = {};
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
 			.defer(d3.json, 'data/donor_codes.json')
-			.defer(d3.json, 'data/funding_data_101317_v9.json')
+			.defer(d3.json, 'data/funding_data_v9.json')
 			.defer(d3.json, 'data/currencies.json')
 			.await((error, worldData, unsdData, donorCodeData, fundingData, currencies) => {
 				if (error) throw error;

@@ -66,28 +66,29 @@
 					</div>
 					<div class="map-options-content">
 						<div class="filter-section">
-							<div class="filter-box money-flow-type-filter">
-								<div class="dropdown-label">Select money flow type:</div>
-								<div class="radio-option">
-									<input type="radio" ind="funded" checked />
-									<span>Amount funded</span>
+							<div class="filter-box">
+								<div class="dropdown-label">Color countries by amount:</div>
+								<div class="money-flow-type-filter">
+									<div class="radio-option">
+										<input type="radio" ind="funded" checked />
+										<span>Funded</span>
+									</div>
+									<div class="radio-option">
+										<input type="radio" ind="received" />
+										<span>Received</span>
+									</div>
 								</div>
-								<div class="radio-option">
-									<input type="radio" ind="received" />
-									<span>Amount received</span>
-								</div>
-							</div>
-							<div class="filter-box money-type-filter">
-								<div class="dropdown-label">Select money type:</div>
-								<div class="radio-option">
-									<input type="radio" ind="committed" />
-									<span>Amount committed</span>
-									<img class="committed-info-img info-img" src="img/info.png" />
-								</div>
-								<div class="radio-option">
-									<input type="radio" ind="disbursed" checked />
-									<span>Amount disbursed</span>
-									<img class="disbursed-info-img info-img" src="img/info.png" />
+								<div class="money-type-filter">
+									<div class="radio-option">
+										<input type="radio" ind="committed" />
+										<span>Committed</span>
+										<img class="committed-info-img info-img" src="img/info.png" />
+									</div>
+									<div class="radio-option">
+										<input type="radio" ind="disbursed" checked />
+										<span>Disbursed</span>
+										<img class="disbursed-info-img info-img" src="img/info.png" />
+									</div>
 								</div>
 							</div>
 							<div class="filter-box">
@@ -134,8 +135,16 @@
 						<img class="close-icon" src="img/close.png" />
 					</div>
 					<div class="info-title"></div>
-					<div class="info-value"></div>
-					<div class="info-value-label"></div>
+					<div class="row">
+						<div class="info-value-box col-sm-6">
+							<div class="info-committed-value info-value"></div>
+							<div class="info-committed-value-label info-value-label"></div>
+						</div>
+						<div class="info-value-box col-sm-6">
+							<div class="info-spent-value info-value"></div>
+							<div class="info-spent-value-label info-value-label"></div>
+						</div>
+					</div>
 					<div class="info-button-container">
 						<button class="info-analysis-button btn btn-default">View Funding Details</button>
 					</div>

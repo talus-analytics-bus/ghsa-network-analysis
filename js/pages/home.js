@@ -80,42 +80,16 @@
 			return $('.money-type-filter input:checked').attr('ind');
 		}
 
-		function getMoneyTypeLabel() {
-			const moneyFlow = getMoneyFlowType();
+		function getValueAttrName() {
 			const moneyType = getMoneyType();
-
-			let label = '';
-			if (moneyFlow === 'funded' && moneyType === 'committed') {
-				label = 'Total Committed Funds';
-			} else if (moneyFlow === 'funded' && moneyType === 'disbursed') {
-				label = 'Total Disbursed Funds';
-			} else if (moneyFlow === 'received' && moneyType === 'committed') {
-				label = 'Total Funds Committed to Receive';
-			} else if (moneyFlow === 'received' && moneyType === 'disbursed') {
-				label = 'Total Funds Received';
-			}
-			label += `<br>from <b>${startYear}</b> to <b>${endYear - 1}</b>`;
-			return label;
+			return (moneyType === 'committed') ? 'total_committed' : 'total_spent';
 		}
 
-		function getTotalFunc() {
-			const moneyType = getMoneyType();
-			if (moneyType === 'committed') {
-				return (p) => {
-					let total = 0;
-					for (let i = startYear; i < endYear; i++) {
-						total += p.committed_by_year[i];
-					}
-					return total;
-				};
-			}
-			return (p) => {
-				let total = 0;
-				for (let i = startYear; i < endYear; i++) {
-					total += p.spent_by_year[i];
-				}
-				return total;
-			};
+		function getMoneyTypeLabel(moneyFlow, moneyType) {
+			const adj = (moneyType === 'committed') ? 'Committed' : 'Disbursed';
+			const noun = (moneyFlow === 'funded') ? ' Funds' : ', Received Funds';
+			return `Total ${adj}${noun}` +
+				`<br>from <b>${startYear}</b> to <b>${endYear - 1}</b>`;
 		}
 
 		// gets the lookup object currently being used
@@ -140,7 +114,6 @@
 		function updateDataMaps() {
 			// get lookup (has all data)
 			const moneyFlow = getMoneyFlowType();
-			const totalFunc = getTotalFunc();
 			const dataLookup = getDataLookup();
 
 			// get filter values
@@ -153,15 +126,22 @@
 			App.countries.forEach((c) => {
 				const payments = dataLookup[c.ISO2];
 				if (payments) {
-					let totalValue = 0;
+					let totalCommitted = 0;
+					let totalSpent = 0;
 					for (let i = 0, n = payments.length; i < n; i++) {
 						const p = payments[i];
 						if (!App.passesCategoryFilter(p.core_capacities, ccs)) continue;
-						totalValue += totalFunc(p) || 0;
+						for (let i = startYear; i < endYear; i++) {
+							totalCommitted += p.committed_by_year[i] || 0;
+							totalSpent += p.spent_by_year[i] || 0;
+						}
 					}
 
 					// set in node map
-					currentNodeDataMap.set(c.ISO2, totalValue);
+					currentNodeDataMap.set(c.ISO2, {
+						total_committed: totalCommitted,
+						total_spent: totalSpent,
+					});
 				}
 			});
 		}
@@ -169,9 +149,14 @@
 		// updates map colors
 		function updateMap() {
 			const moneyFlow = getMoneyFlowType();
+			const moneyType = getMoneyType();
+			const valueAttrName = getValueAttrName();
+			d3.selectAll('.country-arc, .link').classed('active', false);
 
 			// get color scale and set domain
-			const domain = currentNodeDataMap.values().filter(d => d);
+			const domain = currentNodeDataMap.values()
+				.map(d => d[valueAttrName])
+				.filter(d => d);
 			if (domain.length === 1) domain.push(0);
 			const nodeColorScale = d3.scaleQuantile()
 				.domain(domain)
@@ -183,7 +168,7 @@
 				.style('fill', (d) => {
 					const isoCode = d.properties.ISO2;
 					if (currentNodeDataMap.has(isoCode)) {
-						d.value = currentNodeDataMap.get(isoCode);
+						d.value = currentNodeDataMap.get(isoCode)[valueAttrName];
 						d.color = d.value ? nodeColorScale(d.value) : '#ccc';
 					} else {
 						d.value = null;
@@ -201,7 +186,7 @@
 						.text(App.formatMoney(d.value));
 					container.append('div')
 						.attr('class', 'tooltip-main-value-label')
-						.html(getMoneyTypeLabel());
+						.html(getMoneyTypeLabel(moneyFlow, moneyType));
 
 					$(this).tooltipster('content', container.html());
 				});
@@ -212,13 +197,16 @@
 
 		// update the map legend
 		function updateLegend(colorScale) {
+			const valueAttrName = getValueAttrName();
+
 			const barHeight = 16;
 			const barWidth = 70;
 			const legendPadding = 20;
 
 			const colors = colorScale.range();
 			const quantiles = colorScale.quantiles();
-			const maxValue = d3.max(currentNodeDataMap.values());
+			const maxValue = d3.max(currentNodeDataMap.values()
+				.map(d => d[valueAttrName]));
 
 			const legend = d3.select('.legend')
 				.attr('width', barWidth * colors.length + 2 * legendPadding)
@@ -290,15 +278,19 @@
 				});
 
 			// populate info total value
-			let value = 0;
+			let totalCommitted = 0;
+			let totalSpent = 0;
 			if (currentNodeDataMap.has(country.ISO2)) {
-				value = currentNodeDataMap.get(country.ISO2);
+				const valueObj = currentNodeDataMap.get(country.ISO2);
+				totalCommitted += valueObj.total_committed;
+				totalSpent += valueObj.total_spent;
 			}
-			$('.info-value').text(App.formatMoney(value));
+			$('.info-committed-value').text(App.formatMoney(totalCommitted));
+			$('.info-spent-value').text(App.formatMoney(totalSpent));
 
 			// construct label for value
-			const label = getMoneyTypeLabel();
-			$('.info-value-label').html(label);
+			$('.info-committed-value-label').html(getMoneyTypeLabel(moneyFlow, 'committed'));
+			$('.info-spent-value-label').html(getMoneyTypeLabel(moneyFlow, 'disbursed'));
 
 			// display content
 			$('.info-container').slideDown();

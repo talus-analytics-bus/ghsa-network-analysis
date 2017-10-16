@@ -10,6 +10,9 @@
 		&.active {
 			fill-opacity: 0.8;
 		}
+		&.search-hidden {
+			display: none;
+		}
 	}
 	.country-arc {
 		fill-opacity: 0.9;
