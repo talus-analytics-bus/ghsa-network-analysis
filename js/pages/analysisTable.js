@@ -87,14 +87,29 @@
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
+			} else if (currentInfoTab === 'ce') {
+				headerData = [
+					{
+						name: 'Core Element',
+						value: (d) => {
+							if (d.ce === 'P') return 'Prevent';
+							if (d.ce === 'D') return 'Detect';
+							if (d.ce === 'R') return 'Respond';
+							if (d.ce === 'O') return 'Other';
+							return 'None';
+						},
+					},
+					{ name: 'Committed', value: 'total_committed', type: 'money' },
+					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
+				];
 			} else if (currentInfoTab === 'cc') {
 				headerData = [
 					{
 						name: 'Core Capacity',
 						value: (d) => {
-							const cap = App.capacities.find(cc => cc.id === cellValue);
+							const cap = App.capacities.find(cc => cc.id === d.cc);
 							return cap ? cap.name : '';
-						}
+						},
 					},
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
@@ -129,6 +144,37 @@
 							total_spent: totalByCountry[dc][rc].total_spent,
 						});
 					}
+				}
+			} else if (currentInfoTab === 'ce') {
+				const totalByCe = {};
+				const coreElements = ['P', 'D', 'R', 'O'];
+				coreElements.concat('None').forEach((ce) => {
+					totalByCe[ce] = {
+						total_committed: 0,
+						total_spent: 0,
+					}
+				});
+				allPayments.forEach((p) => {
+					let hasACe = false;
+					coreElements.forEach((ce) => {
+						console.log(p.core_capacities);
+						if (p.core_capacities.some(cc => cc.slice(0, 2) === `${ce}.`)) {
+							hasACe = true;
+							totalByCe[ce].total_committed += p.total_committed;
+							totalByCe[ce].total_spent += p.total_spent;
+						}
+					});
+					if (!hasACe) {
+						totalByCe.None.total_committed += p.total_committed;
+						totalByCe.None.total_spent += p.total_spent;
+					}
+				});
+				for (let ce in totalByCe) {
+					paymentTableData.push({
+						ce,
+						total_committed: totalByCe[ce].total_committed,
+						total_spent: totalByCe[ce].total_spent,
+					});
 				}
 			} else if (currentInfoTab === 'cc') {
 				const totalByCc = {};
@@ -209,7 +255,7 @@
 					{ targets: [0, 1], width: '150px' },
 					{ type: 'money', targets: [2, 3], width: '120px' },
 				];
-			} else if (currentInfoTab === 'cc') {
+			} else if (currentInfoTab === 'ce' || currentInfoTab === 'cc') {
 				order = [2, 'desc'];
 				columnDefs = [{ type: 'money', targets: [1, 2], width: '120px' }];
 			}

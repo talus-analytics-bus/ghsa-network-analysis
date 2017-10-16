@@ -181,9 +181,9 @@
 				lookup[iso].forEach((p) => {
 					ccs.forEach((cc) => {
 						if (p.core_capacities.some(pcc => cc === pcc.charAt(0))) {
-							let committed = p.total_committed;
-							const spent = p.total_spent;
-							if (committed < spent) committed = spent;
+							const committed = p.total_committed;
+							let spent = p.total_spent;
+							if (spent > committed) spent = committed;
 							fundsByCc[cc].total_committed += committed;
 							fundsByCc[cc].total_spent += spent;
 						}

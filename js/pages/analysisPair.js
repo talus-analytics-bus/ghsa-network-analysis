@@ -81,7 +81,14 @@
 				];
 			} else if (currentInfoTab === 'cc') {
 				headerData = [
-					{ name: 'JEE Capacity', value: 'cc' },
+					{
+						name: 'Core Capacity',
+						value: (d) => {
+							console.log(d);
+							const cap = App.capacities.find(cc => cc.id === d.cc);
+							return cap ? cap.name : '';
+						},
+					},
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
@@ -94,22 +101,22 @@
 			} else if (currentInfoTab === 'cc') {
 				const totalByCc = {};
 				allPayments.forEach((p) => {
-					p.project_function.forEach((fn) => {
-						if (!totalByCc[fn.p]) {
-							totalByCc[fn.p] = {
+					p.core_capacities.forEach((cc) => {
+						if (!totalByCc[cc]) {
+							totalByCc[cc] = {
 								total_committed: 0,
 								total_spent: 0,
 							};
 						}
-						totalByCc[fn.p].total_committed += p.total_committed;
-						totalByCc[fn.p].total_spent += p.total_spent;
+						totalByCc[cc].total_committed += p.total_committed;
+						totalByCc[cc].total_spent += p.total_spent;
 					});
 				});
-				for (let fnp in totalByCc) {
+				for (let cc in totalByCc) {
 					paymentTableData.push({
-						cc: fnp,
-						total_committed: totalByCc[fnp].total_committed,
-						total_spent: totalByCc[fnp].total_spent,
+						cc,
+						total_committed: totalByCc[cc].total_committed,
+						total_spent: totalByCc[cc].total_spent,
 					});
 				}
 			}
@@ -141,7 +148,12 @@
 				.merge(cells)
 				.classed('money-cell', d => d.colData.type === 'money')
 				.text((d) => {
-					const cellValue = d.rowData[d.colData.value];
+					let cellValue = '';
+					if (typeof d.colData.value === 'function') {
+						cellValue = d.colData.value(d.rowData);
+					} else {
+						cellValue = d.rowData[d.colData.value];
+					}
 					if (d.colData.type === 'money') return App.formatMoneyFull(cellValue);
 					return cellValue;
 				});
