@@ -139,7 +139,7 @@
 						}
 						$(this).tooltipster('content', contentStr);
 					})
-					.transition()
+					//.transition()
 					.style('fill', getFundReceiveColor)
 					.attr('d', regionArc);
 
@@ -163,7 +163,7 @@
 						}
 						$(this).tooltipster('content', contentStr);
 					})
-					.transition()
+					//.transition()
 					.style('fill', getFundReceiveColor)
 					.attr('d', subregionArc);
 
@@ -196,7 +196,7 @@
 					}
 					$(this).tooltipster('content', contentStr);
 				})
-				.transition()
+				//.transition()
 					.style('fill', getFundReceiveColor)
 					.style('stroke', '#fff')
 					.attr('d', countryArc);

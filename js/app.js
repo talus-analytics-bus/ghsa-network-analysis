@@ -45,7 +45,7 @@ const App = {};
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
 			.defer(d3.json, 'data/donor_codes.json')
-			.defer(d3.json, 'data/funding_data_101317_v9.json')
+			.defer(d3.json, 'data/funding_data_v11.json')
 			.defer(d3.json, 'data/currencies.json')
 			.await((error, worldData, unsdData, donorCodeData, fundingData, currencies) => {
 				if (error) throw error;
@@ -87,10 +87,6 @@ const App = {};
 				App.fundingData.forEach((d, j) => {
 					const donor = d.donor_code;
 					const recipient = d.recipient_country;
-
-					// zero out negative values
-					if (d.total_committed < 0) d.total_committed = 0;
-					if (d.total_spent < 0) d.total_spent = 0;
 
 					// store payments in lookup objects
 					if (!App.fundingLookup[donor]) App.fundingLookup[donor] = [];

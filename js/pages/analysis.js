@@ -343,7 +343,8 @@
 
 		function unhighlightNetwork() {
 			// unhighlight arcs and links
-			d3.selectAll('.country-arc, .link').classed('active', false);
+			d3.selectAll('.country-arc').classed('active', false);
+			d3.selectAll('.link').classed('search-hidden', false);
 		}
 
 		function displayCountryInNetwork(countryName) {
@@ -354,8 +355,8 @@
 				.filter(c => c.name === countryName)
 				.classed('active', true);
 			d3.selectAll('.link')
-				.filter(l => l.donor === countryName || l.recipient === countryName)
-				.classed('active', true);
+				.filter(l => l.donor !== countryName && l.recipient !== countryName)
+				.classed('search-hidden', true);
 
 			// if not found, display warning message
 			if (arc.empty()) {
@@ -384,7 +385,6 @@
 
 			// clicking the "show more" button takes user to country page
 			$('.nci-more-button').off('click').on('click', () => {
-				console.log(data);
 				hasher.setHash(`analysis/${data.iso}`);
 			});
 
