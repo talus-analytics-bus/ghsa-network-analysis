@@ -118,11 +118,6 @@
 			};
 		}
 
-		// returns color scale based on map settings
-		function getColorScale() {
-			return d3.scaleQuantile().range(purples);
-		}
-
 		// gets the lookup object currently being used
 		function getDataLookup() {
 			if (getMoneyFlowType() === 'received') return App.recipientLookup;
@@ -176,21 +171,19 @@
 			const moneyFlow = getMoneyFlowType();
 
 			// get color scale and set domain
-			const nodeColorScale = getColorScale();
-			nodeColorScale.domain(currentNodeDataMap.values());
-
-			// check if there are non-zero values
-			const allEmpty = currentNodeDataMap.values().every(v => !v);
+			const domain = currentNodeDataMap.values().filter(d => d);
+			const nodeColorScale = d3.scaleQuantile()
+				.domain(domain)
+				.range(purples);
 
 			// color countries and update tooltip content
 			map.element.selectAll('.country').transition()
 				.duration(500)
 				.style('fill', (d) => {
-					if (allEmpty) return '#ccc';
 					const isoCode = d.properties.ISO2;
 					if (currentNodeDataMap.has(isoCode)) {
 						d.value = currentNodeDataMap.get(isoCode);
-						d.color = nodeColorScale(d.value);
+						d.color = d.value ? nodeColorScale(d.value) : '#ccc';
 					} else {
 						d.value = null;
 						d.color = '#ccc';
