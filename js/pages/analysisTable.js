@@ -28,7 +28,7 @@
 				.on('click', () => hasher.setHash(`analysis/${iso}`));
 
 			// fill in other text
-			$('.money-type-noun').text(moneyFlow === 'd' ? 'Donor' : 'Recipient');
+			$('.money-type-noun').text(moneyFlow === 'd' ? 'Funder' : 'Recipient');
 			$('.money-type-cap').text(moneyFlow === 'd' ? 'Disbursed' : 'Received');
 			$('.commit-noun').text(moneyFlow === 'd' ? 'Committed Funds' :
 				'Committed Funds to Receive');
@@ -73,7 +73,7 @@
 			let headerData = [];
 			if (currentInfoTab === 'all') {
 				headerData = [
-					{ name: 'Donor', value: 'donor_name' },
+					{ name: 'Funder', value: 'donor_name' },
 					{ name: 'Recipient', value: 'recipient_name' },
 					{ name: 'Project Name', value: 'project_name' },
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
@@ -81,7 +81,7 @@
 				];
 			} else if (currentInfoTab === 'country') {
 				headerData = [
-					{ name: 'Donor', value: 'donor_code' },
+					{ name: 'Funder', value: 'donor_code' },
 					{ name: 'Recipient', value: 'recipient_country' },
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
