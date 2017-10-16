@@ -43,6 +43,10 @@
 			$('.committed-value').text(App.formatMoney(totalCommitted));
 			$('.spent-value').text(App.formatMoney(totalSpent));
 
+			// getting back buttons
+			$('.donor-button').click(() => hasher.setHash(`analysis/${fundIso}/d`));
+			$('.recipient-button').click(() => hasher.setHash(`analysis/${recIso}/r`));
+
 			// define info table tab behavior
 			$content.find('.funds-tab-container .btn').on('click', function changeTab() {
 				currentInfoTab = $(this).attr('tab');

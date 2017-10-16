@@ -29,6 +29,7 @@
 
 			// fill in other text
 			$('.money-type-noun').text(moneyFlow === 'd' ? 'Donor' : 'Recipient');
+			$('.opp-money-type-noun').text(moneyFlow === 'd' ? 'Recipient' : 'Donor');
 			$('.money-type-cap').text(moneyFlow === 'd' ? 'Disbursed' : 'Received');
 			$('.commit-noun').text(moneyFlow === 'd' ? 'Committed Funds' :
 				'Committed Funds to Receive');
@@ -81,14 +82,20 @@
 				];
 			} else if (currentInfoTab === 'country') {
 				headerData = [
-					{ name: 'Donor', value: 'donor_code' },
-					{ name: 'Recipient', value: 'recipient_country' },
+					{ name: 'Donor', value: d => App.codeToNameMap.get(d.donor_code) },
+					{ name: 'Recipient', value: d => App.codeToNameMap.get(d.recipient_country) },
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
 			} else if (currentInfoTab === 'cc') {
 				headerData = [
-					{ name: 'Core Capacity', value: 'cc' },
+					{
+						name: 'Core Capacity',
+						value: (d) => {
+							const cap = App.capacities.find(cc => cc.id === cellValue);
+							return cap ? cap.name : '';
+						}
+					},
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
@@ -116,8 +123,8 @@
 				for (let dc in totalByCountry) {
 					for (let rc in totalByCountry[dc]) {
 						paymentTableData.push({
-							donor_code: App.codeToNameMap.get(dc),
-							recipient_country: App.codeToNameMap.get(rc),
+							donor_code: dc,
+							recipient_country: rc,
 							total_committed: totalByCountry[dc][rc].total_committed,
 							total_spent: totalByCountry[dc][rc].total_spent,
 						});
@@ -178,12 +185,13 @@
 				.merge(cells)
 				.classed('money-cell', d => d.colData.type === 'money')
 				.text((d) => {
-					const cellValue = d.rowData[d.colData.value];
-					if (d.colData.type === 'money') return App.formatMoneyFull(cellValue);
-					if (d.colData.value === 'cc') {
-						const cap = App.capacities.find(cc => cc.id === cellValue);
-						return cap ? cap.name : '';
+					let cellValue = '';
+					if (typeof d.colData.value === 'function') {
+						cellValue = d.colData.value(d.rowData);
+					} else {
+						cellValue = d.rowData[d.colData.value];
 					}
+					if (d.colData.type === 'money') return App.formatMoneyFull(cellValue);
 					return cellValue;
 				});
 

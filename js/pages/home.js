@@ -86,9 +86,17 @@
 		}
 
 		function getMoneyTypeLabel(moneyFlow, moneyType) {
-			const adj = (moneyType === 'committed') ? 'Committed' : 'Disbursed';
-			const noun = (moneyFlow === 'funded') ? ' Funds' : ', Received Funds';
-			return `Total ${adj}${noun}` +
+			let noun = '';
+			if (moneyFlow === 'funded' && moneyType === 'committed') {
+				noun = 'Committed Funds';
+			} else if (moneyFlow === 'funded' && moneyType === 'disbursed') {
+				noun = 'Disbursed Funds';
+			} else if (moneyFlow === 'received' && moneyType === 'committed') {
+				noun = 'Committed<br>Funds to Receive';
+			} else if (moneyFlow === 'received' && moneyType === 'disbursed') {
+				noun = 'Received Funds';
+			}
+			return `Total ${noun}` +
 				`<br>from <b>${startYear}</b> to <b>${endYear - 1}</b>`;
 		}
 

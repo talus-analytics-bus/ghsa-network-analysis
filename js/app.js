@@ -8,7 +8,9 @@ const App = {};
 
 		// colors
 		App.fundColor = '#283375';
-		App.receiveColor = '#f15d22';
+		App.receiveColor = '#aa4e2a';
+		App.fundColorPalette = ['#283375', '#535c91', '#7e85ac', '#a9adc8', '#d4d6e3'];
+		App.receiveColorPalette = ['#aa4e2a', '#bb7155', '#cc957f', '#ddb8aa', '#eedcd4'];
 
 		// define global variables used throughout
 		App.geoData = null;  // geographic data of the world

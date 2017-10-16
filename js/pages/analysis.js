@@ -111,6 +111,10 @@
 
 		function populateTables(donorSelector, recSelector) {
 			const numRows = 10;
+			const blues = ['#08519c', '#3182bd', '#6baed6', '#bdd7e7', '#eff3ff'];
+			const oranges = ['#993404', '#d95f0e', '#fe9929', '#fed98e', '#ffffd4'];
+			// const blues = App.fundColorPalette;
+			// const oranges = App.receiveColorPalette;
 
 			// get top funded countries
 			const countriesByFunding = [];
@@ -141,7 +145,6 @@
 			Util.sortByKey(countriesByReceived, 'total_spent', true);
 
 			// populate funding table
-			const blues = ['#08519c', '#3182bd', '#6baed6', '#bdd7e7', '#eff3ff'];
 			const dRows = d3.select(donorSelector).select('tbody').selectAll('tr')
 				.data(countriesByFunding.slice(0, numRows))
 				.enter().append('tr')
@@ -163,7 +166,6 @@
 			dRows.append('td').text(d => App.formatMoney(d.total_spent));
 
 			// populate recipient table
-			const oranges = ['#993404', '#d95f0e', '#fe9929', '#fed98e', '#ffffd4'];
 			const rRows = d3.select(recSelector).select('tbody').selectAll('tr')
 				.data(countriesByReceived.slice(0, numRows))
 				.enter().append('tr')

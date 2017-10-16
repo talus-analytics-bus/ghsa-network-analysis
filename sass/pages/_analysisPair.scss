@@ -1,7 +1,12 @@
 .analysis-pair-content {
+	position: relative;
 	margin-top: 30px;
 	text-align: center;
 
+	.analysis-country-title {
+		margin: 0 250px;
+		line-height: 1.5;
+	}
 	.analysis-country-title span {
 		cursor: pointer;
 	}
@@ -10,5 +15,15 @@
 		position: relative;
 		top: -2px;
 		margin: 0 7px;
+	}
+	.donor-button {
+		position: absolute;
+		top: 3px;
+		left: 50px;
+	}
+	.recipient-button {
+		position: absolute;
+		top: 3px;
+		right: 50px;
 	}
 }

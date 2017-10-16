@@ -5,6 +5,7 @@
 		const name = App.codeToNameMap.get(iso);
 		const lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
 		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
+		const lightColor = (moneyType === 'd') ? App.fundColorPalette[2] : App.receiveColorPalette[2];
 
 		// initializes the whole page
 		function init() {
@@ -28,12 +29,12 @@
 			const totalReceived = App.getTotalReceived(iso);
 
 			// if either funding or receiving is 0, go to non-zero profile
-			if (!totalFunded && totalReceived) {
-				hasher.setHash(`analysis/${iso}/r`);
+			if (totalFunded > totalReceived) {
+				hasher.setHash(`analysis/${iso}/d`);
 				return;
 			}
-			if (!totalReceived && totalFunded) {
-				hasher.setHash(`analysis/${iso}/d`);
+			if (totalReceived > totalFunded) {
+				hasher.setHash(`analysis/${iso}/r`);
 				return;
 			}
 
@@ -90,6 +91,7 @@
 			// fill out generic text
 			$('.money-type').text(moneyType === 'd' ? 'disbursed' : 'received');
 			$('.money-type-cap').text(moneyType === 'd' ? 'Disbursed' : 'Received');
+			$('.money-type-noun').text(moneyType === 'd' ? 'donor' : 'recipient');
 			$('.opp-money-type-noun').text(moneyType === 'd' ? 'recipient' : 'donor');
 			$('.opp-money-type-verb').text(moneyType === 'd' ? 'received' : 'donated');
 
@@ -158,9 +160,9 @@
 				}
 				App.buildTimeChart('.time-chart-container', timeData, {
 					color,
+					lightColor,
+					moneyType,
 				});
-			} else {
-
 			}
 		}
 
