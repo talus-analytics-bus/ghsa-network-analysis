@@ -1,5 +1,7 @@
 (() => {
 	App.buildCategoryChart = (selector, data, param = {}) => {
+		const oppNoun = (param.moneyType === 'r') ? 'Donor' : 'Recipient';
+
 		// inject "running x" into data
 		data.forEach((d) => {
 			let runningValue = 0;
@@ -55,7 +57,7 @@
 				.each(function addTooltip(d) {
 					$(this).tooltipster({
 						content: `<b>Core Capacity:</b> ${d.cc}` +
-							`<br><b>Country:</b> ${App.getCountryName(d.country.iso)}` +
+							`<br><b>${oppNoun}:</b> ${App.getCountryName(d.country.iso)}` +
 							`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.country.total_committed)}` +
 							`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.country.total_spent)}`,
 					});
@@ -82,10 +84,12 @@
 		});
 
 		// add axes labels
+		let xAxisLabel = 'Total Funds Disbursed by Core Capacity';
+		if (param.moneyType === 'r') xAxisLabel = 'Total Funds Received by Core Capacity';
 		chart.append('text')
 			.attr('class', 'axis-label')
 			.attr('x', width / 2)
 			.attr('y', -35)
-			.text(param.xAxisLabel || 'Total Disbursed');
+			.text(xAxisLabel);
 	};
 })();

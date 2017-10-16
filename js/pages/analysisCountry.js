@@ -331,11 +331,8 @@
 				});
 				Util.sortByKey(catData, 'total_spent', true);
 
-				let xAxisLabel = 'Total Funds Disbursed by Core Capacity';
-				if (moneyType === 'r') xAxisLabel = 'Total Funds Received by Core Capacity';
-
 				App.buildCategoryChart('.category-chart-container', catData, {
-					xAxisLabel,
+					moneyType,
 				});
 			} else {
 
