@@ -28,8 +28,8 @@
 				.on('click', () => hasher.setHash(`analysis/${iso}`));
 
 			// fill in other text
-			$('.money-type-noun').text(moneyFlow === 'd' ? 'Donor' : 'Recipient');
-			$('.opp-money-type-noun').text(moneyFlow === 'd' ? 'Recipient' : 'Donor');
+			$('.money-type-noun').text(moneyFlow === 'd' ? 'Funder' : 'Recipient');
+			$('.opp-money-type-noun').text(moneyFlow === 'd' ? 'Recipient' : 'Funder');
 			$('.money-type-cap').text(moneyFlow === 'd' ? 'Disbursed' : 'Received');
 			$('.commit-noun').text(moneyFlow === 'd' ? 'Committed Funds' :
 				'Committed Funds to Receive');
@@ -82,8 +82,7 @@
 				];
 			} else if (currentInfoTab === 'country') {
 				headerData = [
-<<<<<<< HEAD
-					{ name: 'Donor', value: d => App.codeToNameMap.get(d.donor_code) },
+					{ name: 'Funder', value: d => App.codeToNameMap.get(d.donor_code) },
 					{ name: 'Recipient', value: d => App.codeToNameMap.get(d.recipient_country) },
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
@@ -100,10 +99,6 @@
 							return 'None';
 						},
 					},
-=======
-					{ name: 'Funder', value: 'donor_code' },
-					{ name: 'Recipient', value: 'recipient_country' },
->>>>>>> 5eaf4bc7298898b3cf06a5b24e4076ae5d2c3e12
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
