@@ -3,8 +3,8 @@
 // Only keep transactions with cy >= 2014
 // Only keep transactions of the type 'commitment', 'disbursement', or 'expenditure'
 // Compute spent_by_year and committed_by_year
-var allDataCleaned = [];
-allData.forEach(project => {
+var allDataCleaned3 = [];
+allDataCleaned2.forEach(project => {
 	
 	// remove the old total fields
 	delete project.total_spent;
@@ -28,24 +28,87 @@ allData.forEach(project => {
 		2016: 0.0,
 		2017: 0.0
 	};
-	project.transactions.forEach(trans => {
+	
+	// only keep transactions that occurred in the right year range and of the right type
+	project.transactions = project.transactions.filter(trans => {
 		// remove transactions with type != the three we're keeping
-		if (typesToKeep.indexOf(trans.type) === -1) return;
-		// remove transactions with cy < 2014
-		if (parseInt(trans.cy) < 2014) return;
-		transToKeep.push(trans);
+		var rightType = typesToKeep.indexOf(trans.type) > -1;
+		
+		// remove transactions with cy < 2014 or > 2017
+		var rightYear = parseInt(trans.cy) >= 2014 && parseInt(trans.cy) <= 2017;
+		
+		return rightType && rightYear;
+		// // calculate new project totals by year for Jeff
+		// if (trans.type === 'commitment') project.committed_by_year[trans.cy] = project.committed_by_year[trans.cy] + trans.amount;
+		// if (trans.type === 'expenditure' || trans.type === 'disbursement') project.spent_by_year[trans.cy] = project.spent_by_year[trans.cy] + trans.amount;
+	});
+	
+	
+	// code to merge negative commits into earlier positive commits
+	var result;
+	var mergeNegCommit = (transactions) => {
+		// if there are no negative commits, return
+		var commits = transactions.filter(d => d.type === 'commitment');
+		var neg_commits = commits.filter(d => d.amount < 0.0);
+		if (neg_commits.length === 0) {
+			console.log('return 1')
+			result = transactions;
+			return transactions;
+		}
+		
+		// if there are only negative commits, set them to zero and return
+		var pos_commits = commits.filter(d => d.amount >= 0.0);
+		if (pos_commits.length === 0) {
+			neg_commits.forEach(commit => commit.amount = 0.0);
+			console.log('return 2')
+			result = transactions;
+			return transactions;
+		}
+		
+		// if there is a negative commitment and some pos commits, try to merge neg commit with a positive commitment that came before it (prior year)
+		// sort neg and pos commits by descending year
+		neg_commits = _.sortBy(neg_commits, d => -1*parseInt(d.cy));
+		pos_commits = _.sortBy(pos_commits, d => -1*parseInt(d.cy));
+		var first_neg_commit = neg_commits[0];
+		var pos_commit_to_merge = pos_commits.find(commit => parseInt(commit.cy) <= parseInt(first_neg_commit.cy));
+		// console.log(first_neg_commit);
+		// console.log(pos_commit_to_merge);
+		// console.log('');
+		if (pos_commit_to_merge !== undefined) {
+			pos_commit_to_merge.amount += first_neg_commit.amount;	
+		}
+		first_neg_commit.amount = 0.0;
+		
+		// remove all negative commits
+		var transactions2 = transactions.filter(d => d.amount !== 0.0);
+
+		// call mergeNegCommit again
+		mergeNegCommit(transactions2);
+	};
+	
+	console.log(project.source.id);
+	mergeNegCommit(project.transactions);
+	
+	project.transactions = result;
+	
+	// remove all negative transactions remaining
+	project.transactions = project.transactions.filter(trans => {
+		if (trans.amount <= 0.0) return false;
+		else return true;
+	});
+	
+	// if no transactions left, remove project and shout about it
+	if (project.transactions.length === 0) {
+		console.log(project.project_id + ': removing, no transactions');
+		return;
+	}
+	
+	// total the transactions by year
+	project.transactions.forEach(trans => {
 		// calculate new project totals by year for Jeff
 		if (trans.type === 'commitment') project.committed_by_year[trans.cy] = project.committed_by_year[trans.cy] + trans.amount;
 		if (trans.type === 'expenditure' || trans.type === 'disbursement') project.spent_by_year[trans.cy] = project.spent_by_year[trans.cy] + trans.amount;
 	});
-	
-	project.transactions = transToKeep;
-	
-	// if no transactions left, remove project and shout about it
-	if (transToKeep.length === 0) {
-		console.log(project.project_id + ': removing, no transactions');
-		return;
-	}
 	
 	// compute new totals
 	project.total_spent = d3.sum(_.values(project.spent_by_year));
@@ -54,5 +117,5 @@ allData.forEach(project => {
 	if (project.total_spent === 0.0 && project.total_committed === 0.0) return;
 
 	// push to output
-	allDataCleaned.push(project);
+	allDataCleaned3.push(project);
 });

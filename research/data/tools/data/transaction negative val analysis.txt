@@ -1,0 +1,26 @@
+// How much does excluding neg vals shift the committment total and the disbursement total respectively?
+pos_commit = 0.0;
+pos_spent = 0.0;
+neg_commit = 0.0;
+neg_spent = 0.0;
+allTrans.forEach(trn => {
+	if (trn.type === 'commitment') {
+		if (trn.amount >= 0) pos_commit += trn.amount;
+		else neg_commit += trn.amount;
+	}
+	if (trn.type === 'disbursement' || trn.type === 'expenditure') {
+		if (trn.amount >= 0) pos_spent += trn.amount;
+		else neg_spent += trn.amount;
+	}
+});
+
+
+// When a project has a negative amount committed in committed_by_year, show me the project
+var negCommit = allData.filter(prj => {
+	if (d3.min(_.values(prj.committed_by_year)) < 0) {
+		return true;
+	}
+});
+
+
+// If a negative commitment is made in a later year, 

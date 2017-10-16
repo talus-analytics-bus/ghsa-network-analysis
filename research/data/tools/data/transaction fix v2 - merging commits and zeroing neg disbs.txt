@@ -1,0 +1,18 @@
+allData.forEach(prj => {
+	var oneNeg = false;
+	var diffYear = false;
+	var prv;
+	var cur;
+	prj.transactions.forEach(trn => {
+		
+		if ((trn.type === 'commitment') && trn.amount < 0) {
+			cur = trn;
+		// if ((trn.type === 'expenditure' || trn.type === 'disbursement') && trn.amount < 0) {
+			if (prv !== undefined) diffYear = cur.cy !== prv.cy;
+			 if (oneNeg && diffYear) console.log(prj.source.id);
+			 oneNeg = true;
+			 prv = cur;
+			 return;
+		}
+	})
+})
