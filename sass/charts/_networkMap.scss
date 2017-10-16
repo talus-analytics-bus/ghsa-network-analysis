@@ -5,13 +5,16 @@
 	.link {
 		fill: steelblue;
 		fill-opacity: 0.3;
+		opacity: 1;
+		transition: opacity 0.8s;
+
 		&:hover,
 		&.country-hover,
 		&.active {
 			fill-opacity: 0.8;
 		}
 		&.search-hidden {
-			display: none;
+			opacity: 0;
 		}
 	}
 	.country-arc {
