@@ -80,6 +80,24 @@
 			return $('.money-type-filter input:checked').attr('ind');
 		}
 
+		function getMoneyTypeLabel() {
+			const moneyFlow = getMoneyFlowType();
+			const moneyType = getMoneyType();
+
+			let label = '';
+			if (moneyFlow === 'funded' && moneyType === 'committed') {
+				label = 'Total Committed Funds';
+			} else if (moneyFlow === 'funded' && moneyType === 'disbursed') {
+				label = 'Total Disbursed Funds';
+			} else if (moneyFlow === 'received' && moneyType === 'committed') {
+				label = 'Total Funds Committed to Receive';
+			} else if (moneyFlow === 'received' && moneyType === 'disbursed') {
+				label = 'Total Funds Received';
+			}
+			label += `<br>from <b>${startYear}</b> to <b>${endYear - 1}</b>`;
+			return label;
+		}
+
 		function getTotalFunc() {
 			const moneyType = getMoneyType();
 			if (moneyType === 'committed') {
@@ -189,7 +207,7 @@
 						.text(App.formatMoney(d.value));
 					container.append('div')
 						.attr('class', 'tooltip-main-value-label')
-						.text(moneyFlow === 'funded' ? 'Donated' : 'Received');
+						.html(getMoneyTypeLabel());
 
 					$(this).tooltipster('content', container.html());
 				});
@@ -285,17 +303,7 @@
 			$('.info-value').text(App.formatMoney(value));
 
 			// construct label for value
-			let label = '';
-			if (moneyFlow === 'funded' && moneyType === 'committed') {
-				label = 'Total Committed Funds';
-			} else if (moneyFlow === 'funded' && moneyType === 'disbursed') {
-				label = 'Total Disbursed Funds';
-			} else if (moneyFlow === 'received' && moneyType === 'committed') {
-				label = 'Total Funds Committed to Receive';
-			} else if (moneyFlow === 'received' && moneyType === 'disbursed') {
-				label = 'Total Funds Received';
-			}
-			label += `<br>from <b>${startYear}</b> to <b>${endYear - 1}</b>`;
+			const label = getMoneyTypeLabel();
 			$('.info-value-label').html(label);
 
 			// display content
