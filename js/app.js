@@ -7,8 +7,8 @@ const App = {};
 		App.dataEndYear = 2017;
 
 		// colors
-		App.fundColor = '#084594';
-		App.receiveColor = '#8c2d04';
+		App.fundColor = '#283375';
+		App.receiveColor = '#f15d22';
 
 		// define global variables used throughout
 		App.geoData = null;  // geographic data of the world
@@ -152,6 +152,11 @@ const App = {};
 
 
 	/* ------------------ Misc Functions ------------------- */
+	App.getCountryName = (iso) => {
+		if (App.codeToNameMap.has(iso)) return App.codeToNameMap.get(iso);
+		return iso;
+	};
+
 	App.getFlagHtml = (iso) => {
 		return `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
 	}

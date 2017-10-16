@@ -31,7 +31,7 @@
 			.domain(data.map(d => d.id))
 			.range([0, height]);
 		const colorScale = d3.scaleOrdinal()
-			.range(d3.schemeCategory20c);
+			.range(d3.schemeCategory20c.slice(0, 4));
 
 		const xAxis = d3.axisTop()
 			.ticks(5)
@@ -53,11 +53,9 @@
 				.attr('height', y.bandwidth())
 				.style('fill', d => colorScale(d.country.iso))
 				.each(function addTooltip(d) {
-					const country = App.countries.find(c => c.ISO2 === d.country.iso);
-					const countryName = country ? country.NAME : d.country.iso;
 					$(this).tooltipster({
 						content: `<b>Core Capacity:</b> ${d.cc}` +
-							`<br><b>Country:</b> ${countryName}` +
+							`<br><b>Country:</b> ${App.getCountryName(d.country.iso)}` +
 							`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.country.total_committed)}` +
 							`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.country.total_spent)}`,
 					});
