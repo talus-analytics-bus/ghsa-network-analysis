@@ -75,7 +75,7 @@
 				headerData = [
 					{ name: 'Donor', value: 'donor_name' },
 					{ name: 'Recipient', value: 'recipient_name' },
-					{ name: 'Name', value: 'project_name' },
+					{ name: 'Project Name', value: 'project_name' },
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
