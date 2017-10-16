@@ -7,7 +7,7 @@ const App = {};
 	// Loads the current 'funding_data' dataset to be played with
 	App.loadFundingData = () => {
 		const path = './data/';
-		const fn = 'jeeData-v9.json';
+		const fn = 'allData-v9.json';
 		console.log('Loading funding data...');
 			d3.queue()
 				.defer(d3.json, path + fn)

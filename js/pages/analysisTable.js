@@ -74,14 +74,15 @@
 			let headerData = [];
 			if (currentInfoTab === 'all') {
 				headerData = [
-					{ name: 'Donor', value: 'donor_name' },
+					{ name: 'Funder', value: 'donor_name' },
 					{ name: 'Recipient', value: 'recipient_name' },
-					{ name: 'Name', value: 'project_name' },
+					{ name: 'Project Name', value: 'project_name' },
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
 			} else if (currentInfoTab === 'country') {
 				headerData = [
+<<<<<<< HEAD
 					{ name: 'Donor', value: d => App.codeToNameMap.get(d.donor_code) },
 					{ name: 'Recipient', value: d => App.codeToNameMap.get(d.recipient_country) },
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
@@ -99,6 +100,10 @@
 							return 'None';
 						},
 					},
+=======
+					{ name: 'Funder', value: 'donor_code' },
+					{ name: 'Recipient', value: 'recipient_country' },
+>>>>>>> 5eaf4bc7298898b3cf06a5b24e4076ae5d2c3e12
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];

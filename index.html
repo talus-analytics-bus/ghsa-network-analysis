@@ -158,19 +158,19 @@
 			<div class="analysis-global-content analysis-content">
 				<h3>Analysis</h3>
 				<div class="instructions">
-					View network analysis of the flow of funds globally, or explore funding by country.
+					View network analysis of the flow of funds globally, or explore funding by funder or recipient.
 				</div>
 				<div class="analysis-global-tab-container">
 					<div class="btn-group">
 						<div class="tab btn btn-default" tab="network">Global Network</div>
-						<div class="tab btn btn-default" tab="country">Funding by Donor or Recipient</div>
+						<div class="tab btn btn-default" tab="country">Funding by Funder or Recipient</div>
 					</div>
 				</div>
 				<div class="global-tab-content-container tab-content-container">
 					<div class="global-tab-content tab-content" tab="network"> 
 						<div class="center">
 							<div class="title-container">
-								<h3>Monetary Flow Network by Region</h3>
+								<h3>International Funding Network</h3>
 								<div class="description">
 									The figure below illustrates the flow of funds from country to country. Only funds transfered directly from country to country are visualized, funds that are committed or disbursed by non-country organizations are not shown. Countries are grouped along the outside of the circle by region, and lines through the center of the circle correspond to the the transfer of funds from country to country. Thicker lines represent larger amounts of funding commitments or dispersals. Hover over any line to see additional details on the funding amount or countries involved.
 								</div>
@@ -238,16 +238,16 @@
 					<div class="global-tab-content tab-content" tab="country">
 						<div class="description-container">
 							<div class="description">
-								The tables below identify the donors that have donated the most funds, and the recipients that have recieved the most funds. Click on any entry in the tables for additional detail on that donor or recipeints's activities. For information on a donor or recipient not included on this list, search for that country or organization below.
+								The tables below identify the funders that have committed the most funds, and the recipients that have recieved the most funds. Click on any entry in the tables for additional detail on that funder or recipeints's activities. For information on a funder or recipient not included on this list, search for that country or organization below.
 							</div>
 						</div>
 						<div class="table-content row">
 							<div class="col-sm-6">
-								<h3 class="fund-table-title">Top Donors</h3>
+								<h3 class="fund-table-title">Top Funders</h3>
 								<table class="donor-table country-table table table-bordered table-hover">
 									<thead>
 										<tr>
-											<td>Donor Country</td>
+											<td>Funder</td>
 											<td>Committed</td>
 											<td>Disbursed</td>
 										</tr>
@@ -260,7 +260,7 @@
 								<table class="recipient-table country-table table table-bordered table-hover">
 									<thead>
 										<tr>
-											<td>Recipient Country</td>
+											<td>Recipient</td>
 											<td>Committed</td>
 											<td>Disbursed</td>
 										</tr>
@@ -301,7 +301,7 @@
 							</div>
 							<div class="country-funded-value country-summary-value"></div>
 							<div>
-								<div class="show-donor-btn btn btn-default">Show Donor Profile</div>
+								<div class="show-donor-btn btn btn-default">Show Funder Profile</div>
 							</div>
 						</div>
 					</div>
@@ -491,11 +491,11 @@
 				Data will be reviewed before being incorporated into the tool.
 			</div>
 			<div class="upload-button-container">
-				<a class="export-button-link" href="export/template.xlsx">
-					<button type="button" class="btn btn-default">Download Project Report Template</button>
+				<a class="export-button-link" href="export/GHS Tracking Dashboard - Project Report Template.xlsx">
+					<button type="button" class="btn btn-default btn-report-download">Download Project Report Template</button>
 				</a>
-				<button type="button" class="btn btn-default btn-score-file">Upload Completed Project Report</button>
-				<input id="score-file-upload" class="input-score-file" type="file" />
+				<button type="button" class="btn btn-default btn-report-upload">Upload Completed Project Report</button>
+				<input id="input-report-upload" class="input-report-upload" type="file" />
 			</div>
 			<div class="submit-form-content">
 				<h3>Submit Data for a Single Project</h3>
@@ -520,11 +520,11 @@
 				<div class="submit-form-container">
 					<table class="submit-form-table"><tbody>
 						<tr>
-							<td>Donor Country</td>
+							<td>Funder Country</td>
 							<td><select class="donor-country-select country-select form-control"></select></td>
 						</tr>
 						<tr>
-							<td>Donor Name</td>
+							<td>Funder</td>
 							<td><input class="donor-name-input form-control" /></td>
 						</tr>
 					</tbody></table>
@@ -585,7 +585,7 @@
 		<div class="about-page-container container container-text">
 			<h3>About</h3>
 			<div class="description">
-				Global health security requires international and cross-sector partnerships to effectively prevent, detect, and respond to infectious disease threats. Ensuring adequate funding for health security initiatives is critical for the advancement of global health security, and requires awareness of the current status of funding. To identify funding requirements, develop a compelling case for investment, and prioritize future funding decisions, it is necessary to understand who is funding what, and where, in the broad context of global health security.<br> <br>The global health security tracking dashboard was developed to provide a shared resource which maps the flow of committed and dispersed funds for global health security. This dashboard will allow both donors and recipients to identify gaps and prioritize future investments, and will help to highlight the ways in which funds can be allocated most effectively to have the greatest impact.  This platform and effort will serve as the basis for mutual accountability within the global health security community, promoting public accounting, and providing an opportunity for countries, organizations, and other funders to showcase their successes and identify priorities for future investments.<br><br>The global health security tracking dashboard was developed by Talus Analytics and the Georgetown University Center for Global Health Science and Security.
+				Global health security requires international and cross-sector partnerships to effectively prevent, detect, and respond to infectious disease threats. Ensuring adequate funding for health security initiatives is critical for the advancement of global health security, and requires awareness of the current status of funding. To identify funding requirements, develop a compelling case for investment, and prioritize future funding decisions, it is necessary to understand who is funding what, and where, in the broad context of global health security.<br> <br>The global health security tracking dashboard was developed to provide a shared resource which maps the flow of committed and dispersed funds for global health security. This dashboard will allow both funders and recipients to identify gaps and prioritize future investments, and will help to highlight the ways in which funds can be allocated most effectively to have the greatest impact.  This platform and effort will serve as the basis for mutual accountability within the global health security community, promoting public accounting, and providing an opportunity for countries, organizations, and other funders to showcase their successes and identify priorities for future investments.<br><br>The global health security tracking dashboard was developed by Talus Analytics and the Georgetown University Center for Global Health Science and Security.
 			</div>
 		</div>
 	</script>
