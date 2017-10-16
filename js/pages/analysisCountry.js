@@ -2,15 +2,16 @@
 	App.initAnalysisCountry = (iso, moneyType) => {
 		// get country information
 		const country = App.countries.find(c => c.ISO2 === iso);
+		const name = App.codeToNameMap.get(iso);
 		const lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
 		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
 
 		// initializes the whole page
 		function init() {
 			// fill title
-			const flagHtml = App.getFlagHtml(iso);
+			const flagHtml = country ? App.getFlagHtml(iso) : '';
 			$('.analysis-country-title')
-				.html(`${flagHtml} ${country.NAME} ${flagHtml}`)
+				.html(`${flagHtml} ${name} ${flagHtml}`)
 				.on('click', () => hasher.setHash(`analysis/${iso}`));
 
 			// fill out generic text
@@ -89,6 +90,8 @@
 			// fill out generic text
 			$('.money-type').text(moneyType === 'd' ? 'disbursed' : 'received');
 			$('.money-type-cap').text(moneyType === 'd' ? 'Disbursed' : 'Received');
+			$('.opp-money-type-noun').text(moneyType === 'd' ? 'recipient' : 'donor');
+			$('.opp-money-type-verb').text(moneyType === 'd' ? 'received' : 'donated');
 
 			// fill out title and description for circle pack; draw circle pack
 			if (moneyType === 'd') {
@@ -189,12 +192,18 @@
 				App.drawProgressCircles('.respond-circle-chart', fundsByCc.R, color);
 
 				const percFormat = d3.format('.0%');
-				const pValue = fundsByCc.P.total_spent / fundsByCc.P.total_committed;
-				const dValue = fundsByCc.D.total_spent / fundsByCc.D.total_committed;
-				const rValue = fundsByCc.R.total_spent / fundsByCc.R.total_committed;
-				$('.prevent-value').text(percFormat(pValue));
-				$('.detect-value').text(percFormat(dValue));
-				$('.respond-value').text(percFormat(rValue));
+				function fillValueText(valueSelector, ind) {
+					if (fundsByCc[ind].total_committed) {
+						const pValue = fundsByCc[ind].total_spent / fundsByCc[ind].total_committed;
+						$(valueSelector).text(percFormat(pValue));
+					} else {
+						$(valueSelector).parent().text('No funds committed for this core element');
+					}
+				}
+
+				fillValueText('.prevent-value', 'P');
+				fillValueText('.detect-value', 'D');
+				fillValueText('.respond-value', 'R');
 			} else {
 
 			}
@@ -202,34 +211,67 @@
 
 		function drawCountryTable() {
 			if (moneyType === 'd') {
-				$('.circle-pack-title').text('Countries Donated To');
+				$('.circle-pack-title').text('Top Countries Donated To');
 			} else {
-				$('.circle-pack-title').text('Countries Received From');
+				$('.circle-pack-title').text('Top Countries Received From');
 			}
 
+			const blues = ['#08519c', '#3182bd', '#6baed6', '#bdd7e7', '#eff3ff'];
+			const oranges = ['#993404', '#d95f0e', '#fe9929', '#fed98e', '#ffffd4'];
+			const colors = (moneyType === 'd') ? blues : oranges;
+
+			// get table data
 			if (lookup[iso]) {
-				// get data
+				const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_code';
 				const fundedData = [];
 				const fundedByCountry = {};
-				App.fundingLookup[iso].forEach((p) => {
-					if (!fundedByCountry[p.recipient_country]) {
-						fundedByCountry[p.recipient_country] = {
-							total_committed: 0,
-							total_spent: 0,
-						};
-					}
-					fundedByCountry[p.recipient_country].total_committed += p.total_committed;
-					fundedByCountry[p.recipient_country].total_spent += p.total_spent;
-				});
-				App.countries.forEach((c) => {
-					if (fundedByCountry[c.ISO2]) {
-						const cCopy = Object.assign({}, c);
-						cCopy.total_committed = fundedByCountry[c.ISO2].total_committed;
-						cCopy.total_spent = fundedByCountry[c.ISO2].total_spent;
-						fundedData.push(cCopy);
+				lookup[iso].forEach((p) => {
+					const recIso = p[countryInd];
+					if (recIso !== 'Not reported') {
+						if (!fundedByCountry[recIso]) {
+							fundedByCountry[recIso] = {
+								iso: recIso,
+								total_committed: 0,
+								total_spent: 0,
+							};
+						}
+						fundedByCountry[recIso].total_committed += p.total_committed;
+						fundedByCountry[recIso].total_spent += p.total_spent;
 					}
 				});
+				for (let iso in fundedByCountry) {
+					fundedData.push(fundedByCountry[iso]);
+				}
 				Util.sortByKey(fundedData, 'total_spent', true);
+
+				// draw table
+				let firstColLabel = (moneyType === 'd') ? 'Recipient Country' : 'Donor Country';
+				$('.country-table thead tr td:first-child').text(firstColLabel);
+
+				const rows = d3.select('.country-table tbody').selectAll('tr')
+					.data(fundedData.slice(0, 10))
+					.enter().append('tr')
+						//.style('background-color', (d, i) => colors[Math.floor(i / 2)])
+						//.style('color', (d, i) => (i < 4) ? '#fff' : 'black')
+						.on('click', (d) => {
+							if (d.iso !== 'Not reported') {
+								if (moneyType === 'd') {
+									hasher.setHash(`analysis/${iso}/${d.iso}`);
+								} else {
+									hasher.setHash(`analysis/${d.iso}/${iso}`);
+								}
+							}
+						});
+				rows.append('td').html((d) => {
+					const country = App.countries.find(c => c.ISO2 === d.iso);
+					const flagHtml = country ? App.getFlagHtml(d.iso) : '';
+					const name = App.codeToNameMap.get(d.iso);
+					return `<div class="flag-container">${flagHtml}</div>` +
+						`<div class="name-container">${name}</div>`;
+				});
+
+				rows.append('td').text(d => App.formatMoney(d.total_committed));
+				rows.append('td').text(d => App.formatMoney(d.total_spent));
 			} else {
 				d3.select('.circle-pack-description')
 					.html('<i>There are no data for countries funded by this country.</i>');
@@ -238,7 +280,7 @@
 
 		function drawCategoryChart() {
 			// get data
-			const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_country';
+			const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_code';
 			if (lookup[iso]) {
 				const catData = [];
 				const fundsByCat = {};
@@ -269,6 +311,7 @@
 							totalSpent += fundsByCat[cap.id][iso].total_spent;
 						}
 						catData.push({
+							id: cap.id,
 							name: cap.name,
 							children: countries,
 							total_committed: totalCommitted,
@@ -276,6 +319,7 @@
 						});
 					} else {
 						catData.push({
+							id: cap.id,
 							name: cap.name,
 							children: [],
 							total_committed: 0,

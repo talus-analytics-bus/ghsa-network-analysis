@@ -12,8 +12,10 @@
 		const $content = $('.analysis-pair-content');
 
 		// get country info
-		const fundCountry = App.countries.find(c => c.ISO2 === fundIso);
-		const recCountry = App.countries.find(c => c.ISO2 === recIso);
+		const donorCountry = App.countries.find(c => c.ISO2 === fundIso);
+		const recipientCountry = App.countries.find(c => c.ISO2 === recIso);
+		const donorName = App.codeToNameMap.get(fundIso);
+		const recipientName = App.codeToNameMap.get(recIso);
 
 		// get payments between the countries
 		let allPayments = [];
@@ -24,15 +26,22 @@
 
 		function init() {
 			// fill title
-			const fundFlagHtml = App.getFlagHtml(fundIso);
-			const recFlagHtml = App.getFlagHtml(recIso);
-			$content.find('.analysis-country-title').html(`${fundFlagHtml} ${fundCountry.NAME} ` +
-				`<div class="arrow-html">&rarr;</div>  ${recCountry.NAME} ${recFlagHtml}`);
+			const fundFlagHtml = donorCountry ? App.getFlagHtml(fundIso) : '';
+			const recFlagHtml = recipientCountry ? App.getFlagHtml(recIso) : '';
+			const donorNameHtml = `<span onclick="hasher.setHash('analysis/${fundIso}')">${donorName}</span>`;
+			const recipientNameHtml = `<span onclick="hasher.setHash('analysis/${recIso}')">${recipientName}</span>`;
+			$content.find('.analysis-country-title').html(`${fundFlagHtml} ${donorNameHtml} ` +
+				`<div class="arrow-html">&rarr;</div> ${recipientNameHtml} ${recFlagHtml}`);
+
+			// fill out generic text
+			$('.start-year').text(App.dataStartYear);
+			$('.end-year').text(App.dataEndYear);
 
 			// fill summary text
-			const totalFunded = d3.sum(allPayments, d => d.total_spent);
-			const summaryText = `Total Funded/Received: ${App.formatMoney(totalFunded)}`;
-			$('.pair-summary-text').text(summaryText);
+			const totalCommitted = d3.sum(allPayments, d => d.total_committed);
+			const totalSpent = d3.sum(allPayments, d => d.total_spent);
+			$('.committed-value').text(App.formatMoney(totalCommitted));
+			$('.spent-value').text(App.formatMoney(totalSpent));
 
 			// define info table tab behavior
 			$content.find('.funds-tab-container .btn').on('click', function changeTab() {
@@ -134,14 +143,14 @@
 				});
 
 			// define DataTables plugin parameters
-			let order = [4, 'desc'];
-			let columnDefs = [{ type: 'money', targets: [3, 4] }];
-			if (currentInfoTab === 'country') {
-				order = [3, 'desc'];
-				columnDefs = [{ type: 'money', targets: [2, 3] }];
+			let order = [];
+			let columnDefs = [];
+			if (currentInfoTab === 'all') {
+				order = [4, 'desc'];
+				columnDefs = [{ type: 'money', targets: [3, 4], width: '120px' }];
 			} else if (currentInfoTab === 'cc') {
 				order = [2, 'desc'];
-				columnDefs = [{ type: 'money', targets: [1, 2] }];
+				columnDefs = [{ type: 'money', targets: [1, 2], width: '120px' }];
 			}
 
 			// re-initialize DataTables plugin

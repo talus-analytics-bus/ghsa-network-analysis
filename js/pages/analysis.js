@@ -1,6 +1,6 @@
 (() => {
-	App.initAnalysis = () => {
-		let currentTab = 'global';
+	App.initAnalysis = (tab) => {
+		let currentTab = tab;
 		let startYear = App.dataStartYear;
 		let endYear = App.dataEndYear + 1;
 		let networkMap;
@@ -8,20 +8,26 @@
 
 		function init() {
 			initTabs();
-			populateFilters();
-			initSlider();
-			initSearch();
 			updateTab();
-			populateTables('.donor-table', '.recipient-table');
-			initNetworkCountryBox();
-			networkMap = buildNetworkMap();
+
+			if (tab === 'network') {
+				populateFilters();
+				initSlider();
+				initNetworkSearch();
+				initNetworkCountryBox();
+				networkMap = buildNetworkMap();
+			} else if (tab === 'country') {
+				initTableSearch();
+				populateTables('.donor-table', '.recipient-table');
+			}
 		}
 
 		function initTabs() {
 			// define info table tab behavior
 			$('.analysis-global-tab-container .btn').on('click', function changeTab() {
 				currentTab = $(this).attr('tab');
-				updateTab();
+				if (currentTab === 'network') hasher.setHash('analysis');
+				else hasher.setHash(`analysis/${currentTab}`);
 			});
 		}
 
@@ -89,12 +95,17 @@
 		}
 
 		// initializes search functionality
-		function initSearch() {
+		function initNetworkSearch() {
 			App.initCountrySearchBar('.network-country-search', (result) => {
 				displayCountryInNetwork(result.NAME);
 			});
+		}
+
+		function initTableSearch() {
 			App.initCountrySearchBar('.table-country-search', (result) => {
 				hasher.setHash(`analysis/${result.ISO2}`);
+			}, {
+				topLayout: true,
 			});
 		}
 
@@ -105,10 +116,9 @@
 			const countriesByFunding = [];
 			for (let iso in App.fundingLookup) {
 				if (iso !== 'Not reported') {
-					const country = App.countries.find(c => c.ISO2 === iso);
 					countriesByFunding.push({
 						iso,
-						name: country ? country.NAME : iso,
+						name: App.codeToNameMap.get(iso),
 						total_committed: d3.sum(App.fundingLookup[iso], d => d.total_committed),
 						total_spent: d3.sum(App.fundingLookup[iso], d => d.total_spent),
 					});
@@ -120,10 +130,9 @@
 			const countriesByReceived = [];
 			for (let iso in App.recipientLookup) {
 				if (iso !== 'Not reported') {
-					const country = App.countries.find(c => c.ISO2 === iso);
 					countriesByReceived.push({
 						iso,
-						name: country ? country.NAME : iso,
+						name: App.codeToNameMap.get(iso),
 						total_committed: d3.sum(App.recipientLookup[iso], d => d.total_committed),
 						total_spent: d3.sum(App.recipientLookup[iso], d => d.total_spent),
 					});
@@ -139,12 +148,16 @@
 					.style('background-color', (d, i) => blues[Math.floor(i / 2)])
 					.style('color', (d, i) => (i < 4) ? '#fff' : 'black')
 					.on('click', (d) => {
-						if (d.iso.length === 2) hasher.setHash(`analysis/${d.iso}`);
+						if (d.iso !== 'Not reported') {
+							hasher.setHash(`analysis/${d.iso}`);
+						}
 					});
 			dRows.append('td').html((d) => {
 				const country = App.countries.find(c => c.ISO2 === d.iso);
 				const flagHtml = country ? App.getFlagHtml(d.iso) : '';
-				return `<div class="flag-container">${flagHtml}</div><b>${d.name}</b>`;
+				const name = App.codeToNameMap.get(d.iso);
+				return `<div class="flag-container">${flagHtml}</div>` +
+					`<div class="name-container">${name}</div>`;
 			});
 			dRows.append('td').text(d => App.formatMoney(d.total_committed));
 			dRows.append('td').text(d => App.formatMoney(d.total_spent));
@@ -157,12 +170,16 @@
 					.style('background-color', (d, i) => oranges[Math.floor(i / 2)])
 					.style('color', (d, i) => (i < 4) ? '#fff' : 'black')
 					.on('click', (d) => {
-						if (d.iso.length === 2) hasher.setHash(`analysis/${d.iso}`);
+						if (d.iso !== 'Not reported') {
+							hasher.setHash(`analysis/${d.iso}`);
+						}
 					});
 			rRows.append('td').html((d) => {
 				const country = App.countries.find(c => c.ISO2 === d.iso);
 				const flagHtml = country ? App.getFlagHtml(d.iso) : '';
-				return `<div class="flag-container">${flagHtml}</div><b>${d.name}</b>`;
+				const name = country ? country.NAME : d.iso;
+				return `<div class="flag-container">${flagHtml}</div>` +
+					`<div class="name-container">${name}</div>`;
 			});
 			rRows.append('td').text(d => App.formatMoney(d.total_committed));
 			rRows.append('td').text(d => App.formatMoney(d.total_spent));
@@ -364,6 +381,12 @@
 			} else {
 				$('.nci-recipient-section').slideUp();
 			}
+
+			// clicking the "show more" button takes user to country page
+			$('.nci-more-button').off('click').on('click', () => {
+				console.log(data);
+				hasher.setHash(`analysis/${data.iso}`);
+			});
 
 			// display country info
 			$('.network-country-info').slideDown();

@@ -80,6 +80,24 @@
 			return $('.money-type-filter input:checked').attr('ind');
 		}
 
+		function getMoneyTypeLabel() {
+			const moneyFlow = getMoneyFlowType();
+			const moneyType = getMoneyType();
+
+			let label = '';
+			if (moneyFlow === 'funded' && moneyType === 'committed') {
+				label = 'Total Committed Funds';
+			} else if (moneyFlow === 'funded' && moneyType === 'disbursed') {
+				label = 'Total Disbursed Funds';
+			} else if (moneyFlow === 'received' && moneyType === 'committed') {
+				label = 'Total Funds Committed to Receive';
+			} else if (moneyFlow === 'received' && moneyType === 'disbursed') {
+				label = 'Total Funds Received';
+			}
+			label += `<br>from <b>${startYear}</b> to <b>${endYear - 1}</b>`;
+			return label;
+		}
+
 		function getTotalFunc() {
 			const moneyType = getMoneyType();
 			if (moneyType === 'committed') {
@@ -98,11 +116,6 @@
 				}
 				return total;
 			};
-		}
-
-		// returns color scale based on map settings
-		function getColorScale() {
-			return d3.scaleQuantile().range(purples);
 		}
 
 		// gets the lookup object currently being used
@@ -131,8 +144,7 @@
 			const dataLookup = getDataLookup();
 
 			// get filter values
-			let ccs = $('.cc-select').val();
-			if (!ccs.length) ccs = App.capacities.map(d => d.id);
+			const ccs = $('.cc-select').val();
 
 			// clear out current data
 			currentNodeDataMap.clear();
@@ -159,21 +171,20 @@
 			const moneyFlow = getMoneyFlowType();
 
 			// get color scale and set domain
-			const nodeColorScale = getColorScale();
-			nodeColorScale.domain(currentNodeDataMap.values());
-
-			// check if there are non-zero values
-			const allEmpty = currentNodeDataMap.values().every(v => !v);
+			const domain = currentNodeDataMap.values().filter(d => d);
+			if (domain.length === 1) domain.push(0);
+			const nodeColorScale = d3.scaleQuantile()
+				.domain(domain)
+				.range(purples);
 
 			// color countries and update tooltip content
 			map.element.selectAll('.country').transition()
 				.duration(500)
 				.style('fill', (d) => {
-					if (allEmpty) return '#ccc';
 					const isoCode = d.properties.ISO2;
 					if (currentNodeDataMap.has(isoCode)) {
 						d.value = currentNodeDataMap.get(isoCode);
-						d.color = nodeColorScale(d.value);
+						d.color = d.value ? nodeColorScale(d.value) : '#ccc';
 					} else {
 						d.value = null;
 						d.color = '#ccc';
@@ -190,7 +201,7 @@
 						.text(App.formatMoney(d.value));
 					container.append('div')
 						.attr('class', 'tooltip-main-value-label')
-						.text(moneyFlow === 'funded' ? 'Donated' : 'Received');
+						.html(getMoneyTypeLabel());
 
 					$(this).tooltipster('content', container.html());
 				});
@@ -286,17 +297,7 @@
 			$('.info-value').text(App.formatMoney(value));
 
 			// construct label for value
-			let label = '';
-			if (moneyFlow === 'funded' && moneyType === 'committed') {
-				label = 'Total Committed Funds';
-			} else if (moneyFlow === 'funded' && moneyType === 'disbursed') {
-				label = 'Total Disbursed Funds';
-			} else if (moneyFlow === 'received' && moneyType === 'committed') {
-				label = 'Total Funds Committed to Receive';
-			} else if (moneyFlow === 'received' && moneyType === 'disbursed') {
-				label = 'Total Funds Received';
-			}
-			label += `<br>from <b>${startYear}</b> to <b>${endYear - 1}</b>`;
+			const label = getMoneyTypeLabel();
 			$('.info-value-label').html(label);
 
 			// display content

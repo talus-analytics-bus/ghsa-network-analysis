@@ -13,10 +13,15 @@
 		top: -3px;
 		right: 50px;
 	}
-	.country-funds-content {
-		margin-top: 30px;
-		padding: 0 50px 50px;
-		border-bottom: $border;
+}
+.country-funds-content {
+	margin-top: 40px;
+	padding: 0 50px 50px;
+	border-bottom: $border;
+
+	.summary-text {
+		margin: 0 20px 40px;
+		font-size: 1.2em;
 	}
 	.funds-table-container {
 		display: inline-block;

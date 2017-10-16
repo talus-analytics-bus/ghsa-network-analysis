@@ -6,6 +6,9 @@
 		margin-right: 225px;
 	}
 }
+
+
+/* --- Buffer Page --- */
 .country-summary-content {
 	display: none;
 	margin-top: 40px;
@@ -31,6 +34,9 @@
 		font-size: 2.4em;
 	}
 }
+
+
+/* --- Detail Page --- */
 .country-flow-content {
 	display: none;
 	position: relative;
@@ -41,13 +47,17 @@
 		top: -44px;
 		right: 30px;
 	}
-	.country-flow-summary,
-	.progress-circle-section {
-		padding: 20px 30px;
-		border-bottom: $light-border;
-		margin-bottom: 20px;
-		min-height: 160px;
+	.show-table-btn {
+		margin-top: 10px;
 	}
+}
+.country-flow-summary,
+.progress-circle-section {
+	padding: 20px 30px;
+	border-bottom: $light-border;
+	margin-bottom: 20px;
+	min-height: 160px;
+
 	.progress-circle-title {
 		font-weight: 600;
 		font-size: 1.2em;
@@ -80,6 +90,7 @@
 		margin: 0 20px;
 		max-width: 160px;
 		text-align: center;
+		vertical-align: top;
 	}
 	.circle-chart-label {
 		margin-top: 5px;
@@ -91,9 +102,8 @@
 		line-height: 1.25;
 		margin-top: 4px;
 	}
-	.show-table-btn {
-		margin-top: 10px;
-	}
+}
+.country-chart-container {
 	.circle-pack-content {
 		margin-top: 30px;
 		text-align: center;
@@ -101,5 +111,12 @@
 	.circle-pack-title,
 	.category-chart-title {
 		font-size: 1.5em;
+	}
+	.circle-pack-description {
+		max-width: 500px;
+	}
+	.country-table-container {
+		margin-top: 20px;
+		padding: 0 30px;
 	}
 }

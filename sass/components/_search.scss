@@ -7,6 +7,11 @@
   border-left: $border;
   border-right: $border;
   text-align: left;
+
+  &.top-layout {
+    top: auto;
+    bottom: 49px;
+  }
 }
 .live-search-no-results-text {
   display: none;
@@ -20,13 +25,20 @@
   border-bottom: $light-border;
   cursor: pointer;
   @include gradient(#fefefe, #f3f3f3);
-  &:first-child { border-top: $border; }
   &:hover,
   &.active {
     @include gradient(#e6e6e6, #d9d9d9);
     div { color: #000; }
   }
 }
+
+.live-search-results-container.top-layout .live-search-results-box:first-child {
+  border-top: $border;
+}
+.live-search-results-container.bottom-layout .live-search-results-box:last-child {
+  border-bottom: $border;
+}
+
 .live-search-results-title {
 	font-weight: 600;
 }

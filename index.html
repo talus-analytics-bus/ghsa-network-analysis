@@ -30,10 +30,15 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">
-					<img class="logo" alt="Talus Analytics" src="img/talus-logo.png" />
-					GHS Tracking Dashboard
-				</a>
+				<div class="navbar-brand">
+					<a href="https://ghss.georgetown.edu/" target="_blank">
+						<img class="logo gtown-logo" alt="Georgetown University" src="img/logo-georgetown.png" />
+					</a>
+					<a href="http://www.talusanalytics.com" target="_blank">
+						<img class="logo talus-logo" alt="Talus Analytics" src="img/talus-logo.png" />
+					</a>
+					<span>GHS Tracking Dashboard</span>
+				</div>
 			</div>
 			<div class="collapse navbar-collapse" id="navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
@@ -144,17 +149,24 @@
 			<div class="analysis-global-content analysis-content">
 				<h3>Analysis</h3>
 				<div class="instructions">
-					View global funding network analysis or explore funding by country.
+					View network analysis of the flow of funds globally, or explore funding by country.
 				</div>
 				<div class="analysis-global-tab-container">
 					<div class="btn-group">
-						<div class="tab btn btn-default" tab="global">Global Network</div>
-						<div class="tab btn btn-default" tab="country">Funding by Country</div>
+						<div class="tab btn btn-default" tab="network">Global Network</div>
+						<div class="tab btn btn-default" tab="country">Funding by Donor or Recipient</div>
 					</div>
 				</div>
 				<div class="global-tab-content-container tab-content-container">
-					<div class="global-tab-content tab-content" tab="global"> 
-						<h3>Monetary Flow Network by Region</h3>
+					<div class="global-tab-content tab-content" tab="network"> 
+						<div class="center">
+							<div class="title-container">
+								<h3>Monetary Flow Network by Region</h3>
+								<div class="description">
+									The figure below illustrates the flow of funds from country to country. Only funds transfered directly from country to country are visualized, funds that are committed or disbursed by non-country organizations are not shown. Countries are grouped along the outside of the circle by region, and lines through the center of the circle correspond to the the transfer of funds from country to country. Thicker lines represent larger amounts of funding commitments or dispersals. Hover over any line to see additional details on the funding amount or countries involved.
+								</div>
+							</div>
+						</div>
 						<div class="network-map-container">
 							<div class="network-map-content"></div>
 							<div class="network-map-no-content">
@@ -207,15 +219,23 @@
 										<div class="nci-recipient-value nci-value"></div>
 										<div class="nci-value-label">Total Received Funds</div>
 									</div>
+									<div class="nci-button-container">
+										<div class="nci-more-button btn btn-default">Show Details</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="global-tab-content tab-content" tab="country">
-						<div class="row">
+						<div class="description-container">
+							<div class="description">
+								The tables below identify the donors that have donated the most funds, and the recipients that have recieved the most funds. Click on any entry in the tables for additional detail on that donor or recipeints's activities. For information on a donor or recipient not included on this list, search for that country or organization below.
+							</div>
+						</div>
+						<div class="table-content row">
 							<div class="col-sm-6">
-								<h3 class="fund-table-title">Top Donor Countries</h3>
-								<table class="donor-table table table-bordered table-hover">
+								<h3 class="fund-table-title">Top Donors</h3>
+								<table class="donor-table country-table table table-bordered table-hover">
 									<thead>
 										<tr>
 											<td>Donor Country</td>
@@ -227,8 +247,8 @@
 								</table>
 							</div>
 							<div class="col-sm-6">
-								<h3 class="fund-table-title">Top Recipient Countries</h3>
-								<table class="recipient-table table table-bordered table-hover">
+								<h3 class="fund-table-title">Top Recipients</h3>
+								<table class="recipient-table country-table table table-bordered table-hover">
 									<thead>
 										<tr>
 											<td>Recipient Country</td>
@@ -241,7 +261,7 @@
 							</div>
 						</div>
 						<div class="table-country-search">
-							<span>Search for a country:</span>
+							<span>Search for a country or organization:</span>
 							<div class="search-container">
 								<div class="form-group has-feedback">
 									<input type="text" class="country-search-input form-control" placeholder="search for a country...">
@@ -340,9 +360,20 @@
 							<div class="circle-pack-container">
 								<h3 class="circle-pack-title"></h3>
 								<div class="circle-pack-description description">
-									The table below displays recipients by order of funds received.
+									The table below displays <span class="opp-money-type-noun"></span> countries by order of amount of funds <span class="opp-money-type-verb"></span>.
 								</div>
-								<div class="circle-pack-content"></div>
+								<div class="country-table-container">
+									<table class="country-table table table-bordered table-hover">
+										<thead>
+											<tr>
+												<td></td>
+												<td>Committed</td>
+												<td>Disbursed</td>
+											</tr>
+										</thead>
+										<tbody></tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 						<div class="col-sm-6">
@@ -350,9 +381,9 @@
 								Funds <span class="money-type-cap"></span> by Core Capacity
 							</h3>
 							<div class="description">
-								The chart below shows the amount of money <span class="money-type"></span> by this country for each core capacity. Colors represent each recipient.
+								The chart below shows the amount of money <span class="money-type"></span> by this country for each core capacity. Colors represent each recipient. Note that a single funding commitment or disbursal may map to multiple core capacities.
 								<br><br>
-								<i>Hover over a bar to see funding details.</i>
+								<i>Hover over a bar to see additional funding details.</i>
 							</div>
 							<div class="category-chart-container"></div>
 						</div>
@@ -367,10 +398,22 @@
 				<h3 class="analysis-country-title"></h3>
 				<div class="back-button btn btn-default">Back to Country Summary</div>
 				<div class="country-funds-content">
+					<div class="summary-text">
+						<div>
+							Total <span class="commit-noun"></span> from <span class="start-year"></span> to <span class="end-year"></span>:
+							<b><span class="committed-value"></span></b>
+						</div>
+						<div>
+							Total <span class="money-type-cap"></span> Funds from <span class="start-year"></span> to <span class="end-year"></span>:
+							<b><span class="spent-value"></span></b>
+						</div>
+					</div>
 					<div class="funds-tab-container">
 						<div class="btn-group">
 							<div class="tab btn btn-default" tab="all">All Funds</div>
-							<div class="tab btn btn-default" tab="country">Funds By Country</div>
+							<div class="tab btn btn-default" tab="country">
+								Funds By <span class="money-type-noun"></span>
+							</div>
 							<div class="tab btn btn-default" tab="cc">Funds By Core Capacity</div>
 						</div>
 					</div>
@@ -392,10 +435,19 @@
 
 	<script id="analysis-pair-template" type="text/x-handlebars-template">
 		<div class="analysis-container container">
-			<div class="analysis-pair-content analysis-content">
+			<div class="analysis-pair-content">
 				<h3 class="analysis-country-title center"></h3>
 				<div class="country-funds-content">
-					<div class="pair-summary-text"></div>
+					<div class="summary-text">
+						<div>
+							Total Committed Funds from <span class="start-year"></span> to <span class="end-year"></span>:
+							<b><span class="committed-value"></span></b>
+						</div>
+						<div>
+							Total Disbursed Funds from <span class="start-year"></span> to <span class="end-year"></span>:
+							<b><span class="spent-value"></span></b>
+						</div>
+					</div>
 					<div class="funds-tab-container">
 						<div class="btn-group">
 							<div class="tab btn btn-default" tab="all">All Funds</div>
@@ -423,14 +475,14 @@
 			<h3>Submit Data for Multiple Projects</h3>
 			<div class="description">
 				Project data may be submitted using the form below. An empty form can be downloaded by clicking "Download Project Report Template". <br> <br>
-				Using the structure of the project report template, please update the file with relevant, project-level information. Upload completed reports by clicking "Upload Project Report" and selecting the location where the file is saved on your computer. <br> <br>
+				Using the structure of the project report template, please update the file with relevant, project-level information. Upload completed reports by clicking "Upload Completed Project Report" and selecting the location where the file is saved on your computer. <br> <br>
 				Data will be reviewed before being incorporated into the tool.
 			</div>
 			<div class="upload-button-container">
 				<a class="export-button-link" href="export/template.xlsx">
 					<button type="button" class="btn btn-default">Download Project Report Template</button>
 				</a>
-				<button type="button" class="btn btn-default btn-score-file">Upload Project Report</button>
+				<button type="button" class="btn btn-default btn-score-file">Upload Completed Project Report</button>
 				<input id="score-file-upload" class="input-score-file" type="file" />
 			</div>
 			<div class="submit-form-content">
@@ -463,10 +515,6 @@
 							<td>Donor Name</td>
 							<td><input class="donor-name-input form-control" /></td>
 						</tr>
-						<tr>
-							<td>Donor Sector</td>
-							<td><select class="donor-sector-select form-control"></select></td>
-						</tr>
 					</tbody></table>
 				</div>
 				<div class="submit-form-container">
@@ -479,14 +527,14 @@
 							<td>Recipient Name</td>
 							<td><input class="recipient-name-input form-control" /></td>
 						</tr>
-						<tr>
-							<td>Recipient Sector</td>
-							<td><select class="recipient-sector-select form-control"></select></td>
-						</tr>
 					</tbody></table>
 				</div>
 				<div class="submit-form-container">
 					<table class="submit-form-table"><tbody>
+						<tr>
+							<td>Amount Committed</td>
+							<td><input class="committed-input form-control" /></td>
+						</tr>
 						<tr>
 							<td>Amount Disbursed</td>
 							<td><input class="disbursed-input form-control" /></td>

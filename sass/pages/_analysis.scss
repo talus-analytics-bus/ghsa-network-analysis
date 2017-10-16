@@ -40,3 +40,46 @@
 	height: 30px;
 	margin: 0 20px;
 }
+.table {
+	.flag-container {
+		display: inline-block;
+		width: 40px;
+		margin-right: 15px;
+		text-align: right;
+	}
+	.flag {
+		height: 16px;
+		margin: 0;
+	}
+}
+.country-table {
+	@include box-shadow(1px 1px 3px rgba(0,0,0,0.2));
+
+	thead tr { background-color: #fafafa; }
+	thead td { font-weight: 600; }
+	thead td:first-child {
+		padding-left: 62px;
+	}
+	tbody tr {
+		background-color: #fff;
+		cursor: pointer;
+	}
+	td:first-child { 
+		white-space: nowrap;
+	}
+	.flag-container {
+		vertical-align: top;
+	}
+	.name-container {
+		display: inline-block;
+		width: 220px;
+		white-space: normal;
+		vertical-align: top;
+		font-weight: 600;
+		cursor: pointer;
+	}
+	td:nth-child(n+2) {
+		white-space: nowrap;
+		text-align: right;
+	}
+}
