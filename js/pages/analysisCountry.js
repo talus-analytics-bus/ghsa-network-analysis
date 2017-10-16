@@ -227,15 +227,17 @@
 				const fundedByCountry = {};
 				lookup[iso].forEach((p) => {
 					const recIso = p[countryInd];
-					if (!fundedByCountry[recIso]) {
-						fundedByCountry[recIso] = {
-							iso: recIso,
-							total_committed: 0,
-							total_spent: 0,
-						};
+					if (recIso !== 'Not reported') {
+						if (!fundedByCountry[recIso]) {
+							fundedByCountry[recIso] = {
+								iso: recIso,
+								total_committed: 0,
+								total_spent: 0,
+							};
+						}
+						fundedByCountry[recIso].total_committed += p.total_committed;
+						fundedByCountry[recIso].total_spent += p.total_spent;
 					}
-					fundedByCountry[recIso].total_committed += p.total_committed;
-					fundedByCountry[recIso].total_spent += p.total_spent;
 				});
 				for (let iso in fundedByCountry) {
 					fundedData.push(fundedByCountry[iso]);

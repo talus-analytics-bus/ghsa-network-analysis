@@ -176,7 +176,6 @@
 			const nodeColorScale = d3.scaleQuantile()
 				.domain(domain)
 				.range(purples);
-			console.log(domain);
 
 			// color countries and update tooltip content
 			map.element.selectAll('.country').transition()
