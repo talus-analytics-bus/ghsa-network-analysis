@@ -7,7 +7,7 @@ const App = {};
 	// Loads the current 'funding_data' dataset to be played with
 	App.loadFundingData = () => {
 		const path = './data/';
-		const fn = 'funding_data-iati_2014_plus-101217-v4.1-MV.json';
+		const fn = 'jeeData-v9.json';
 		console.log('Loading funding data...');
 			d3.queue()
 				.defer(d3.json, path + fn)
@@ -590,11 +590,15 @@ const sectorAid = [
 				// process transactions data
 				proj.transactions = [];
 
+				// transaction types to include
+				const transactionTypes = [];
+
 				for (let j = 0; j < projCountryTrans.length; j++) {
 					const curTrans = {};
 
 					// transactions[0].type
 					curTrans.type = App.getTransType(projCountryTrans[j].trans_code);
+					if (curTrans.type)
 					
 					// transactions[0].amount
 					curTrans.amount = parseFloat(projCountryTrans[j].trans_usd) * parseFloat(projCountryTrans[j].country_percent) / 100.0;
@@ -800,5 +804,16 @@ const sectorAid = [
 		}
 		// otherwise, perform the translation on its description and add it
 	}; 
+
+	// translate each project name
+	App.translateProjectNames = (i, projectNames) => {
+		console.log(i);
+		if (i >= projectNames.length || projectNames[i] === null) return;
+		console.log(projectNames[i])
+		App.translate(projectNames[i], (eng_name) => {
+			projectNames[i] = eng_name;
+			App.translateProjectNames(i + 1, projectNames);
+		});
+	};
 
 })();

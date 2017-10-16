@@ -1,0 +1,58 @@
+// TRANSACTION POST-PROCESSINGG
+// Recomputes the transactions
+// Only keep transactions with cy >= 2014
+// Only keep transactions of the type 'commitment', 'disbursement', or 'expenditure'
+// Compute spent_by_year and committed_by_year
+var allDataCleaned = [];
+allData.forEach(project => {
+	
+	// remove the old total fields
+	delete project.total_spent;
+	delete project.total_committed;
+	
+	var transToKeep = [];
+	var typesToKeep = [
+		'commitment',
+		'expenditure',
+		'disbursement'
+	];
+	project.spent_by_year = {
+		2014: 0.0,
+		2015: 0.0,
+		2016: 0.0,
+		2017: 0.0
+	};
+	project.committed_by_year = {
+		2014: 0.0,
+		2015: 0.0,
+		2016: 0.0,
+		2017: 0.0
+	};
+	project.transactions.forEach(trans => {
+		// remove transactions with type != the three we're keeping
+		if (typesToKeep.indexOf(trans.type) === -1) return;
+		// remove transactions with cy < 2014
+		if (parseInt(trans.cy) < 2014) return;
+		transToKeep.push(trans);
+		// calculate new project totals by year for Jeff
+		if (trans.type === 'commitment') project.committed_by_year[trans.cy] = project.committed_by_year[trans.cy] + trans.amount;
+		if (trans.type === 'expenditure' || trans.type === 'disbursement') project.spent_by_year[trans.cy] = project.spent_by_year[trans.cy] + trans.amount;
+	});
+	
+	project.transactions = transToKeep;
+	
+	// if no transactions left, remove project and shout about it
+	if (transToKeep.length === 0) {
+		console.log(project.project_id + ': removing, no transactions');
+		return;
+	}
+	
+	// compute new totals
+	project.total_spent = d3.sum(_.values(project.spent_by_year));
+	project.total_committed = d3.sum(_.values(project.committed_by_year));
+	
+	if (project.total_spent === 0.0 && project.total_committed === 0.0) return;
+
+	// push to output
+	allDataCleaned.push(project);
+});
