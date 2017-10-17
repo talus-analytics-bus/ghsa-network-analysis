@@ -18,6 +18,11 @@
 			// fill out generic text
 			$('.start-year').text(App.dataStartYear);
 			$('.end-year').text(App.dataEndYear);
+			$('.money-type').text(moneyType === 'd' ? 'disbursed' : 'received');
+			$('.money-type-cap').text(moneyType === 'd' ? 'Disbursed' : 'Received');
+			$('.money-type-noun').text(moneyType === 'd' ? 'funder' : 'recipient');
+			$('.opp-money-type-noun').text(moneyType === 'd' ? 'recipient' : 'funder');
+			$('.opp-money-type-verb').text(moneyType === 'd' ? 'received' : 'donated');
 
 			if (moneyType) initDonorOrRecipientProfile();
 			else initBasicProfile();
@@ -87,13 +92,6 @@
 			$('.show-table-btn').click(() => {
 				hasher.setHash(`analysis/${iso}/${moneyType}/table`);
 			});
-
-			// fill out generic text
-			$('.money-type').text(moneyType === 'd' ? 'disbursed' : 'received');
-			$('.money-type-cap').text(moneyType === 'd' ? 'Disbursed' : 'Received');
-			$('.money-type-noun').text(moneyType === 'd' ? 'donor' : 'recipient');
-			$('.opp-money-type-noun').text(moneyType === 'd' ? 'recipient' : 'donor');
-			$('.opp-money-type-verb').text(moneyType === 'd' ? 'received' : 'donated');
 
 			// fill out title and description for circle pack; draw circle pack
 			if (moneyType === 'd') {

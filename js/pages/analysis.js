@@ -44,17 +44,7 @@
 		// populates the filters in the map options box
 		function populateFilters() {
 			// populate dropdowns
-			Util.populateSelect('.cc-select', App.capacities, {
-				valKey: 'id',
-				nameKey: 'name',
-				selected: true,
-			});
-			$('.cc-select').multiselect({
-				maxHeight: 260,
-				includeSelectAllOption: true,
-				enableClickableOptGroups: true,
-				numberDisplayed: 0,
-			});
+			App.populateCcDropdown('.cc-select');
 			$('.cc-select').on('change', updateNetworkMap);
 
 			// initialize radio button functionality

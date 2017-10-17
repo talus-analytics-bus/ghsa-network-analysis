@@ -138,7 +138,11 @@
 					let totalSpent = 0;
 					for (let i = 0, n = payments.length; i < n; i++) {
 						const p = payments[i];
+
+						// filter by core category
 						if (!App.passesCategoryFilter(p.core_capacities, ccs)) continue;
+
+						// add payment values by year
 						for (let i = startYear; i < endYear; i++) {
 							totalCommitted += p.committed_by_year[i] || 0;
 							totalSpent += p.spent_by_year[i] || 0;
@@ -357,17 +361,7 @@
 		// populates and initializes behavior for map options
 		function initFilters() {
 			// populate dropdowns
-			Util.populateSelect('.cc-select', App.capacities, {
-				valKey: 'id',
-				nameKey: 'name',
-				selected: true,
-			});
-			$('.cc-select').multiselect({
-				maxHeight: 260,
-				includeSelectAllOption: true,
-				numberDisplayed: 0,
-				dropRight: true,
-			});
+			App.populateCcDropdown('.cc-select', { dropRight: true });
 
 			// attach radio button behavior
 			$('.map-options-container .radio-option').click(function clickedRadio() {

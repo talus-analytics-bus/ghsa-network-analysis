@@ -2,7 +2,6 @@
 	App.drawProgressCircles = (selector, data, color) => {
 		const tau = 2 * Math.PI;
 		let percSpent = data.total_spent / data.total_committed;
-		console.log(data.total_spent, data.total_committed);
 		if (!data.total_committed) percSpent = 0;
 
 		// start building the chart

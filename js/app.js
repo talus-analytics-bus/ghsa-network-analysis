@@ -6,13 +6,13 @@ const App = {};
 		App.dataStartYear = 2014;
 		App.dataEndYear = 2017;
 
-		// good colors
+		// good colors (purple, orange)
 		/*App.fundColor = '#283375';
 		App.receiveColor = '#aa4e2a';
 		App.fundColorPalette = ['#283375', '#535c91', '#7e85ac', '#a9adc8', '#d4d6e3'];
 		App.receiveColorPalette = ['#aa4e2a', '#bb7155', '#cc957f', '#ddb8aa', '#eedcd4'];*/
 
-		// "questionable choice" colors
+		// bad colors (blue, red)
 		App.fundColor = '#08519c';
 		App.receiveColor = '#a50f15';
 		App.fundColorPalette = ['#08519c', '#3192bd', '#6baed6', '#bdd7e7', '#eff3ff'];
@@ -44,6 +44,7 @@ const App = {};
 			{ id: 'R.3', name: 'R.3 - Linking Public Health and Security Authorities' },
 			{ id: 'R.4', name: 'R.4 - Medical Countermeasures and Personnel Deployment' },
 			{ id: 'R.5', name: 'R.5 - Risk Communication' },
+			{ id: 'O.1', name: 'O.1 - Point of Entry (PoE)' },
 		];
 
 
@@ -92,15 +93,15 @@ const App = {};
 				App.currencyIso = 'USD';
 
 				// populate lookup variables from funding data
-				App.fundingData.forEach((d, j) => {
-					const donor = d.donor_code;
-					const recipient = d.recipient_country;
+				App.fundingData.forEach((p, j) => {
+					const donor = p.donor_code;
+					const recipient = p.recipient_country;
 
 					// store payments in lookup objects
 					if (!App.fundingLookup[donor]) App.fundingLookup[donor] = [];
-					App.fundingLookup[donor].push(d);
+					App.fundingLookup[donor].push(p);
 					if (!App.recipientLookup[recipient]) App.recipientLookup[recipient] = [];
-					App.recipientLookup[recipient].push(d);
+					App.recipientLookup[recipient].push(p);
 				});
 
 				// call callback and finish progress bar
