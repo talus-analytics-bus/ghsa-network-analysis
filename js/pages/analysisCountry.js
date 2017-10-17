@@ -167,7 +167,7 @@
 		function drawProgressCircles() {
 			$('.progress-circle-title .info-img').tooltipster({
 				content: 'The <b>percent of committed funds</b> that were disbursed is shown. ' +
-					'However, note that not all projects with disbursals have corresponding commitments, ' +
+					'Note that not all projects with disbursals have corresponding commitments, ' +
 					'so these figures do not take into account all known funding initiatives.',
 			});
 
