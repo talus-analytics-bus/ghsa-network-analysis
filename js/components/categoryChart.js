@@ -1,6 +1,6 @@
 (() => {
 	App.buildCategoryChart = (selector, data, param = {}) => {
-		const oppNoun = (param.moneyType === 'r') ? 'Donor' : 'Recipient';
+		const oppNoun = (param.moneyType === 'r') ? 'Funder' : 'Recipient';
 		const colors = (param.moneyType === 'r') ? App.receiveColorPalette : App.fundColorPalette;
 
 		// inject "running x" into data
