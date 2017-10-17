@@ -91,9 +91,9 @@
 			// fill out generic text
 			$('.money-type').text(moneyType === 'd' ? 'disbursed' : 'received');
 			$('.money-type-cap').text(moneyType === 'd' ? 'Disbursed' : 'Received');
-			$('.money-type-noun').text(moneyType === 'd' ? 'donor' : 'recipient');
-			$('.opp-money-type-noun').text(moneyType === 'd' ? 'recipient' : 'donor');
-			$('.opp-money-type-verb').text(moneyType === 'd' ? 'received' : 'donated');
+			$('.money-type-noun').text(moneyType === 'd' ? 'funder' : 'recipient');
+			$('.opp-money-type-noun').text(moneyType === 'd' ? 'recipient' : 'funder');
+			$('.opp-money-type-verb').text(moneyType === 'd' ? 'received' : 'funded');
 
 			// fill out title and description for circle pack; draw circle pack
 			if (moneyType === 'd') {
