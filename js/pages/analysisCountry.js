@@ -213,9 +213,9 @@
 
 		function drawCountryTable() {
 			if (moneyType === 'd') {
-				$('.circle-pack-title').text('Top Countries Donated To');
+				$('.circle-pack-title').text('Top Recipients of Funds');
 			} else {
-				$('.circle-pack-title').text('Top Countries Received From');
+				$('.circle-pack-title').text('Top Funders Received From');
 			}
 
 			const blues = ['#08519c', '#3182bd', '#6baed6', '#bdd7e7', '#eff3ff'];
