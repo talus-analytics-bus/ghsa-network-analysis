@@ -113,7 +113,7 @@
 				const totalFunded = App.getTotalFunded(iso);
 				if (totalFunded) {
 					$('.switch-type-button')
-						.text('Switch to Donor Profile')
+						.text('Switch to Funder Profile')
 						.on('click', () => hasher.setHash(`analysis/${iso}/d`));
 				} else {
 					$('.switch-type-button').hide();
@@ -211,9 +211,9 @@
 
 		function drawCountryTable() {
 			if (moneyType === 'd') {
-				$('.circle-pack-title').text('Top Countries Donated To');
+				$('.circle-pack-title').text('Top Recipients of Funds');
 			} else {
-				$('.circle-pack-title').text('Top Countries Received From');
+				$('.circle-pack-title').text('Top Funders Received From');
 			}
 
 			const blues = ['#08519c', '#3182bd', '#6baed6', '#bdd7e7', '#eff3ff'];
@@ -245,7 +245,7 @@
 				Util.sortByKey(fundedData, 'total_spent', true);
 
 				// draw table
-				let firstColLabel = (moneyType === 'd') ? 'Recipient Country' : 'Donor Country';
+				let firstColLabel = (moneyType === 'd') ? 'Recipient' : 'Funder';
 				$('.country-table thead tr td:first-child').text(firstColLabel);
 
 				const rows = d3.select('.country-table tbody').selectAll('tr')
@@ -274,7 +274,7 @@
 				rows.append('td').text(d => App.formatMoney(d.total_spent));
 			} else {
 				d3.select('.circle-pack-description')
-					.html('<i>There are no data for countries funded by this country.</i>');
+					.html('<i>There are no data for recipients funded by this funder.</i>');
 			}
 		}
 

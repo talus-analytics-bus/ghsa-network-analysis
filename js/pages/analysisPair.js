@@ -73,7 +73,7 @@
 			let headerData = [];
 			if (currentInfoTab === 'all') {
 				headerData = [
-					{ name: 'Donor', value: 'donor_name' },
+					{ name: 'Funder', value: 'donor_name' },
 					{ name: 'Recipient', value: 'recipient_name' },
 					{ name: 'Name', value: 'project_name' },
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
