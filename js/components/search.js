@@ -57,19 +57,24 @@
 		// define domain
 		const countries = App.countries.slice(0);
 		if (param.includeNonCountries) {
-
+			App.codeToNameMap.entries().forEach((d) => {
+				if (!App.countries.find(c => c.ISO2 === d.key)) {
+					countries.push({
+						ISO2: d.key,
+						ISO3: d.key,
+						NAME: d.value,
+					});
+				}
+			});
 		}
 
 		// initialize search engine
 		const fuse = new Fuse(countries, {
 			shouldSort: true,
-			tokenize: true,
+			threshold: 0.5,
+			distance: 100,
 			includeScore: true,
-			keys: [
-				{ name: 'ISO2', weight: 0.3 },
-				{ name: 'ISO3', weight: 0.3 },
-				{ name: 'NAME', weight: 0.5 },
-			],
+			keys: ['ISO2', 'ISO3', 'NAME'],
 		});
 
 		// function for displaying country search results
@@ -90,7 +95,7 @@
 			// weight score by population slightly
 			results.forEach((r) => {
 				const popLog = r.item.POP2005 ? Math.log10(r.item.POP2005) : 0;
-				r.score -= 0.04 * popLog;
+				r.score -= 0.02 * popLog;
 			});
 			Util.sortByKey(results, 'score');
 
@@ -121,12 +126,16 @@
 					$(selector).val('');
 
 					// call searched function
-					searchedFn(d);
+					searchedFn(d.item);
 				});
 				boxes.select('.live-search-results-title')
-					.text(d => `${d.item.NAME} (${d.item.ISO2})`);
+					.text((d) => {
+						if (d.item.POP2005) return `${d.item.NAME} (${d.item.ISO2})`;
+						return d.item.NAME;
+					});
 				boxes.select('.live-search-results-subtitle')
-					.text(d => `Population: ${Util.comma(d.item.POP2005)}`);
+					.style('display', d => d.item.POP2005 ? 'block' : 'none')
+					.html(d => `Population: ${Util.comma(d.item.POP2005)}`);
 			}
 		}
 

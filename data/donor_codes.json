@@ -35,6 +35,11 @@
     "donor_code": "US"
   },
   {
+    "donor_name": "CDC Group plc",
+    "donor_sector": "Other Public Sector",
+    "donor_code": "cdc"
+  },
+  {
     "donor_name": "United States",
     "donor_sector": "Government",
     "donor_code": "US"

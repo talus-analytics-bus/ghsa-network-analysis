@@ -379,6 +379,7 @@
 				noty({
 					text: `<b>There are no funding data for ${countryName} in this time range.`,
 				});
+				unhighlightNetwork();
 				return;
 			}
 
