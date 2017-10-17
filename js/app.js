@@ -6,11 +6,17 @@ const App = {};
 		App.dataStartYear = 2014;
 		App.dataEndYear = 2017;
 
-		// colors
-		App.fundColor = '#283375';
+		// good colors
+		/*App.fundColor = '#283375';
 		App.receiveColor = '#aa4e2a';
 		App.fundColorPalette = ['#283375', '#535c91', '#7e85ac', '#a9adc8', '#d4d6e3'];
-		App.receiveColorPalette = ['#aa4e2a', '#bb7155', '#cc957f', '#ddb8aa', '#eedcd4'];
+		App.receiveColorPalette = ['#aa4e2a', '#bb7155', '#cc957f', '#ddb8aa', '#eedcd4'];*/
+
+		// "questionable choice" colors
+		App.fundColor = '#08519c';
+		App.receiveColor = '#a50f15';
+		App.fundColorPalette = ['#08519c', '#3192bd', '#6baed6', '#bdd7e7', '#eff3ff'];
+		App.receiveColorPalette = ['#a50f15', '#de2d26', '#fb6a4a', '#fcae91', '#fee5d9'];
 
 		// define global variables used throughout
 		App.geoData = null;  // geographic data of the world

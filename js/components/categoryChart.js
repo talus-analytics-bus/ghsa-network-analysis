@@ -1,6 +1,7 @@
 (() => {
 	App.buildCategoryChart = (selector, data, param = {}) => {
 		const oppNoun = (param.moneyType === 'r') ? 'Donor' : 'Recipient';
+		const colors = (param.moneyType === 'r') ? App.receiveColorPalette : App.fundColorPalette;
 
 		// inject "running x" into data
 		data.forEach((d) => {
@@ -33,7 +34,7 @@
 			.domain(data.map(d => d.id))
 			.range([0, height]);
 		const colorScale = d3.scaleOrdinal()
-			.range(d3.schemeCategory20c.slice(0, 4));
+			.range(colors);
 
 		const xAxis = d3.axisTop()
 			.ticks(5)
