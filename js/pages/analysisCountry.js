@@ -247,7 +247,7 @@
 				Util.sortByKey(fundedData, 'total_spent', true);
 
 				// draw table
-				let firstColLabel = (moneyType === 'd') ? 'Recipient Country' : 'Donor Country';
+				let firstColLabel = (moneyType === 'd') ? 'Recipient' : 'Funder';
 				$('.country-table thead tr td:first-child').text(firstColLabel);
 
 				const rows = d3.select('.country-table tbody').selectAll('tr')
