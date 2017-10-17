@@ -217,7 +217,7 @@
 
 		function drawCountryTable() {
 			if (moneyType === 'd') {
-				$('.circle-pack-title').text('Top Recipients of Funds');
+				$('.circle-pack-title').text('Top Recipients of Funds (from Funder)');
 			} else {
 				$('.circle-pack-title').text('Top Funders Received From');
 			}
