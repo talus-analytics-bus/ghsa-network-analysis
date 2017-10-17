@@ -115,7 +115,7 @@
 				const totalFunded = App.getTotalFunded(iso);
 				if (totalFunded) {
 					$('.switch-type-button')
-						.text('Switch to Donor Profile')
+						.text('Switch to Funder Profile')
 						.on('click', () => hasher.setHash(`analysis/${iso}/d`));
 				} else {
 					$('.switch-type-button').hide();
