@@ -165,6 +165,12 @@
 		}
 
 		function drawProgressCircles() {
+			$('.progress-circle-title .info-img').tooltipster({
+				content: 'The <b>percent of committed funds</b> that were disbursed is shown. ' +
+					'However, note that not all projects with disbursals have corresponding commitments, ' +
+					'so these figures do not take into account all known funding initiatives.',
+			});
+
 			const ccs = ['P', 'D', 'R'];
 			if (lookup[iso]) {
 				const pData = [];
@@ -301,30 +307,32 @@
 					});
 				});
 				App.capacities.forEach((cap) => {
-					if (fundsByCat[cap.id]) {
-						const countries = [];
-						let totalCommitted = 0;
-						let totalSpent = 0;
-						for (let iso in fundsByCat[cap.id]) {
-							countries.push(fundsByCat[cap.id][iso]);
-							totalCommitted += fundsByCat[cap.id][iso].total_committed;
-							totalSpent += fundsByCat[cap.id][iso].total_spent;
+					if (cap.id !== 'General IHR Implementation') {
+						if (fundsByCat[cap.id]) {
+							const countries = [];
+							let totalCommitted = 0;
+							let totalSpent = 0;
+							for (let iso in fundsByCat[cap.id]) {
+								countries.push(fundsByCat[cap.id][iso]);
+								totalCommitted += fundsByCat[cap.id][iso].total_committed;
+								totalSpent += fundsByCat[cap.id][iso].total_spent;
+							}
+							catData.push({
+								id: cap.id,
+								name: cap.name,
+								children: countries,
+								total_committed: totalCommitted,
+								total_spent: totalSpent,
+							});
+						} else {
+							catData.push({
+								id: cap.id,
+								name: cap.name,
+								children: [],
+								total_committed: 0,
+								total_spent: 0,
+							});
 						}
-						catData.push({
-							id: cap.id,
-							name: cap.name,
-							children: countries,
-							total_committed: totalCommitted,
-							total_spent: totalSpent,
-						});
-					} else {
-						catData.push({
-							id: cap.id,
-							name: cap.name,
-							children: [],
-							total_committed: 0,
-							total_spent: 0,
-						});
 					}
 				});
 				Util.sortByKey(catData, 'total_spent', true);

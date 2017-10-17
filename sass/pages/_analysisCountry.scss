@@ -82,6 +82,16 @@
 	.progress-circle-container {
 		margin-left: 430px;
 	}
+	.progress-circle-title {
+		white-space: nowrap;
+		
+		.info-img {
+			position: relative;
+			width: 16px;
+			height: 16px;
+			margin-left: 5px;
+		}
+	}
 	.progress-circle-description {
 		margin-top: 15px;
 	}

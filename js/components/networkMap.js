@@ -264,7 +264,7 @@
 				.merge(links)
 					.attr('d', ribbon)
 					.each(function updateTooltip(d) {
-						const contentStr = `<b>Donor:</b> ${d.donor}` +
+						const contentStr = `<b>Funder:</b> ${d.donor}` +
 							`<br><b>Recipient:</b> ${d.recipient}` +
 							`<br><b>Disbursed Funds:</b> ${App.formatMoney(d.value)}`;
 						$(this).tooltipster('content', contentStr);

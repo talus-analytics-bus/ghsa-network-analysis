@@ -108,7 +108,7 @@
 						name: 'Core Capacity',
 						value: (d) => {
 							const cap = App.capacities.find(cc => cc.id === d.cc);
-							return cap ? cap.name : '';
+							return cap ? cap.name : d.cc;
 						},
 					},
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
@@ -157,7 +157,6 @@
 				allPayments.forEach((p) => {
 					let hasACe = false;
 					coreElements.forEach((ce) => {
-						console.log(p.core_capacities);
 						if (p.core_capacities.some(cc => cc.slice(0, 2) === `${ce}.`)) {
 							hasACe = true;
 							totalByCe[ce].total_committed += p.total_committed;
@@ -178,17 +177,23 @@
 				}
 			} else if (currentInfoTab === 'cc') {
 				const totalByCc = {};
+				App.capacities.concat({ id: 'None' }).forEach((cc) => {
+					totalByCc[cc.id] = {
+						total_committed: 0,
+						total_spent: 0,
+					};
+				});
 				allPayments.forEach((p) => {
 					p.core_capacities.forEach((cc) => {
-						if (!totalByCc[cc]) {
-							totalByCc[cc] = {
-								total_committed: 0,
-								total_spent: 0,
-							};
+						if (totalByCc[cc]) {
+							totalByCc[cc].total_committed += p.total_committed;
+							totalByCc[cc].total_spent += p.total_spent;
 						}
-						totalByCc[cc].total_committed += p.total_committed;
-						totalByCc[cc].total_spent += p.total_spent;
 					});
+					if (!p.core_capacities.length) {
+						totalByCc.None.total_committed += p.total_committed;
+						totalByCc.None.total_spent += p.total_spent;
+					}
 				});
 				for (let cc in totalByCc) {
 					paymentTableData.push({

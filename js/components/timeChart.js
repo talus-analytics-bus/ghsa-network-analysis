@@ -113,7 +113,11 @@
 			.attr('x', rectWidth + 8)
 			.attr('y', 27)
 			.text((d, i) => {
-				return (param.moneyType === 'd') ? 'Funds' : 'Funds to Receive';
+				if (param.moneyType === 'd') {
+					return 'Funds';
+				} else {
+					return (i === 0) ? 'Funds to Receive' : 'Funds Received';
+				}
 			});
 
 		return chart;

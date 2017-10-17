@@ -45,6 +45,7 @@ const App = {};
 			{ id: 'R.4', name: 'R.4 - Medical Countermeasures and Personnel Deployment' },
 			{ id: 'R.5', name: 'R.5 - Risk Communication' },
 			{ id: 'O.1', name: 'O.1 - Point of Entry (PoE)' },
+			{ id: 'General IHR Implementation', name: 'General IHR Implementation' },
 		];
 
 
