@@ -276,7 +276,7 @@
 				rows.append('td').text(d => App.formatMoney(d.total_spent));
 			} else {
 				d3.select('.circle-pack-description')
-					.html('<i>There are no data for countries funded by this country.</i>');
+					.html('<i>There are no data for recipients funded by this funder.</i>');
 			}
 		}
 
