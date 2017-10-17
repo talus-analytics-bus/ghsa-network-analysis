@@ -182,6 +182,9 @@
 			const ind = $('.money-type-filter input:checked').attr('ind');
 			const indName = (ind === 'committed') ? 'committed_by_year' : 'spent_by_year';
 			return (p) => {
+				// for network map, no "Not reported" recipients
+				if (p.recipient_country === 'Not reported') return 0;
+
 				// run through filter first
 				if (!App.passesCategoryFilter(p.core_capacities, ccs)) return 0;
 
@@ -199,10 +202,10 @@
 			const totalFunc = getTotalFunc();
 
 			// separate the data by region, subregion, country
-			const fundedData = [];
-			const receivedData = [];
-			const chordData = [];
+			const networkData = [];
 			const fundsByRegion = {};
+
+			// add each country with non-zero donated or received funds
 			for (let i = 0; i < App.countries.length; i++) {
 				const c = App.countries[i];
 				const iso = c.ISO2;
@@ -231,19 +234,36 @@
 						fundedPayments.forEach((p) => {
 							const value = totalFunc(p);
 							if (value) {
-								// check that the recipient is a valid country
 								const rIso = p.recipient_country;
-								const rCountry = App.countries.find(c => c.ISO2 === rIso);
-								if (rCountry) {
-									const rName = rCountry.NAME;
-									if (!fundsByRegion[region][sub][iso].fundsByC[rName]) {
-										fundsByRegion[region][sub][iso].fundsByC[rName] = 0;
-									}
-									fundsByRegion[region][sub][iso].fundsByC[rName] += value;
+								if (!fundsByRegion[region][sub][iso].fundsByC[rIso]) {
+									fundsByRegion[region][sub][iso].fundsByC[rIso] = 0;
 								}
+								fundsByRegion[region][sub][iso].fundsByC[rIso] += value;
 							}
 						});
 					}
+				}
+			}
+
+			// add non-countries
+			fundsByRegion.Other = { Other: {} };
+			for (let iso in App.fundingLookup) {
+				if (!App.countries.find(c => c.ISO2 === iso)) {
+					fundsByRegion.Other.Other[iso] = {
+						totalFunded: d3.sum(App.fundingLookup[iso], d => totalFunc(d)),
+						totalReceived: 0,
+						fundsByC: {},
+					};
+					App.fundingLookup[iso].forEach((p) => {
+						const value = totalFunc(p);
+						if (value) {
+							const rIso = p.recipient_country;
+							if (!fundsByRegion.Other.Other[iso].fundsByC[rIso]) {
+								fundsByRegion.Other.Other[iso].fundsByC[rIso] = 0;
+							}
+							fundsByRegion.Other.Other[iso].fundsByC[rIso] += value;
+						}
+					});
 				}
 			}
 
@@ -265,20 +285,19 @@
 						totalFlow: 0,
 					};
 					for (let iso in fundsByRegion[r][sub]) {
-						const country = App.countries.find(c => c.ISO2 === iso);
 						const funds = [];
-						for (let rName in fundsByRegion[r][sub][iso].fundsByC) {
+						for (let rIso in fundsByRegion[r][sub][iso].fundsByC) {
 							funds.push({
-								donor: country.NAME,
-								recipient: rName,
-								value: fundsByRegion[r][sub][iso].fundsByC[rName],
+								donor: iso,
+								recipient: rIso,
+								value: fundsByRegion[r][sub][iso].fundsByC[rIso],
 							});
 						}
 						const totalFunded = fundsByRegion[r][sub][iso].totalFunded;
 						const totalReceived = fundsByRegion[r][sub][iso].totalReceived;
 						subregion.children.push({
-							name: country.NAME,
-							iso: iso,
+							name: App.codeToNameMap.get(iso),
+							iso,
 							totalFunded,
 							totalReceived,
 							totalFlow: totalFunded + totalReceived,
@@ -293,9 +312,9 @@
 					region.totalReceived += subregion.totalReceived;
 					region.totalFlow += subregion.totalFlow;
 				}
-				chordData.push(region);
+				networkData.push(region);
 			}
-			return chordData;
+			return networkData;
 		}
 
 		function buildNetworkMap() {

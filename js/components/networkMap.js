@@ -8,7 +8,7 @@
 		let subregions = [];
 		let countries = [];
 		let funds = [];
-		const countryMapByName = d3.map();
+		const countryMapByIso = d3.map();
 
 		// establish chart constants
 		const margin = { top: 60, right: 60, bottom: 120, left: 60 };
@@ -277,7 +277,7 @@
 			subregions = [];
 			countries = [];
 			funds = [];
-			countryMapByName.empty();
+			countryMapByIso.empty();
 
 			// attach start and end angles to each of the countries/subregions/regions
 			const totalFlow = d3.sum(data, d => d.totalFlow);
@@ -296,7 +296,7 @@
 					subregion.theta0 = runningTheta;
 					subregion.children.forEach((country) => {
 						// set map and add country to collection
-						countryMapByName.set(country.name, country);
+						countryMapByIso.set(country.iso, country);
 						countries.push(country);
 						funds = funds.concat(country.funds);
 
@@ -318,7 +318,6 @@
 				region.children.forEach((subregion) => {
 					subregion.children.forEach((fc) => {
 						fc.funds.forEach((f) => {
-							const rc = countryMapByName.get(f.recipient);
 							let fundTheta = (fc.theta1 - fc.theta0) * (f.value / fc.totalFlow);
 							if (fundTheta < 0) fundTheta = 0;  // TODO need to fix this!
 							f.source = {
@@ -327,6 +326,7 @@
 							};
 							fc.runningTheta += fundTheta;
 
+							const rc = countryMapByIso.get(f.recipient);
 							let recTheta = (rc.theta1 - rc.theta0) * (f.value / rc.totalFlow);
 							if (recTheta < 0) recTheta = 0;  // TODO need to fix this!
 							f.target = {
