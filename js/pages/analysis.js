@@ -87,7 +87,9 @@
 		// initializes search functionality
 		function initNetworkSearch() {
 			App.initCountrySearchBar('.network-country-search', (result) => {
-				displayCountryInNetwork(result.NAME);
+				displayCountryInNetwork(result.ISO2);
+			}, {
+				includeNonCountries: true,
 			});
 		}
 
@@ -96,6 +98,7 @@
 				hasher.setHash(`analysis/${result.ISO2}`);
 			}, {
 				topLayout: true,
+				includeNonCountries: true,
 			});
 		}
 
@@ -358,15 +361,17 @@
 			d3.selectAll('.link').classed('search-hidden', false);
 		}
 
-		function displayCountryInNetwork(countryName) {
+		function displayCountryInNetwork(countryIso) {
 			unhighlightNetwork();
+
+			const countryName = App.codeToNameMap.get(countryIso);
 
 			// highlight arc and links
 			const arc = d3.selectAll('.country-arc')
-				.filter(c => c.name === countryName)
+				.filter(c => c.iso === countryIso)
 				.classed('active', true);
 			d3.selectAll('.link')
-				.filter(l => l.donor !== countryName && l.recipient !== countryName)
+				.filter(l => l.donor !== countryIso && l.recipient !== countryIso)
 				.classed('search-hidden', true);
 
 			// if not found, display warning message
@@ -379,7 +384,7 @@
 
 			// populate country info
 			const data = arc.datum();
-			activeCountry = countryName;
+			activeCountry = countryIso;
 			$('.nci-title').text(countryName);
 			if (data.totalFunded) {
 				$('.nci-donor-value').text(App.formatMoney(data.totalFunded));

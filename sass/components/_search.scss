@@ -17,7 +17,6 @@
   display: none;
   padding: 10px;
   text-align: center;
-  border-top: $border;
   font-style: italic;
 }
 .live-search-results-box {
@@ -32,11 +31,17 @@
   }
 }
 
-.live-search-results-container.top-layout .live-search-results-box:first-child {
-  border-top: $border;
+.live-search-results-container.top-layout {
+  .live-search-results-box:first-child,
+  .live-search-no-results-text {
+    border-top: $border;
+  }
 }
-.live-search-results-container.bottom-layout .live-search-results-box:last-child {
-  border-bottom: $border;
+.live-search-results-container.bottom-layout {
+  .live-search-results-box:last-child,
+  .live-search-no-results-text {
+    border-bottom: $border;
+  }
 }
 
 .live-search-results-title {

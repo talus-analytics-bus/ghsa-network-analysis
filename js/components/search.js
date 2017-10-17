@@ -54,13 +54,23 @@
 				}
 			});
 
-		// initialize search engine
-		const fuse = new Fuse(App.countries, {
-			threshold: 0.3,
-			distance: 1e5,
-			keys: ['ISO2', 'ISO3', 'NAME'],
-		});
+		// define domain
+		const countries = App.countries.slice(0);
+		if (param.includeNonCountries) {
 
+		}
+
+		// initialize search engine
+		const fuse = new Fuse(countries, {
+			shouldSort: true,
+			tokenize: true,
+			includeScore: true,
+			keys: [
+				{ name: 'ISO2', weight: 0.3 },
+				{ name: 'ISO3', weight: 0.3 },
+				{ name: 'NAME', weight: 0.5 },
+			],
+		});
 
 		// function for displaying country search results
 		function searchForCountry(searchVal, searchedFn) {
@@ -76,6 +86,13 @@
 
 			// search for results
 			results = fuse.search(searchVal);
+
+			// weight score by population slightly
+			results.forEach((r) => {
+				const popLog = r.item.POP2005 ? Math.log10(r.item.POP2005) : 0;
+				r.score -= 0.04 * popLog;
+			});
+			Util.sortByKey(results, 'score');
 
 			// show results in boxes under search input
 			$resultsBox.show();
@@ -107,9 +124,9 @@
 					searchedFn(d);
 				});
 				boxes.select('.live-search-results-title')
-					.text(d => `${d.NAME} (${d.ISO2})`);
+					.text(d => `${d.item.NAME} (${d.item.ISO2})`);
 				boxes.select('.live-search-results-subtitle')
-					.text(d => `Population: ${Util.comma(d.POP2005)}`);
+					.text(d => `Population: ${Util.comma(d.item.POP2005)}`);
 			}
 		}
 

@@ -201,7 +201,7 @@
 					.style('stroke', '#fff')
 					.attr('d', countryArc);
 			if (param.countryClickFn) {
-				cArcs.on('click', d => param.countryClickFn(d.name));
+				cArcs.on('click', d => param.countryClickFn(d.iso));
 			}
 
 			// create region arc labels
@@ -264,8 +264,10 @@
 				.merge(links)
 					.attr('d', ribbon)
 					.each(function updateTooltip(d) {
-						const contentStr = `<b>Funder:</b> ${d.donor}` +
-							`<br><b>Recipient:</b> ${d.recipient}` +
+						const donorName = App.codeToNameMap.get(d.donor);
+						const recName = App.codeToNameMap.get(d.recipient);
+						const contentStr = `<b>Funder:</b> ${donorName}` +
+							`<br><b>Recipient:</b> ${recName}` +
 							`<br><b>Disbursed Funds:</b> ${App.formatMoney(d.value)}`;
 						$(this).tooltipster('content', contentStr);
 					})
