@@ -194,6 +194,10 @@
 						.attr('class', 'tooltip-title')
 						.text(d.properties.NAME);
 					container.append('div')
+						.attr('class', 'tooltip-profile-type')
+						.text(moneyFlow === 'funded' ? 
+							'Funder Information' : 'Recipient Information');
+					container.append('div')
 						.attr('class', 'tooltip-main-value')
 						.text(App.formatMoney(d.value));
 					container.append('div')
@@ -281,6 +285,8 @@
 
 			// populate info title
 			$('.info-title').text(country.NAME);
+			$('.info-profile-type').text(moneyFlow === 'funded' ?
+				'Funder Information' : 'Recipient Information');
 
 			// define "go to analysis" button behavior
 			$('.info-analysis-button')

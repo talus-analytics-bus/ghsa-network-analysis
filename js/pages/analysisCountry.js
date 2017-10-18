@@ -21,6 +21,7 @@
 			$('.money-type').text(moneyType === 'd' ? 'disbursed' : 'received');
 			$('.money-type-cap').text(moneyType === 'd' ? 'Disbursed' : 'Received');
 			$('.money-type-noun').text(moneyType === 'd' ? 'funder' : 'recipient');
+			$('.money-type-noun-cap').text(moneyType === 'd' ? 'Funder' : 'Recipient');
 			$('.opp-money-type-noun').text(moneyType === 'd' ? 'recipient' : 'funder');
 			$('.opp-money-type-verb').text(moneyType === 'd' ? 'received' : 'donated');
 

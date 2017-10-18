@@ -5,6 +5,17 @@
 		margin-left: 225px;
 		margin-right: 225px;
 	}
+	.profile-type-container {
+		position: absolute;
+		top: 71px;
+		left: 0;
+		width: 100%;
+		font-weight: 600;
+		text-align: center;
+	}
+	.profile-type-text {
+		display: inline-block;
+	}
 }
 
 
@@ -53,7 +64,7 @@
 }
 .country-flow-summary,
 .progress-circle-section {
-	padding: 20px 30px;
+	padding: 35px 30px 20px;
 	border-bottom: $light-border;
 	margin-bottom: 20px;
 	min-height: 160px;
@@ -84,7 +95,7 @@
 	}
 	.progress-circle-title {
 		white-space: nowrap;
-		
+
 		.info-img {
 			position: relative;
 			width: 16px;
@@ -114,6 +125,8 @@
 	}
 }
 .country-chart-container {
+	padding: 0 30px;
+
 	.circle-pack-content {
 		margin-top: 30px;
 		text-align: center;
@@ -127,6 +140,9 @@
 	}
 	.country-table-container {
 		margin-top: 20px;
-		padding: 0 30px;
+		padding-right: 25px;
+	}
+	.name-container {
+		width: 200px;
 	}
 }

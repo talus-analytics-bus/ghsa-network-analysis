@@ -5,7 +5,6 @@
 	.link {
 		fill: steelblue;
 		fill-opacity: 0.3;
-		opacity: 1;
 
 		&:hover,
 		&.country-hover,
@@ -13,7 +12,7 @@
 			fill-opacity: 0.8;
 		}
 		&.search-hidden {
-			opacity: 0;
+			display: none;
 		}
 	}
 	.country-arc {
