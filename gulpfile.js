@@ -40,8 +40,11 @@ gulp.task('build-css', function() {
 
 gulp.task('build-lib', function() {
 	return gulp.src([
-		'lib/jquery-2.2.0.min.js',
+		'lib/jquery-3.2.1.min.js',
+		'lib/d3.min.js',
 		'lib/signals.min.js',
+		'lib/popper.js',
+		'lib/tooltipster.bundle.min.js',
 		'lib/*.js',
 	])
 		.pipe(concat('lib.js'))
