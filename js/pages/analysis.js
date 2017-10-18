@@ -249,10 +249,10 @@
 			}
 
 			// add non-countries
-			fundsByRegion['Other Funders'] = { Other: {} };
+			fundsByRegion['Other Funders'] = { 'Other Funders': {} };
 			for (const iso in App.fundingLookup) {
 				if (!App.countries.find(c => c.ISO2 === iso)) {
-					fundsByRegion['Other Funders'].Other[iso] = {
+					fundsByRegion['Other Funders']['Other Funders'][iso] = {
 						totalFunded: d3.sum(App.fundingLookup[iso], d => totalFunc(d)),
 						totalReceived: 0,
 						fundsByC: {},
@@ -261,10 +261,10 @@
 						const value = totalFunc(p);
 						if (value) {
 							const rIso = p.recipient_country;
-							if (!fundsByRegion['Other Funders'].Other[iso].fundsByC[rIso]) {
-								fundsByRegion['Other Funders'].Other[iso].fundsByC[rIso] = 0;
+							if (!fundsByRegion['Other Funders']['Other Funders'][iso].fundsByC[rIso]) {
+								fundsByRegion['Other Funders']['Other Funders'][iso].fundsByC[rIso] = 0;
 							}
-							fundsByRegion['Other Funders'].Other[iso].fundsByC[rIso] += value;
+							fundsByRegion['Other Funders']['Other Funders'][iso].fundsByC[rIso] += value;
 						}
 					});
 				}

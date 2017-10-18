@@ -58,16 +58,18 @@
 		top: -44px;
 		right: 30px;
 	}
-	.show-table-btn {
+	.show-table-btn,
+	.submit-data-btn {
 		margin-top: 10px;
 	}
+	.submit-data-btn { display: none; }
 }
 .country-flow-summary,
 .progress-circle-section {
 	padding: 35px 30px 20px;
 	border-bottom: $light-border;
 	margin-bottom: 20px;
-	min-height: 160px;
+	min-height: 180px;
 
 	.progress-circle-title {
 		font-weight: 600;

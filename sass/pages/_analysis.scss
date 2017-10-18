@@ -2,6 +2,8 @@
 	padding: 0;
 	border-left: $border;
 	border-right: $border;
+	border-bottom: $border;
+	min-height: calc(100% - 51px);
 	@include gradient(#fff, #f0f0f0);
 }
 .analysis-filter-bar {
