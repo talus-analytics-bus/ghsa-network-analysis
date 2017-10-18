@@ -8,7 +8,7 @@
 
 		// define jquery elements
 		const $container = $(selector);
-		const $input = $container.find('input')
+		const $input = $container.find('input');
 		const $resultsBox = $container.find('.live-search-results-container');
 		if (param.topLayout) $resultsBox.addClass('top-layout');
 		else $resultsBox.addClass('bottom-layout');
@@ -16,7 +16,7 @@
 		// set search bar behavior
 		$input
 			.on('focus', function focus() {
-				searchForCountry($(this).val(), searchedFn);
+				searchForCountry($(this).val());
 			})
 			.on('blur', hideSearch)
 			.on('keyup', function keyUp(ev) {
@@ -29,7 +29,7 @@
 						hideSearch();
 						searchedFn(results[activeResultNum]);
 					} else {
-						searchForCountry(searchVal, searchedFn);
+						searchForCountry(searchVal);
 					}
 				} else if (ev.which === 27) {
 					// escape key: blur
@@ -49,7 +49,7 @@
 				} else {
 					// perform search when user stops typing for 250ms
 					liveSearchTimeout = setTimeout(() => {
-						searchForCountry(searchVal, searchedFn);
+						searchForCountry(searchVal);
 					}, 250);
 				}
 			});
@@ -78,7 +78,7 @@
 		});
 
 		// function for displaying country search results
-		function searchForCountry(searchVal, searchedFn) {
+		function searchForCountry(searchVal) {
 			// hide if nothing in search bar
 			if (searchVal.trim() === '') {
 				$resultsBox.hide();
@@ -134,7 +134,7 @@
 						return d.item.NAME;
 					});
 				boxes.select('.live-search-results-subtitle')
-					.style('display', d => d.item.POP2005 ? 'block' : 'none')
+					.style('display', d => (d.item.POP2005 ? 'block' : 'none'))
 					.html(d => `Population: ${Util.comma(d.item.POP2005)}`);
 			}
 		}
@@ -148,11 +148,11 @@
 					.find(`.live-search-results-box:nth-child(${childNum})`)
 					.addClass('active');
 			}
-		};
+		}
 
 		function hideSearch() {
 			clearTimeout(liveSearchTimeout);
 			$resultsBox.hide();
 		}
-	}
+	};
 })();

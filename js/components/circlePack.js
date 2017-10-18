@@ -11,7 +11,7 @@
 		const chartContainer = d3.select(selector).append('svg')
 			.classed('circle-pack-chart', true)
 			.attr('width', size + margin.left + margin.right)
-			.attr('height', size + margin.top + margin.bottom)
+			.attr('height', size + margin.top + margin.bottom);
 		const chart = chartContainer.append('g')
 			.attr('transform', `translate(${margin.left}, ${margin.top})`);
 
@@ -22,7 +22,7 @@
 		filter.append('feGaussianBlur')
 			.attr('stdDeviation', 3.5)
 			.attr('result', 'coloredBlur');
-		var feMerge = filter.append('feMerge');
+		const feMerge = filter.append('feMerge');
 		feMerge.append('feMergeNode')
 			.attr('in', 'coloredBlur');
 		feMerge.append('feMergeNode')
@@ -55,7 +55,6 @@
 		const root = d3.hierarchy(nodeData)
 			.sum(d => d.total_spent)
 			.sort((a, b) => b.total_spent - a.total_spent);
-		let focus = root;
 		const nodePackData = pack(root).descendants();
 
 		// define color scale
@@ -70,7 +69,8 @@
 
 		const nodesG = nodes.append('g')
 			.attr('class', (d) => {
-				return d.parent ? d.children ? 'node' : 'node node--leaf' : 'node node--root';
+				if (!d.parent) return 'node node--root';
+				return d.children ? 'node' : 'node node--leaf';
 			});
 
 		const circles = nodesG.append('circle')
@@ -82,7 +82,7 @@
 					return colorScale(percDisbursed);
 				})
 				.style('filter', 'url(#glow)')
-				.each(function(d) {
+				.each(function addTooltip(d) {
 					const contentContainer = d3.select(document.createElement('div'));
 					const content = contentContainer.append('div')
 						.attr('class', 'tooltip-content');

@@ -44,6 +44,7 @@
 
 					// display info box
 					displayCountryInfo();
+					return true;
 				})
 				.each(function addTooltip(d) {
 					$(this).tooltipster({
@@ -121,7 +122,6 @@
 		// updates the country to value data map based on user settings
 		function updateDataMaps() {
 			// get lookup (has all data)
-			const moneyFlow = getMoneyFlowType();
 			const dataLookup = getDataLookup();
 
 			// get filter values
@@ -143,9 +143,9 @@
 						if (!App.passesCategoryFilter(p.core_capacities, ccs)) continue;
 
 						// add payment values by year
-						for (let i = startYear; i < endYear; i++) {
-							totalCommitted += p.committed_by_year[i] || 0;
-							totalSpent += p.spent_by_year[i] || 0;
+						for (let k = startYear; k < endYear; k++) {
+							totalCommitted += p.committed_by_year[k] || 0;
+							totalSpent += p.spent_by_year[k] || 0;
 						}
 					}
 
@@ -195,7 +195,7 @@
 						.text(d.properties.NAME);
 					container.append('div')
 						.attr('class', 'tooltip-profile-type')
-						.text(moneyFlow === 'funded' ? 
+						.text(moneyFlow === 'funded' ?
 							'Funder Information' : 'Recipient Information');
 					container.append('div')
 						.attr('class', 'tooltip-main-value')
@@ -281,7 +281,6 @@
 		function displayCountryInfo() {
 			const country = activeCountry.datum().properties;
 			const moneyFlow = getMoneyFlowType();
-			const moneyType = getMoneyType();
 
 			// populate info title
 			$('.info-title').text(country.NAME);
@@ -352,7 +351,7 @@
 				max: App.dataEndYear + 1,
 				value: [startYear, endYear],
 				tooltip: 'hide',
-			})
+			});
 			slider.on('change', (event) => {
 				const years = event.target.value.split(',');
 				if (+years[0] !== startYear || +years[1] !== endYear) {

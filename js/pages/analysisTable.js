@@ -3,8 +3,6 @@
 	let infoDataTable;  // the info data table (DataTable object)
 	let infoTableHasBeenInit = false;  // whether the info data table has been initialized
 	let currentInfoTab = 'all';  // the current info tab (all, country, function, disease)
-	let currentMoneyType;  // the type of money flow for the country chosen (donated, received)
-	let currentPayments;  // an array of all payments corresponding to the country chosen
 
 	App.initAnalysisTable = (iso, moneyFlow) => {
 		const country = App.countries.find(c => c.ISO2 === iso);
@@ -59,7 +57,7 @@
 				updateInfoTable();
 			});
 		}
-		
+
 		// update the content shwon based on tab chosen
 		function updateInfoTab() {
 			// make correct tab active
@@ -135,8 +133,8 @@
 					totalByCountry[dc][rc].total_committed += p.total_committed;
 					totalByCountry[dc][rc].total_spent += p.total_spent;
 				});
-				for (let dc in totalByCountry) {
-					for (let rc in totalByCountry[dc]) {
+				for (const dc in totalByCountry) {
+					for (const rc in totalByCountry[dc]) {
 						paymentTableData.push({
 							donor_code: dc,
 							recipient_country: rc,
@@ -152,7 +150,7 @@
 					totalByCe[ce] = {
 						total_committed: 0,
 						total_spent: 0,
-					}
+					};
 				});
 				allPayments.forEach((p) => {
 					let hasACe = false;
@@ -168,7 +166,7 @@
 						totalByCe.None.total_spent += p.total_spent;
 					}
 				});
-				for (let ce in totalByCe) {
+				for (const ce in totalByCe) {
 					paymentTableData.push({
 						ce,
 						total_committed: totalByCe[ce].total_committed,
@@ -195,7 +193,7 @@
 						totalByCc.None.total_spent += p.total_spent;
 					}
 				});
-				for (let cc in totalByCc) {
+				for (const cc in totalByCc) {
 					paymentTableData.push({
 						cc,
 						total_committed: totalByCc[cc].total_committed,
@@ -253,7 +251,7 @@
 				columnDefs = [
 					{ targets: [0, 1], width: '140px' },
 					{ type: 'money', targets: [3, 4], width: '110px' },
-				]
+				];
 			} else if (currentInfoTab === 'country') {
 				order = [3, 'desc'];
 				columnDefs = [
@@ -273,7 +271,7 @@
 				columnDefs,
 			});
 			infoTableHasBeenInit = true;
-		};
+		}
 
 		init();
 	};

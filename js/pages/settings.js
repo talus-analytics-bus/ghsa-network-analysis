@@ -14,5 +14,5 @@
 			.on('change', function changeCurrency() {
 				App.currencyIso = $(this).val();
 			});
-	}
+	};
 })();

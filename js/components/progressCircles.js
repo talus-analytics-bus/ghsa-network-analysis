@@ -12,7 +12,7 @@
 		const chartContainer = d3.select(selector).append('svg')
 			.classed('progress-circle-chart', true)
 			.attr('width', 2 * outerRadius + margin.left + margin.right)
-			.attr('height', 2 * outerRadius + margin.top + margin.bottom)
+			.attr('height', 2 * outerRadius + margin.top + margin.bottom);
 		const chart = chartContainer.append('g')
 			.attr('transform', `translate(${outerRadius + margin.left}, ${outerRadius + margin.top})`);
 
@@ -23,7 +23,7 @@
 		filter.append('feGaussianBlur')
 			.attr('stdDeviation', 3.5)
 			.attr('result', 'coloredBlur');
-		var feMerge = filter.append('feMerge');
+		const feMerge = filter.append('feMerge');
 		feMerge.append('feMergeNode')
 			.attr('in', 'coloredBlur');
 		feMerge.append('feMergeNode')
@@ -35,7 +35,7 @@
 			.startAngle(0);
 
 		// build components
-		const background = chart.append('path')
+		chart.append('path')
 			.datum({ endAngle: tau })
 			.style('fill', '#ccc')
 			.attr('d', arc);
@@ -56,13 +56,13 @@
 			.attrTween('d', arcTween(percSpent * tau));
 
 		function arcTween(newAngle) {
-			return ((d) => {
+			return (d) => {
 				const interpolate = d3.interpolate(d.endAngle, newAngle);
-				return ((t) => {
+				return (t) => {
 					d.endAngle = interpolate(t);
 					return arc(d);
-				});
-			});
+				};
+			};
 		}
 
 		return chart;

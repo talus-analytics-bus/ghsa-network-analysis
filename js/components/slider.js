@@ -13,18 +13,14 @@
 			.data(values)
 			.enter().append('div')
 				.attr('class', 'slider-tick-vert')
-				.style('left', (d, i) => {
-					return (100 * i / (values.length - 1)) + '%';
-				});
+				.style('left', (d, i) => `${(100 * i / (values.length - 1))}%`);
 		const tickTextContainers = tickContainer.selectAll('.slider-tick-text-container')
 			.data(values)
 			.enter().append('div')
 				.attr('class', 'slider-tick-text-container')
-				.style('left', (d, i) => {
-					return (100 * (2 * i + 1) / (2 * (values.length - 1))) + '%';
-				});
+				.style('left', (d, i) => `${(100 * (2 * i + 1) / (2 * (values.length - 1)))}%`);
 		tickTextContainers.append('div')
 			.attr('class', 'slider-tick-text')
-			.text((d, i) => (i === values.length - 1) ? '' : d);
+			.text((d, i) => (i === values.length - 1 ? '' : d));
 	}
 })();

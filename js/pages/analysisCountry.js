@@ -2,7 +2,6 @@
 	App.initAnalysisCountry = (iso, moneyType) => {
 		// get country information
 		const country = App.countries.find(c => c.ISO2 === iso);
-		const name = App.codeToNameMap.get(iso);
 		const lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
 		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
 		const lightColor = (moneyType === 'd') ? App.fundColorPalette[2] : App.receiveColorPalette[2];
@@ -10,6 +9,7 @@
 		// initializes the whole page
 		function init() {
 			// fill title
+			const name = App.codeToNameMap.get(iso);
 			const flagHtml = country ? App.getFlagHtml(iso) : '';
 			$('.analysis-country-title')
 				.html(`${flagHtml} ${name} ${flagHtml}`)
@@ -65,15 +65,15 @@
 			// draw charts
 			let maxFunded = 0;
 			let maxReceived = 0;
-			for (let iso in App.fundingLookup) {
-				if (iso !== 'Not reported') {
-					const sum = d3.sum(App.fundingLookup[iso], d => d.total_spent);
+			for (const fIso in App.fundingLookup) {
+				if (fIso !== 'Not reported') {
+					const sum = d3.sum(App.fundingLookup[fIso], d => d.total_spent);
 					if (sum > maxFunded) maxFunded = sum;
 				}
 			}
-			for (let iso in App.recipientLookup) {
-				if (iso !== 'Not reported') {
-					const sum = d3.sum(App.recipientLookup[iso], d => d.total_spent);
+			for (const rIso in App.recipientLookup) {
+				if (rIso !== 'Not reported') {
+					const sum = d3.sum(App.recipientLookup[rIso], d => d.total_spent);
 					if (sum > maxReceived) maxReceived = sum;
 				}
 			}
@@ -154,7 +154,7 @@
 						fundsByYear[i].total_spent += p.spent_by_year[i];
 					}
 				});
-				for (let y in fundsByYear) {
+				for (const y in fundsByYear) {
 					timeData.push(fundsByYear[y]);
 				}
 				App.buildTimeChart('.time-chart-container', timeData, {
@@ -168,13 +168,12 @@
 		function drawProgressCircles() {
 			$('.progress-circle-title .info-img').tooltipster({
 				content: 'The <b>percent of committed funds</b> that were disbursed is shown. ' +
-					'Note that not all projects with disbursals have corresponding commitments, ' +
+					'However, note that not all projects with disbursals have corresponding commitments, ' +
 					'so these figures do not take into account all known funding initiatives.',
 			});
 
 			const ccs = ['P', 'D', 'R'];
 			if (lookup[iso]) {
-				const pData = [];
 				const fundsByCc = {};
 				ccs.forEach((cc) => {
 					fundsByCc[cc] = {
@@ -199,20 +198,18 @@
 				App.drawProgressCircles('.respond-circle-chart', fundsByCc.R, color);
 
 				const percFormat = d3.format('.0%');
-				function fillValueText(valueSelector, ind) {
+				const fillValueText = (valueSelector, ind) => {
 					if (fundsByCc[ind].total_committed) {
 						const pValue = fundsByCc[ind].total_spent / fundsByCc[ind].total_committed;
 						$(valueSelector).text(percFormat(pValue));
 					} else {
 						$(valueSelector).parent().text('No funds committed for this core element');
 					}
-				}
+				};
 
 				fillValueText('.prevent-value', 'P');
 				fillValueText('.detect-value', 'D');
 				fillValueText('.respond-value', 'R');
-			} else {
-
 			}
 		}
 
@@ -222,10 +219,6 @@
 			} else {
 				$('.circle-pack-title').text('Top Funders Received From');
 			}
-
-			const blues = ['#08519c', '#3182bd', '#6baed6', '#bdd7e7', '#eff3ff'];
-			const oranges = ['#993404', '#d95f0e', '#fe9929', '#fed98e', '#ffffd4'];
-			const colors = (moneyType === 'd') ? blues : oranges;
 
 			// get table data
 			if (lookup[iso]) {
@@ -246,20 +239,18 @@
 						fundedByCountry[recIso].total_spent += p.total_spent;
 					}
 				});
-				for (let iso in fundedByCountry) {
-					fundedData.push(fundedByCountry[iso]);
+				for (const recIso in fundedByCountry) {
+					fundedData.push(fundedByCountry[recIso]);
 				}
 				Util.sortByKey(fundedData, 'total_spent', true);
 
 				// draw table
-				let firstColLabel = (moneyType === 'd') ? 'Recipient' : 'Funder';
+				const firstColLabel = (moneyType === 'd') ? 'Recipient' : 'Funder';
 				$('.country-table thead tr td:first-child').text(firstColLabel);
 
 				const rows = d3.select('.country-table tbody').selectAll('tr')
 					.data(fundedData.slice(0, 10))
 					.enter().append('tr')
-						//.style('background-color', (d, i) => colors[Math.floor(i / 2)])
-						//.style('color', (d, i) => (i < 4) ? '#fff' : 'black')
 						.on('click', (d) => {
 							if (d.iso !== 'Not reported') {
 								if (moneyType === 'd') {
@@ -270,11 +261,14 @@
 							}
 						});
 				rows.append('td').html((d) => {
-					const country = App.countries.find(c => c.ISO2 === d.iso);
-					const flagHtml = country ? App.getFlagHtml(d.iso) : '';
-					const name = App.codeToNameMap.get(d.iso);
+					const recCountry = App.countries.find(c => c.ISO2 === d.iso);
+					const flagHtml = recCountry ? App.getFlagHtml(d.iso) : '';
+					const cName = App.codeToNameMap.get(d.iso);
+					const onClickStr = `event.stopPropagation();hasher.setHash('analysis/${d.iso}')`;
 					return `<div class="flag-container">${flagHtml}</div>` +
-						`<div class="name-container">${name}</div>`;
+						'<div class="name-container">' +
+						`<span onclick="${onClickStr}">${cName}</span>` +
+						'</div>';
 				});
 
 				rows.append('td').text(d => App.formatMoney(d.total_committed));
@@ -292,19 +286,19 @@
 				const catData = [];
 				const fundsByCat = {};
 				lookup[iso].forEach((p) => {
-					const iso = p[countryInd];
+					const recIso = p[countryInd];
 					const catValues = p.core_capacities;
 					catValues.forEach((c) => {
 						if (!fundsByCat[c]) fundsByCat[c] = {};
-						if (!fundsByCat[c][iso]) {
-							fundsByCat[c][iso] = {
-								iso,
+						if (!fundsByCat[c][recIso]) {
+							fundsByCat[c][recIso] = {
+								iso: recIso,
 								total_committed: 0,
 								total_spent: 0,
 							};
 						}
-						fundsByCat[c][iso].total_committed += p.total_committed;
-						fundsByCat[c][iso].total_spent += p.total_spent;
+						fundsByCat[c][recIso].total_committed += p.total_committed;
+						fundsByCat[c][recIso].total_spent += p.total_spent;
 					});
 				});
 				App.capacities.forEach((cap) => {
@@ -313,10 +307,10 @@
 							const countries = [];
 							let totalCommitted = 0;
 							let totalSpent = 0;
-							for (let iso in fundsByCat[cap.id]) {
-								countries.push(fundsByCat[cap.id][iso]);
-								totalCommitted += fundsByCat[cap.id][iso].total_committed;
-								totalSpent += fundsByCat[cap.id][iso].total_spent;
+							for (const recIso in fundsByCat[cap.id]) {
+								countries.push(fundsByCat[cap.id][recIso]);
+								totalCommitted += fundsByCat[cap.id][recIso].total_committed;
+								totalSpent += fundsByCat[cap.id][recIso].total_spent;
 							}
 							catData.push({
 								id: cap.id,
@@ -341,8 +335,6 @@
 				App.buildCategoryChart('.category-chart-container', catData, {
 					moneyType,
 				});
-			} else {
-
 			}
 		}
 

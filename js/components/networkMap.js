@@ -20,7 +20,7 @@
 		const chartContainer = d3.select(selector).append('svg')
 			.classed('network-map-chart', true)
 			.attr('width', 2 * radius + margin.left + margin.right)
-			.attr('height', 2 * radius + margin.top + margin.bottom)
+			.attr('height', 2 * radius + margin.top + margin.bottom);
 		const chart = chartContainer.append('g')
 			.attr('transform', `translate(${radius + margin.left}, ${radius + margin.top})`);
 
@@ -79,8 +79,8 @@
 		const regionLabelArc = d3.arc()
 			.innerRadius(radius + 28)
 			.outerRadius(radius + 28 + 12)
-			.startAngle(d => (d.theta1 - d.theta0 > 1) ? d.theta0 : d.theta0 - 1)
-			.endAngle(d => (d.theta1 - d.theta0 > 1) ? d.theta1 : d.theta1 + 1);
+			.startAngle(d => (d.theta1 - d.theta0 > 1 ? d.theta0 : d.theta0 - 1))
+			.endAngle(d => (d.theta1 - d.theta0 > 1 ? d.theta1 : d.theta1 + 1));
 
 		// define link path
 		const ribbon = d3.ribbon()
@@ -115,8 +115,8 @@
 		chart.update = (data) => {
 			addAnglesToData(data);
 			drawArcs(data);
-			drawLinks(data);
-		}
+			drawLinks();
+		};
 
 		function drawArcs(data) {
 			// create region arcs
@@ -125,7 +125,7 @@
 			rArcs.exit().remove();
 			rArcs.enter().append('path')
 				.attr('class', 'region-arc arc')
-				.each(function addTooltip(d) {
+				.each(function addTooltip() {
 					$(this).tooltipster({ plugins: ['follower'] });
 				})
 				.merge(rArcs)
@@ -139,7 +139,7 @@
 						}
 						$(this).tooltipster('content', contentStr);
 					})
-					//.transition()
+					// .transition()
 					.style('fill', getFundReceiveColor)
 					.attr('d', regionArc);
 
@@ -149,7 +149,7 @@
 			sArcs.exit().remove();
 			sArcs.enter().append('path')
 				.attr('class', 'subregion-arc arc')
-				.each(function addTooltip(d) {
+				.each(function addTooltip() {
 					$(this).tooltipster({ plugins: ['follower'] });
 				})
 				.merge(sArcs)
@@ -163,7 +163,7 @@
 						}
 						$(this).tooltipster('content', contentStr);
 					})
-					//.transition()
+					// .transition()
 					.style('fill', getFundReceiveColor)
 					.attr('d', subregionArc);
 
@@ -173,7 +173,7 @@
 			cArcs.exit().remove();
 			cArcs = cArcs.enter().append('path')
 				.attr('class', 'country-arc arc')
-				.each(function addTooltip(d) {
+				.each(function addTooltip() {
 					$(this).tooltipster({ plugins: ['follower'] });
 				})
 				.merge(cArcs);
@@ -183,7 +183,7 @@
 						.filter(l => l.donor === d.name || l.recipient === d.name)
 						.classed('country-hover', true);
 				})
-				.on('mouseout', (d) => {
+				.on('mouseout', () => {
 					d3.selectAll('.link').classed('country-hover', false);
 				})
 				.each(function updateTooltip(d) {
@@ -196,7 +196,7 @@
 					}
 					$(this).tooltipster('content', contentStr);
 				})
-				//.transition()
+				// .transition()
 					.style('fill', getFundReceiveColor)
 					.style('stroke', '#fff')
 					.attr('d', countryArc);
@@ -217,7 +217,7 @@
 					.each(function positionLabel(d) {
 						const firstArcSection = /(^.+?)L/;
 						let newArc = firstArcSection.exec(d3.select(this).attr('d'))[1];
-						newArc = newArc.replace(/,/g , ' ');
+						newArc = newArc.replace(/,/g, ' ');
 
 						// flip if bottom half of circle
 						const avgTheta = (d.theta0 + d.theta1) / 2;
@@ -251,14 +251,14 @@
 				.text(d => d.name);
 		}
 
-		function drawLinks(data) {
+		function drawLinks() {
 			// create links
 			const links = linkG.selectAll('.link')
 				.data(funds);
 			links.exit().remove();
 			links.enter().append('path')
 				.attr('class', 'link')
-				.each(function addTooltip(d) {
+				.each(function addTooltip() {
 					$(this).tooltipster({ plugins: ['follower'] });
 				})
 				.merge(links)
@@ -293,7 +293,7 @@
 				region.children.forEach((subregion, i) => {
 					subregions.push(subregion);
 
-					let sTheta = (rTheta - totalSPadding) * (subregion.totalFlow / region.totalFlow);
+					const sTheta = (rTheta - totalSPadding) * (subregion.totalFlow / region.totalFlow);
 					if (i > 0) runningTheta += subregionPadding;
 					subregion.theta0 = runningTheta;
 					subregion.children.forEach((country) => {
@@ -303,7 +303,7 @@
 						funds = funds.concat(country.funds);
 
 						// set angles
-						let cTheta = sTheta * (country.totalFlow / subregion.totalFlow);
+						const cTheta = sTheta * (country.totalFlow / subregion.totalFlow);
 						country.theta0 = runningTheta;
 						runningTheta += cTheta;
 						country.theta1 = runningTheta;

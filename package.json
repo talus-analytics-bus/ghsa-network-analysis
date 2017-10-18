@@ -48,10 +48,13 @@
       "Fuse": true
     },
     "rules": {
+      "guard-for-in": 0,
+      "new-cap": 0,
       "indent": [
         "error",
         "tab"
       ],
+      "no-confusing-arrow": ["error", {"allowParens": true}],
       "no-use-before-define": [
         "error",
         "nofunc"

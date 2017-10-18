@@ -18,9 +18,7 @@
 			.padding(0.2)
 			.domain(data.map(d => d.year))
 			.range([0, width]);
-		const maxValue = d3.max(data, (d) => {
-			return d3.max([d.total_spent, d.total_committed]);
-		});
+		const maxValue = d3.max(data, d => d3.max([d.total_spent, d.total_committed]));
 		const y = d3.scaleLinear()
 			.domain([0, 1.2 * maxValue])
 			.range([height, 0]);
@@ -105,19 +103,16 @@
 			.attr('class', 'legend-label')
 			.attr('x', rectWidth + 8)
 			.attr('y', 11)
-			.text((d, i) => {
-				return (i === 0) ? 'Committed' : 'Disbursed';
-			});
+			.text((d, i) => (i === 0 ? 'Committed' : 'Disbursed'));
 		legendGroups.append('text')
 			.attr('class', 'legend-label')
 			.attr('x', rectWidth + 8)
 			.attr('y', 27)
 			.text((d, i) => {
-				if (param.moneyType === 'd') {
-					return 'Funds';
-				} else {
+				if (param.moneyType === 'r') {
 					return (i === 0) ? 'Funds to Receive' : 'Funds Received';
 				}
+				return 'Funds';
 			});
 
 		return chart;

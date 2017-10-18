@@ -3,8 +3,6 @@
 	let infoDataTable;  // the info data table (DataTable object)
 	let infoTableHasBeenInit = false;  // whether the info data table has been initialized
 	let currentInfoTab = 'all';  // the current info tab (all, country, function, disease)
-	let currentMoneyType;  // the type of money flow for the country chosen (donated, received)
-	let currentPayments;  // an array of all payments corresponding to the country chosen
 
 	App.initAnalysisPair = (fundIso, recIso) => {
 		// define content in container
@@ -28,8 +26,10 @@
 			// fill title
 			const fundFlagHtml = donorCountry ? App.getFlagHtml(fundIso) : '';
 			const recFlagHtml = recipientCountry ? App.getFlagHtml(recIso) : '';
-			const donorNameHtml = `<span onclick="hasher.setHash('analysis/${fundIso}')">${donorName}</span>`;
-			const recipientNameHtml = `<span onclick="hasher.setHash('analysis/${recIso}')">${recipientName}</span>`;
+			const fundOnClick = `hasher.setHash('analysis/${fundIso}')`;
+			const recOnClick = `hasher.setHash('analysis/${recIso}')`;
+			const donorNameHtml = `<span onclick="${fundOnClick}">${donorName}</span>`;
+			const recipientNameHtml = `<span onclick="${recOnClick}">${recipientName}</span>`;
 			$content.find('.analysis-country-title').html(`${fundFlagHtml} ${donorNameHtml} ` +
 				`<div class="arrow-html">&rarr;</div> ${recipientNameHtml} ${recFlagHtml}`);
 
@@ -84,7 +84,6 @@
 					{
 						name: 'Core Capacity',
 						value: (d) => {
-							console.log(d);
 							const cap = App.capacities.find(cc => cc.id === d.cc);
 							return cap ? cap.name : '';
 						},
@@ -112,7 +111,7 @@
 						totalByCc[cc].total_spent += p.total_spent;
 					});
 				});
-				for (let cc in totalByCc) {
+				for (const cc in totalByCc) {
 					paymentTableData.push({
 						cc,
 						total_committed: totalByCc[cc].total_committed,
@@ -176,8 +175,8 @@
 				order,
 				columnDefs,
 			});
-			infoTableHasBeenInit = true;		
-		};
+			infoTableHasBeenInit = true;
+		}
 
 		init();
 	};

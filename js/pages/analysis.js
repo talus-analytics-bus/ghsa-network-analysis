@@ -54,7 +54,7 @@
 				$option.siblings().find('input').prop('checked', false);
 				updateNetworkMap();
 			});
-			
+
 			// add info tooltips
 			$('.committed-info-img').tooltipster({
 				content: 'The <b>amount committed</b> refers to the amount of money committed.',
@@ -72,7 +72,7 @@
 				max: App.dataEndYear + 1,
 				value: [startYear, endYear],
 				tooltip: 'hide',
-			})
+			});
 			slider.on('change', (event) => {
 				const years = event.target.value.split(',');
 				if (+years[0] !== startYear || +years[1] !== endYear) {
@@ -111,7 +111,7 @@
 
 			// get top funded countries
 			const countriesByFunding = [];
-			for (let iso in App.fundingLookup) {
+			for (const iso in App.fundingLookup) {
 				if (iso !== 'Not reported') {
 					countriesByFunding.push({
 						iso,
@@ -125,7 +125,7 @@
 
 			// get top recipient countries
 			const countriesByReceived = [];
-			for (let iso in App.recipientLookup) {
+			for (const iso in App.recipientLookup) {
 				if (iso !== 'Not reported') {
 					countriesByReceived.push({
 						iso,
@@ -142,7 +142,7 @@
 				.data(countriesByFunding.slice(0, numRows))
 				.enter().append('tr')
 					.style('background-color', (d, i) => blues[Math.floor(i / 2)])
-					.style('color', (d, i) => (i < 4) ? '#fff' : 'black')
+					.style('color', (d, i) => (i < 4 ? '#fff' : 'black'))
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {
 							hasher.setHash(`analysis/${d.iso}`);
@@ -163,7 +163,7 @@
 				.data(countriesByReceived.slice(0, numRows))
 				.enter().append('tr')
 					.style('background-color', (d, i) => oranges[Math.floor(i / 2)])
-					.style('color', (d, i) => (i < 4) ? '#fff' : 'black')
+					.style('color', (d, i) => (i < 4 ? '#fff' : 'black'))
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {
 							hasher.setHash(`analysis/${d.iso}`);
@@ -197,7 +197,7 @@
 					total += p[indName][i];
 				}
 				return total;
-			};			
+			};
 		}
 
 		function getNetworkData() {
@@ -232,7 +232,7 @@
 							fundsByC: {},
 						};
 					}
-					
+
 					if (fundedPayments) {
 						fundedPayments.forEach((p) => {
 							const value = totalFunc(p);
@@ -250,7 +250,7 @@
 
 			// add non-countries
 			fundsByRegion['Other Funders'] = { Other: {} };
-			for (let iso in App.fundingLookup) {
+			for (const iso in App.fundingLookup) {
 				if (!App.countries.find(c => c.ISO2 === iso)) {
 					fundsByRegion['Other Funders'].Other[iso] = {
 						totalFunded: d3.sum(App.fundingLookup[iso], d => totalFunc(d)),
@@ -271,7 +271,7 @@
 			}
 
 			// build chord chart data
-			for (let r in fundsByRegion) {
+			for (const r in fundsByRegion) {
 				const region = {
 					name: r,
 					children: [],
@@ -279,7 +279,7 @@
 					totalReceived: 0,
 					totalFlow: 0,
 				};
-				for (let sub in fundsByRegion[r]) {
+				for (const sub in fundsByRegion[r]) {
 					const subregion = {
 						name: sub,
 						children: [],
@@ -287,9 +287,9 @@
 						totalReceived: 0,
 						totalFlow: 0,
 					};
-					for (let iso in fundsByRegion[r][sub]) {
+					for (const iso in fundsByRegion[r][sub]) {
 						const funds = [];
-						for (let rIso in fundsByRegion[r][sub][iso].fundsByC) {
+						for (const rIso in fundsByRegion[r][sub][iso].fundsByC) {
 							funds.push({
 								donor: iso,
 								recipient: rIso,
@@ -322,11 +322,11 @@
 
 		function buildNetworkMap() {
 			const networkData = getNetworkData();
-			const networkMap = App.buildNetworkMap('.network-map-content', networkData, {
+			const chart = App.buildNetworkMap('.network-map-content', networkData, {
 				countryClickFn: displayCountryInNetwork,
 			});
-			networkMap.select('.overlay').on('click', unselectNetworkCountry);
-			return networkMap;
+			chart.select('.overlay').on('click', unselectNetworkCountry);
+			return chart;
 		}
 
 		function updateNetworkMap() {

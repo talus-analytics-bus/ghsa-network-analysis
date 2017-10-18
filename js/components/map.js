@@ -41,7 +41,7 @@ const Map = {};
 		const g = svg.append('g');
 		const nodeG = g.append('g')
 			.attr('class', 'countries');
-		const linkG = g.append('g')
+		g.append('g')
 			.attr('class', 'links');
 
 		// attach zoom

@@ -2,12 +2,12 @@ const App = {};
 
 (() => {
 	App.initialize = (callback) => {
-		// data definition variables 
+		// data definition variables
 		App.dataStartYear = 2014;
 		App.dataEndYear = 2017;
 
 		// good colors (purple, orange)
-		/*App.fundColor = '#283375';
+		/* App.fundColor = '#283375';
 		App.receiveColor = '#aa4e2a';
 		App.fundColorPalette = ['#283375', '#535c91', '#7e85ac', '#a9adc8', '#d4d6e3'];
 		App.receiveColorPalette = ['#aa4e2a', '#bb7155', '#cc957f', '#ddb8aa', '#eedcd4'];*/
@@ -94,7 +94,7 @@ const App = {};
 				App.currencyIso = 'USD';
 
 				// populate lookup variables from funding data
-				App.fundingData.forEach((p, j) => {
+				App.fundingData.forEach((p) => {
 					const donor = p.donor_code;
 					const recipient = p.recipient_country;
 
@@ -119,7 +119,7 @@ const App = {};
 	App.siFormat = (num) => {
 		if (!num) return '0';
 		return d3.format(',.3s')(num).replace('G', 'B');
-	}
+	};
 	App.formatMoneyShort = (usdValue) => {
 		const multiplier = App.currencies[App.currencyIso].exchange_rates
 			.find(er => er.convert_from === 'USD')
@@ -128,13 +128,11 @@ const App = {};
 		if (value < 100) return Math.round(value);
 		return App.siFormat(value);
 	};
-	App.formatMoney = (usdValue) => {
-		return `${App.formatMoneyShort(usdValue)} ${App.currencyIso}`;
-	}
+	App.formatMoney = usdValue => `${App.formatMoneyShort(usdValue)} ${App.currencyIso}`;
 	App.formatMoneyFull = (usdValue) => {
 		if (usdValue < 100) return `${Math.round(usdValue)} ${App.currencyIso}`;
 		return `${d3.format(',.3r')(usdValue)} ${App.currencyIso}`;
-	}
+	};
 
 
 	/* ------------------ Data Functions ------------------- */
@@ -167,9 +165,7 @@ const App = {};
 		return iso;
 	};
 
-	App.getFlagHtml = (iso) => {
-		return `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
-	}
+	App.getFlagHtml = iso => `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
 
 
 	/* ------------------ Vendor Defaults ------------------- */
@@ -180,13 +176,15 @@ const App = {};
 	$.fn.dataTableExt.oSort['money-asc'] = (a, b) => {
 		const aVal = Util.strToFloat(a);
 		const bVal = Util.strToFloat(b);
-		return (aVal < bVal) ? -1 : ((aVal > bVal) ? 1 : 0);
-	}
+		if (aVal < bVal) return -1;
+		return aVal > bVal ? 1 : 0;
+	};
 	$.fn.dataTableExt.oSort['money-desc'] = (a, b) => {
 		const aVal = Util.strToFloat(a);
 		const bVal = Util.strToFloat(b);
-		return (aVal < bVal) ? 1 : ((aVal > bVal) ? -1 : 0);
-	}
+		if (aVal < bVal) return 1;
+		return aVal > bVal ? -1 : 0;
+	};
 
 	// tooltipster defaults
 	$.tooltipster.setDefaults({
