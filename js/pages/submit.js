@@ -1,39 +1,38 @@
 (() => {
 	App.initSubmit = () => {
-		// initialize datepickers
-		$('.start-date-input, .end-date-input').datepicker({
-			autoclose: true,
-			assumeNearbyYear: true,
-			clearBtn: true,
-			container: '.submit-page-container',
-			immediateUpdates: true,
-		});
-
-		// populate dropdowns
-		Util.populateSelect('.country-select', App.countries, {
-			valKey: 'ISO2',
-			nameKey: 'NAME',
-		});
-		Util.populateSelect('.cc-select', App.capacities, {
-			valKey: 'id',
-			nameKey: 'name',
-		});
-		$('.cc-select').multiselect({
-			maxHeight: 260,
-			numberDisplayed: 1,
-		});
-
-		/* ------------------ Uploading Project Report File --------------- */
-		// clicking "Upload Completed Project Report" triggers file selection
-		$('.btn-report-upload').on('click', () => {
-			$('.input-report-upload').trigger('click');
-		});
+		// connect link to glossary page
+		$('.glossary-button').click(() => hasher.setHash('glossary'));
 
 		// upload completed project report
-		$('.input-report-upload').on('change', function onChange() {
-			if ('files' in this) {
-				if (!this.files.length) return;
-				const file = this.files[0];
+		$('.submit-button').click(() => {
+			// check that contact fields are filled out
+			const firstName = $('.first-name-input').val();
+			const lastName = $('.last-name-input').val();
+			const org = $('.org-input').val();
+			const email = $('.email-input').val();
+			if (!firstName) {
+				noty({ text: 'Enter a first name before proceeding.' });
+				return;
+			}
+			if (!lastName) {
+				noty({ text: 'Enter a last name before proceeding.' });
+				return;
+			}
+			if (!org) {
+				noty({ text: 'Enter an organization before proceeding.' });
+				return;
+			}
+			if (!email) {
+				noty({ text: 'Enter an email address before proceeding.' });
+				return;
+			}
+
+			const input = d3.select('.input-report-upload').node();
+			if ('files' in input) {
+				if (!input.files.length) return;  // check that file was uploaded
+				const file = input.files[0];
+
+				// check that file is in xls or xlsx format
 				const fileNameArr = file.name.split('.');
 				const fileType = fileNameArr[fileNameArr.length - 1];
 				if (fileType !== 'xlsx' && fileType !== 'xls') {
@@ -49,7 +48,7 @@
 				const reader = new FileReader();
 				reader.onload = (e) => {
 					NProgress.start();
-					const success = App.submitProjectReport(e.target.result);
+					const success = submitProjectReport(e.target.result);
 					if (success) {
 						noty({
 							timeout: 4000,
@@ -70,11 +69,20 @@
 		});
 	};
 
-	/* Callback function triggered when user successfully uploads project report.
-		Parses the project report and forwards it to the appropriate reviewer
-		so it can be incorporated into the dashboard data. */
-	App.submitProjectReport = (projectReportXls) => {
-		// TODO
-		return true;
-	};
+	// parses project report and saves data
+	function submitProjectReport(file) {
+		const xhr = new XMLHttpRequest();
+		xhr.open('GET', `/upload-s3?file-name=${file.name}&file-type=${file.type}`);
+		xhr.onreadystatechange = () => {
+			if (xhr.readyState === 4) {
+				if (xhr.status === 200) {
+					const response = JSON.parse(xhr.responseText);
+					uploadFile(file, response.signedRequest, response.url);
+				} else {
+					noty({ type: 'error', text: 'Could not get signed URL.' });
+				}
+			}
+		};
+		xhr.send();
+	}
 })();

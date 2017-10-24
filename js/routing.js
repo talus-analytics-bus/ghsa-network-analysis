@@ -39,6 +39,9 @@ const Routing = {};
 		crossroads.addRoute('/submit', () => {
 			loadPage('submit', App.initSubmit);
 		});
+		crossroads.addRoute('/glossary', () => {
+			loadPage('glossary');
+		});
 		crossroads.addRoute('/settings', () => {
 			loadPage('settings', App.initSettings);
 		});

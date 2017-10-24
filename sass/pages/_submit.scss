@@ -4,14 +4,28 @@
 	input[type="file"] { display: none; }
 	.upload-button-container {
 		margin-top: 20px;
+
+		.btn { margin-right: 5px; }
 	}
 	.submit-form-content {
 		margin-top: 30px;
 		border-top: $light-border;
 		padding-top: 20px;
 	}
-	.submit-button-container {
-		margin-top: 30px;
-		text-align: center;
+	.submit-form-container {
+		margin-left: 20px;
+	}
+}
+.submit-form-table {
+	margin-top: 20px;
+
+	td {
+		padding: 5px 25px 5px 0;
+	}
+	td:first-child {
+		font-weight: 600;
+	}
+	input {
+		width: 250px;
 	}
 }

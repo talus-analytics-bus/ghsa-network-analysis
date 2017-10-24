@@ -509,25 +509,61 @@
 							<a class="export-button-link" href="export/GHS Tracking Dashboard - Project Report Template.xlsx">
 								<button type="button" class="btn btn-default btn-report-download">Download Project Report Template</button>
 							</a>
-							<div class="btn btn-default">View Data Dictionary</div>
+							<div class="glossary-button btn btn-default">View Data Dictionary</div>
 						</div>
 					</div>
 				</div>
 				<div class="section">
 					<div class="description">
 						<p>
-							Once the file is ready, upload completed reports by clicking "Upload Completed Project Report" and selecting the location where the file is saved on your computer.
+							Once the file is ready, please fill out the contact information in the fields provided below and upload the completed report by clicking "Upload Completed Project Report" and selecting the location where the file is saved on your computer. Contact information is collected only if follow-up questions are needed.
 						</p>
 						<p>
 							Data will be reviewed before being incorporated into the tool.
 						</p>
 					</div>
-					<div class="margin-top-20">
-						<button type="button" class="btn btn-primary btn-report-upload">Upload Completed Project Report</button>
-						<input id="input-report-upload" class="input-report-upload" type="file" />
+					<div class="submit-form-container">
+						<table class="submit-form-table"><tbody>
+							<tr>
+								<td>First Name</td>
+								<td><input class="first-name-input form-control" /></td>
+							</tr>
+							<tr>
+								<td>Last Name</td>
+								<td><input class="last-name-input form-control" /></td>
+							</tr>
+							<tr>
+								<td>Organization</td>
+								<td><input class="org-input form-control" /></td>
+							</tr>
+							<tr>
+								<td>Email Address</td>
+								<td><input class="email-input form-control" /></td>
+							</tr>
+						</tbody></table>
+						<div class="margin-top-20">
+							<button type="button" class="btn btn-default btn-report-upload">Upload Completed Project Report</button>
+							<input id="input-report-upload" class="input-report-upload" type="file" />
+						</div>
+						<div class="margin-top-20">
+							<button type="button" class="submit-button btn btn-primary">Submit Data</button>
+						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+	</script>
+
+	<script id="glossary-template" type="text/x-handlebars-template">
+		<div class="glossary-container container container-text">
+			<table class="glossary-table table table-striped">
+				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</script>
 
