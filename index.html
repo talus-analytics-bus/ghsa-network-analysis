@@ -493,85 +493,40 @@
 	<script id="submit-template" type="text/x-handlebars-template">
 		<div class="submit-page-container container container-text">
 			<h3>Submit Data for Multiple Projects</h3>
-			<div class="description">
-				Project data may be submitted using the form below. An empty form can be downloaded by clicking "Download Project Report Template". <br> <br>
-				Using the structure of the project report template, please update the file with relevant, project-level information. Upload completed reports by clicking "Upload Completed Project Report" and selecting the location where the file is saved on your computer. <br> <br>
-				Data will be reviewed before being incorporated into the tool.
-			</div>
-			<div class="upload-button-container">
-				<a class="export-button-link" href="export/GHS Tracking Dashboard - Project Report Template.xlsx">
-					<button type="button" class="btn btn-default btn-report-download">Download Project Report Template</button>
-				</a>
-				<button type="button" class="btn btn-default btn-report-upload">Upload Completed Project Report</button>
-				<input id="input-report-upload" class="input-report-upload" type="file" />
-			</div>
-			<div class="submit-form-content">
-				<h3>Submit Data for a Single Project</h3>
-				<div class="submit-form-container">
-					<table class="submit-form-table"><tbody>
-						<tr>
-							<td>Project Name</td>
-							<td><input class="form-control" /></td>
-						</tr>
-						<tr>
-							<td>Project Date</td>
-							<td>
-								<div class="input-group input-daterange">
-									<input type="text" class="start-date-input form-control" placeholder="mm/dd/yyyy">
-									<div class="input-group-addon">to</div>
-									<input type="text" class="end-date-input form-control" placeholder="mm/dd/yyyy">
-								</div>
-							</td>
-						</tr>
-					</tbody></table>
+			<div>
+				<div class="section">
+					<div class="description">
+						<p>
+							Project data may be submitted using the form below. An empty form can be downloaded by clicking "Download Project Report Template".
+						</p>
+						<p>
+							Using the structure of the project report template, please update the file with relevant, project-level information.
+							Refer to the data dictionary (a link is provided below) for details on the data fields to be filled out.
+						</p>
+					</div>
+					<div class="upload-button-container">
+						<div>
+							<a class="export-button-link" href="export/GHS Tracking Dashboard - Project Report Template.xlsx">
+								<button type="button" class="btn btn-default btn-report-download">Download Project Report Template</button>
+							</a>
+							<div class="btn btn-default">View Data Dictionary</div>
+						</div>
+					</div>
 				</div>
-				<div class="submit-form-container">
-					<table class="submit-form-table"><tbody>
-						<tr>
-							<td>Funder Country</td>
-							<td><select class="donor-country-select country-select form-control"></select></td>
-						</tr>
-						<tr>
-							<td>Funder</td>
-							<td><input class="donor-name-input form-control" /></td>
-						</tr>
-					</tbody></table>
+				<div class="section">
+					<div class="description">
+						<p>
+							Once the file is ready, upload completed reports by clicking "Upload Completed Project Report" and selecting the location where the file is saved on your computer.
+						</p>
+						<p>
+							Data will be reviewed before being incorporated into the tool.
+						</p>
+					</div>
+					<div class="margin-top-20">
+						<button type="button" class="btn btn-primary btn-report-upload">Upload Completed Project Report</button>
+						<input id="input-report-upload" class="input-report-upload" type="file" />
+					</div>
 				</div>
-				<div class="submit-form-container">
-					<table class="submit-form-table"><tbody>
-						<tr>
-							<td>Recipient Country</td>
-							<td><select class="recipient-country-select country-select form-control"></select></td>
-						</tr>
-						<tr>
-							<td>Recipient Name</td>
-							<td><input class="recipient-name-input form-control" /></td>
-						</tr>
-					</tbody></table>
-				</div>
-				<div class="submit-form-container">
-					<table class="submit-form-table"><tbody>
-						<tr>
-							<td>Amount Committed</td>
-							<td><input class="committed-input form-control" /></td>
-						</tr>
-						<tr>
-							<td>Amount Disbursed</td>
-							<td><input class="disbursed-input form-control" /></td>
-						</tr>
-					</tbody></table>
-				</div>
-				<div class="submit-form-container">
-					<table class="submit-form-table"><tbody>
-						<tr>
-							<td>Core Capacity</td>
-							<td><select class="cc-select form-control" multiple="multiple"></select></td>
-						</tr>
-					</tbody></table>
-				</div>
-			</div>
-			<div class="submit-button-container">
-				<button class="submit-button btn btn-primary">Submit Data</button>
 			</div>
 		</div>
 	</script>
@@ -619,7 +574,6 @@
 	<script src="lib/d3-geo-projection.v2.min.js"></script>
 	<script src="lib/bootstrap-slider.min.js"></script>
 	<script src="lib/bootstrap-multiselect.js"></script>
-	<script src="lib/bootstrap-datepicker.min.js"></script>
 	<script src="lib/datatables.min.js"></script>
 	<script src="lib/jquery.noty.packaged.min.js"></script>
 	<script src="lib/tooltipster.bundle.min.js"></script>
@@ -628,7 +582,7 @@
 	<script src="build/lib.min.js"></script>
 		
 	<!-- Project Specific Files -->
-	<!--<script src="js/utility.js"></script>
+	<script src="js/utility.js"></script>
 	<script src="js/routing.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/components/categoryChart.js"></script>
@@ -648,8 +602,8 @@
 	<script src="js/pages/home.js"></script>
 	<script src="js/pages/settings.js"></script>
 	<script src="js/pages/submit.js"></script>
-	<script src="js/init.js"></script>-->
+	<script src="js/init.js"></script>
 
-	<script src="build/bundle.min.js"></script>
+	<!--<script src="build/bundle.min.js"></script>-->
 </body>
 </html>
