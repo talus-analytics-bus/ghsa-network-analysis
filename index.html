@@ -68,38 +68,56 @@
 						<div class="filter-section">
 							<div class="filter-box">
 								<div class="dropdown-label">Color countries by:</div>
-								<div class="money-flow-type-filter">
+								<div class="ind-type-filter">
 									<div class="radio-option">
-										<input type="radio" ind="funded" checked />
-										<span>Funded</span>
+										<input type="radio" ind="money" checked />
+										<span>Funds</span>
 									</div>
-									<div class="radio-option">
-										<input type="radio" ind="received" />
-										<span>Received</span>
-									</div>
-								</div>
-								<div class="money-type-filter">
-									<div class="radio-option">
-										<input type="radio" ind="committed" />
-										<span>Committed</span>
-										<img class="committed-info-img info-img" src="img/info.png" />
-									</div>
-									<div class="radio-option">
-										<input type="radio" ind="disbursed" checked />
-										<span>Disbursed</span>
-										<img class="disbursed-info-img info-img" src="img/info.png" />
-									</div>
-								</div>
-								<div class="jee-score-filter">
 									<div class="radio-option">
 										<input type="radio" ind="score" />
 										<span>JEE Score</span>
-										<img class="score-info-img info-img" src="img/info.png" />
 									</div>
-									<div class="radio-option">
-										<input type="radio" ind="combined" />
-										<span>JEE Score &amp; Funds Received</span>
-										<img class="combined-info-img info-img" src="img/info.png" />
+								</div>
+							</div>
+							<div class="filter-box">
+								<div class="money-filters">
+									<div class="dropdown-label">Color countries by amount:</div>
+									<div class="money-flow-type-filter">
+										<div class="radio-option">
+											<input type="radio" ind="funded" checked />
+											<span>Funded</span>
+										</div>
+										<div class="radio-option">
+											<input type="radio" ind="received" />
+											<span>Received</span>
+										</div>
+									</div>
+									<div class="money-type-filter">
+										<div class="radio-option">
+											<input type="radio" ind="committed" />
+											<span>Committed</span>
+											<img class="committed-info-img info-img" src="img/info.png" />
+										</div>
+										<div class="radio-option">
+											<input type="radio" ind="disbursed" checked />
+											<span>Disbursed</span>
+											<img class="disbursed-info-img info-img" src="img/info.png" />
+										</div>
+									</div>
+								</div>
+								<div class="score-filters">
+									<div class="dropdown-label">Color countries by:</div>
+									<div class="jee-score-filter">
+										<div class="radio-option">
+											<input type="radio" ind="score" />
+											<span>JEE Score</span>
+											<img class="score-info-img info-img" src="img/info.png" />
+										</div>
+										<div class="radio-option">
+											<input type="radio" ind="combined" />
+											<span>JEE Score &amp; Funds Received</span>
+											<img class="combined-info-img info-img" src="img/info.png" />
+										</div>
 									</div>
 								</div>
 							</div>
@@ -148,6 +166,7 @@
 					</div>
 					<div class="info-title"></div>
 					<div class="info-profile-type"></div>
+					<div class="info-score-text"></div>
 					<div class="row">
 						<div class="info-value-box col-sm-6">
 							<div class="info-committed-value info-value"></div>

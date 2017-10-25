@@ -20,9 +20,9 @@
 			'#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b'];
 		const reds = ['#fee0d2', '#fcbba1', '#fc9272',
 			'#fb6a4a', '#ef3b2c', '#cb181d', '#a50f15', '#67000d'];
-		const oranges = ['#fee391', '#fec44f', '#fe9929',
-			'#ec7014', '#cc4c02', '#993404', '#662506'];
-		const rainbows = ['#d7191c', '#fdae61', '#ffffbf', '#1a9641'];
+		const orangesReverse = ['#fee391', '#fec44f', '#fe9929',
+			'#ec7014', '#cc4c02', '#993404', '#662506'].reverse();
+		const jeeColors = ['#c91414', '#ede929', '#ede929', '#0c6b0c'];
 
 
 		// function for initializing the page
@@ -113,31 +113,20 @@
 
 		// gets the color scale used for the map
 		function getColorScale() {
-			const valueAttrName = getValueAttrName();
-
-			if (indType === 'score') {
-				if (scoreType === 'combined') {
-					const domain = currentNodeDataMap.values()
-						.map(d => d[valueAttrName])
-						.filter(d => d);
-					if (domain.length === 1) domain.push(0);
-					return d3.scaleQuantile()
-						.domain(domain)
-						.range(oranges);
-				}
-
+			if (indType === 'score' && scoreType === 'score') {
 				return d3.scaleThreshold()
 					.domain([2, 3, 4])
-					.range(rainbows);
+					.range(jeeColors);
 			}
 
+			const valueAttrName = getValueAttrName();
 			const domain = currentNodeDataMap.values()
 				.map(d => d[valueAttrName])
 				.filter(d => d);
 			if (domain.length === 1) domain.push(0);
 			return d3.scaleQuantile()
 				.domain(domain)
-				.range(purples);
+				.range(indType === 'money' ? purples : orangesReverse);
 		}
 
 		// update everything if any parameters change
@@ -192,7 +181,7 @@
 
 					// check if country has received funds and has a score
 					if (paymentsReceived && scoreObj) {
-						combo = receivedSpent / (8 - score);
+						combo = Math.log10(receivedSpent) / (5.001 - score);
 					}
 
 					// set in node map
@@ -274,8 +263,11 @@
 			const valueAttrName = getValueAttrName();
 
 			const barHeight = 16;
-			const barWidth = 70;
+			let barWidth = 70;
 			const legendPadding = 20;
+
+			// adjust width for JEE score
+			if (indType === 'score' && scoreType === 'score') barWidth = 100;
 
 			const colors = colorScale.range();
 			const thresholds = indType === 'score' ?
@@ -285,7 +277,7 @@
 
 			const legend = d3.select('.legend')
 				.attr('width', barWidth * colors.length + 2 * legendPadding)
-				.attr('height', barHeight + 48)
+				.attr('height', barHeight + 50)
 				.select('g')
 					.attr('transform', `translate(${legendPadding}, 0)`);
 			let legendGroups = legend.selectAll('g')
@@ -304,25 +296,54 @@
 				.attr('width', barWidth)
 				.attr('height', barHeight)
 				.style('fill', d => d);
-			legendGroups.select('.legend-text')
+			const legendText = legendGroups.select('.legend-text')
 				.attr('x', barWidth)
 				.attr('y', barHeight + 12)
+				.attr('dy', '.35em');
+			let legendStartLabel = legend.selectAll('.legend-start-label')
+				.data([true]);
+			legendStartLabel = legendStartLabel.enter().append('text')
+				.attr('class', 'legend-start-label')
+				.attr('y', barHeight + 12)
 				.attr('dy', '.35em')
-				.text((d, i) => {
-					if (i === thresholds.length) return App.formatMoneyShort(maxValue);
-					return App.formatMoneyShort(thresholds[i]);
-				});
-			legend.selectAll('.legend-start-label')
-				.data([true])
-				.enter().append('text')
-					.attr('class', 'legend-start-label')
-					.attr('y', barHeight + 12)
-					.attr('dy', '.35em')
-					.text(0);
+				.merge(legendStartLabel);
+
+			if (indType === 'score' && scoreType === 'score') {
+				legendText
+					.style('text-anchor', (d, i) => (i === 3 ? 'end' : 'middle'))
+					.text((d, i) => {
+						// if (i === 1) return 'Developed Capacity';
+						if (i === 3) return 'Sustainable Capacity';
+						return '';
+					});
+				legendStartLabel.text('No Capacity');
+			} else if (indType === 'score' && scoreType === 'combined') {
+				legendText
+					.style('text-anchor', 'end')
+					.text((d, i) => {
+						if (i === 6) return 'High Score, High Funds Received';
+						return '';
+					});
+				legendStartLabel.text('Low Score, Low Funds Received');
+			} else {
+				legendText
+					.style('text-anchor', 'middle')
+					.text((d, i) => {
+						if (i === thresholds.length) return App.formatMoneyShort(maxValue);
+						return App.formatMoneyShort(thresholds[i]);
+					});
+				legendStartLabel.text(0);
+			}
 
 			// update legend title
-			let titleText = moneyFlow === 'funded' ? 'Funds Donated' : 'Funds Received';
-			titleText += ` (in ${App.currencyIso})`;
+			let titleText = '';
+			if (indType === 'money') {
+				titleText = (moneyFlow === 'funded' ? 'Funds Donated' : 'Funds Received');
+				titleText += ` (in ${App.currencyIso})`;
+			} else if (indType === 'score') {
+				titleText = (scoreType === 'score') ? 'JEE Score' : `log("Funds Received") / (5 - "JEE Score")`;
+			}
+
 			const legendTitle = legend.selectAll('.legend-title')
 				.data([titleText]);
 			const nlt = legendTitle.enter().append('text')
@@ -341,8 +362,9 @@
 
 			// populate info title
 			$('.info-title').text(country.NAME);
-			$('.info-profile-type').text(moneyFlow === 'funded' ?
-				'Funder Information' : 'Recipient Information');
+			$('.info-profile-type')
+				.css('display', indType === 'money' ? 'block' : 'none')
+				.text(moneyFlow === 'funded' ? 'Funder Information' : 'Recipient Information');
 
 			// define "go to analysis" button behavior
 			$('.info-analysis-button')
@@ -356,15 +378,46 @@
 			let totalSpent = 0;
 			if (currentNodeDataMap.has(country.ISO2)) {
 				const valueObj = currentNodeDataMap.get(country.ISO2);
-				totalCommitted += valueObj.total_committed;
-				totalSpent += valueObj.total_spent;
+				
+				if (indType === 'money') {
+					$('.info-score-text').hide();
+				} else if (indType === 'score') {
+					let scoreText = 'JEE Score Status: ';
+					if (valueObj.score) {
+						let className = 'text-warning';
+						if (valueObj.score >= 4) className = 'text-success';
+						if (valueObj.score < 2) className = 'text-danger';
+
+						scoreText += `<b class="${className}">`;
+						if (valueObj.score < 2) scoreText += 'No Capacity';
+						else if (valueObj.score < 3) scoreText += 'Limited Capacity';
+						else if (valueObj.score < 4) scoreText += 'Developed Capacity';
+						else if (valueObj.score < 5) scoreText += 'Demonstrated Capacity';
+						else scoreText += 'Sustained Capacity';
+						scoreText += '</b>';
+					} else {
+						scoreText = 'No JEE score data currently available';
+					}
+					d3.select('.info-score-text')
+						.style('display', 'block')
+						.html(scoreText);
+				}
+
+				if (indType === 'money' && moneyFlow === 'funded') {
+					totalCommitted += valueObj.fundedCommitted;
+					totalSpent += valueObj.fundedSpent;
+				} else {
+					totalCommitted += valueObj.receivedCommitted;
+					totalSpent += valueObj.receivedSpent;
+				}
 			}
 			$('.info-committed-value').text(App.formatMoney(totalCommitted));
 			$('.info-spent-value').text(App.formatMoney(totalSpent));
 
 			// construct label for value
-			$('.info-committed-value-label').html(getMoneyTypeLabel(moneyFlow, 'committed'));
-			$('.info-spent-value-label').html(getMoneyTypeLabel(moneyFlow, 'disbursed'));
+			const mFlow = (indType === 'score') ? 'received' : moneyFlow;
+			$('.info-committed-value-label').html(getMoneyTypeLabel(mFlow, 'committed'));
+			$('.info-spent-value-label').html(getMoneyTypeLabel(mFlow, 'disbursed'));
 
 			// display content
 			$('.info-container').slideDown();
@@ -425,25 +478,36 @@
 			// populate dropdowns
 			App.populateCcDropdown('.cc-select', { dropRight: true });
 
-			// update money flow type ('funded' or 'received')
+			// update indicator type ('money' or 'score') on change
+			$('.ind-type-filter .radio-option').click(function updateIndType() {
+				indType = $(this).find('input').attr('ind');
+				if (indType === 'money') {
+					$('.score-filters').slideUp();
+					$('.money-filters').slideDown();
+				} else if (indType === 'score') {
+					$('.money-filters').slideUp();
+					$('.score-filters').slideDown();
+				}
+				updateFilters();
+			});
+
+			// update money flow type ('funded' or 'received') on change
 			$('.money-flow-type-filter .radio-option').click(function updateMoneyFlow() {
-				indType = 'money';
 				moneyFlow = $(this).find('input').attr('ind');
 				updateFilters();
 
-				// update text in country info box based on money flow
+				// update text in country info box based on money flow on change
 				$('.info-tab-container .btn[tab="country"]')
 					.text(moneyFlow === 'received' ? 'By Donor' : 'By Recipient');
 			});
 
-			// update money type ('committed' or 'disbursed')
+			// update money type ('committed' or 'disbursed') on change
 			$('.money-type-filter .radio-option').click(function updateMoneyType() {
-				indType = 'money';
 				moneyType = $(this).find('input').attr('ind');
 				updateFilters();
 			});
 
-			// update score type ('score' or 'combined')
+			// update score type ('score' or 'combined') on change
 			$('.jee-score-filter .radio-option').click(function updateScoreType() {
 				indType = 'score';
 				scoreType = $(this).find('input').attr('ind');
@@ -462,10 +526,11 @@
 					'recipient country has received.',
 			});
 			$('.score-info-img').tooltipster({
-				content: 'The most recent <b>JEE score</b> for each country is used when available.',
+				interactive: true,
+				content: 'The most recent <b>JEE score</b> for each country is used when available. JEE score data are taken from the <a href="http://www.who.int/ihr/procedures/mission-reports/en/" target="_blank">World Health Organization Joint External Evaluation Reports</a>.',
 			});
 			$('.combined-info-img').tooltipster({
-				content: `This metric combines both the country's <b>JEE score</b> and the amount of funds that country has <b>received</b>. The formula used is: <i>"Funds received" / (8 - "JEE score")</i>.`,
+				content: `This metric combines both the country's <b>JEE score</b> and the amount of funds that the country has <b>received</b>. The goal of this metric is to highlight low-scoring countries with a low number of funds received.<br><br>This metric is calculated by dividing the logarithm of the funds received by a country (in USD) by 5 minus the country's JEE score (i.e. <i>log("Funds received") / (5 - "JEE score")</i>).`,
 			});
 
 			// show map options
@@ -473,6 +538,12 @@
 		}
 
 		function updateFilters() {
+			// update indicator type radio button
+			$('.ind-type-filter input').each(function updateInputs() {
+				const $this = $(this);
+				$this.prop('checked', $this.attr('ind') === indType);
+			});
+
 			// update which radio buttons are checked based on state variables
 			if (indType === 'money') {
 				// uncheck score buttons

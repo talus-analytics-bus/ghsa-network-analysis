@@ -66,16 +66,12 @@
 	.filter-box:nth-child(n+2) {
 		margin-top: 15px;
 	}
+	.score-filters { display: none; }
 	.money-flow-type-filter {
 		float: left;
 	}
 	.money-type-filter {
 		margin-left: 102px;
-	}
-	.jee-score-filter {
-		margin-top: 10px;
-		border-top: $border;
-		padding-top: 10px;
 	}
 	.multiselect {
 		width: 190px;
