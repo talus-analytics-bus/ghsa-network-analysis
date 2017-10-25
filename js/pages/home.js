@@ -90,7 +90,10 @@
 				if (scoreType === 'combined') return 'combo'
 				return 'score';
 			}
-			return moneyType === 'committed' ? 'total_committed' : 'total_spent';
+			if (moneyFlow === 'funded') {
+				return moneyType === 'committed' ? 'fundedCommitted' : 'fundedSpent';
+			}
+			return moneyType === 'committed' ? 'receivedCommitted' : 'receivedSpent';
 		}
 
 		function getMoneyTypeLabel(moneyFlow, moneyType) {
@@ -108,17 +111,18 @@
 				`<br>from <b>${startYear}</b> to <b>${endYear - 1}</b>`;
 		}
 
-		// gets the lookup object currently being used
-		function getDataLookup() {
-			return moneyFlow === 'funded' ? App.fundingLookup : App.recipientLookup;
-		}
-
 		// gets the color scale used for the map
 		function getColorScale() {
+			const valueAttrName = getValueAttrName();
+
 			if (indType === 'score') {
 				if (scoreType === 'combined') {
+					const domain = currentNodeDataMap.values()
+						.map(d => d[valueAttrName])
+						.filter(d => d);
+					if (domain.length === 1) domain.push(0);
 					return d3.scaleQuantile()
-						.domain([])
+						.domain(domain)
 						.range(oranges);
 				}
 
@@ -127,7 +131,6 @@
 					.range(rainbows);
 			}
 
-			const valueAttrName = getValueAttrName();
 			const domain = currentNodeDataMap.values()
 				.map(d => d[valueAttrName])
 				.filter(d => d);
@@ -151,9 +154,6 @@
 
 		// updates the country to value data map based on user settings
 		function updateDataMaps() {
-			// get funding lookup
-			const dataLookup = getDataLookup();
-
 			// get filter values
 			const ccs = $('.cc-select').val();
 
@@ -162,29 +162,26 @@
 
 			// build data map; filter and only use data with valid country values
 			App.countries.forEach((c) => {
-				const payments = dataLookup[c.ISO2];
+				const paymentsFunded = App.fundingLookup[c.ISO2];
+				const paymentsReceived = App.recipientLookup[c.ISO2];
 				const scoreObj = App.scoresByCountry[c.ISO2];
 
 				// only include country in data map if it has a score or rec/don funds
-				if (payments || scoreObj) {
-					let totalCommitted = 0;
-					let totalSpent = 0;
+				if (paymentsFunded || paymentsReceived || scoreObj) {
+					let fundedCommitted = 0;
+					let fundedSpent = 0;
+					let receivedCommitted = 0;
+					let receivedSpent = 0;
 					let score = null;
 					let combo = null;
 
-					if (payments) {
-						for (let i = 0, n = payments.length; i < n; i++) {
-							const p = payments[i];
-
-							// filter by core category
-							if (!App.passesCategoryFilter(p.core_capacities, ccs)) continue;
-
-							// add payment values by year
-							for (let k = startYear; k < endYear; k++) {
-								totalCommitted += p.committed_by_year[k] || 0;
-								totalSpent += p.spent_by_year[k] || 0;
-							}
-						}
+					if (paymentsFunded) {
+						({ totalCommitted: fundedCommitted, totalSpent: fundedSpent } =
+							getPaymentSum(paymentsFunded, ccs));
+					}
+					if (paymentsReceived) {
+						({ totalCommitted: receivedCommitted, totalSpent: receivedSpent } =
+							getPaymentSum(paymentsReceived, ccs));
 					}
 
 					if (scoreObj) {
@@ -193,24 +190,41 @@
 						score = d3.mean(capScores, d => d.score);
 					}
 
-					// calculate combo metric if it is the current displayed metric
-					if (indType === 'score' && scoreType === 'combo') {
-						// check if country has received funds and has a score
-						if (App.recipientLookup[c.ISO2] && scoreObj) {
-							let totalReceived = 0;
-							
-						}
+					// check if country has received funds and has a score
+					if (paymentsReceived && scoreObj) {
+						combo = receivedSpent / (8 - score);
 					}
 
 					// set in node map
 					currentNodeDataMap.set(c.ISO2, {
-						total_committed: totalCommitted,
-						total_spent: totalSpent,
+						fundedCommitted,
+						fundedSpent,
+						receivedCommitted,
+						receivedSpent,
 						score,
 						combo,
 					});
 				}
 			});
+		}
+
+		// gets the sum of payments for the years and capacities selected
+		function getPaymentSum(payments, ccs) {
+			let totalCommitted = 0;
+			let totalSpent = 0;
+			for (let i = 0, n = payments.length; i < n; i++) {
+				const p = payments[i];
+
+				// filter by core category
+				if (!App.passesCategoryFilter(p.core_capacities, ccs)) continue;
+
+				// add payment values by year
+				for (let k = startYear; k < endYear; k++) {
+					totalCommitted += p.committed_by_year[k] || 0;
+					totalSpent += p.spent_by_year[k] || 0;
+				}
+			}
+			return { totalCommitted, totalSpent };
 		}
 
 		// updates map colors
