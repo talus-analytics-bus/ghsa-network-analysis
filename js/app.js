@@ -21,12 +21,15 @@ const App = {};
 		// define global variables used throughout
 		App.geoData = null;  // geographic data of the world
 		App.countries = [];  // an array of all countries and their properties
+		App.codeToNameMap = d3.map();  // a lookup map of a donor_code to the country name
+		App.scoresByCountry = {};  // a lookup object of a donor_code to the country scores
+
+		// funding variables
 		App.fundingData = [];  // an array of all funding data
 		App.currencies = {};  // a lookup of all global currencies
 		App.currencyIso = 'USD';  // the default currency
 		App.fundingLookup = {};  // a lookup of money funded for each country
 		App.recipientLookup = {};  // a lookup of money received for each country
-		App.codeToNameMap = d3.map();  // a lookup map of a donor_code to the country name
 		App.capacities = [
 			{ id: 'P.1', name: 'P.1 - National Legislation, Policy, and Financing' },
 			{ id: 'P.2', name: 'P.2 - IHR Coordination, Communicaton and Advocacy' },
@@ -56,8 +59,9 @@ const App = {};
 			.defer(d3.csv, 'data/unsd_data.csv')
 			.defer(d3.json, 'data/donor_codes.json')
 			.defer(d3.json, 'data/funding_data_v11.json')
+			.defer(d3.json, 'data/jee_score_data.json')
 			.defer(d3.json, 'data/currencies.json')
-			.await((error, worldData, unsdData, donorCodeData, fundingData, currencies) => {
+			.await((error, worldData, unsdData, donorCodeData, fundingData, jeeData, currencies) => {
 				if (error) throw error;
 
 				/* -------- Populate global variables -------- */
@@ -88,6 +92,46 @@ const App = {};
 
 				// save funding data
 				App.fundingData = fundingData;
+
+				// save indicator scores by country
+				jeeData.forEach((sRow) => {
+					const indId = sRow.indicator.split(' ')[0];
+					const capId = indId.split('.').slice(0, 2).join('.');
+
+					// check that capacity id is valid
+					if (!App.capacities.some(cc => cc.id === capId)) return;
+
+					// add to array in lookup object
+					// TODO this all assumes there's only ONE set of data for each country
+					if (!App.scoresByCountry[sRow.code]) {
+						App.scoresByCountry[sRow.code] = {
+							month: sRow.month,
+							year: sRow.year,
+							avgScore: null,
+							avgCapScores: [],
+							indScores: {},
+						};
+					}
+					const c = App.scoresByCountry[sRow.code];
+					if (!c.indScores[capId]) c.indScores[capId] = [];
+					c.indScores[capId].push({
+						indId,
+						score: sRow.score
+					});
+				});
+
+				// roll up indicator scores and write average capacity and overall scores
+				for (const iso in App.scoresByCountry) {
+					const c = App.scoresByCountry[iso];
+					for (const capId in c.indScores) {
+						const capScore = d3.mean(c.indScores[capId], d => d.score);
+						c.avgCapScores.push({
+							capId,
+							score: capScore,
+						});
+					}
+					c.avgScore = d3.mean(c.avgCapScores, d => d.score);
+				}
 
 				// save currencies in namespace; set default currency
 				App.currencies = Object.assign({}, currencies);

@@ -7,9 +7,22 @@
 		let startYear = App.dataStartYear;  // the start year of the time range shown
 		let endYear = App.dataEndYear + 1;  // the end year of the time range shown
 
+		// state variables for current map indicator
+		let indType = 'money';  // either 'money' or 'score'
+		let moneyFlow = 'funded';  // either 'funded' or 'received'
+		let moneyType = 'disbursed';  // either 'committed' or 'disbursed'
+		let scoreType = 'score';  // either 'score' or 'combined'
+
 		// colors
 		const purples = ['#e0ecf4', '#bfd3e6', '#9ebcda',
 			'#8c96c6', '#8c6bb1', '#88419d', '#810f7c', '#4d004b'];
+		const blues = ['#deebf7', '#c6dbef', '#9ecae1',
+			'#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b'];
+		const reds = ['#fee0d2', '#fcbba1', '#fc9272',
+			'#fb6a4a', '#ef3b2c', '#cb181d', '#a50f15', '#67000d'];
+		const oranges = ['#fee391', '#fec44f', '#fe9929',
+			'#ec7014', '#cc4c02', '#993404', '#662506'];
+		const rainbows = ['#d7191c', '#fdae61', '#ffffbf', '#1a9641'];
 
 
 		// function for initializing the page
@@ -72,18 +85,12 @@
 			$('.info-container').slideUp();
 		}
 
-		// gets the money type being displayed (donor vs recipient)
-		function getMoneyFlowType() {
-			return $('.money-flow-type-filter input:checked').attr('ind');
-		}
-
-		function getMoneyType() {
-			return $('.money-type-filter input:checked').attr('ind');
-		}
-
 		function getValueAttrName() {
-			const moneyType = getMoneyType();
-			return (moneyType === 'committed') ? 'total_committed' : 'total_spent';
+			if (indType === 'score') {
+				if (scoreType === 'combined') return 'combo'
+				return 'score';
+			}
+			return moneyType === 'committed' ? 'total_committed' : 'total_spent';
 		}
 
 		function getMoneyTypeLabel(moneyFlow, moneyType) {
@@ -103,8 +110,31 @@
 
 		// gets the lookup object currently being used
 		function getDataLookup() {
-			if (getMoneyFlowType() === 'received') return App.recipientLookup;
-			return App.fundingLookup;
+			return moneyFlow === 'funded' ? App.fundingLookup : App.recipientLookup;
+		}
+
+		// gets the color scale used for the map
+		function getColorScale() {
+			if (indType === 'score') {
+				if (scoreType === 'combined') {
+					return d3.scaleQuantile()
+						.domain([])
+						.range(oranges);
+				}
+
+				return d3.scaleThreshold()
+					.domain([2, 3, 4])
+					.range(rainbows);
+			}
+
+			const valueAttrName = getValueAttrName();
+			const domain = currentNodeDataMap.values()
+				.map(d => d[valueAttrName])
+				.filter(d => d);
+			if (domain.length === 1) domain.push(0);
+			return d3.scaleQuantile()
+				.domain(domain)
+				.range(purples);
 		}
 
 		// update everything if any parameters change
@@ -121,7 +151,7 @@
 
 		// updates the country to value data map based on user settings
 		function updateDataMaps() {
-			// get lookup (has all data)
+			// get funding lookup
 			const dataLookup = getDataLookup();
 
 			// get filter values
@@ -130,22 +160,45 @@
 			// clear out current data
 			currentNodeDataMap.clear();
 
-			// filter and only use data with valid country values
+			// build data map; filter and only use data with valid country values
 			App.countries.forEach((c) => {
 				const payments = dataLookup[c.ISO2];
-				if (payments) {
+				const scoreObj = App.scoresByCountry[c.ISO2];
+
+				// only include country in data map if it has a score or rec/don funds
+				if (payments || scoreObj) {
 					let totalCommitted = 0;
 					let totalSpent = 0;
-					for (let i = 0, n = payments.length; i < n; i++) {
-						const p = payments[i];
+					let score = null;
+					let combo = null;
 
-						// filter by core category
-						if (!App.passesCategoryFilter(p.core_capacities, ccs)) continue;
+					if (payments) {
+						for (let i = 0, n = payments.length; i < n; i++) {
+							const p = payments[i];
 
-						// add payment values by year
-						for (let k = startYear; k < endYear; k++) {
-							totalCommitted += p.committed_by_year[k] || 0;
-							totalSpent += p.spent_by_year[k] || 0;
+							// filter by core category
+							if (!App.passesCategoryFilter(p.core_capacities, ccs)) continue;
+
+							// add payment values by year
+							for (let k = startYear; k < endYear; k++) {
+								totalCommitted += p.committed_by_year[k] || 0;
+								totalSpent += p.spent_by_year[k] || 0;
+							}
+						}
+					}
+
+					if (scoreObj) {
+						const capScores = scoreObj.avgCapScores
+							.filter(d => ccs.includes(d.capId));
+						score = d3.mean(capScores, d => d.score);
+					}
+
+					// calculate combo metric if it is the current displayed metric
+					if (indType === 'score' && scoreType === 'combo') {
+						// check if country has received funds and has a score
+						if (App.recipientLookup[c.ISO2] && scoreObj) {
+							let totalReceived = 0;
+							
 						}
 					}
 
@@ -153,6 +206,8 @@
 					currentNodeDataMap.set(c.ISO2, {
 						total_committed: totalCommitted,
 						total_spent: totalSpent,
+						score,
+						combo,
 					});
 				}
 			});
@@ -160,19 +215,8 @@
 
 		// updates map colors
 		function updateMap() {
-			const moneyFlow = getMoneyFlowType();
-			const moneyType = getMoneyType();
 			const valueAttrName = getValueAttrName();
-			d3.selectAll('.country-arc, .link').classed('active', false);
-
-			// get color scale and set domain
-			const domain = currentNodeDataMap.values()
-				.map(d => d[valueAttrName])
-				.filter(d => d);
-			if (domain.length === 1) domain.push(0);
-			const nodeColorScale = d3.scaleQuantile()
-				.domain(domain)
-				.range(purples);
+			const colorScale = getColorScale();
 
 			// color countries and update tooltip content
 			map.element.selectAll('.country').transition()
@@ -181,7 +225,7 @@
 					const isoCode = d.properties.ISO2;
 					if (currentNodeDataMap.has(isoCode)) {
 						d.value = currentNodeDataMap.get(isoCode)[valueAttrName];
-						d.color = d.value ? nodeColorScale(d.value) : '#ccc';
+						d.color = d.value ? colorScale(d.value) : '#ccc';
 					} else {
 						d.value = null;
 						d.color = '#ccc';
@@ -208,7 +252,7 @@
 				});
 
 			// update legend
-			updateLegend(nodeColorScale);
+			updateLegend(colorScale);
 		}
 
 		// update the map legend
@@ -220,7 +264,8 @@
 			const legendPadding = 20;
 
 			const colors = colorScale.range();
-			const quantiles = colorScale.quantiles();
+			const thresholds = indType === 'score' ?
+				colorScale.domain() : colorScale.quantiles();
 			const maxValue = d3.max(currentNodeDataMap.values()
 				.map(d => d[valueAttrName]));
 
@@ -250,8 +295,8 @@
 				.attr('y', barHeight + 12)
 				.attr('dy', '.35em')
 				.text((d, i) => {
-					if (i === quantiles.length) return App.formatMoneyShort(maxValue);
-					return App.formatMoneyShort(quantiles[i]);
+					if (i === thresholds.length) return App.formatMoneyShort(maxValue);
+					return App.formatMoneyShort(thresholds[i]);
 				});
 			legend.selectAll('.legend-start-label')
 				.data([true])
@@ -262,8 +307,7 @@
 					.text(0);
 
 			// update legend title
-			let titleText = getMoneyFlowType() === 'funded' ?
-				'Funds Donated' : 'Funds Received';
+			let titleText = moneyFlow === 'funded' ? 'Funds Donated' : 'Funds Received';
 			titleText += ` (in ${App.currencyIso})`;
 			const legendTitle = legend.selectAll('.legend-title')
 				.data([titleText]);
@@ -280,7 +324,6 @@
 		// displays detailed country information
 		function displayCountryInfo() {
 			const country = activeCountry.datum().properties;
-			const moneyFlow = getMoneyFlowType();
 
 			// populate info title
 			$('.info-title').text(country.NAME);
@@ -368,26 +411,32 @@
 			// populate dropdowns
 			App.populateCcDropdown('.cc-select', { dropRight: true });
 
-			// attach radio button behavior
-			$('.map-options-container .radio-option').click(function clickedRadio() {
-				const $option = $(this);
-				$option.find('input').prop('checked', true);
-				$option.siblings().find('input').prop('checked', false);
-			});
+			// update money flow type ('funded' or 'received')
+			$('.money-flow-type-filter .radio-option').click(function updateMoneyFlow() {
+				indType = 'money';
+				moneyFlow = $(this).find('input').attr('ind');
+				updateFilters();
 
-			// attach change behavior
-			$('.money-flow-type-filter .radio-option').click(() => {
-				// change button title in country info box
-				const moneyFlow = getMoneyFlowType();
+				// update text in country info box based on money flow
 				$('.info-tab-container .btn[tab="country"]')
 					.text(moneyFlow === 'received' ? 'By Donor' : 'By Recipient');
+			});
 
-				updateAll();
+			// update money type ('committed' or 'disbursed')
+			$('.money-type-filter .radio-option').click(function updateMoneyType() {
+				indType = 'money';
+				moneyType = $(this).find('input').attr('ind');
+				updateFilters();
 			});
-			$('.money-type-filter .radio-option').click(updateAll);
-			$('.links-filter .radio-option').click(() => {
-				$('.country-link').toggle();
+
+			// update score type ('score' or 'combined')
+			$('.jee-score-filter .radio-option').click(function updateScoreType() {
+				indType = 'score';
+				scoreType = $(this).find('input').attr('ind');
+				updateFilters();
 			});
+
+			// update map on dropdown change
 			$('.map-options-container select').on('change', updateAll);
 
 			// add info tooltips
@@ -398,9 +447,48 @@
 				content: 'The <b>amount disbursed</b> refers to the amount of money the ' +
 					'recipient country has received.',
 			});
+			$('.score-info-img').tooltipster({
+				content: 'The most recent <b>JEE score</b> for each country is used when available.',
+			});
+			$('.combined-info-img').tooltipster({
+				content: `This metric combines both the country's <b>JEE score</b> and the amount of funds that country has <b>received</b>. The formula used is: <i>"Funds received" / (8 - "JEE score")</i>.`,
+			});
 
 			// show map options
 			$('.map-options-container').show();
+		}
+
+		function updateFilters() {
+			// update which radio buttons are checked based on state variables
+			if (indType === 'money') {
+				// uncheck score buttons
+				$('.jee-score-filter input').prop('checked', false);
+
+				// update money flow type radio buttons
+				$('.money-flow-type-filter input').each(function updateInputs() {
+					const $this = $(this);
+					$this.prop('checked', $this.attr('ind') === moneyFlow);
+				});
+
+				// update money type radio buttons
+				$('.money-type-filter input').each(function updateInputs() {
+					const $this = $(this);
+					$this.prop('checked', $this.attr('ind') === moneyType);
+				});
+			} else if (indType === 'score') {
+				// uncheck money radio buttons
+				$('.money-type-filter input, .money-flow-type-filter input')
+					.prop('checked', false);
+
+				// update jee radio button
+				$('.jee-score-filter input').each(function updateInputs() {
+					const $this = $(this);
+					$this.prop('checked', $this.attr('ind') === scoreType);
+				});
+			}
+
+			// update the map
+			updateAll();
 		}
 
 		function initCountryInfoBox() {
