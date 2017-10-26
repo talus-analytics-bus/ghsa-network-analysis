@@ -22,7 +22,7 @@
 			'#fb6a4a', '#ef3b2c', '#cb181d', '#a50f15', '#67000d'];
 		const orangesReverse = ['#fee391', '#fec44f', '#fe9929',
 			'#ec7014', '#cc4c02', '#993404', '#662506'].reverse();
-		const jeeColors = ['#c91414', '#ede929', '#ede929', '#0c6b0c'];
+		const jeeColors = ['#c91414', '#ede929', '#ede929', '#ede929', '#ede929', '#0c6b0c', '#0c6b0c', '#0c6b0c'];
 
 
 		// function for initializing the page
@@ -98,24 +98,21 @@
 
 		function getMoneyTypeLabel(moneyFlow, moneyType) {
 			let noun = '';
-			if (moneyFlow === 'funded' && moneyType === 'committed') {
-				noun = 'Committed Funds';
-			} else if (moneyFlow === 'funded' && moneyType === 'disbursed') {
-				noun = 'Disbursed Funds';
-			} else if (moneyFlow === 'received' && moneyType === 'committed') {
-				noun = 'Committed<br>Funds to Receive';
-			} else if (moneyFlow === 'received' && moneyType === 'disbursed') {
-				noun = 'Received Funds';
+			if (moneyType === 'committed') {
+				noun = 'Committed';
+			} else {
+				if (moneyFlow === 'funded') noun = 'Disbursed';
+				else noun = 'Received';
 			}
-			return `Total ${noun}` +
-				`<br>from <b>${startYear}</b> to <b>${endYear - 1}</b>`;
+			return `Total <b>${noun}</b>` +
+				`<br>from ${startYear} to ${endYear - 1}`;
 		}
 
 		// gets the color scale used for the map
 		function getColorScale() {
 			if (indType === 'score' && scoreType === 'score') {
 				return d3.scaleThreshold()
-					.domain([2, 3, 4])
+					.domain([1.5, 2, 2.5, 3, 3.5, 4, 4.5])
 					.range(jeeColors);
 			}
 
@@ -216,7 +213,7 @@
 			return { totalCommitted, totalSpent };
 		}
 
-		// updates map colors
+		// updates map colors and country tooltip
 		function updateMap() {
 			const valueAttrName = getValueAttrName();
 			const colorScale = getColorScale();
@@ -236,20 +233,38 @@
 					return d.color;
 				})
 				.each(function updateTooltip(d) {
+					const isJeeScore = (indType === 'score' && scoreType === 'score');
+					console.log(isJeeScore);
+
+					// define labels and value to be shown
+					let label = getMoneyTypeLabel(moneyFlow, moneyType);
+					let infoLabel = (moneyFlow === 'funded') ?
+							'Funder Information' : 'Recipient Information';
+					let value = d.value;
+
+					// labels and value are custom if showing JEE score
+					if (isJeeScore) {
+						label = getMoneyTypeLabel('received', 'disbursed');
+						infoLabel = 'Recipient Information';
+						if (currentNodeDataMap.has(d.properties.ISO2)) {
+							value = currentNodeDataMap.get(d.properties.ISO2).receivedSpent;
+						}
+					}
+
+					// build tooltip
 					const container = d3.select(document.createElement('div'));
 					container.append('div')
 						.attr('class', 'tooltip-title')
 						.text(d.properties.NAME);
 					container.append('div')
 						.attr('class', 'tooltip-profile-type')
-						.text(moneyFlow === 'funded' ?
-							'Funder Information' : 'Recipient Information');
+						.text(infoLabel);
 					container.append('div')
 						.attr('class', 'tooltip-main-value')
-						.text(App.formatMoney(d.value));
+						.text(App.formatMoney(value));
 					container.append('div')
 						.attr('class', 'tooltip-main-value-label')
-						.html(getMoneyTypeLabel(moneyFlow, moneyType));
+						.html(label);
 
 					$(this).tooltipster('content', container.html());
 				});
@@ -261,13 +276,14 @@
 		// update the map legend
 		function updateLegend(colorScale) {
 			const valueAttrName = getValueAttrName();
+			const isJeeScore = (indType === 'score' && scoreType === 'score');
 
 			const barHeight = 16;
 			let barWidth = 70;
 			const legendPadding = 20;
 
 			// adjust width for JEE score
-			if (indType === 'score' && scoreType === 'score') barWidth = 100;
+			if (isJeeScore) barWidth = 50;
 
 			const colors = colorScale.range();
 			const thresholds = indType === 'score' ?
@@ -284,22 +300,36 @@
 				.data(colors);
 			legendGroups.exit().remove();
 
+			// add bars, texts, ticks for each group
 			const newLegendGroups = legendGroups.enter().append('g');
 			newLegendGroups.append('rect')
-				.attr('class', 'legend-bar');
+				.attr('class', 'legend-bar')
+				.attr('height', barHeight);
 			newLegendGroups.append('text')
-				.attr('class', 'legend-text');
+				.attr('class', 'legend-text')
+				.attr('dy', '.35em');
+			newLegendGroups.append('line')
+				.attr('class', 'legend-tick')
+				.attr('y1', barHeight)
+				.attr('y2', barHeight + 4);
 
 			legendGroups = legendGroups.merge(newLegendGroups)
 				.attr('transform', (d, i) => `translate(${barWidth * i}, 0)`);
 			legendGroups.select('.legend-bar')
 				.attr('width', barWidth)
-				.attr('height', barHeight)
 				.style('fill', d => d);
 			const legendText = legendGroups.select('.legend-text')
 				.attr('x', barWidth)
-				.attr('y', barHeight + 12)
-				.attr('dy', '.35em');
+				.attr('y', isJeeScore ? barHeight + 14 : barHeight + 12);
+			legendGroups.select('.legend-tick')
+				.attr('x1', (d, i) => (i === colors.length - 2) ? 2 * barWidth - 1 : 2 * barWidth)
+				.attr('x2', (d, i) => (i === colors.length - 2) ? 2 * barWidth - 1 : 2 * barWidth)
+				.style('display', (d, i) => {
+					if (!isJeeScore) return 'none';
+					return (i % 2 === 0) ? 'inline' : 'none';
+				});
+
+			// add starting label for legend
 			let legendStartLabel = legend.selectAll('.legend-start-label')
 				.data([true]);
 			legendStartLabel = legendStartLabel.enter().append('text')
@@ -308,31 +338,49 @@
 				.attr('dy', '.35em')
 				.merge(legendStartLabel);
 
-			if (indType === 'score' && scoreType === 'score') {
+			// add starting tick
+			let legendStartTick = legend.selectAll('.legend-start-tick')
+				.data([true]);
+			legendStartTick.exit().remove();
+			legendStartTick.enter().append('line')
+				.attr('class', 'legend-start-tick legend-tick')
+				.attr('x1', 1)
+				.attr('x2', 1)
+				.attr('y1', barHeight)
+				.attr('y2', barHeight + 4)
+				.merge(legendStartTick)
+					.style('display', isJeeScore ? 'inline' : 'none');
+
+			if (isJeeScore) {
 				legendText
-					.style('text-anchor', (d, i) => (i === 3 ? 'end' : 'middle'))
-					.text((d, i) => {
-						// if (i === 1) return 'Developed Capacity';
-						if (i === 3) return 'Sustainable Capacity';
-						return '';
-					});
-				legendStartLabel.text('No Capacity');
+					.style('text-anchor', 'middle')
+					.style('display', (d, i) => (i % 2 === 0 ? 'none' : 'inline'))
+					.text((d, i) => (i + 3) / 2);
+				legendStartLabel
+					.style('text-anchor', 'middle')
+					.text('1');
 			} else if (indType === 'score' && scoreType === 'combined') {
 				legendText
+					.style('display', 'inline')
 					.style('text-anchor', 'end')
 					.text((d, i) => {
-						if (i === 6) return 'High Score, High Funds Received';
+						if (i === 6) return 'Needs Met';
 						return '';
 					});
-				legendStartLabel.text('Low Score, Low Funds Received');
+				legendStartLabel
+					.style('text-anchor', 'start')
+					.text('Needs Unmet');
 			} else {
 				legendText
+					.style('display', 'inline')
 					.style('text-anchor', 'middle')
 					.text((d, i) => {
 						if (i === thresholds.length) return App.formatMoneyShort(maxValue);
 						return App.formatMoneyShort(thresholds[i]);
 					});
-				legendStartLabel.text(0);
+				legendStartLabel
+					.style('text-anchor', 'start')
+					.text(0);
 			}
 
 			// update legend title
@@ -341,7 +389,11 @@
 				titleText = (moneyFlow === 'funded' ? 'Funds Donated' : 'Funds Received');
 				titleText += ` (in ${App.currencyIso})`;
 			} else if (indType === 'score') {
-				titleText = (scoreType === 'score') ? 'JEE Score' : `log("Funds Received") / (5 - "JEE Score")`;
+				if (scoreType === 'score') {
+					titleText = 'Average JEE Score for Selected Core Capacities';
+				} else if (scoreType === 'combined') {
+					titleText = 'Financial Resources / Needs Metric';
+				}
 			}
 
 			const legendTitle = legend.selectAll('.legend-title')
@@ -382,7 +434,7 @@
 				if (indType === 'money') {
 					$('.info-score-text').hide();
 				} else if (indType === 'score') {
-					let scoreText = 'JEE Score Status: ';
+					let scoreText = 'Average JEE Score: ';
 					if (valueObj.score) {
 						let className = 'text-warning';
 						if (valueObj.score >= 4) className = 'text-success';
