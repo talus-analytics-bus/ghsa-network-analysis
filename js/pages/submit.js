@@ -69,7 +69,6 @@
 			if (xhr.readyState === 4) {
 				if (xhr.status === 200) {
 					const response = JSON.parse(xhr.responseText);
-					console.log(response);
 					uploadFile(file, response.signedRequest, response.url);
 				} else {
 					noty({ type: 'error', text: 'Could not get signed URL.' });
@@ -84,6 +83,7 @@
 		const xhr = new XMLHttpRequest();
 		xhr.open('PUT', signedRequest);
 		xhr.onreadystatechange = () => {
+			console.log(xhr);
 			if (xhr.readyState === 4) {
 				if (xhr.status === 200) {
 					console.log(xhr);
