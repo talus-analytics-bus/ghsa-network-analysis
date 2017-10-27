@@ -96,7 +96,8 @@ const App = {};
 				// save indicator scores by country
 				jeeData.forEach((sRow) => {
 					const indId = sRow.indicator.split(' ')[0];
-					const capId = indId.split('.').slice(0, 2).join('.');
+					let capId = indId.split('.').slice(0, 2).join('.');
+					if (capId.split('.')[0] === 'PoE') capId = 'O.1';
 
 					// check that capacity id is valid
 					if (!App.capacities.some(cc => cc.id === capId)) return;

@@ -234,7 +234,6 @@
 				})
 				.each(function updateTooltip(d) {
 					const isJeeScore = (indType === 'score' && scoreType === 'score');
-					console.log(isJeeScore);
 
 					// define labels and value to be shown
 					let label = getMoneyTypeLabel(moneyFlow, moneyType);
