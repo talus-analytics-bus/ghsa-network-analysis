@@ -418,7 +418,7 @@
 				$('.legend-tooltip')
 					.show()
 					.tooltipster({
-						content: `This metric combines both the amount of funds a country has <b>received</b> and the country's <b>need</b>. The goal of this metric is to highlight low-scoring countries with a low number of funds received.<br><br><b>Need</b> is defined by taking (5 - "Avg. JEE Score"). The overall metric is calculated by dividing the logarithm of the funds received by a country (in USD) by the needs of the country (i.e. <i>log("Funds received") / (5 - "JEE score")</i>).`,
+						content: `This metric combines both a country's JEE scores and the amount of disbursed funds that the country has received. We use JEE scores as a proxy for country-specific needs, and calculate the ratio of financial resources to need. The goal of this metric is to highlight areas whose needs may still be unmet based on their ratio of financial resources to need. The metric is calculated by dividing the logarithm of the funds received by a country by 5 minus the country's JEE score.`,
 					});
 			} else {
 				$('.legend-tooltip').hide();
@@ -455,15 +455,15 @@
 				} else if (indType === 'score') {
 					let scoreText = 'Average JEE Score: ';
 					if (valueObj.score) {
-						let className = 'text-warning';
-						if (valueObj.score >= 4) className = 'text-success';
-						if (valueObj.score < 2) className = 'text-danger';
+						let className = '';
+						if (valueObj.score >= 3.5) className = 'text-success';
+						if (valueObj.score < 1.5) className = 'text-danger';
 
 						scoreText += `<b class="${className}">`;
-						if (valueObj.score < 2) scoreText += 'No Capacity';
-						else if (valueObj.score < 3) scoreText += 'Limited Capacity';
-						else if (valueObj.score < 4) scoreText += 'Developed Capacity';
-						else if (valueObj.score < 5) scoreText += 'Demonstrated Capacity';
+						if (valueObj.score < 1.5) scoreText += 'No Capacity';
+						else if (valueObj.score < 2.5) scoreText += 'Limited Capacity';
+						else if (valueObj.score < 3.5) scoreText += 'Developed Capacity';
+						else if (valueObj.score < 4.5) scoreText += 'Demonstrated Capacity';
 						else scoreText += 'Sustained Capacity';
 						scoreText += '</b>';
 					} else {
@@ -597,10 +597,10 @@
 			});
 			$('.score-info-img').tooltipster({
 				interactive: true,
-				content: 'The most recent <b>JEE score</b> for each country is used when available. JEE score data are taken from the <a href="http://www.who.int/ihr/procedures/mission-reports/en/" target="_blank">World Health Organization Joint External Evaluation Reports</a>.',
+				content: `The average of each country's most recent <b>JEE scoress </b>, for all JEE scores selected in the filter below.`,
 			});
 			$('.combined-info-img').tooltipster({
-				content: `This metric combines both the country's <b>JEE score</b> and the amount of funds that the country has <b>received</b>. The goal of this metric is to highlight low-scoring countries with a low number of funds received.<br><br>This metric is calculated by dividing the logarithm of the funds received by a country (in USD) by 5 minus the country's JEE score (i.e. <i>log("Funds received") / (5 - "JEE score")</i>).`,
+				content: `This metric combines both a country's JEE scores and the amount of disbursed funds that the country has received. We use JEE scores as a proxy for country-specific needs, and calculate the ratio of financial resources to need. The goal of this metric is to highlight areas whose needs may still be unmet based on their ratio of financial resources to need. The metric is calculated by dividing the logarithm of the funds received by a country by 5 minus the country's JEE score.`,
 			});
 
 			// show map options
@@ -652,7 +652,7 @@
 
 			// populate tooltip for avg JEE score text
 			$('.score-text-info-img').tooltipster({
-				content: 'The current status for the country is shown for the selected core capacities. Status is calculated by averaging available JEE scores for indicators in each selected core capacity.',
+				content: `JEE scores are taken from each country's <a href="http://www.who.int/ihr/procedures/mission-reports/en/" target="_blank">World Health Organization Joint External Evaluation Report</a>, when available.`,
 			});
 		}
 
