@@ -15,6 +15,11 @@
 	.submit-form-container {
 		margin-left: 20px;
 	}
+	.file-name-text {
+		display: inline-block;
+		margin-left: 15px;
+		font-size: 1.1em;
+	}
 }
 .submit-form-table {
 	margin-top: 20px;
@@ -22,10 +27,6 @@
 	td {
 		padding: 5px 25px 5px 0;
 	}
-	td:first-child {
-		font-weight: 600;
-	}
-	input {
-		width: 250px;
-	}
+	td:first-child { font-weight: 600; }
+	input { width: 250px; }
 }

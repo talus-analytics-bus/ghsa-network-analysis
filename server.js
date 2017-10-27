@@ -15,8 +15,8 @@ app.get(/^(.+)$/, function(req, res) {
 	if (req.params[0] === '/upload-s3') {
 		// upload file to Amazon S3 bucket
 		var s3 = new aws.S3();
-		var fileName = req.query('file-name');
-		var fileType = req.query('file-type');
+		var fileName = req.query['file-name'];
+		var fileType = req.query['file-type'];
 
 		s3.getSignedUrl('putObject', {
 			Bucket: S3_BUCKET,
