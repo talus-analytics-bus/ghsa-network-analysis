@@ -87,6 +87,11 @@
 			if (xhr.readyState === 4) {
 				if (xhr.status === 200) {
 					console.log(xhr);
+					// TODO
+					noty({ type: 'success', text: 'Report has been submitted!' });
+				} else {
+					console.log(xhr.response);
+					noty({ text: 'There was an issue submitting your report. Please notify the administrators of the tool.' });
 				}
 			}
 		};
