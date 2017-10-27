@@ -22,7 +22,7 @@
 			'#fb6a4a', '#ef3b2c', '#cb181d', '#a50f15', '#67000d'];
 		const orangesReverse = ['#fee391', '#fec44f', '#fe9929',
 			'#ec7014', '#cc4c02', '#993404', '#662506'].reverse();
-		const jeeColors = ['#c91414', '#ede929', '#ede929', '#ede929', '#ede929', '#0c6b0c', '#0c6b0c', '#0c6b0c'];
+		const jeeColors = ['#c91414', '#ede929', '#ede929', '#ede929', '#ede929', '#0b6422', '#0b6422', '#0b6422'];
 
 
 		// function for initializing the page
@@ -397,12 +397,32 @@
 
 			const legendTitle = legend.selectAll('.legend-title')
 				.data([titleText]);
-			const nlt = legendTitle.enter().append('text')
-				.attr('class', 'legend-title');
-			legendTitle.merge(nlt)
-				.attr('x', barWidth * colors.length / 2)
-				.attr('y', barHeight + 45)
-				.text(d => d);
+			legendTitle.enter().append('text')
+				.attr('class', 'legend-title')
+				.merge(legendTitle)
+					.attr('x', barWidth * colors.length / 2)
+					.attr('y', barHeight + 45)
+					.html(d => d);
+
+			const legendTooltip = legend.selectAll('.legend-tooltip')
+				.data([true]);
+			legendTooltip.enter().append('image')
+				.attr('class', 'legend-tooltip')
+				.merge(legendTooltip)
+					.attr('xlink:href', 'img/info.png')
+					.attr('x', barWidth * colors.length / 2 + 134)
+					.attr('y', barHeight + 33.5);
+
+			// if showing combination metric, populate tooltip
+			if (indType === 'score' && scoreType === 'combined') {
+				$('.legend-tooltip')
+					.show()
+					.tooltipster({
+						content: `This metric combines both the amount of funds a country has <b>received</b> and the country's <b>need</b>. The goal of this metric is to highlight low-scoring countries with a low number of funds received.<br><br><b>Need</b> is defined by taking (5 - "Avg. JEE Score"). The overall metric is calculated by dividing the logarithm of the funds received by a country (in USD) by the needs of the country (i.e. <i>log("Funds received") / (5 - "JEE score")</i>).`,
+					});
+			} else {
+				$('.legend-tooltip').hide();
+			}
 
 			$('.legend-container').slideDown();
 		}
@@ -431,7 +451,7 @@
 				const valueObj = currentNodeDataMap.get(country.ISO2);
 				
 				if (indType === 'money') {
-					$('.info-score-text').hide();
+					$('.info-score-text-container').slideUp();
 				} else if (indType === 'score') {
 					let scoreText = 'Average JEE Score: ';
 					if (valueObj.score) {
@@ -449,9 +469,8 @@
 					} else {
 						scoreText = 'No JEE score data currently available';
 					}
-					d3.select('.info-score-text')
-						.style('display', 'block')
-						.html(scoreText);
+					$('.info-score-text').html(scoreText);
+					$('.info-score-text-container').slideDown();
 				}
 
 				if (indType === 'money' && moneyFlow === 'funded') {
@@ -630,6 +649,11 @@
 		function initCountryInfoBox() {
 			// define info close button behavior
 			$('.info-close-button').on('click', resetMap);
+
+			// populate tooltip for avg JEE score text
+			$('.score-text-info-img').tooltipster({
+				content: 'The current status for the country is shown for the selected core capacities. Status is calculated by averaging available JEE scores for indicators in each selected core capacity.',
+			});
 		}
 
 		init();

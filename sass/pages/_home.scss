@@ -84,6 +84,14 @@
 		position: relative;
 		top: 2px;
 	}
+	.radio-option td {
+		vertical-align: top;
+	}
+	.radio-option td:nth-child(2) {
+		position: relative;
+		top: 2px;
+		left: 3px;
+	}
 	.slider {
 		margin: 5px 0 15px 15px;
 		width: 210px;
@@ -93,8 +101,15 @@
 		top: -1px;
 		width: 13px;
 		height: 13px;
-		margin-left: 5px;
+		margin-left: 3px;
 	}
+	.or-text {
+		margin: -2px 0;
+		text-align: center;
+		font-size: 0.95em;
+	}
+	.money-flow-or-text { width: 100px; }
+	.money-type-or-text { width: 115px; }
 }
 .legend-container {
 	display: none;
@@ -128,5 +143,9 @@
 	}
 	.legend-tick {
 		stroke: #333;
+	}
+	image.legend-tooltip {
+		width: 14px;
+		height: 14px;
 	}
 }

@@ -49,8 +49,8 @@
 		text-align: center;
 		font-size: 1.2em;
 	}
-	.info-score-text {
-		margin-top: 5px;
+	.info-score-text-container {
+		margin-top: 10px;
 		text-align: center;
 		font-weight: 600;
 		font-size: 1.2em;
@@ -68,5 +68,12 @@
 	}
 	.info-button-container {
 		margin-top: 25px;
+	}
+	img {
+		position: relative;
+		top: -1px;
+		margin-left: 5px;
+		width: 16px;
+		height: 16px;
 	}
 }
