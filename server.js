@@ -30,25 +30,43 @@ app.post('/upload-s3', function(req, res) {
 
 	// parse form and upload to S3 bucket
 	form.parse(req, function(err, fields, files) {
+		var file = files.upload;
+
 		// construct tags
 		var tags = 'firstname=' + fields.firstname;
 		tags += '&lastname=' + fields.lastname;
 		tags += '&organization=' + fields.org;
 		tags += '&email=' + fields.email;
 
-		var file = files.upload;
+		// validate file type and size
+		var fileNameArr = file.name.split('.');
+		var fileType = fileNameArr[fileNameArr.length - 1];
+		if (fileType !== 'xls' && fileType !== 'xlsx') {
+			res.status(500).json({ error: 'File type is not valid: ' + fileType });
+			return;
+		}
+		if (file.size > 100e6) {
+			res.status(500).json({ error: 'File size is over 100 MB: ' + file.size });
+			return;
+		}
+
+		// set up parameters object
+		console.log(file);
 		var uploadParams = {
 			Bucket: 'ghs-tracking-dashboard',
 			Tagging: tags,
-			Key: file.name,
+			Key: path.basename(file.path) + '.' + fileType,
 			Body: '',
 		};
+
+		// read file
 		var fileStream = fs.createReadStream(file.path);
 		fileStream.on('error', (err) => {
 			console.log('File Error', err);
 		});
 		uploadParams.Body = fileStream;
 
+		// start upload to s3
 		s3.upload(uploadParams, (err, data) => {
 			if (err) {
 				console.log('Error uploading to S3: ', err);

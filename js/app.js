@@ -117,7 +117,7 @@ const App = {};
 					if (!c.indScores[capId]) c.indScores[capId] = [];
 					c.indScores[capId].push({
 						indId,
-						score: sRow.score
+						score: sRow.score,
 					});
 				});
 

@@ -16,13 +16,10 @@
 		// colors
 		const purples = ['#e0ecf4', '#bfd3e6', '#9ebcda',
 			'#8c96c6', '#8c6bb1', '#88419d', '#810f7c', '#4d004b'];
-		const blues = ['#deebf7', '#c6dbef', '#9ecae1',
-			'#6baed6', '#4292c6', '#2171b5', '#08519c', '#08306b'];
-		const reds = ['#fee0d2', '#fcbba1', '#fc9272',
-			'#fb6a4a', '#ef3b2c', '#cb181d', '#a50f15', '#67000d'];
 		const orangesReverse = ['#fee391', '#fec44f', '#fe9929',
 			'#ec7014', '#cc4c02', '#993404', '#662506'].reverse();
-		const jeeColors = ['#c91414', '#ede929', '#ede929', '#ede929', '#ede929', '#0b6422', '#0b6422', '#0b6422'];
+		const jeeColors = ['#c91414', '#ede929', '#ede929', '#ede929',
+			'#ede929', '#0b6422', '#0b6422', '#0b6422'];
 
 
 		// function for initializing the page
@@ -87,7 +84,7 @@
 
 		function getValueAttrName() {
 			if (indType === 'score') {
-				if (scoreType === 'combined') return 'combo'
+				if (scoreType === 'combined') return 'combo';
 				return 'score';
 			}
 			if (moneyFlow === 'funded') {
@@ -96,7 +93,7 @@
 			return moneyType === 'committed' ? 'receivedCommitted' : 'receivedSpent';
 		}
 
-		function getMoneyTypeLabel(moneyFlow, moneyType) {
+		function getMoneyTypeLabel() {
 			let noun = '';
 			if (moneyType === 'committed') {
 				noun = 'Committed';
@@ -321,8 +318,8 @@
 				.attr('x', barWidth)
 				.attr('y', isJeeScore ? barHeight + 14 : barHeight + 12);
 			legendGroups.select('.legend-tick')
-				.attr('x1', (d, i) => (i === colors.length - 2) ? 2 * barWidth - 1 : 2 * barWidth)
-				.attr('x2', (d, i) => (i === colors.length - 2) ? 2 * barWidth - 1 : 2 * barWidth)
+				.attr('x1', (d, i) => (i === colors.length - 2 ? 2 * barWidth - 1 : 2 * barWidth))
+				.attr('x2', (d, i) => (i === colors.length - 2 ? 2 * barWidth - 1 : 2 * barWidth))
 				.style('display', (d, i) => {
 					if (!isJeeScore) return 'none';
 					return (i % 2 === 0) ? 'inline' : 'none';
@@ -338,7 +335,7 @@
 				.merge(legendStartLabel);
 
 			// add starting tick
-			let legendStartTick = legend.selectAll('.legend-start-tick')
+			const legendStartTick = legend.selectAll('.legend-start-tick')
 				.data([true]);
 			legendStartTick.exit().remove();
 			legendStartTick.enter().append('line')
@@ -418,7 +415,14 @@
 				$('.legend-tooltip')
 					.show()
 					.tooltipster({
-						content: `This metric combines both a country's JEE scores and the amount of disbursed funds that the country has received. We use JEE scores as a proxy for country-specific needs, and calculate the ratio of financial resources to need. The goal of this metric is to highlight areas whose needs may still be unmet based on their ratio of financial resources to need. The metric is calculated by dividing the logarithm of the funds received by a country by 5 minus the country's JEE score.`,
+						content: 'This metric combines both a country\'s JEE scores and ' +
+							'the amount of disbursed funds that the country has received. ' +
+							'We use JEE scores as a proxy for country-specific needs, and ' +
+							'calculate the ratio of financial resources to need. The goal ' +
+							'of this metric is to highlight areas whose needs may still be ' +
+							'unmet based on their ratio of financial resources to need. ' +
+							'The metric is calculated by dividing the logarithm of the funds ' +
+							'received by a country by 5 minus the country\'s JEE score.',
 					});
 			} else {
 				$('.legend-tooltip').hide();
@@ -449,7 +453,7 @@
 			let totalSpent = 0;
 			if (currentNodeDataMap.has(country.ISO2)) {
 				const valueObj = currentNodeDataMap.get(country.ISO2);
-				
+
 				if (indType === 'money') {
 					$('.info-score-text-container').slideUp();
 				} else if (indType === 'score') {
@@ -597,10 +601,18 @@
 			});
 			$('.score-info-img').tooltipster({
 				interactive: true,
-				content: `The average of each country's most recent <b>JEE scoress </b>, for all JEE scores selected in the filter below.`,
+				content: 'The average of each country\'s most recent <b>JEE scoress </b>,' +
+					' for all JEE scores selected in the filter below.',
 			});
 			$('.combined-info-img').tooltipster({
-				content: `This metric combines both a country's JEE scores and the amount of disbursed funds that the country has received. We use JEE scores as a proxy for country-specific needs, and calculate the ratio of financial resources to need. The goal of this metric is to highlight areas whose needs may still be unmet based on their ratio of financial resources to need. The metric is calculated by dividing the logarithm of the funds received by a country by 5 minus the country's JEE score.`,
+				content: 'This metric combines both a country\'s JEE scores and ' +
+					'the amount of disbursed funds that the country has received. ' +
+					'We use JEE scores as a proxy for country-specific needs, ' +
+					'and calculate the ratio of financial resources to need. ' +
+					'The goal of this metric is to highlight areas whose needs may ' +
+					'still be unmet based on their ratio of financial resources to need. ' +
+					'The metric is calculated by dividing the logarithm of the funds received ' +
+					'by a country by 5 minus the country\'s JEE score.',
 			});
 
 			// show map options
@@ -652,7 +664,9 @@
 
 			// populate tooltip for avg JEE score text
 			$('.score-text-info-img').tooltipster({
-				content: `JEE scores are taken from each country's <a href="http://www.who.int/ihr/procedures/mission-reports/en/" target="_blank">World Health Organization Joint External Evaluation Report</a>, when available.`,
+				content: 'JEE scores are taken from each country\'s ' +
+					'<a href="http://www.who.int/ihr/procedures/mission-reports/en/" target="_blank">' +
+					'World Health Organization Joint External Evaluation Report</a>, when available.',
 			});
 		}
 
