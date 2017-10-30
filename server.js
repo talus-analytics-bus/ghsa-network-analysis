@@ -17,37 +17,10 @@ app.get('/', function(req, res) {
 
 // if hash, send to requested resource
 app.get(/^(.+)$/, function(req, res) {
-	if (req.params[0] === '/upload-s3') {
-		// upload file to Amazon S3 bucket
-		var s3 = new aws.S3();
-		var fileName = req.query['file-name'];
-		var fileType = req.query['file-type'];
-
-		s3.getSignedUrl('putObject', {
-			Bucket: S3_BUCKET,
-			Key: fileName,
-			Body: '',
-			Expires: 60,
-			ContentType: fileType,
-			ACL: 'public-read',
-		}, function(err, data) {
-			if (err) {
-				console.log(err);
-				return res.end();
-			}
-
-			var returnData = {
-				signedRequest: data,
-				url: 'https://' + S3_BUCKET + '.s3.amazonaws.com/' + fileName,
-			};
-			res.write(JSON.stringify(returnData));
-			res.end();
-		});
-	} else {
-		res.sendFile(path.join(__dirname, '/', req.params[0]));
-	}
+	res.sendFile(path.join(__dirname, '/', req.params[0]));
 });
 
+// uploading report to s3 bucket
 app.post('/upload-s3', function(req, res) {
 	var form = new formidable.IncomingForm();
 
