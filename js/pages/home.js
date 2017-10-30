@@ -95,6 +95,7 @@
 		}
 
 		function getMoneyTypeLabel(mFlow, mType) {
+			const flowNoun = (mFlow === 'funded') ? 'Funder' : 'Recipient';
 			let noun = '';
 			if (mType === 'committed') {
 				noun = 'Committed';
@@ -103,7 +104,8 @@
 				else noun = 'Received';
 			}
 			return `Total <b>${noun}</b>` +
-				`<br>from ${startYear} to ${endYear - 1}`;
+				`<br>from ${startYear} to ${endYear - 1}` +
+				`<br>(${flowNoun})`;
 		}
 
 		// gets the color scale used for the map

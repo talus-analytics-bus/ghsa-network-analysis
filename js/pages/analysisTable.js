@@ -127,7 +127,8 @@
 				const totalByCountry = {};
 				allPayments.forEach((p) => {
 					const dc = p.donor_code;
-					const rc = p.recipient_country;
+					let rc = p.recipient_country;
+					if (rc === 'Not reported') rc = p.recipient_name;
 					if (!totalByCountry[dc]) totalByCountry[dc] = {};
 					if (!totalByCountry[dc][rc]) {
 						totalByCountry[dc][rc] = {
