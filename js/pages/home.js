@@ -93,12 +93,12 @@
 			return moneyType === 'committed' ? 'receivedCommitted' : 'receivedSpent';
 		}
 
-		function getMoneyTypeLabel() {
+		function getMoneyTypeLabel(mFlow, mType) {
 			let noun = '';
-			if (moneyType === 'committed') {
+			if (mType === 'committed') {
 				noun = 'Committed';
 			} else {
-				if (moneyFlow === 'funded') noun = 'Disbursed';
+				if (mFlow === 'funded') noun = 'Disbursed';
 				else noun = 'Received';
 			}
 			return `Total <b>${noun}</b>` +
