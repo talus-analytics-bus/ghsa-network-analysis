@@ -286,7 +286,7 @@
 
 		// initialize the legend
 		function initLegend() {
-			const legend = d3.select('.legend');
+			const legend = d3.select('.legend g');
 
 			// add starting label
 			legend.append('text')
@@ -428,7 +428,7 @@
 			legend.select('.legend-title')
 				.attr('x', barWidth * colors.length / 2)
 				.attr('y', barHeight + 45)
-				.html(d => d);
+				.text(titleText);
 
 			legend.select('.legend-tooltip')
 				.attr('x', barWidth * colors.length / 2 + 134)
