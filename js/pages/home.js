@@ -601,7 +601,7 @@
 			});
 			$('.score-info-img').tooltipster({
 				interactive: true,
-				content: 'The average of each country\'s most recent <b>JEE scoress </b>,' +
+				content: 'The average of each country\'s most recent <b>JEE scores</b>,' +
 					' for all JEE scores selected in the filter below.',
 			});
 			$('.combined-info-img').tooltipster({
