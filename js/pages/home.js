@@ -382,7 +382,7 @@
 			// update legend title
 			let titleText = '';
 			if (indType === 'money') {
-				titleText = (moneyFlow === 'funded' ? 'Funds Donated' : 'Funds Received');
+				titleText = (moneyFlow === 'funded' ? 'Funds Given' : 'Funds Received');
 				titleText += ` (in ${App.currencyIso})`;
 			} else if (indType === 'score') {
 				if (scoreType === 'score') {
