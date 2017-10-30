@@ -27,6 +27,7 @@
 			// build map and initialize search
 			map = buildMap();
 			initMapOptions();
+			initLegend();
 			initCountryInfoBox();
 			updateAll();
 		}
@@ -175,7 +176,8 @@
 
 					// check if country has received funds and has a score
 					if (paymentsReceived && scoreObj) {
-						combo = Math.log10(receivedSpent) / (5.001 - score);
+						if (!receivedSpent) combo = 0;
+						else combo = Math.log10(receivedSpent) / (5.001 - score);
 					}
 
 					// set in node map
@@ -230,8 +232,6 @@
 					return d.color;
 				})
 				.each(function updateTooltip(d) {
-					const isJeeScore = (indType === 'score' && scoreType === 'score');
-
 					// define labels and value to be shown
 					let label = getMoneyTypeLabel(moneyFlow, moneyType);
 					let infoLabel = (moneyFlow === 'funded') ?
@@ -239,7 +239,7 @@
 					let value = d.value;
 
 					// labels and value are custom if showing JEE score
-					if (isJeeScore) {
+					if (indType === 'score') {
 						label = getMoneyTypeLabel('received', 'disbursed');
 						infoLabel = 'Recipient Information';
 						if (currentNodeDataMap.has(d.properties.ISO2)) {
@@ -267,6 +267,31 @@
 
 			// update legend
 			updateLegend(colorScale);
+		}
+
+		// initialize the legend
+		function initLegend() {
+			const legend = d3.select('.legend');
+
+			// add starting label
+			legend.append('text')
+				.attr('class', 'legend-start-label')
+				.attr('dy', '.35em');
+
+			// add starting tick line
+			legend.append('line')
+				.attr('class', 'legend-start-tick legend-tick')
+				.attr('x1', 1)
+				.attr('x2', 1);
+
+			// add legend title
+			legend.append('text').attr('class', 'legend-title');
+
+			// add tooltip for legend title
+			legend.append('image')
+				.attr('class', 'legend-tooltip')
+				.attr('xlink:href', 'img/info.png')
+				.each(function addTooltip() { $(this).tooltipster(); });
 		}
 
 		// update the map legend
@@ -325,27 +350,15 @@
 					return (i % 2 === 0) ? 'inline' : 'none';
 				});
 
-			// add starting label for legend
-			let legendStartLabel = legend.selectAll('.legend-start-label')
-				.data([true]);
-			legendStartLabel = legendStartLabel.enter().append('text')
-				.attr('class', 'legend-start-label')
-				.attr('y', barHeight + 12)
-				.attr('dy', '.35em')
-				.merge(legendStartLabel);
+			// fix starting label position
+			const legendStartLabel = legend.select('.legend-start-label')
+				.attr('y', barHeight + 12);
 
 			// add starting tick
-			const legendStartTick = legend.selectAll('.legend-start-tick')
-				.data([true]);
-			legendStartTick.exit().remove();
-			legendStartTick.enter().append('line')
-				.attr('class', 'legend-start-tick legend-tick')
-				.attr('x1', 1)
-				.attr('x2', 1)
+			legend.select('.legend-start-tick')
 				.attr('y1', barHeight)
 				.attr('y2', barHeight + 4)
-				.merge(legendStartTick)
-					.style('display', isJeeScore ? 'inline' : 'none');
+				.style('display', isJeeScore ? 'inline' : 'none');
 
 			if (isJeeScore) {
 				legendText
@@ -382,7 +395,12 @@
 			// update legend title
 			let titleText = '';
 			if (indType === 'money') {
-				titleText = (moneyFlow === 'funded' ? 'Funds Given' : 'Funds Received');
+				if (moneyType === 'committed') {
+					titleText = 'Funds Committed';
+				} else {
+					if (moneyFlow === 'funded') titleText = 'Funds Disbursed';
+					else titleText = 'Funds Received';
+				}
 				titleText += ` (in ${App.currencyIso})`;
 			} else if (indType === 'score') {
 				if (scoreType === 'score') {
@@ -392,38 +410,25 @@
 				}
 			}
 
-			const legendTitle = legend.selectAll('.legend-title')
-				.data([titleText]);
-			legendTitle.enter().append('text')
-				.attr('class', 'legend-title')
-				.merge(legendTitle)
-					.attr('x', barWidth * colors.length / 2)
-					.attr('y', barHeight + 45)
-					.html(d => d);
+			legend.select('.legend-title')
+				.attr('x', barWidth * colors.length / 2)
+				.attr('y', barHeight + 45)
+				.html(d => d);
 
-			const legendTooltip = legend.selectAll('.legend-tooltip')
-				.data([true]);
-			legendTooltip.enter().append('image')
-				.attr('class', 'legend-tooltip')
-				.merge(legendTooltip)
-					.attr('xlink:href', 'img/info.png')
-					.attr('x', barWidth * colors.length / 2 + 134)
-					.attr('y', barHeight + 33.5);
+			legend.select('.legend-tooltip')
+				.attr('x', barWidth * colors.length / 2 + 134)
+				.attr('y', barHeight + 33.5);
 
 			// if showing combination metric, populate tooltip
 			if (indType === 'score' && scoreType === 'combined') {
 				$('.legend-tooltip')
 					.show()
-					.tooltipster({
-						content: 'This metric combines both a country\'s JEE scores and ' +
-							'the amount of disbursed funds that the country has received. ' +
-							'We use JEE scores as a proxy for country-specific needs, and ' +
-							'calculate the ratio of financial resources to need. The goal ' +
-							'of this metric is to highlight areas whose needs may still be ' +
-							'unmet based on their ratio of financial resources to need. ' +
-							'The metric is calculated by dividing the logarithm of the funds ' +
-							'received by a country by 5 minus the country\'s JEE score.',
-					});
+					.tooltipster('content', 'This metric combines both a country\'s JEE scores and ' +
+						'the amount of disbursed funds that the country has received. ' +
+						'We use JEE scores as a proxy for country-specific needs, and ' +
+						'calculate the ratio of financial resources to need. The goal ' +
+						'of this metric is to highlight areas whose needs may still be ' +
+						'unmet based on their ratio of financial resources to need.');
 			} else {
 				$('.legend-tooltip').hide();
 			}
@@ -610,9 +615,7 @@
 					'We use JEE scores as a proxy for country-specific needs, ' +
 					'and calculate the ratio of financial resources to need. ' +
 					'The goal of this metric is to highlight areas whose needs may ' +
-					'still be unmet based on their ratio of financial resources to need. ' +
-					'The metric is calculated by dividing the logarithm of the funds received ' +
-					'by a country by 5 minus the country\'s JEE score.',
+					'still be unmet based on their ratio of financial resources to need.',
 			});
 
 			// show map options
