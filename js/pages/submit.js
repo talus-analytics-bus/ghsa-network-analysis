@@ -85,7 +85,9 @@
 			processData: false,
 			contentType: false,
 		})
-			.done(() => {
+			.done((data, status) => {
+				console.log(data);
+
 				// clear out input
 				$('.input-report-upload').val('');
 				$('.file-name-text').text('No file selected');
@@ -94,8 +96,8 @@
 				noty({ type: 'success', text: '<b>Success!</b><br>Report has been submitted!' });
 				NProgress.done();
 			})
-			.fail((xhr, status) => {
-				console.log(status);
+			.fail((data, status) => {
+				console.log(data);
 				noty({ text: '<b>Error!</b><br>There was an issue submitting your report. Please notify the administrators of the tool.' });
 				NProgress.done();
 			});
