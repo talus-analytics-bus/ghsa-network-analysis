@@ -265,7 +265,10 @@
 			rows.append('td').html((d) => {
 				const recCountry = App.countries.find(c => c.ISO2 === d.iso);
 				const flagHtml = recCountry ? App.getFlagHtml(d.iso) : '';
-				const cName = App.codeToNameMap.get(d.iso);
+				let cName = d.iso;
+				if (App.codeToNameMap.has(d.iso)) {
+					cName = App.codeToNameMap.get(d.iso);
+				}
 				const onClickStr = `event.stopPropagation();hasher.setHash('analysis/${d.iso}')`;
 				return `<div class="flag-container">${flagHtml}</div>` +
 					'<div class="name-container">' +
