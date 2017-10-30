@@ -160,7 +160,45 @@ const App = {};
 	};
 
 
-	/* ------------------ Global Functions ------------------- */
+	/* ------------------ Data Functions ------------------- */
+	// returns the total amount of money donated by a given country
+	App.getTotalFunded = (iso) => {
+		if (!App.fundingLookup[iso]) return 0;
+		return d3.sum(App.fundingLookup[iso], d => d.total_spent);
+	};
+
+	// returns the total amount of money received by a given country
+	App.getTotalReceived = (iso) => {
+		if (!App.recipientLookup[iso]) return 0;
+		return d3.sum(App.recipientLookup[iso], d => d.total_spent);
+	};
+
+
+	/* ------------------ Misc Functions ------------------- */
+	App.getCountryName = (iso) => {
+		if (App.codeToNameMap.has(iso)) return App.codeToNameMap.get(iso);
+		return iso;
+	};
+
+	App.getFlagHtml = iso => `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
+
+	App.getScoreNameHtml = (score) => {
+		let className = '';
+		if (score >= 3.5) className = 'text-success';
+		if (score < 1.5) className = 'text-danger';
+		return `<b class="${className}">${App.getScoreName(score)}</b>`;
+	};
+
+	App.getScoreName = (score) => {
+		if (score < 1.5) return 'No Capacity';
+		else if (score < 2.5) return 'Limited Capacity';
+		else if (score < 3.5) return 'Developed Capacity';
+		else if (score < 4.5) return 'Demonstrated Capacity';
+		return 'Sustained Capacity';
+	};
+
+
+	/* ------------------ Format Functions ------------------- */
 	App.siFormat = (num) => {
 		if (!num) return '0';
 		return d3.format(',.3s')(num).replace('G', 'B');
@@ -178,39 +216,6 @@ const App = {};
 		if (usdValue < 100) return `${Math.round(usdValue)} ${App.currencyIso}`;
 		return `${d3.format(',.3r')(usdValue)} ${App.currencyIso}`;
 	};
-
-
-	/* ------------------ Data Functions ------------------- */
-	// returns the total amount of money donated by a given country
-	App.getTotalFunded = (iso) => {
-		if (!App.fundingLookup[iso]) return 0;
-		return d3.sum(App.fundingLookup[iso], d => d.total_spent);
-	};
-	App.getTotalFunded2 = (iso) => {
-		if (!App.fundingLookup[iso]) return 0;
-		return d3.sum(App.fundingLookup[iso], (p) => {
-			let total = 0;
-			for (let i = App.dataStartYear; i < App.dataEndYear + 1; i++) {
-				total += p.spent_by_year[i];
-			}
-			return total;
-		});
-	};
-
-	// returns the total amount of money received by a given country
-	App.getTotalReceived = (iso) => {
-		if (!App.recipientLookup[iso]) return 0;
-		return d3.sum(App.recipientLookup[iso], d => d.total_spent);
-	};
-
-
-	/* ------------------ Misc Functions ------------------- */
-	App.getCountryName = (iso) => {
-		if (App.codeToNameMap.has(iso)) return App.codeToNameMap.get(iso);
-		return iso;
-	};
-
-	App.getFlagHtml = iso => `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
 
 
 	/* ------------------ Vendor Defaults ------------------- */

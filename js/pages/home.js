@@ -234,14 +234,11 @@
 				.each(function updateTooltip(d) {
 					// define labels and value to be shown
 					let label = getMoneyTypeLabel(moneyFlow, moneyType);
-					let infoLabel = (moneyFlow === 'funded') ?
-							'Funder Information' : 'Recipient Information';
 					let value = d.value;
 
-					// labels and value are custom if showing JEE score
+					// value shows received if showing JEE score
 					if (indType === 'score') {
 						label = getMoneyTypeLabel('received', 'disbursed');
-						infoLabel = 'Recipient Information';
 						if (currentNodeDataMap.has(d.properties.ISO2)) {
 							value = currentNodeDataMap.get(d.properties.ISO2).receivedSpent;
 						}
@@ -252,9 +249,27 @@
 					container.append('div')
 						.attr('class', 'tooltip-title')
 						.text(d.properties.NAME);
-					container.append('div')
-						.attr('class', 'tooltip-profile-type')
-						.text(infoLabel);
+					if (indType === 'score') {
+						let scoreText = 'Avg. JEE Score: ';
+						let score = 0;
+						if (currentNodeDataMap.has(d.properties.ISO2)) {
+							score = currentNodeDataMap.get(d.properties.ISO2).score;
+						}
+						if (score) {
+							scoreText = App.getScoreNameHtml(score);
+						} else {
+							scoreText = 'No JEE score data available';
+						}
+						container.append('div')
+							.attr('class', 'tooltip-score-text')
+							.html(scoreText);
+					} else {
+						let infoLabel = (moneyFlow === 'funded') ?
+							'Funder Information' : 'Recipient Information';
+						container.append('div')
+							.attr('class', 'tooltip-profile-type')
+							.text(infoLabel);
+					}
 					container.append('div')
 						.attr('class', 'tooltip-main-value')
 						.text(App.formatMoney(value));
@@ -464,17 +479,7 @@
 				} else if (indType === 'score') {
 					let scoreText = 'Average JEE Score: ';
 					if (valueObj.score) {
-						let className = '';
-						if (valueObj.score >= 3.5) className = 'text-success';
-						if (valueObj.score < 1.5) className = 'text-danger';
-
-						scoreText += `<b class="${className}">`;
-						if (valueObj.score < 1.5) scoreText += 'No Capacity';
-						else if (valueObj.score < 2.5) scoreText += 'Limited Capacity';
-						else if (valueObj.score < 3.5) scoreText += 'Developed Capacity';
-						else if (valueObj.score < 4.5) scoreText += 'Demonstrated Capacity';
-						else scoreText += 'Sustained Capacity';
-						scoreText += '</b>';
+						scoreText = App.getScoreNameHtml(valueObj.score);
 					} else {
 						scoreText = 'No JEE score data currently available';
 					}
