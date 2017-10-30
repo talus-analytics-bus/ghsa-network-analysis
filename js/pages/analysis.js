@@ -330,6 +330,7 @@
 		}
 
 		function updateNetworkMap() {
+			const moneyType = $('.money-type-filter input:checked').attr('ind');
 			const networkData = getNetworkData();
 			if (!networkData.length) {
 				$('.network-map-content').hide();
@@ -338,7 +339,7 @@
 				$('.network-map-content').show();
 				$('.network-map-no-content').hide();
 			}
-			networkMap.update(networkData);
+			networkMap.update(networkData, moneyType);
 			if ($('.network-country-info').is(':visible')) {
 				displayCountryInNetwork(activeCountry);
 			}

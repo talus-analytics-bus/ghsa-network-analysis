@@ -112,13 +112,13 @@
 			.style('text-anchor', 'end')
 			.text('Receives More');
 
-		chart.update = (data) => {
+		chart.update = (data, moneyType) => {
 			addAnglesToData(data);
-			drawArcs(data);
-			drawLinks();
+			drawArcs(data, moneyType);
+			drawLinks(moneyType);
 		};
 
-		function drawArcs(data) {
+		function drawArcs(data, moneyType) {
 			// create region arcs
 			const rArcs = regionArcG.selectAll('.arc')
 				.data(data);
@@ -132,10 +132,12 @@
 					.each(function updateTooltip(d) {
 						let contentStr = `<div class="nm-tooltip-title">${d.name}</div>`;
 						if (d.totalFunded) {
-							contentStr += `<div><b>Disbursed Funds:</b> ${App.formatMoney(d.totalFunded)}</div>`;
+							const fundTitle = getFundLabel('funded', moneyType);
+							contentStr += `<div><b>${fundTitle}:</b> ${App.formatMoney(d.totalFunded)}</div>`;
 						}
 						if (d.totalReceived) {
-							contentStr += `<div><b>Received Funds:</b> ${App.formatMoney(d.totalReceived)}</div>`;
+							const receiveTitle = getFundLabel('received', moneyType);
+							contentStr += `<div><b>${receiveTitle}:</b> ${App.formatMoney(d.totalReceived)}</div>`;
 						}
 						$(this).tooltipster('content', contentStr);
 					})
@@ -156,10 +158,12 @@
 					.each(function updateTooltip(d) {
 						let contentStr = `<div class="nm-tooltip-title">${d.name}</div>`;
 						if (d.totalFunded) {
-							contentStr += `<div><b>Disbursed Funds:</b> ${App.formatMoney(d.totalFunded)}</div>`;
+							const fundTitle = getFundLabel('funded', moneyType);
+							contentStr += `<div><b>${fundTitle}:</b> ${App.formatMoney(d.totalFunded)}</div>`;
 						}
 						if (d.totalReceived) {
-							contentStr += `<div><b>Received Funds:</b> ${App.formatMoney(d.totalReceived)}</div>`;
+							const receiveTitle = getFundLabel('received', moneyType);
+							contentStr += `<div><b>${receiveTitle}:</b> ${App.formatMoney(d.totalReceived)}</div>`;
 						}
 						$(this).tooltipster('content', contentStr);
 					})
@@ -189,10 +193,12 @@
 				.each(function updateTooltip(d) {
 					let contentStr = `<div class="nm-tooltip-title">${d.name}</div>`;
 					if (d.totalFunded) {
-						contentStr += `<div><b>Disbursed Funds:</b> ${App.formatMoney(d.totalFunded)}</div>`;
+						const fundTitle = getFundLabel('funded', moneyType);
+						contentStr += `<div><b>${fundTitle}:</b> ${App.formatMoney(d.totalFunded)}</div>`;
 					}
 					if (d.totalReceived) {
-						contentStr += `<div><b>Received Funds:</b> ${App.formatMoney(d.totalReceived)}</div>`;
+						const receiveTitle = getFundLabel('received', moneyType);
+						contentStr += `<div><b>${receiveTitle}:</b> ${App.formatMoney(d.totalReceived)}</div>`;
 					}
 					$(this).tooltipster('content', contentStr);
 				})
@@ -251,7 +257,7 @@
 				.text(d => d.name);
 		}
 
-		function drawLinks() {
+		function drawLinks(moneyType) {
 			// create links
 			const links = linkG.selectAll('.link')
 				.data(funds);
@@ -266,9 +272,10 @@
 					.each(function updateTooltip(d) {
 						const donorName = App.codeToNameMap.get(d.donor);
 						const recName = App.codeToNameMap.get(d.recipient);
+						const fundType = (moneyType === 'committed') ? 'Committed' : 'Disbursed';
 						const contentStr = `<b>Funder:</b> ${donorName}` +
 							`<br><b>Recipient:</b> ${recName}` +
-							`<br><b>Disbursed Funds:</b> ${App.formatMoney(d.value)}`;
+							`<br><b>${fundType} Funds:</b> ${App.formatMoney(d.value)}`;
 						$(this).tooltipster('content', contentStr);
 					})
 					.transition().style('fill', colorScale(0));
@@ -340,6 +347,15 @@
 					});
 				});
 			});
+		}
+
+		function getFundLabel(moneyFlow, moneyType) {
+			if (moneyType === 'committed') {
+				if (moneyFlow === 'funded') return 'Funds Committed to Disburse';
+				return 'Committed Funds to Receive';
+			}
+			if (moneyFlow === 'funded') return 'Disbursed Funds';
+			return 'Received Funds';
 		}
 
 		// function for getting fund/receive color
