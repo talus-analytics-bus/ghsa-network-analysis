@@ -172,12 +172,12 @@
 						const capScores = scoreObj.avgCapScores
 							.filter(d => ccs.includes(d.capId));
 						score = d3.mean(capScores, d => d.score);
-					}
 
-					// check if country has received funds and has a score
-					if (paymentsReceived && scoreObj) {
-						if (!receivedSpent) combo = 0;
-						else combo = Math.log10(receivedSpent) / (5.001 - score);
+						if (paymentsReceived && receivedSpent) {
+							combo = Math.log10(receivedSpent) / (5.001 - score);
+						} else {
+							combo = 0;
+						}
 					}
 
 					// set in node map
@@ -224,7 +224,11 @@
 					const isoCode = d.properties.ISO2;
 					if (currentNodeDataMap.has(isoCode)) {
 						d.value = currentNodeDataMap.get(isoCode)[valueAttrName];
-						d.color = d.value ? colorScale(d.value) : '#ccc';
+						if (indType === 'score' && scoreType === 'combined') {
+							d.color = (d.value !== null) ? colorScale(d.value) : '#ccc';
+						} else {
+							d.color = d.value ? colorScale(d.value) : '#ccc';
+						}
 					} else {
 						d.value = null;
 						d.color = '#ccc';
