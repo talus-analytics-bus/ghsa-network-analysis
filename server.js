@@ -37,7 +37,6 @@ app.post('/upload-s3', function(req, res) {
 		tags += '&email=' + fields.email;
 
 		var file = files.upload;
-		console.log(file);
 		var uploadParams = {
 			Bucket: 'ghs-tracking-dashboard',
 			Tagging: tags,
@@ -52,11 +51,11 @@ app.post('/upload-s3', function(req, res) {
 
 		s3.upload(uploadParams, (err, data) => {
 			if (err) {
-				console.log('Error uploading to S3', err);
+				console.log('Error uploading to S3: ', err);
 				res.status(500).json({ error: err });
 			}
 			if (data) {
-				console.log('Success uploading to S3', data.Location);
+				console.log('Success uploading to S3: ', data.Location);
 				res.status(200).json({ location: data.Location });
 			}
 		});

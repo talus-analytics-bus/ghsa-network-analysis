@@ -23,19 +23,23 @@
 			const org = $('.org-input').val();
 			const email = $('.email-input').val();
 			if (!firstName) {
-				noty({ text: 'Please enter a first name before proceeding.' });
+				noty({ text: '<b>Please enter a first name before proceeding.</b>' });
 				return;
 			}
 			if (!lastName) {
-				noty({ text: 'Please enter a last name before proceeding.' });
+				noty({ text: '<b>Please enter a last name before proceeding.</b>' });
 				return;
 			}
 			if (!org) {
-				noty({ text: 'Please enter an organization before proceeding.' });
+				noty({ text: '<b>Please enter an organization before proceeding.</b>' });
 				return;
 			}
 			if (!email) {
-				noty({ text: 'Please enter an email address before proceeding.' });
+				noty({ text: '<b>Please enter an email address before proceeding.</b>' });
+				return;
+			}
+			if (!/\S+@\S+/.test(email)) {
+				noty({ text: '<b>Please enter a valid email address before proceeding.</b>' });
 				return;
 			}
 
@@ -47,8 +51,9 @@
 					return;
 				}
 
-				// check that file is in xls or xlsx format
 				const file = input.files[0];
+
+				// check that file is in xls or xlsx format
 				const fileNameArr = file.name.split('.');
 				const fileType = fileNameArr[fileNameArr.length - 1];
 				if (fileType !== 'xlsx' && fileType !== 'xls') {
@@ -56,6 +61,16 @@
 						timeout: 5000,
 						text: '<b>Please select a file with a file type ' +
 							'extension of <i>.xls</i> or <i>.xlsx</i>',
+					});
+					return;
+				}
+
+				// check that file size is under ~100 MB
+				if (file.size > 100e6) {
+					noty({
+						timeout: 5000,
+						text: '<b>The file selected is too large to be uploaded!</b><br>' +
+							'Please select a file under 100 MB.',
 					});
 					return;
 				}
@@ -97,7 +112,7 @@
 				NProgress.done();
 			})
 			.fail((data, status) => {
-				console.log(data);
+				console.log(data.responseJSON.error);
 				noty({ text: '<b>Error!</b><br>There was an issue submitting your report. Please notify the administrators of the tool.' });
 				NProgress.done();
 			});
