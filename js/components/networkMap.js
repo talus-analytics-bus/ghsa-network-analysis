@@ -133,11 +133,13 @@
 						let contentStr = `<div class="nm-tooltip-title">${d.name}</div>`;
 						if (d.totalFunded) {
 							const fundTitle = getFundLabel('funded', moneyType);
-							contentStr += `<div><b>${fundTitle}:</b> ${App.formatMoney(d.totalFunded)}</div>`;
+							contentStr += `<div><b>${fundTitle}:</b> ` +
+								`${App.formatMoney(d.totalFunded)}</div>`;
 						}
 						if (d.totalReceived) {
 							const receiveTitle = getFundLabel('received', moneyType);
-							contentStr += `<div><b>${receiveTitle}:</b> ${App.formatMoney(d.totalReceived)}</div>`;
+							contentStr += `<div><b>${receiveTitle}:</b> ` +
+								`${App.formatMoney(d.totalReceived)}</div>`;
 						}
 						$(this).tooltipster('content', contentStr);
 					})
@@ -159,11 +161,13 @@
 						let contentStr = `<div class="nm-tooltip-title">${d.name}</div>`;
 						if (d.totalFunded) {
 							const fundTitle = getFundLabel('funded', moneyType);
-							contentStr += `<div><b>${fundTitle}:</b> ${App.formatMoney(d.totalFunded)}</div>`;
+							contentStr += `<div><b>${fundTitle}:</b> ` +
+								`${App.formatMoney(d.totalFunded)}</div>`;
 						}
 						if (d.totalReceived) {
 							const receiveTitle = getFundLabel('received', moneyType);
-							contentStr += `<div><b>${receiveTitle}:</b> ${App.formatMoney(d.totalReceived)}</div>`;
+							contentStr += `<div><b>${receiveTitle}:</b> ` +
+								`${App.formatMoney(d.totalReceived)}</div>`;
 						}
 						$(this).tooltipster('content', contentStr);
 					})

@@ -81,12 +81,12 @@
 			} else if (currentInfoTab === 'country') {
 				headerData = [
 					{ name: 'Funder', value: d => App.codeToNameMap.get(d.donor_code) },
-					{ name: 'Recipient', value: d => {
+					{ name: 'Recipient', value: (d) => {
 						if (App.codeToNameMap.has(d.recipient_country)) {
 							return App.codeToNameMap.get(d.recipient_country);
 						}
 						return d.recipient_country;
-					}},
+					} },
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];

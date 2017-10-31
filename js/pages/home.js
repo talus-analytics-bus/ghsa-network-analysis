@@ -266,7 +266,7 @@
 							.attr('class', 'tooltip-score-text')
 							.html(scoreText);
 					} else {
-						let infoLabel = (moneyFlow === 'funded') ?
+						const infoLabel = (moneyFlow === 'funded') ?
 							'Funder Information' : 'Recipient Information';
 						container.append('div')
 							.attr('class', 'tooltip-profile-type')

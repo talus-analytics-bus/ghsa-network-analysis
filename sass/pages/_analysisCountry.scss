@@ -48,21 +48,32 @@
 
 
 /* --- Detail Page --- */
+.switch-type-button {
+	position: absolute;
+	top: 43px;
+	right: 30px;
+}
 .country-flow-content {
 	display: none;
 	position: relative;
 	margin-top: 10px;
 
-	.switch-type-button {
-		position: absolute;
-		top: -44px;
-		right: 30px;
-	}
-	.show-table-btn,
-	.submit-data-btn {
+	.show-table-btn {
 		margin-top: 10px;
 	}
-	.submit-data-btn { display: none; }
+}
+.country-flow-summary-empty {
+	display: none;
+	margin-top: 55px;
+	text-align: center;
+
+	.no-text {
+		font-size: 1.1em;
+		text-align: center;
+	}
+	.submit-data-btn {
+		margin-top: 20px;
+	}
 }
 .country-flow-summary,
 .progress-circle-section {

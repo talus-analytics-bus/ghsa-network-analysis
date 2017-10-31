@@ -16,6 +16,7 @@
 				.on('click', () => hasher.setHash(`analysis/${iso}`));
 
 			// fill out generic text
+			$('.country-name').text(name);
 			$('.start-year').text(App.dataStartYear);
 			$('.end-year').text(App.dataEndYear);
 			$('.money-type').text(moneyType === 'd' ? 'disbursed' : 'received');
@@ -101,37 +102,28 @@
 			if (moneyType === 'd') {
 				if (!totalFunded) hasNoData = true;
 
-				// if country has received funds, include "switch to recipient profile" button
-				if (totalReceived) {
-					$('.switch-type-button')
-						.text('Switch to Recipient Profile')
-						.on('click', () => hasher.setHash(`analysis/${iso}/r`));
-				} else {
-					$('.switch-type-button').hide();
-				}
+				// fill out "switch profile" text and behavior
+				$('.switch-type-button')
+					.text('Switch to Recipient Profile')
+					.on('click', () => hasher.setHash(`analysis/${iso}/r`));
 
-				// fill summary text
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
 			} else if (moneyType === 'r') {
 				if (!totalReceived) hasNoData = true;
 
-				// if country has donated funds, include "switch to donor profile" button
-				if (totalFunded) {
-					$('.switch-type-button')
-						.text('Switch to Funder Profile')
-						.on('click', () => hasher.setHash(`analysis/${iso}/d`));
-				} else {
-					$('.switch-type-button').hide();
-				}
+				// fill out "switch profile" text and behavior
+				$('.switch-type-button')
+					.text('Switch to Funder Profile')
+					.on('click', () => hasher.setHash(`analysis/${iso}/d`));
 
-				// fill summary text
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
 			}
 
 			// draw charts
 			if (hasNoData) {
-				$('.show-table-btn, .progress-circle-section, .country-chart-container').hide();
-				$('.submit-data-btn').css('display', 'inline-block');
+				$('.country-flow-summary, .progress-circle-section, .country-chart-container').hide();
+				$('.country-flow-summary-empty').slideDown();
+				$('.submit-data-btn').click(() => hasher.setHash('submit'))
 			} else {
 				drawTimeChart();
 				drawProgressCircles();
