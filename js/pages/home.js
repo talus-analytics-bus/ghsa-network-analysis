@@ -9,7 +9,7 @@
 
 		// state variables for current map indicator
 		let indType = 'money';  // either 'money' or 'score'
-		let moneyFlow = 'funded';  // either 'funded' or 'received'
+		let moneyFlow = 'received';  // either 'funded' or 'received'
 		let moneyType = 'disbursed';  // either 'committed' or 'disbursed'
 		let scoreType = 'score';  // either 'score' or 'combined'
 
@@ -604,13 +604,6 @@
 			$('.map-options-container select').on('change', updateAll);
 
 			// add info tooltips
-			$('.committed-info-img').tooltipster({
-				content: 'The <b>amount committed</b> refers to the amount of money committed.',
-			});
-			$('.disbursed-info-img').tooltipster({
-				content: 'The <b>amount disbursed</b> refers to the amount of money the ' +
-					'recipient country has received.',
-			});
 			$('.score-info-img').tooltipster({
 				interactive: true,
 				content: 'The average of each country\'s most recent <b>JEE scores</b>,' +

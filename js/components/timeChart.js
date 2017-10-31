@@ -48,31 +48,31 @@
 		// committed bar
 		barGroups.append('rect')
 			.attr('class', 'bar')
-			.attr('y', d => y(d.total_spent))
+			.attr('y', d => y(d.total_committed))
 			.attr('width', bandwidth / 2)
-			.attr('height', d => height - y(d.total_spent))
+			.attr('height', d => height - y(d.total_committed))
 			.style('fill', lightColor);
 		barGroups.append('text')
 			.attr('class', 'bar-text')
 			.attr('x', bandwidth / 4)
-			.attr('y', d => y(d.total_spent) - 8)
+			.attr('y', d => y(d.total_committed) - 8)
 			.attr('dy', '.35em')
-			.text(d => App.formatMoneyShort(d.total_spent));
+			.text(d => App.formatMoneyShort(d.total_committed));
 
 		// disbursed bar
 		barGroups.append('rect')
 			.attr('class', 'bar')
 			.attr('x', bandwidth / 2)
-			.attr('y', d => y(d.total_committed))
+			.attr('y', d => y(d.total_spent))
 			.attr('width', bandwidth / 2)
-			.attr('height', d => height - y(d.total_committed))
+			.attr('height', d => height - y(d.total_spent))
 			.style('fill', color);
 		barGroups.append('text')
 			.attr('class', 'bar-text')
 			.attr('x', 3 * bandwidth / 4)
-			.attr('y', d => y(d.total_committed) - 8)
+			.attr('y', d => y(d.total_spent) - 8)
 			.attr('dy', '.35em')
-			.text(d => App.formatMoneyShort(d.total_committed));
+			.text(d => App.formatMoneyShort(d.total_spent));
 
 		// axis labels
 		chart.append('text')
