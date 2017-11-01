@@ -14,7 +14,7 @@
 		});
 
 		// start building the chart
-		const margin = { top: 70, right: 80, bottom: 80, left: 40 };
+		const margin = { top: 70, right: 80, bottom: 30, left: 40 };
 		const width = 440;
 		const height = 450;
 

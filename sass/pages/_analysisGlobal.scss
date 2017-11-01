@@ -16,6 +16,7 @@
 	}
 }
 .network-map-container {
+	position: relative;
 	margin-top: 30px;
 	min-height: 780px;
 
@@ -27,6 +28,14 @@
 		text-align: center;
 		font-style: italic;
 		font-size: 1.1em;
+	}
+	.source-text {
+		position: absolute;
+		font-size: 0.95em;
+		text-align: right;
+		width: 290px;
+		bottom: 10px;
+		right: 10px;
 	}
 }
 .network-right-column {
@@ -119,15 +128,25 @@
 /* --- Table Section --- */
 .global-tab-content[tab="country"] {
 	.fund-table-title {
-		font-size: 1.5em;
+		font-size: 1.4em;
 		text-align: center;
 	}
 	.description-container {
-		margin: 10px 10px;
-		padding-bottom: 20px;
+		position: relative;
+		z-index: 1000;
+		margin-bottom: 10px;
+		padding-bottom: 30px;
 		border-bottom: $light-border;
+		text-align: center;
 	}
-	.description { margin: 0; }
+	.description-content {
+		position: relative;
+		z-index: 100;
+		text-align: left;
+		display: inline-block;
+		max-width: 700px;
+	}
+	.description { margin: 15px 0 0; }
 	.table-content {
 		padding-top: 5px;
 	}
@@ -138,14 +157,15 @@
 	.table-country-search {
 		position: relative;
 		margin-top: 5px;
-		text-align: center;
 
-		& > span {
-			font-weight: 600;
-		}
 		.search-container {
 			display: inline-block;
-			margin-left: 10px;
 		}
+		input { width: 400px; }
+	}
+	.source-text {
+		margin-top: 20px;
+		font-size: 0.95em;
+		text-align: right;
 	}
 }

@@ -97,7 +97,7 @@
 			App.initCountrySearchBar('.table-country-search', (result) => {
 				hasher.setHash(`analysis/${result.ISO2}`);
 			}, {
-				topLayout: true,
+				width: 400,
 				includeNonCountries: true,
 			});
 		}

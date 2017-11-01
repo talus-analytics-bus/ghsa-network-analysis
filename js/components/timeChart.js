@@ -2,7 +2,7 @@
 	App.buildTimeChart = (selector, data, param = {}) => {
 		// start building the chart
 		const margin = { top: 30, right: 150, bottom: 35, left: 60 };
-		const width = 500;
+		const width = 480;
 		const height = 90;
 		const color = d3.color(param.color || 'steelblue');
 		const lightColor = param.lightColor || color.brighter(2);
@@ -57,7 +57,10 @@
 			.attr('x', bandwidth / 4)
 			.attr('y', d => y(d.total_committed) - 8)
 			.attr('dy', '.35em')
-			.text(d => App.formatMoneyShort(d.total_committed));
+			.text((d) => {
+				// if (!d.total_committed) return '';
+				return App.formatMoneyShort(d.total_committed)
+			});
 
 		// disbursed bar
 		barGroups.append('rect')
@@ -72,7 +75,10 @@
 			.attr('x', 3 * bandwidth / 4)
 			.attr('y', d => y(d.total_spent) - 8)
 			.attr('dy', '.35em')
-			.text(d => App.formatMoneyShort(d.total_spent));
+			.text((d) => {
+				// if (!d.total_spent) return '';
+				return App.formatMoneyShort(d.total_spent);
+			});
 
 		// axis labels
 		chart.append('text')
