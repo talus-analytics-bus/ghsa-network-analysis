@@ -47,7 +47,9 @@ const App = {};
 			{ id: 'R.3', name: 'R.3 - Linking Public Health and Security Authorities' },
 			{ id: 'R.4', name: 'R.4 - Medical Countermeasures and Personnel Deployment' },
 			{ id: 'R.5', name: 'R.5 - Risk Communication' },
-			{ id: 'O.1', name: 'O.1 - Point of Entry (PoE)' },
+			{ id: 'PoE', name: 'PoE - Point of Entry (PoE)' },
+			{ id: 'CE', name: 'CE - Chemical Events' },
+			{ id: 'RE', name: 'RE - Radiation Emergencies' },
 			{ id: 'General IHR Implementation', name: 'General IHR Implementation' },
 		];
 

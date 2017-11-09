@@ -161,7 +161,14 @@
 				allPayments.forEach((p) => {
 					let hasACe = false;
 					coreElements.forEach((ce) => {
-						if (p.core_capacities.some(cc => cc.slice(0, 2) === `${ce}.`)) {
+						const hasCe = p.core_capacities.some((cc) => {
+							if (ce === 'O') {
+								const firstThree = cc.slice(0, 3);
+								return firstThree === 'PoE' || firstThree === 'CE' || firstThree === 'RE';
+							}
+							return cc.slice(0, 2) === `${ce}.`;
+						});
+						if (hasCe) {
 							hasACe = true;
 							totalByCe[ce].total_committed += p.total_committed;
 							totalByCe[ce].total_spent += p.total_spent;
