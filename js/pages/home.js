@@ -174,12 +174,7 @@
 						const capScores = scoreObj.avgCapScores
 							.filter(d => ccs.includes(d.capId));
 						score = d3.mean(capScores, d => d.score);
-
-						if (paymentsReceived && receivedSpent) {
-							combo = Math.log10(receivedSpent) / (5.01 - score);
-						} else {
-							combo = 0.01 / (5.01 - score);
-						}
+						combo = (5 + Math.log10(1 + receivedSpent)) / (5.01 - score);
 					}
 
 					// set in node map
