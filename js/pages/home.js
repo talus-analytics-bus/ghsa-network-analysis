@@ -176,7 +176,7 @@
 						score = d3.mean(capScores, d => d.score);
 						const numerator = 10 + Math.log10(1 + receivedSpent);
 						const denominator = 5.01 - score;
-						combo = (10 + Math.log10(1 + receivedSpent)) / (5.01 - score);
+						combo = numerator / denominator;
 					}
 
 					// set in node map
