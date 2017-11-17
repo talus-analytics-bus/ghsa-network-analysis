@@ -6,13 +6,19 @@ const App = {};
 		App.dataStartYear = 2014;
 		App.dataEndYear = 2017;
 
-		// good colors (purple, orange)
+		// (purple, orange) color scheme
 		/* App.fundColor = '#283375';
 		App.receiveColor = '#aa4e2a';
 		App.fundColorPalette = ['#283375', '#535c91', '#7e85ac', '#a9adc8', '#d4d6e3'];
 		App.receiveColorPalette = ['#aa4e2a', '#bb7155', '#cc957f', '#ddb8aa', '#eedcd4'];*/
 
-		// bad colors (blue, red)
+		// alt (purple, orange) color scheme
+		/* App.fundColor = '#542788';
+		App.receiveColor = '#b35806';
+		App.fundColorPalette = ['#542788', '#8073ac', '#b2abd2', '#d8daeb', '#f7f7f7'];
+		App.receiveColorPalette = ['#b35806', '#e08214', '#fdb863', '#fee0b6', '#f7f7f7'];*/
+
+		// (blue, red) color scheme
 		App.fundColor = '#08519c';
 		App.receiveColor = '#a50f15';
 		App.fundColorPalette = ['#08519c', '#3192bd', '#6baed6', '#bdd7e7', '#eff3ff'];
