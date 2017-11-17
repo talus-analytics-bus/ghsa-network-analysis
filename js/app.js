@@ -13,16 +13,16 @@ const App = {};
 		App.receiveColorPalette = ['#aa4e2a', '#bb7155', '#cc957f', '#ddb8aa', '#eedcd4'];*/
 
 		// (purple, green) color scheme
-		App.fundColor = '#762a83';
+		/*App.fundColor = '#762a83';
 		App.receiveColor = '#1b7837';
 		App.fundColorPalette = ['#40004b','#762a83','#9970ab','#c2a5cf','#e7d4e8', '#f7f7f7'];
-		App.receiveColorPalette = ['#00441b', '#1b7837', '#5aae61', '#a6dba0', '#d9f0d3', '#f7f7f7'];
+		App.receiveColorPalette = ['#00441b', '#1b7837', '#5aae61', '#a6dba0', '#d9f0d3', '#f7f7f7'];*/
 
 		// (blue, red) color scheme
-		/* App.fundColor = '#08519c';
-		App.receiveColor = '#a50f15';
-		App.fundColorPalette = ['#08519c', '#3192bd', '#6baed6', '#bdd7e7', '#eff3ff'];
-		App.receiveColorPalette = ['#a50f15', '#de2d26', '#fb6a4a', '#fcae91', '#fee5d9'];*/
+		App.fundColor = '#053061';
+		App.receiveColor = '#67001f';
+		App.fundColorPalette = ['#053061', '#2166ac', '#4393c3', '#92c5de', '#d1e5f0'];
+		App.receiveColorPalette = ['#67001f', '#b2182b', '#d6604d', '#f4a582', '#fddbc7'];
 
 		// define global variables used throughout
 		App.geoData = null;  // geographic data of the world

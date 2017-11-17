@@ -104,8 +104,8 @@
 
 		function populateTables(donorSelector, recSelector) {
 			const numRows = 10;
-			const fundColor = App.fundColorPalette.slice(1);
-			const receiveColor = App.receiveColorPalette.slice(1);
+			const fundColor = App.fundColorPalette;
+			const receiveColor = App.receiveColorPalette;
 
 			// get top funded countries
 			const countriesByFunding = [];
