@@ -4,7 +4,7 @@
 		const country = App.countries.find(c => c.ISO2 === iso);
 		const lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
 		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
-		const lightColor = (moneyType === 'd') ? App.fundColorPalette[2] : App.receiveColorPalette[2];
+		const lightColor = (moneyType === 'd') ? App.fundColorPalette[3] : App.receiveColorPalette[3];
 
 		// initializes the whole page
 		function init() {

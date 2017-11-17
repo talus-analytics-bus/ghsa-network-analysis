@@ -104,10 +104,8 @@
 
 		function populateTables(donorSelector, recSelector) {
 			const numRows = 10;
-			// const blues = ['#08519c', '#3182bd', '#6baed6', '#bdd7e7', '#eff3ff'];
-			// const oranges = ['#993404', '#d95f0e', '#fe9929', '#fed98e', '#ffffd4'];
-			const blues = App.fundColorPalette;
-			const oranges = App.receiveColorPalette;
+			const fundColor = App.fundColorPalette.slice(1);
+			const receiveColor = App.receiveColorPalette.slice(1);
 
 			// get top funded countries
 			const countriesByFunding = [];
@@ -141,7 +139,7 @@
 			const dRows = d3.select(donorSelector).select('tbody').selectAll('tr')
 				.data(countriesByFunding.slice(0, numRows))
 				.enter().append('tr')
-					.style('background-color', (d, i) => blues[Math.floor(i / 2)])
+					.style('background-color', (d, i) => fundColor[Math.floor(i / 2)])
 					.style('color', (d, i) => (i < 4 ? '#fff' : 'black'))
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {
@@ -162,7 +160,7 @@
 			const rRows = d3.select(recSelector).select('tbody').selectAll('tr')
 				.data(countriesByReceived.slice(0, numRows))
 				.enter().append('tr')
-					.style('background-color', (d, i) => oranges[Math.floor(i / 2)])
+					.style('background-color', (d, i) => receiveColor[Math.floor(i / 2)])
 					.style('color', (d, i) => (i < 4 ? '#fff' : 'black'))
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {

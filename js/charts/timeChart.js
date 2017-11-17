@@ -58,7 +58,6 @@
 			.attr('y', d => y(d.total_committed) - 8)
 			.attr('dy', '.35em')
 			.text((d) => {
-				// if (!d.total_committed) return '';
 				return App.formatMoneyShort(d.total_committed)
 			});
 
@@ -76,7 +75,6 @@
 			.attr('y', d => y(d.total_spent) - 8)
 			.attr('dy', '.35em')
 			.text((d) => {
-				// if (!d.total_spent) return '';
 				return App.formatMoneyShort(d.total_spent);
 			});
 
