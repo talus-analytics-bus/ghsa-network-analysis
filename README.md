@@ -1,4 +1,10 @@
-# GHSA funding network analysis
+# GHSA Tracking Dashboard
+A dashboard analyzing committed and disbursed funds to countries for global health security
 
-## Progress Status
-This project is still a work in progress. Steph is currently working in the research/ subdirectory to generate a demo dataset that combines notional and actual data. Please see research/data/ subdirectory for more information. As of now, all other code has been written by Johanna or Mike, Steph has not yet made updates outside of the research/ subdirectory.
+## Installation
+Download or clone the git repo.
+Run `yarn start` from the repo directory to install dependencies
+
+## Running the Tool Locally
+Run `yarn` from the repo directory to start the local server
+Type "localhost:8888" in your browser's URL to navigate to the tool
