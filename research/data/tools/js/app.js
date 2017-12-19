@@ -7,7 +7,7 @@ const App = {};
 	// Loads the current 'funding_data' dataset to be played with
 	App.loadFundingData = () => {
 		const path = './data/';
-		const fn = 'allData-v9.json';
+		const fn = 'funding_data_v12.json';
 		console.log('Loading funding data...');
 			d3.queue()
 				.defer(d3.json, path + fn)
@@ -814,6 +814,44 @@ const sectorAid = [
 			projectNames[i] = eng_name;
 			App.translateProjectNames(i + 1, projectNames);
 		});
+	};
+
+	// function to process article x data
+	App.processArticleXData = () => {
+		// load article X JSON
+		d3.queue()
+			.defer(d3.json, './data/article_x_temp.json')
+			.defer(d3.json, './data/funding_data_v13.json')
+			.await((error, articleXData, currentData) => {
+				if (error) throw error;
+				// tag for JEE CCs
+				articleXData.forEach(project => {
+					// description
+					const descCcs = App.searchForJeeCcs(project.project_description);
+
+					// title
+					const titleCcs = App.searchForJeeCcs(project.project_title);
+
+					// tag them
+					const ccs = _.union(descCcs, titleCcs);
+					project.core_capacities = ccs;
+
+					// convert from currency in project_value_iso to USD
+					// TODO
+
+					// convert data to format used in dashboard data
+					// TODO
+
+					// append data to dashboard data ('currentData')
+					// TODO
+
+					// save out the updated data using Util.save function
+
+				});
+				console.log(articleXData);
+
+			});
+
 	};
 
 })();
