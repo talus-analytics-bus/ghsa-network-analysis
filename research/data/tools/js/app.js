@@ -429,32 +429,44 @@ const sectorAid = [
 				// console.log(translated_descs[0]);
 				// for each proj
 				projects.forEach(project => {
-					// get aid for cur prj
-					const curAid = project.source.id;
+					// if project is from IATI, use description translation
+					const isIati = project.source.name === "IATI via D-Portal";
 
-					// find matching activity to get the translated descs
-					// DESCRIPTIONS
-					const matchTrns = translated_descs.find(d => d.aid === curAid);
+					if (isIati) {
+						// get aid for cur prj
+						const curAid = project.source.id;
 
-					let stringToMatchOn = '';
-					if (matchTrns === undefined) {
-						// console.log('missing desc trans for: ' + curAid);
-						// if no match for project description, do one for its title and use that
-						const matchAct = iatiActivities.find(d => d.aid === curAid);
-						App.translate(matchAct.title, (result) => {
-							// do JEE lookup on this text;
-							stringToMatchOn = result;
-							project.title_trns = stringToMatchOn;
+						// find matching activity to get the translated descs
+						// DESCRIPTIONS
+						const matchTrns = translated_descs.find(d => d.aid === curAid);
+
+						let stringToMatchOn = '';
+						if (matchTrns === undefined) {
+							// console.log('missing desc trans for: ' + curAid);
+							// if no match for project description, do one for its title and use that
+							const matchAct = iatiActivities.find(d => d.aid === curAid);
+							App.translate(matchAct.title, (result) => {
+								// do JEE lookup on this text;
+								stringToMatchOn = result;
+								project.title_trns = stringToMatchOn;
+								project.core_capacities = [];
+								project.core_capacities = App.searchForJeeCcs(stringToMatchOn);
+							});
+						} else {
+							stringToMatchOn = matchTrns.desc_trns;
+							project.desc_trns = stringToMatchOn;
 							project.core_capacities = App.searchForJeeCcs(stringToMatchOn);
-						});
+						}
+
+						// TITLES (todo)
+						// TODO
 					} else {
-						stringToMatchOn = matchTrns.desc_trns;
-						project.desc_trns = stringToMatchOn;
+						// if project is from article X, use description and title
+						console.log("Article X project")
+						let stringToMatchOn = project.project_name + project.project_desc;
+						project.core_capacities = [];
 						project.core_capacities = App.searchForJeeCcs(stringToMatchOn);
 					}
-
-					// TITLES (todo)
-					// TODO
 				});
 			});
 	};
@@ -816,6 +828,39 @@ const sectorAid = [
 		});
 	};
 
+	// function to calculate the amount spent and disbursed by year for a project
+	App.getFundsByYear = (project) => {
+		const transactions = project.transactions;
+		const spendTrans = transactions.filter(d => { return d.type === "disbursement" || d.type === "expenditure"; });
+		const commitmentTrans = transactions.filter(d => { return d.type === "commitment"; });
+		
+		project.total_spent = 0.0;
+		project.total_committed = 0.0;
+		const curYear = new Date().getFullYear();
+
+		project.spent_by_year = {};
+		spendTrans.forEach(transaction => {
+			const transCy = transaction.cy;
+			if (project.spent_by_year[transCy] === undefined) {
+				project.spent_by_year[transCy] = transaction.amount;
+			} else {
+				project.spent_by_year[transCy] = project.spent_by_year[transCy] + transaction.amount;
+			}
+			if (parseInt(transCy) <= curYear) project.total_spent = project.total_spent + transaction.amount;
+		});
+
+		project.committed_by_year = {};
+		commitmentTrans.forEach(transaction => {
+			const transCy = transaction.cy;
+			if (project.committed_by_year[transCy] === undefined) {
+				project.committed_by_year[transCy] = transaction.amount;
+			} else {
+				project.committed_by_year[transCy] = project.committed_by_year[transCy] + transaction.amount;
+			}
+			if (parseInt(transCy) <= curYear) project.total_committed = project.total_committed + transaction.amount;
+		});
+	};
+
 	// function to process article x data
 	App.processArticleXData = () => {
 		// load article X JSON
@@ -842,6 +887,12 @@ const sectorAid = [
 					// tag them
 					const ccs = _.union(descCcs, titleCcs);
 
+					// get num of donors, recipients, and years
+					const n_donor = project.implementing_country.length;
+					const n_recipient = project.partner_country.length;
+					const yearArr = project.project_duration.split(' - ');
+					const n_years = (yearArr.length === 1) ? 1 : (parseInt(yearArr[1]) - parseInt(yearArr[0]) + 1);
+
 					// FOR EACH DONOR
 					project.implementing_country.forEach(donor => {
 						
@@ -854,12 +905,16 @@ const sectorAid = [
 						// FOR EACH RECIPIENT:
 						project.partner_country.forEach(recipient => {
 							
+							// get recipient info
 							const recipient_sector = 'Country';
 							let recipient_name, recipient_country;
 							if (recipient === "General") {
 								// TODO
 								recipient_name = "General";
 								recipient_country = "";
+							} else if (recipient === "Kosovo") {
+								recipient_name = recipient;
+								recipient_country = "XK";
 							} else {
 								const recipient_country_json = countries_json.find(d => d.NAME == recipient);
 								console.log(recipient+ ':')
@@ -867,79 +922,145 @@ const sectorAid = [
 								recipient_country = recipient_country_json.ISO2;
 								recipient_name = recipient;
 							}
-							console.log(recipient_country);
+
+							// setup new project data
+							let newProj = {};
+
+							// // make function and disease 'unspecified'
+							// newProj.project_function = [
+							//     {
+							//       "p": "Unspecified",
+							//       "c": null
+							//     }
+							//   ];
+							// newProj.project_disease = [
+							//     {
+							//       "p": "Unspecified",
+							//       "c": null
+							//     }
+							//   ];
+
+							// project_name
+							newProj.project_name = project.project_title;
+							
+							// project_description
+							newProj.project_desc = project.project_description;
+
+							// core_capacities
+							newProj.core_capacities = project.core_capacities;
+							
+
+							// donor_sector
+							newProj.donor_sector = 'Government';
+
+							// donor_country
+							newProj.donor_code = donor_country;
+							
+							// donor_name
+							newProj.donor_name = donor_name;
+
+							// recipient_sector
+							newProj.recipient_sector = 'Country';
+
+							// recipient_country
+							newProj.recipient_code = recipient_country;
+							
+							// recipient_name
+							newProj.recipient_name = recipient_name;
+
+							// convert from currency in project_value_iso to USD
+							// load exchange rates from json
+							// get needed exchange rate per year and country code
+							// convert amount to contemporary USD
+							// TODO
+							const amountOrig = project.project_value_amount;
+							const amountUsd = Util.convertToUsd(amountOrig, project.project_value_iso, project.project_value_year);
+							
+							if (project.project_title !== "ViroRed") {
+
+								// Add initial commitment
+								const initCommitAmount = amountUsd / (n_donor + n_recipient);
+								const initCommitYear = parseInt(yearArr[0]);
+								newProj.transactions = [];
+								newProj.transactions.push({
+									type: 'commitment',
+									amount: initCommitAmount,
+									cy: initCommitYear,
+									currency: 'USD'
+								});
+
+								const annualSpendAmount = initCommitAmount / (n_years);
+								for (let i = 0; i < n_years; i++) {
+									const curSpendYear = initCommitYear + i;
+									newProj.transactions.push({
+										type: 'disbursement',
+										amount: annualSpendAmount,
+										cy: curSpendYear,
+										currency: 'USD'
+									});
+								}
+							} else {
+
+								// Add commitments and disbursements each year
+								const initCommitYear = parseInt(yearArr[0]);
+								const annualSpendAmount = amountUsd / (n_years + n_donor + n_recipient);
+								newProj.transactions = [];
+								for (let i = 0; i < n_years; i++) {
+									const curSpendYear = initCommitYear + i;
+									newProj.transactions.push({
+										type: 'commitment',
+										amount: annualSpendAmount,
+										cy: curSpendYear,
+										currency: 'USD'
+									});
+									newProj.transactions.push({
+										type: 'disbursement',
+										amount: annualSpendAmount,
+										cy: curSpendYear,
+										currency: 'USD'
+									});
+								}
+							}
+
+							// increment project id
+							n = n + 1;
+							newProj.project_id = 'proj.' + n;
+
+							// add core capacities
+							newProj.core_capacities = ccs;
+
+							// calc total spent and committed by year
+							App.getFundsByYear(newProj);
+
+							// total-currency
+							newProj.total_currency = 'USD';
+
+							// total_spent
+							newProj.source = {
+							    "name": "GP BTWC Article X Assistance Compendium 2017",
+							    "id": "",
+							    "added_by": "Talus",
+							    "mmddyyyy_added": "01032018"
+							  };
+
+							// append data to newProjArr
+							newProjArr.push(newProj);
 						});
 					});
-					project.core_capacities = ccs;
-					
-					// setup new project data
-					let newProj = {};
-
-					// // make function and disease 'unspecified'
-					// newProj.project_function = [
-					//     {
-					//       "p": "Unspecified",
-					//       "c": null
-					//     }
-					//   ];
-					// newProj.project_disease = [
-					//     {
-					//       "p": "Unspecified",
-					//       "c": null
-					//     }
-					//   ];
-
-					// project_name
-					newProj.project_name = project.project_title;
-					
-					// project_description
-					newProj.project_desc = project.project_description;
-
-					// core_capacities
-					newProj.core_capacities = project.core_capacities;
-					
-
-					// donor_sector
-					newProj.donor_sector = 'Government';
-
-					// donor_code
-					// get donor code from countries json
-					// newProj.xxxx = xxxxxxx;
-					
-					// // xxxxxxx
-					// newProj.xxxx = xxxxxxx;
-
-					// // xxxxxxx
-					// newProj.xxxx = xxxxxxx;
-
-					// // xxxxxxx
-					// newProj.xxxx = xxxxxxx;
-
-					// increment project id
-					n = n + 1;
-					newProj.project_id = 'proj.' + n;
-
-					// convert from currency in project_value_iso to USD
-					// load exchange rates from json
-					// get needed exchange rate per year and country code
-					// convert amount to contemporary USD
-					// TODO
-
-					// convert data to format used in dashboard data (split by donor and recipient, etc.)
-					// Split by donor
-					// Split by recipient
-					// TODO
-
-					// append data to newProjArr
-					newProjArr.push(newProj);
 				});
 
 				// append new projects to existing data
-				// TODO
-				console.log(articleXData);
-				console.log(currentData)
-				console.log(newProjArr);
+				currentData = currentData.concat(newProjArr);
 
+				// retag all CCs
+				App.tagJeeCcs(currentData);
+				// console.log(articleXData);
+				console.log(currentData)
+				// console.log(newProjArr);
+
+				// // save out updated data
+				// Util.save(currentData,'funding_data_v13.json');
+				App.updatedData = currentData;
 			});
 
 	};
