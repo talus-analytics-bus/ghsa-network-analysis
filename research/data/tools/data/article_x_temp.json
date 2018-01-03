@@ -4,7 +4,7 @@
     "partner_country": [
       "Botswana",
       "Cameroon",
-      "Cote d’Ivoire",
+      "Cote d'Ivoire",
       "Ethiopia",
       "Kenya",
       "Senegal",
@@ -31,7 +31,7 @@
       "Guinea-Bissau",
       "Kenya",
       "Ghana",
-      "Malawi",
+      "Malawi", 
       "United Republic of Tanzania",
       "Uganda",
       "Zambia"
@@ -72,7 +72,7 @@
       "Sierra Leone"
     ],
     "implementing_country": [
-      "Canada - Global Partnership Program Global Affairs Canada"
+      "Canada"
     ],
     "collaborators": "Public Health Agency Canada  - Canada’s National Microbiology Laboratory (NML)",
     "project_value_amount": 183000,
@@ -1301,9 +1301,9 @@
       "Ukraine"
     ],
     "implementing_country": [
-      "European Union DEVCO/EuropeAid. France (general and network coordination)",
+      "France",
       "Italy",
-      "Spain (network coordination)."
+      "Spain"
     ],
     "project_value_amount": 3300000,
     "project_value_iso": "eur",
@@ -1341,7 +1341,7 @@
       "General"
     ],
     "implementing_country": [
-      "Germany "
+      "Germany"
     ],
     "collaborators": "Bernhard Nocht Institute for Tropical Medicine; Robert Koch Institute",
     "project_value_amount": 2500000,
@@ -1357,7 +1357,7 @@
       "General"
     ],
     "implementing_country": [
-      "Sweden through the Ministry for Foreign Affairs"
+      "Sweden"
     ],
     "project_value_amount": 30815058,
     "project_value_iso": "eur",
@@ -1372,7 +1372,7 @@
       "General"
     ],
     "implementing_country": [
-      "Sweden through the Swedish International Development Cooperation Agency"
+      "Sweden"
     ],
     "project_value_amount": 513584,
     "project_value_iso": "eur",
@@ -1387,7 +1387,7 @@
       "General"
     ],
     "implementing_country": [
-      "Sweden through the Swedish International Development Cooperation Agency"
+      "Sweden"
     ],
     "project_value_amount": 719018,
     "project_value_iso": "eur",
@@ -1402,7 +1402,7 @@
       "General"
     ],
     "implementing_country": [
-      "Sweden through the Ministry for Foreign Affairs"
+      "Sweden"
     ],
     "project_value_amount": 82173489,
     "project_value_iso": "eur",
@@ -1417,7 +1417,7 @@
       "General"
     ],
     "implementing_country": [
-      "Sweden through the Swedish International Development Cooperation Agency"
+      "Sweden"
     ],
     "project_value_amount": 513584,
     "project_value_iso": "eur",
@@ -1432,7 +1432,7 @@
       "General"
     ],
     "implementing_country": [
-      "Sweden through the Swedish International Development Cooperation Agency"
+      "Sweden"
     ],
     "project_value_amount": 3471830,
     "project_value_iso": "eur",

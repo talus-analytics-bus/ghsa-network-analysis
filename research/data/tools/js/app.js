@@ -824,8 +824,15 @@ const sectorAid = [
 			.defer(d3.json, './data/funding_data_v13.json')
 			.await((error, articleXData, currentData) => {
 				if (error) throw error;
+				// get project number to start with
+				let n = 29992;
+
+				// setup output array for new data to add
+				newProjArr = [];
+
 				// tag for JEE CCs
 				articleXData.forEach(project => {
+
 					// description
 					const descCcs = App.searchForJeeCcs(project.project_description);
 
@@ -834,21 +841,104 @@ const sectorAid = [
 
 					// tag them
 					const ccs = _.union(descCcs, titleCcs);
+
+					// FOR EACH DONOR
+					project.implementing_country.forEach(donor => {
+						
+						// get donor info
+						const donor_name = donor;
+						const donor_country_json = countries_json.find(d => d.NAME == donor_name);
+						const donor_country = donor_country_json.ISO2;
+						const donor_sector = 'Government';
+
+						// FOR EACH RECIPIENT:
+						project.partner_country.forEach(recipient => {
+							
+							const recipient_sector = 'Country';
+							let recipient_name, recipient_country;
+							if (recipient === "General") {
+								// TODO
+								recipient_name = "General";
+								recipient_country = "";
+							} else {
+								const recipient_country_json = countries_json.find(d => d.NAME == recipient);
+								console.log(recipient+ ':')
+								console.log(recipient_country_json)
+								recipient_country = recipient_country_json.ISO2;
+								recipient_name = recipient;
+							}
+							console.log(recipient_country);
+						});
+					});
 					project.core_capacities = ccs;
+					
+					// setup new project data
+					let newProj = {};
+
+					// // make function and disease 'unspecified'
+					// newProj.project_function = [
+					//     {
+					//       "p": "Unspecified",
+					//       "c": null
+					//     }
+					//   ];
+					// newProj.project_disease = [
+					//     {
+					//       "p": "Unspecified",
+					//       "c": null
+					//     }
+					//   ];
+
+					// project_name
+					newProj.project_name = project.project_title;
+					
+					// project_description
+					newProj.project_desc = project.project_description;
+
+					// core_capacities
+					newProj.core_capacities = project.core_capacities;
+					
+
+					// donor_sector
+					newProj.donor_sector = 'Government';
+
+					// donor_code
+					// get donor code from countries json
+					// newProj.xxxx = xxxxxxx;
+					
+					// // xxxxxxx
+					// newProj.xxxx = xxxxxxx;
+
+					// // xxxxxxx
+					// newProj.xxxx = xxxxxxx;
+
+					// // xxxxxxx
+					// newProj.xxxx = xxxxxxx;
+
+					// increment project id
+					n = n + 1;
+					newProj.project_id = 'proj.' + n;
 
 					// convert from currency in project_value_iso to USD
+					// load exchange rates from json
+					// get needed exchange rate per year and country code
+					// convert amount to contemporary USD
 					// TODO
 
-					// convert data to format used in dashboard data
+					// convert data to format used in dashboard data (split by donor and recipient, etc.)
+					// Split by donor
+					// Split by recipient
 					// TODO
 
-					// append data to dashboard data ('currentData')
-					// TODO
-
-					// save out the updated data using Util.save function
-
+					// append data to newProjArr
+					newProjArr.push(newProj);
 				});
+
+				// append new projects to existing data
+				// TODO
 				console.log(articleXData);
+				console.log(currentData)
+				console.log(newProjArr);
 
 			});
 
