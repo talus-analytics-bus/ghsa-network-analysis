@@ -331,6 +331,7 @@
 				region.children.forEach((subregion) => {
 					subregion.children.forEach((fc) => {
 						fc.funds.forEach((f) => {
+							if (f.recipient === "General" || f.recipient === "XK") return;
 							let fundTheta = (fc.theta1 - fc.theta0) * (f.value / fc.totalFlow);
 							if (fundTheta < 0) fundTheta = 0;  // TODO need to fix this!
 							f.source = {

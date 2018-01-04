@@ -320,6 +320,7 @@
 
 		function buildNetworkMap() {
 			const networkData = getNetworkData();
+			console.log(networkData);
 			const chart = App.buildNetworkMap('.network-map-content', networkData, {
 				countryClickFn: displayCountryInNetwork,
 			});
