@@ -836,9 +836,16 @@ const sectorAid = [
 		
 		project.total_spent = 0.0;
 		project.total_committed = 0.0;
-		const curYear = new Date().getFullYear();
+		// const curYear = new Date().getFullYear();
+		const curYear = 2017;
+		const minYear = 2014;
 
-		project.spent_by_year = {};
+		project.spent_by_year = {
+			2014: 0.0,
+			2015: 0.0,
+			2016: 0.0,
+			2017: 0.0
+		};
 		spendTrans.forEach(transaction => {
 			const transCy = transaction.cy;
 			if (project.spent_by_year[transCy] === undefined) {
@@ -846,10 +853,15 @@ const sectorAid = [
 			} else {
 				project.spent_by_year[transCy] = project.spent_by_year[transCy] + transaction.amount;
 			}
-			if (parseInt(transCy) <= curYear) project.total_spent = project.total_spent + transaction.amount;
+			if (parseInt(transCy) <= curYear && parseInt(transCy) >= minYear) project.total_spent = project.total_spent + transaction.amount;
 		});
 
-		project.committed_by_year = {};
+		project.committed_by_year = {
+			2014: 0.0,
+			2015: 0.0,
+			2016: 0.0,
+			2017: 0.0
+		};
 		commitmentTrans.forEach(transaction => {
 			const transCy = transaction.cy;
 			if (project.committed_by_year[transCy] === undefined) {
@@ -857,7 +869,7 @@ const sectorAid = [
 			} else {
 				project.committed_by_year[transCy] = project.committed_by_year[transCy] + transaction.amount;
 			}
-			if (parseInt(transCy) <= curYear) project.total_committed = project.total_committed + transaction.amount;
+			if (parseInt(transCy) <= curYear && parseInt(transCy) >= minYear) project.total_committed = project.total_committed + transaction.amount;
 		});
 	};
 
@@ -911,7 +923,7 @@ const sectorAid = [
 							if (recipient === "General") {
 								// TODO
 								recipient_name = "General";
-								recipient_country = "";
+								recipient_country = "General";
 							} else if (recipient === "Kosovo") {
 								recipient_name = recipient;
 								recipient_country = "XK";
@@ -963,7 +975,7 @@ const sectorAid = [
 							newProj.recipient_sector = 'Country';
 
 							// recipient_country
-							newProj.recipient_code = recipient_country;
+							newProj.recipient_country = recipient_country;
 							
 							// recipient_name
 							newProj.recipient_name = recipient_name;
