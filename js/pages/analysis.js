@@ -246,7 +246,7 @@
 				}
 			}
 
-			// add non-countries
+			// add non-country donors
 			fundsByRegion['Other Funders'] = { 'Other Funders': {} };
 			for (const iso in App.fundingLookup) {
 				if (!App.countries.find(c => c.ISO2 === iso)) {
@@ -268,6 +268,8 @@
 				}
 			}
 
+			// fundsByRegion['Other Funders'] = {};
+
 			// build chord chart data
 			for (const r in fundsByRegion) {
 				const region = {
@@ -287,6 +289,10 @@
 					};
 					for (const iso in fundsByRegion[r][sub]) {
 						const funds = [];
+						if (iso === 'CA') {
+							console.log('fundsByRegion[r][sub][iso]')
+							console.log(fundsByRegion[r][sub][iso])
+						}
 						for (const rIso in fundsByRegion[r][sub][iso].fundsByC) {
 							funds.push({
 								donor: iso,
@@ -315,12 +321,15 @@
 				}
 				networkData.push(region);
 			}
+			console.log('networkData')
+			console.log(networkData)
 			return networkData;
 		}
 
 		function buildNetworkMap() {
 			const networkData = getNetworkData();
 			console.log(networkData);
+
 			const chart = App.buildNetworkMap('.network-map-content', networkData, {
 				countryClickFn: displayCountryInNetwork,
 			});
@@ -365,7 +374,7 @@
 			unhighlightNetwork();
 
 			const countryName = App.codeToNameMap.get(countryIso);
-
+			
 			// highlight arc and links
 			const arc = d3.selectAll('.country-arc')
 				.filter(c => c.iso === countryIso)

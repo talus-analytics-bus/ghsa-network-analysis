@@ -9,11 +9,13 @@
 		let countries = [];
 		let funds = [];
 		const countryMapByIso = d3.map();
+		console.log('countryMapByIso')
+		console.log(countryMapByIso)
 
 		// establish chart constants
 		const margin = { top: 60, right: 60, bottom: 120, left: 60 };
 		const radius = param.radius || 300;
-		const regionPadding = 0.02;
+		const regionPadding = 0.2;
 		const subregionPadding = 0.01;
 
 		// start building the chart
@@ -262,12 +264,19 @@
 		}
 
 		function drawLinks(moneyType) {
+
+			// Remove funds that aren't valid (XK)
+			funds = funds.filter((d) => {
+				return (d.source !== undefined);
+			});
+
 			// create links
 			const links = linkG.selectAll('.link')
 				.data(funds);
 			links.exit().remove();
 			links.enter().append('path')
 				.attr('class', 'link')
+				.attr('recipient', (d) => d.recipient)
 				.each(function addTooltip() {
 					$(this).tooltipster({ plugins: ['follower'] });
 				})
@@ -331,7 +340,7 @@
 				region.children.forEach((subregion) => {
 					subregion.children.forEach((fc) => {
 						fc.funds.forEach((f) => {
-							if (f.recipient === "General" || f.recipient === "XK") return;
+							if (f.recipient === "XK") return;
 							let fundTheta = (fc.theta1 - fc.theta0) * (f.value / fc.totalFlow);
 							if (fundTheta < 0) fundTheta = 0;  // TODO need to fix this!
 							f.source = {
@@ -371,6 +380,8 @@
 		}
 
 		chart.update(initData);
+		console.log('subregions')
+		console.log(subregions)
 		return chart;
 	};
 })();

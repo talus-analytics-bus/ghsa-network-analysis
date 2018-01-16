@@ -1,4 +1,5 @@
 Global Code,Global Name,Region Code,Region Name,Sub-region Code,Sub-region Name,Intermediate Region Code,Intermediate Region Name,Country or Area,M49 Code,ISO-alpha3 Code,Least Developed Countries (LDC),Land Locked Developing Countries (LLDC),Small Island Developing States (SIDS),Developed / Developing Countries
+1,World,GEN1,General1,GEN2,General2,GEN3,General3,General Global Benefit,General,GEN,,,,
 1,World,2,Africa,15,Northern Africa,,,Algeria,12,DZA,,,,Developing
 1,World,2,Africa,15,Northern Africa,,,Egypt,818,EGY,,,,Developing
 1,World,2,Africa,15,Northern Africa,,,Libya,434,LBY,,,,Developing
@@ -19,7 +20,7 @@ Global Code,Global Name,Region Code,Region Name,Sub-region Code,Sub-region Name,
 1,World,2,Africa,202,Sub-Saharan Africa,14,Eastern Africa,Mauritius,480,MUS,,,x,Developing
 1,World,2,Africa,202,Sub-Saharan Africa,14,Eastern Africa,Mayotte,175,MYT,,,,Developing
 1,World,2,Africa,202,Sub-Saharan Africa,14,Eastern Africa,Mozambique,508,MOZ,x,,,Developing
-1,World,2,Africa,202,Sub-Saharan Africa,14,Eastern Africa,Réunion,638,REU,,,,Developing
+1,World,2,Africa,202,Sub-Saharan Africa,14,Eastern Africa,R̩union,638,REU,,,,Developing
 1,World,2,Africa,202,Sub-Saharan Africa,14,Eastern Africa,Rwanda,646,RWA,x,x,,Developing
 1,World,2,Africa,202,Sub-Saharan Africa,14,Eastern Africa,Seychelles,690,SYC,,,x,Developing
 1,World,2,Africa,202,Sub-Saharan Africa,14,Eastern Africa,Somalia,706,SOM,x,,,Developing
@@ -45,7 +46,7 @@ Global Code,Global Name,Region Code,Region Name,Sub-region Code,Sub-region Name,
 1,World,2,Africa,202,Sub-Saharan Africa,11,Western Africa,Benin,204,BEN,x,,,Developing
 1,World,2,Africa,202,Sub-Saharan Africa,11,Western Africa,Burkina Faso,854,BFA,x,x,,Developing
 1,World,2,Africa,202,Sub-Saharan Africa,11,Western Africa,Cabo Verde,132,CPV,,,x,Developing
-1,World,2,Africa,202,Sub-Saharan Africa,11,Western Africa,Côte d'Ivoire,384,CIV,,,,Developing
+1,World,2,Africa,202,Sub-Saharan Africa,11,Western Africa,C̫te d'Ivoire,384,CIV,,,,Developing
 1,World,2,Africa,202,Sub-Saharan Africa,11,Western Africa,Gambia,270,GMB,x,,,Developing
 1,World,2,Africa,202,Sub-Saharan Africa,11,Western Africa,Ghana,288,GHA,,,,Developing
 1,World,2,Africa,202,Sub-Saharan Africa,11,Western Africa,Guinea,324,GIN,x,,,Developing
@@ -68,7 +69,7 @@ Global Code,Global Name,Region Code,Region Name,Sub-region Code,Sub-region Name,
 1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,British Virgin Islands,92,VGB,,,x,Developing
 1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Cayman Islands,136,CYM,,,,Developing
 1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Cuba,192,CUB,,,x,Developing
-1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Curaçao,531,CUW,,,x,Developing
+1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Cura̤ao,531,CUW,,,x,Developing
 1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Dominica,212,DMA,,,x,Developing
 1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Dominican Republic,214,DOM,,,x,Developing
 1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Grenada,308,GRD,,,x,Developing
@@ -78,7 +79,7 @@ Global Code,Global Name,Region Code,Region Name,Sub-region Code,Sub-region Name,
 1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Martinique,474,MTQ,,,,Developing
 1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Montserrat,500,MSR,,,x,Developing
 1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Puerto Rico,630,PRI,,,x,Developing
-1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Saint Barthélemy,652,BLM,,,,Developing
+1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Saint Barth̩lemy,652,BLM,,,,Developing
 1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Saint Kitts and Nevis,659,KNA,,,x,Developing
 1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Saint Lucia,662,LCA,,,x,Developing
 1,World,19,Americas,419,Latin America and the Caribbean,29,Caribbean,Saint Martin (French Part),663,MAF,,,,Developing
@@ -179,7 +180,7 @@ Global Code,Global Name,Region Code,Region Name,Sub-region Code,Sub-region Name,
 1,World,150,Europe,151,Eastern Europe,,,Russian Federation,643,RUS,,,,Developed
 1,World,150,Europe,151,Eastern Europe,,,Slovakia,703,SVK,,,,Developed
 1,World,150,Europe,151,Eastern Europe,,,Ukraine,804,UKR,,,,Developed
-1,World,150,Europe,154,Northern Europe,,,Åland Islands,248,ALA,,,,Developed
+1,World,150,Europe,154,Northern Europe,,,��land Islands,248,ALA,,,,Developed
 1,World,150,Europe,154,Northern Europe,830,Channel Islands,Guernsey,831,GGY,,,,Developed
 1,World,150,Europe,154,Northern Europe,830,Channel Islands,Jersey,832,JEY,,,,Developed
 1,World,150,Europe,154,Northern Europe,830,Channel Islands,Sark,680,,,,,Developed

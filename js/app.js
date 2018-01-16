@@ -78,12 +78,25 @@ const App = {};
 				App.countries = worldData.objects.countries.geometries
 					.map(c => c.properties);
 
+				// Add "General" as a country
+				const general = {
+				  "FIPS": "GEN",
+				  "ISO2": "GEN",
+				  "ISO3": "GEN",
+				  "NAME": "General Global Benefit",
+				  "regionName": "General",
+				  "subRegionName": "General",
+				  "intermediateRegionName": "General"
+				};
+				App.countries.push(general);
+
 				// save region names to countries
 				const regionMap = d3.map();
 				unsdData.forEach((d) => {
 					regionMap.set(d['ISO-alpha3 Code'], d);
 				});
 				App.countries.forEach((c) => {
+					// if (c.regionName === "General") return;
 					const regionInfo = regionMap.get(c.ISO3);
 					c.regionName = regionInfo['Region Name'];
 					c.subRegionName = regionInfo['Sub-region Name'];
@@ -100,6 +113,19 @@ const App = {};
 
 				// save funding data
 				App.fundingData = fundingData;
+
+				// DEBUG change iso of general
+				App.fundingData.forEach((d) => {
+					if (d.recipient_country === 'General') d.recipient_country = 'GEN';
+				});
+
+				// DEBUG crank up Canada donations to general global benefit
+				App.fundingData.forEach((d, i) => {
+					if (d.project_name === "Strengthening Export Controls and Border Security in the Americas and the Caribbean") {
+						console.log('replacing data')
+						App.fundingData[i] = {"project_name":"Strengthening Export Controls and Border Security in the Americas and the Caribbean","project_desc":"Canada is supporting the enhancement of export controls and border security measures to prevent the proliferation and trafficking of weapons of mass destruction (WMDs), their means of delivery and related materials, including enhanced implementation of strategic trade domestic controls of chemical, biological, radiological and nuclear (CBRN) materials. In the global fight against WMD proliferation, full and effective national implementation of all obligations under multilateral arms control agreements (including the adoption and application of effective export controls and border security measures) plays a critical role. ; To address these vulnerabilities, this Project is assisting partner states to establish or enhance domestic controls, adopt effective laws and implement comprehensive measures to prevent the proliferation of CBRN weapons and their means of delivery. Tailored activities include national needs assessments, development of legislative application plans and the provision of requisite equipment, training and related technical assistance to strengthen national and regional capacity to prevent, detect and respond to CBRN incidents. ; The Project is also supporting the development and/or enhancement of cargo targeting systems at select, high-volume Latin American and/or Caribbean ports of entry to strengthen capabilities to identify and track shipments of CBRN and other illicit goods and trade flows in and through the region.  It also directly support States Parties to the BTWC to fulfill their national obligations, including by facilitating participation at BTWC Meetings (e.g. Meetings of Experts and States Parties) and convening BTWC workshops and events.","core_capacities":["P.1","D.2","D.4","R.3","PoE"],"donor_sector":"Government","donor_code":"CA","donor_name":"Canada","recipient_sector":"Country","recipient_country":"GEN","recipient_name":"General","transactions":[{"type":"commitment","amount":3769008.5,"cy":2015,"currency":"USD"},{"type":"disbursement","amount":1256336.1666666667,"cy":2015,"currency":"USD"},{"type":"disbursement","amount":500000000,"cy":2016,"currency":"USD"},{"type":"disbursement","amount":1256336.1666666667,"cy":2017,"currency":"USD"}],"project_id":"proj.30093","total_spent":503769008,"total_committed":3769008.5,"spent_by_year":{"2014":0,"2015":1256336.1666666667,"2016":500000000,"2017":1256336.1666666667},"committed_by_year":{"2014":0,"2015":3769008.5,"2016":0,"2017":0},"total_currency":"USD","source":{"name":"GP BTWC Article X Assistance Compendium 2017","id":"","added_by":"Talus","mmddyyyy_added":"01032018"}};
+					}
+				});
 
 				// save indicator scores by country
 				jeeData.forEach((sRow) => {
