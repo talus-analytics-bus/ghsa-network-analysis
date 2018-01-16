@@ -91,6 +91,9 @@ const App = {};
 					App.codeToNameMap.set(c.ISO2, c.NAME);
 				});
 
+				// Add gen global benefit
+				App.codeToNameMap.set('General Global Benefit', 'General Global Benefit');
+
 				// fill code to name map
 				donorCodeData.forEach((d) => {
 					if (!App.codeToNameMap.has(d.donor_code)) {
@@ -100,6 +103,14 @@ const App = {};
 
 				// save funding data
 				App.fundingData = fundingData;
+
+				// relabel general
+				App.fundingData.forEach((project) => {
+					if (project.recipient_country === "General") {
+						project.recipient_country = "General Global Benefit";
+						project.recipient_name= "General Global Benefit";
+					}
+				});
 
 				// save indicator scores by country
 				jeeData.forEach((sRow) => {

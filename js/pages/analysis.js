@@ -236,6 +236,7 @@
 							const value = totalFunc(p);
 							if (value) {
 								const rIso = p.recipient_country;
+								if (rIso === "General Global Benefit" || rIso === "XK") return;
 								if (!fundsByRegion[region][sub][iso].fundsByC[rIso]) {
 									fundsByRegion[region][sub][iso].fundsByC[rIso] = 0;
 								}
@@ -259,6 +260,7 @@
 						const value = totalFunc(p);
 						if (value) {
 							const rIso = p.recipient_country;
+							if (rIso === "General Global Benefit"  || rIso === "XK") return;
 							if (!fundsByRegion['Other Funders']['Other Funders'][iso].fundsByC[rIso]) {
 								fundsByRegion['Other Funders']['Other Funders'][iso].fundsByC[rIso] = 0;
 							}

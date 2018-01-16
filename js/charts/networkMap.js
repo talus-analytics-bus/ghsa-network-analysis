@@ -1,5 +1,7 @@
 (() => {
 	App.buildNetworkMap = (selector, initData, param = {}) => {
+		console.log('initData')
+		console.log(initData)
 		// define colors
 		const fundColor = App.fundColor;
 		const receiveColor = App.receiveColor;
@@ -340,6 +342,7 @@
 							fc.runningTheta += fundTheta;
 
 							const rc = countryMapByIso.get(f.recipient);
+							console.log(f.recipient)
 							let recTheta = (rc.theta1 - rc.theta0) * (f.value / rc.totalFlow);
 							if (recTheta < 0) recTheta = 0;  // TODO need to fix this!
 							f.target = {
@@ -368,7 +371,7 @@
 			const r = d.totalReceived;
 			return colorScale(r / (r + f));
 		}
-
+		
 		chart.update(initData);
 		return chart;
 	};

@@ -180,7 +180,6 @@
 			});
 			lookup[iso].forEach((p) => {
 				ccs.forEach((cc) => {
-					console.log(p.core_capacities);
 					if (p.core_capacities.some(pcc => cc === pcc.charAt(0))) {
 						const committed = p.total_committed;
 						let spent = p.total_spent;
