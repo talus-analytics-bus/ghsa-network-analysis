@@ -1,7 +1,8 @@
 (() => {
 	App.initAnalysisCountry = (iso, moneyType) => {
 		// get country information
-		const country = App.countries.find(c => c.ISO2 === iso);
+		const isGeneral = iso === "General Global Benefit";
+		const country = !isGeneral ? App.countries.find(c => c.ISO2 === iso) : "General Global Benefit";
 		const lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
 		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
 		const lightColor = (moneyType === 'd') ? App.fundColorPalette[4] : App.receiveColorPalette[4];
@@ -10,7 +11,7 @@
 		function init() {
 			// fill title
 			const name = App.codeToNameMap.get(iso);
-			const flagHtml = country ? App.getFlagHtml(iso) : '';
+			const flagHtml = (country && !isGeneral) ? App.getFlagHtml(iso) : '';
 			$('.analysis-country-title')
 				.html(`${flagHtml} ${name} ${flagHtml}`)
 				.on('click', () => hasher.setHash(`analysis/${iso}`));
@@ -102,19 +103,36 @@
 			if (moneyType === 'd') {
 				if (!totalFunded) hasNoData = true;
 
-				// fill out "switch profile" text and behavior
-				$('.switch-type-button')
-					.text('Switch to Recipient Profile')
-					.on('click', () => hasher.setHash(`analysis/${iso}/r`));
+				// fill out "switch profile" text and behavior; hide the button
+				// if the profile is "General Global Benefit" (it doesn't have
+				// a funder profile, it only receives funding)
+				if (isGeneral) {
+					$('.switch-type-button').hide()
+				} else {
+					$('.switch-type-button')
+						.show()
+						.text('Switch to Recipient Profile')
+						.on('click', () => hasher.setHash(`analysis/${iso}/r`));
+				}
 
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
 			} else if (moneyType === 'r') {
 				if (!totalReceived) hasNoData = true;
 
 				// fill out "switch profile" text and behavior
-				$('.switch-type-button')
-					.text('Switch to Funder Profile')
-					.on('click', () => hasher.setHash(`analysis/${iso}/d`));
+				
+
+				// fill out "switch profile" text and behavior; hide the button
+				// if the profile is "General Global Benefit" (it doesn't have
+				// a funder profile, it only receives funding)
+				if (isGeneral) {
+					$('.switch-type-button').hide()
+				} else {
+					$('.switch-type-button')
+						.show()
+						.text('Switch to Funder Profile')
+						.on('click', () => hasher.setHash(`analysis/${iso}/d`));
+				}	
 
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
 			}
@@ -122,8 +140,10 @@
 			// draw charts
 			if (hasNoData) {
 				$('.country-flow-summary, .progress-circle-section, .country-chart-container').hide();
-				$('.country-flow-summary-empty').slideDown();
-				$('.submit-data-btn').click(() => hasher.setHash('submit'))
+				if (!isGeneral) {
+					$('.country-flow-summary-empty').slideDown();
+					$('.submit-data-btn').click(() => hasher.setHash('submit'));
+				}
 			} else {
 				drawTimeChart();
 				drawProgressCircles();
@@ -256,7 +276,7 @@
 					});
 			rows.append('td').html((d) => {
 				const recCountry = App.countries.find(c => c.ISO2 === d.iso);
-				const flagHtml = recCountry ? App.getFlagHtml(d.iso) : '';
+				const flagHtml = (recCountry && !isGeneral) ? App.getFlagHtml(d.iso) : '';
 				let cName = d.iso;
 				if (App.codeToNameMap.has(d.iso)) {
 					cName = App.codeToNameMap.get(d.iso);
