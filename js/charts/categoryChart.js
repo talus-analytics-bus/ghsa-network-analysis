@@ -15,8 +15,8 @@
 		});
 
 		// start building the chart
-		const margin = { top: 70, right: 80, bottom: 30, left: 40 };
-		const width = 440;
+		const margin = { top: 70, right: 80, bottom: 30, left: 350 };
+		const width = 600;
 		const height = 450;
 
 		const chart = d3.select(selector).append('svg')
@@ -32,7 +32,7 @@
 			.range([0, width]);
 		const y = d3.scaleBand()
 			.padding(0.25)
-			.domain(data.map(d => d.id))
+			.domain(data.map(d => d.name))
 			.range([0, height]);
 		const colorScale = d3.scaleOrdinal()
 			.range(colors);
@@ -40,15 +40,21 @@
 		const xAxis = d3.axisTop()
 			.ticks(5)
 			.tickFormat(App.siFormat)
-			.scale(x);
+			.scale(x)
+			.tickSize(0)
+			.tickSizeOuter(0)
+			.tickPadding(5);
 		const yAxis = d3.axisLeft()
-			.scale(y);
+			.scale(y)
+			.tickSize(0)
+			.tickSizeOuter(0)
+			.tickPadding(5);
 
 		const barGroups = chart.selectAll('.bar-group')
 			.data(data)
 			.enter().append('g')
 				.attr('class', 'bar-group')
-				.attr('transform', d => `translate(0, ${y(d.id)})`);
+				.attr('transform', d => `translate(0, ${y(d.name)})`);
 		barGroups.selectAll('rect')
 			.data(d => d.children.map(c => ({ cc: d.id, country: c })))
 			.enter().append('rect')
@@ -81,7 +87,7 @@
 
 		// attach tooltips to y-axis labels
 		chart.selectAll('.y.axis .tick text').each(function attachTooltip(d) {
-			const capName = App.capacities.find(c => c.id === d).name;
+			const capName = App.capacities.find(c => c.name === d).name;
 			$(this).tooltipster({ content: `<b>${capName}</b>` });
 		});
 
