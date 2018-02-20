@@ -2,14 +2,19 @@ branch-defaults:
   add-login-page:
     environment: ghsa-network-analysis-internal-test
   master:
-    environment: ghsa-network-analysis-dev
+    environment: ghsa-network-analysis-test2
     group_suffix: null
+environment-defaults:
+  ghsa-network-analysis-test2:
+    branch: null
+    repository: null
 global:
   application_name: ghsa-network-analysis
   branch: null
   default_ec2_keyname: null
   default_platform: PHP 5.4
   default_region: us-west-1
+  include_git_submodules: true
   instance_profile: null
   platform_name: null
   platform_version: null

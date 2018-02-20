@@ -868,10 +868,8 @@ b {
     text-decoration: underline; }
 
 .analysis-country-content .analysis-country-title {
-  text-align: center;
-  cursor: pointer;
-  margin-left: 225px;
-  margin-right: 225px; }
+  text-align: left;
+  cursor: pointer; }
 .analysis-country-content .profile-type-container {
   position: absolute;
   top: 71px;
@@ -883,6 +881,23 @@ b {
   display: inline-block; }
 .analysis-country-content .flag {
   border: 1px solid #555; }
+
+.country-header {
+  border-bottom: 1px solid #ccc; }
+
+.country-summary-text {
+  margin-top: 12px;
+  float: left;
+  text-align: right; }
+
+.country-summary-label {
+  font-weight: 400;
+  font-size: 2em; }
+
+.country-summary-value {
+  margin-top: 10px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 2em; }
 
 /* --- Buffer Page --- */
 .country-summary-content {
@@ -1018,10 +1033,14 @@ b {
 
 .category-chart-section {
   position: relative;
-  padding: 35px 30px 20px;
+  padding: 10px 30px 20px;
   border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
   min-height: 180px; }
+
+.toggle-type {
+  text-align: right;
+  margin-top: 10px; }
 
 .analysis-global-content .analysis-global-tab-container {
   margin-top: 20px;

@@ -103,18 +103,26 @@
 				if (!totalFunded) hasNoData = true;
 
 				// fill out "switch profile" text and behavior
-				$('.switch-type-button')
-					.text('Switch to Recipient Profile')
+				$('.toggle-funder-profile')
+					.addClass('active');
+				$('.toggle-recipient-profile')
 					.on('click', () => hasher.setHash(`analysis/${iso}/r`));
+				// $('.switch-type-button')
+				// 	.text('Switch to Recipient Profile')
+				// 	.on('click', () => hasher.setHash(`analysis/${iso}/r`));
 
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
 			} else if (moneyType === 'r') {
 				if (!totalReceived) hasNoData = true;
 
 				// fill out "switch profile" text and behavior
-				$('.switch-type-button')
-					.text('Switch to Funder Profile')
+				$('.toggle-recipient-profile')
+					.addClass('active');
+				$('.toggle-funder-profile')
 					.on('click', () => hasher.setHash(`analysis/${iso}/d`));
+				// $('.switch-type-button')
+				// 	.text('Switch to Funder Profile')
+				// 	.on('click', () => hasher.setHash(`analysis/${iso}/d`));
 
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
 			}

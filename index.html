@@ -353,13 +353,33 @@
 	<script id="analysis-country-template" type="text/x-handlebars-template">
 		<div class="analysis-container container">
 			<div class="analysis-country-content analysis-content">
-				<h3 class="analysis-country-title"></h3>
-				<div class="switch-type-button btn btn-default"></div>
-				<div class="profile-type-container">
-					<div class="profile-type-text">
-						<span class="money-type-noun-cap"></span> Profile
+				<div class="row country-header">
+					<div class="row">
+                        <div class="col-sm-6">
+                            <h3 class="analysis-country-title"></h3>
+                        </div>
+                        <div class="col-sm-6 country-summary-text">
+                            <span class="country-summary-value"></span>
+                            <span class="money-type-cap"></span>
+                            from <span class="start-year"></span> to <span class="end-year"></span>
+                        </div>
 					</div>
 				</div>
+				<div class="row toggle-type">
+					<div class="col-sm-8"></div>
+					<div class="col-sm-4">
+                        <div class="btn-group">
+                            <div class="btn btn-default toggle-funder-profile">Funder Profile</div>
+                            <div class="btn btn-default toggle-recipient-profile">Recipient Profile</div>
+						</div>
+					</div>
+				</div>
+				<!--<div class="switch-type-button btn btn-default"></div>-->
+				<!--<div class="profile-type-container">-->
+					<!--<div class="profile-type-text">-->
+						<!--<span class="money-type-noun-cap"></span> Profile-->
+					<!--</div>-->
+				<!--</div>-->
 				<div class="country-summary-content row">
 					<div class="donor-column column col-sm-6">
 						<div class="summary-value-box">
@@ -387,39 +407,6 @@
 					</div>
 				</div>
 				<div class="country-flow-content">
-					<div class="country-flow-summary">
-						<div class="country-summary-text">
-							<div class="country-summary-label">
-								Total Funds <span class="money-type-cap"></span>
-								from <span class="start-year"></span> to <span class="end-year"></span>
-							</div>
-							<div class="country-summary-value"></div>						
-							<div class="show-table-btn btn btn-default">Show All Funds</div>
-						</div>
-						<div class="time-chart-container">
-							<div class="source-text">
-								<b>Source:</b>
-								IATI registry via
-								<a href="http://d-portal.org" target="_blank">d-portal</a>,
-								2014-2017.
-							</div>
-						</div>
-					</div>
-					<div class="country-flow-summary-empty">
-						<div class="no-text">
-							<p>
-								No funding data are currently available where
-								<b class="country-name"></b>
-								is a <b class="money-type-noun"></b>.
-							</p>
-							<p>
-								To submit data, click the button below. Or switch to the
-								<span class="opp-money-type-noun"></span> profile by clicking
-								the top-right button.
-							</p>
-						</div>
-						<div class="submit-data-btn btn btn-default">Submit Data</div>
-					</div>
 					<div class="row category-chart-section">
                         <div class="row col-lg-12">
                             <h3 class="category-chart-title">
@@ -502,6 +489,31 @@
 							</div>
 						</div>
 				</div>
+					<div class="country-flow-summary">
+						<div class="time-chart-container">
+							<div class="source-text">
+								<b>Source:</b>
+								IATI registry via
+								<a href="http://d-portal.org" target="_blank">d-portal</a>,
+								2014-2017.
+							</div>
+						</div>
+					</div>
+					<div class="country-flow-summary-empty">
+						<div class="no-text">
+							<p>
+								No funding data are currently available where
+								<b class="country-name"></b>
+								is a <b class="money-type-noun"></b>.
+							</p>
+							<p>
+								To submit data, click the button below. Or switch to the
+								<span class="opp-money-type-noun"></span> profile by clicking
+								the top-right button.
+							</p>
+						</div>
+						<div class="submit-data-btn btn btn-default">Submit Data</div>
+					</div>
 			</div>
 		</div>
 	</script>

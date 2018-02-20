@@ -1,9 +1,7 @@
 .analysis-country-content {
 	.analysis-country-title {
-		text-align: center;
+		text-align: left;
 		cursor: pointer;
-		margin-left: 225px;
-		margin-right: 225px;
 	}
 	.profile-type-container {
 		position: absolute;
@@ -17,6 +15,25 @@
 		display: inline-block;
 	}
 	.flag { border: 1px solid #555; }
+}
+
+.country-header {
+	border-bottom: $light-border;
+}
+
+.country-summary-text {
+  margin-top: 12px;
+  float: left;
+  text-align: right;
+}
+.country-summary-label {
+	font-weight: 400;
+	font-size: 2em;
+}
+.country-summary-value {
+	margin-top: 10px;
+	font-family: 'Raleway', sans-serif;
+	font-size: 2em;
 }
 
 
@@ -173,9 +190,14 @@
 
 .category-chart-section {
 	position: relative;
-	padding: 35px 30px 20px;
+	padding: 10px 30px 20px;
 	border-bottom: $light-border;
 	margin-bottom: 20px;
 	min-height: 180px;
 
+}
+
+.toggle-type {
+	text-align: right;
+	margin-top: 10px;
 }
