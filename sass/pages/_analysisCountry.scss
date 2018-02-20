@@ -158,12 +158,6 @@
 }
 .progress-circle-section {
 	padding-bottom: 60px;
-	.source-text {
-		position: absolute;
-		right: 30px;
-		bottom: 20px;
-		font-size: 0.95em;
-	}
 }
 .country-chart-container {
 	padding: 0 30px;
@@ -195,9 +189,23 @@
 	margin-bottom: 20px;
 	min-height: 180px;
 
+	.source-text {
+		position: absolute;
+		right: 30px;
+		bottom: 20px;
+		font-size: 0.95em;
+	}
 }
 
 .toggle-type {
 	text-align: right;
 	margin-top: 10px;
+}
+
+.return-button {
+  margin-top: 10px;
+}
+
+.toggle-category-chart {
+	text-align: center;
 }

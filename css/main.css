@@ -1009,11 +1009,6 @@ b {
 
 .progress-circle-section {
   padding-bottom: 60px; }
-  .progress-circle-section .source-text {
-    position: absolute;
-    right: 30px;
-    bottom: 20px;
-    font-size: 0.95em; }
 
 .country-chart-container {
   padding: 0 30px; }
@@ -1037,10 +1032,21 @@ b {
   border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
   min-height: 180px; }
+  .category-chart-section .source-text {
+    position: absolute;
+    right: 30px;
+    bottom: 20px;
+    font-size: 0.95em; }
 
 .toggle-type {
   text-align: right;
   margin-top: 10px; }
+
+.return-button {
+  margin-top: 10px; }
+
+.toggle-category-chart {
+  text-align: center; }
 
 .analysis-global-content .analysis-global-tab-container {
   margin-top: 20px;

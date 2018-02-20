@@ -365,21 +365,18 @@
                         </div>
 					</div>
 				</div>
-				<div class="row toggle-type">
-					<div class="col-sm-8"></div>
-					<div class="col-sm-4">
+				<div class="row">
+					<div class="col-sm-4 return-button">
+						<div class="btn btn-default"><span class="glyphicon glyphicon-menu-left" />Return to Overview</div>
+					</div>
+					<div class="col-sm-4"></div>
+					<div class="col-sm-4 toggle-type">
                         <div class="btn-group">
                             <div class="btn btn-default toggle-funder-profile">Funder Profile</div>
                             <div class="btn btn-default toggle-recipient-profile">Recipient Profile</div>
 						</div>
 					</div>
 				</div>
-				<!--<div class="switch-type-button btn btn-default"></div>-->
-				<!--<div class="profile-type-container">-->
-					<!--<div class="profile-type-text">-->
-						<!--<span class="money-type-noun-cap"></span> Profile-->
-					<!--</div>-->
-				<!--</div>-->
 				<div class="country-summary-content row">
 					<div class="donor-column column col-sm-6">
 						<div class="summary-value-box">
@@ -417,12 +414,33 @@
                                 <br><br>
                                 <i>Hover over a bar to see additional funding details.</i>
                             </div>
-                            <div class="category-chart-container">
-                                <div class="source-text">
-                                    <b>Source:</b>
-                                    IATI registry via
-                                    <a href="http://d-portal.org" target="_blank">d-portal</a>,
-                                    2014-2017.
+                            <div class="row">
+                                <div class="row">
+									<div class="category-chart-container"></div>
+								</div>
+                                <div class="row">
+									<div class="col-sm-6">
+									</div>
+                                    <div class="col-sm-6">
+										<div class="source-text">
+											<b>Source:</b>
+											IATI registry via
+											<a href="http://d-portal.org" target="_blank">d-portal</a>,
+											2014-2017.
+										</div>
+									</div>
+								</div>
+                                <div class="row toggle-category-chart">
+                                    <form class="toggle-category-form">
+                                        <label class="radio-inline">
+                                            <input type="radio" name="optradio" id="total_spent">
+                                            Show Spent
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="optradio" id="total_committed">
+                                            Show Committed
+                                        </label>
+									</form>
                                 </div>
                             </div>
                         </div>

@@ -4,12 +4,14 @@
 		let colors = (param.moneyType === 'r') ? App.receiveColorPalette : App.fundColorPalette;
 		colors = colors.slice(0, 5);
 
+		const selected = param.selected || 'total_spent';
+
 		// inject "running x" into data
 		data.forEach((d) => {
 			let runningValue = 0;
 			d.children.forEach((c) => {
 				c.value0 = runningValue;
-				runningValue += c.total_spent;
+				runningValue += c[selected];
 				c.value1 = runningValue;
 			});
 		});
@@ -26,7 +28,7 @@
 			.append('g')
 				.attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-		const maxValue = d3.max(data, d => d.total_spent);
+		const maxValue = d3.max(data, d => d[selected]);
 		const x = d3.scaleLinear()
 			.domain([0, 1.1 * maxValue])
 			.range([0, width]);
@@ -50,13 +52,14 @@
 			.tickSizeOuter(0)
 			.tickPadding(5);
 
+		console.log(data);
 		const barGroups = chart.selectAll('.bar-group')
 			.data(data)
 			.enter().append('g')
 				.attr('class', 'bar-group')
 				.attr('transform', d => `translate(0, ${y(d.name)})`);
 		barGroups.selectAll('rect')
-			.data(d => d.children.map(c => ({ cc: d.id, country: c })))
+			.data(d => d.children.map(c => ({ cc: d.name, country: c })))
 			.enter().append('rect')
 				.attr('x', d => x(d.country.value0))
 				.attr('width', d => x(d.country.value1) - x(d.country.value0))
@@ -72,10 +75,10 @@
 				});
 		barGroups.append('text')
 			.attr('class', 'bar-label')
-			.attr('x', d => x(d.total_spent) + 5)
+			.attr('x', d => x(d[selected]) + 5)
 			.attr('y', y.bandwidth() / 2)
 			.attr('dy', '.35em')
-			.text(d => App.formatMoney(d.total_spent));
+			.text(d => App.formatMoney(d[selected]));
 
 		// add axes
 		chart.append('g')

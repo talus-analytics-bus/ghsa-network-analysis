@@ -15,6 +15,8 @@
 				.html(`${flagHtml} ${name} ${flagHtml}`)
 				.on('click', () => hasher.setHash(`analysis/${iso}`));
 
+			$('.return-button').on('click', () => hasher.setHash('/'));
+
 			// fill out generic text
 			$('.country-name').text(name);
 			$('.start-year').text(App.dataStartYear);
@@ -333,8 +335,20 @@
 			});
 			Util.sortByKey(catData, 'total_spent', true);
 
+			// bind radio buttons
+			$('input[type=radio][name=optradio]').on('change', function() {
+				d3.select('.category-chart-container svg').remove();
+
+				App.buildCategoryChart('.category-chart-container', catData, {
+					moneyType,
+					selected: this.id,
+				});
+			});
+			$('#total_spent').prop('checked', true);
+
 			App.buildCategoryChart('.category-chart-container', catData, {
 				moneyType,
+				selected: 'total_spent',
 			});
 		}
 
