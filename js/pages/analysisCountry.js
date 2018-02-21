@@ -179,7 +179,7 @@
 					'so these figures do not take into account all known funding initiatives.',
 			});
 
-			const ccs = ['P', 'D', 'R'];
+			const ccs = ['P', 'D', 'R', 'PoE', 'CE', 'RE'];
 			const fundsByCc = {};
 			ccs.forEach((cc) => {
 				fundsByCc[cc] = {
@@ -200,30 +200,36 @@
 					}
 				});
 			});
-			App.drawProgressCircles('.prevent-circle-chart', fundsByCc.P, color);
-			App.drawProgressCircles('.detect-circle-chart', fundsByCc.D, color);
-			App.drawProgressCircles('.respond-circle-chart', fundsByCc.R, color);
 
-			const percFormat = d3.format('.0%');
-			const fillValueText = (valueSelector, ind) => {
-				if (fundsByCc[ind].total_committed) {
-					const pValue = fundsByCc[ind].total_spent / fundsByCc[ind].total_committed;
-					$(valueSelector).text(percFormat(pValue));
-				} else {
-					$(valueSelector).parent().text('No funds committed for this core element');
-				}
-			};
+			const fundsByCcList = [];
+			ccs.forEach(cc => fundsByCcList.push(fundsByCc[cc]));
 
-			fillValueText('.prevent-value', 'P');
-			fillValueText('.detect-value', 'D');
-			fillValueText('.respond-value', 'R');
+			App.drawProgressCircles('.core-circle-chart', fundsByCcList, color);
+
+			// App.drawProgressCircles('.prevent-circle-chart', fundsByCc.P, color);
+			// App.drawProgressCircles('.detect-circle-chart', fundsByCc.D, color);
+			// App.drawProgressCircles('.respond-circle-chart', fundsByCc.R, color);
+
+			// const percFormat = d3.format('.0%');
+			// const fillValueText = (valueSelector, ind) => {
+			// 	if (fundsByCc[ind].total_committed) {
+			// 		const pValue = fundsByCc[ind].total_spent / fundsByCc[ind].total_committed;
+			// 		$(valueSelector).text(percFormat(pValue));
+			// 	} else {
+			// 		$(valueSelector).parent().text('No funds committed for this core element');
+			// 	}
+			// };
+
+			// fillValueText('.prevent-value', 'P');
+			// fillValueText('.detect-value', 'D');
+			// fillValueText('.respond-value', 'R');
 		}
 
 		function drawCountryTable() {
 			if (moneyType === 'd') {
-				$('.circle-pack-title').text('Top Recipients of Funds (from Funder)');
+				$('.circle-pack-title').text('Top Recipients');
 			} else {
-				$('.circle-pack-title').text('Top Funders Received From');
+				$('.circle-pack-title').text('Top Funders');
 			}
 
 			// get table data
@@ -335,21 +341,17 @@
 			});
 			Util.sortByKey(catData, 'total_spent', true);
 
+			const chart = App.buildCategoryChart('.category-chart-container', {
+				moneyType,
+			});
+
+			chart.update(catData, 'total_spent');
+
 			// bind radio buttons
 			$('input[type=radio][name=optradio]').on('change', function() {
-				d3.select('.category-chart-container svg').remove();
-
-				App.buildCategoryChart('.category-chart-container', catData, {
-					moneyType,
-					selected: this.id,
-				});
+				chart.update(catData, this.id);
 			});
 			$('#total_spent').prop('checked', true);
-
-			App.buildCategoryChart('.category-chart-container', catData, {
-				moneyType,
-				selected: 'total_spent',
-			});
 		}
 
 		init();
