@@ -287,6 +287,13 @@
 
 			rows.append('td').text(d => App.formatMoney(d.total_committed));
 			rows.append('td').text(d => App.formatMoney(d.total_spent));
+
+			// re-initialize DataTables plugin
+			infoDataTable = $('.country-table').DataTable({
+				pageLength: 10,
+				scrollCollapse: false,
+				autoWidth: false,
+			});
 		}
 
 		function drawCategoryChart() {
@@ -341,17 +348,51 @@
 			});
 			Util.sortByKey(catData, 'total_spent', true);
 
+			const largestVal = 100000;
+			const smallData = catData.map(d => {
+				const newD = Object.assign({}, d);
+				newD.children = d.children
+					.filter(c => (c.total_committed < largestVal) || (c.total_spent < largestVal));
+				newD.total_spent = newD.children
+					.reduce((acc, cval) => acc + cval.total_spent, 0);
+				newD.total_committed = newD.children
+					.reduce((acc, cval) => acc + cval.total_committed, 0);
+				return newD;
+			});
+
+			var selected = 'total_spent';
+			var filterData = 'big';
+
 			const chart = App.buildCategoryChart('.category-chart-container', {
 				moneyType,
 			});
 
-			chart.update(catData, 'total_spent');
+			chart.update(catData, selected);
 
 			// bind radio buttons
 			$('input[type=radio][name=optradio]').on('change', function() {
-				chart.update(catData, this.id);
+				selected = this.id;
+				updateData();
 			});
 			$('#total_spent').prop('checked', true);
+
+			$('input[type=checkbox][value=showsmall]').on('change', function() {
+				const isChecked = $(this).prop('checked');
+				if (isChecked) {
+					filterData = 'small';
+				} else {
+					filterData = 'big';
+				}
+				updateData();
+			});
+
+			const updateData = () => {
+				if (filterData === 'small') {
+					chart.update(smallData, selected);
+				} else {
+					chart.update(catData, selected);
+				}
+			}
 		}
 
 		init();

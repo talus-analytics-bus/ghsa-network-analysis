@@ -366,9 +366,19 @@
 <script id="analysis-country-template" type="text/x-handlebars-template">
     <div class="analysis-container container">
         <div class="analysis-country-content analysis-content">
-            <div class="col-sm-12 return-button">
-                <div class="btn btn-default"><span class="glyphicon glyphicon-menu-left"/>Return to Overview</div>
+            <div class="row">
+                <div class="col-sm-6 return-button">
+                    <div class="btn btn-default"><span class="glyphicon glyphicon-menu-left"/>Return to Overview</div>
+                </div>
+                <div class="col-sm-6 toggle-type">
+                    View as a
+                    <div class="btn-group">
+                        <div class="btn btn-default btn-sm toggle-funder-profile">Funder</div>
+                        <div class="btn btn-default btn-sm toggle-recipient-profile">Recipient</div>
+                    </div>
+                </div>
             </div>
+            <div class="row vert-space-20"></div>
             <div class="row country-header">
                 <div class="row">
                     <div class="col-sm-4"></div>
@@ -379,16 +389,6 @@
                         <span class="country-summary-value"></span><br>
                         <span class="money-type-cap"></span>
                         from <span class="start-year"></span> to <span class="end-year"></span>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-8"></div>
-                <div class="col-sm-4 toggle-type">
-                    Show as a
-                    <div class="btn-group">
-                        <div class="btn btn-default btn-sm toggle-funder-profile">Funder</div>
-                        <div class="btn btn-default btn-sm toggle-recipient-profile">Recipient</div>
                     </div>
                 </div>
             </div>
@@ -432,6 +432,16 @@
                             <i>Hover over a bar to see additional funding details.</i>
                         </div>
                         <div class="row">
+                            <div class="col-sm-12">
+                                <form>
+                                    <div class="checkbox">
+                                        <label><input type="checkbox" value="showsmall">
+                                            Only Show Small Funds (< 100,000)</label>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="row">
                                 <div class="category-chart-container"></div>
                             </div>
@@ -439,11 +449,11 @@
                                 <form class="toggle-category-form">
                                     <label class="radio-inline">
                                         <input type="radio" name="optradio" id="total_spent">
-                                        Show <span class="money-type" />
+                                        View <span class="money-type" />
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio" name="optradio" id="total_committed">
-                                        Show committed
+                                        View committed
                                     </label>
                                 </form>
                             </div>

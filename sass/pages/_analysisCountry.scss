@@ -216,6 +216,7 @@
 .toggle-type {
   text-align: right;
   margin-top: 10px;
+  vertical-align: middle;
 }
 
 .return-button {
@@ -225,4 +226,8 @@
 .toggle-category-chart {
   text-align: center;
   font-style: italic;
+}
+
+.vert-space-20 {
+  height: 20px;
 }

@@ -52,13 +52,13 @@
 			.tickFormat(App.siFormat)
 			.scale(x)
 			.tickSize(0)
-			.tickSizeOuter(0)
-			.tickPadding(5);
+			.tickSizeOuter(5)
+			.tickPadding(7);
 		const yAxis = d3.axisLeft()
 			.scale(y)
 			.tickSize(0)
-			.tickSizeOuter(0)
-			.tickPadding(5);
+			.tickSizeOuter(5)
+			.tickPadding(7);
 
 		const xAxisG = chart.append('g')
 			.attr('class', 'x axis')
@@ -70,124 +70,34 @@
 			.style('font-weight', '600');
 
 		const allBars = chart.append('g');
-		// const barGroups = allBars.selectAll('.bar-group')
-		// 	.data(data)
-		// 	.enter().append('g')
-		// 		.attr('class', 'bar-group')
-		// 		.attr('transform', d => `translate(0, ${y(d.name)})`);
-		// barGroups.selectAll('rect')
-		// 	.data(d => d.children.map(c => ({ cc: d.name, country: c })))
-		// 	.enter().append('rect')
-		// 		.attr('x', d => x(d.country.value0))
-		// 		.attr('width', d => x(d.country.value1) - x(d.country.value0))
-		// 		.attr('height', y.bandwidth())
-		// 		.style('fill', d => colorScale(d.country.iso))
-		// 		.each(function addTooltip(d) {
-		// 			$(this).tooltipster({
-		// 				content: `<b>Core Capacity:</b> ${d.cc}` +
-		// 					`<br><b>${oppNoun}:</b> ${App.getCountryName(d.country.iso)}` +
-		// 					`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.country.total_committed)}` +
-		// 					`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.country.total_spent)}`,
-		// 			});
-		// 		});
-		// barGroups.append('text')
-		// 	.attr('class', 'bar-label')
-		// 	.attr('x', d => x(d[selected]) + 5)
-		// 	.attr('y', y.bandwidth() / 2)
-		// 	.attr('dy', '.35em')
-		// 	.text(d => {
-		// 		if (d[selected] !== 0) {
-		// 			return App.formatMoney(d[selected]);
-		// 		}
-		// 	});
-		//
-		//
-		// // attach tooltips to y-axis labels
-		// chart.selectAll('.y.axis .tick text').each(function attachTooltip(d) {
-		// 	const capName = App.capacities.find(c => c.name === d).name;
-		// 	$(this).tooltipster({ content: `<b>${capName}</b>` });
-		// }).text(function(d) {
-		// 	const readableName = / - (.*)$/.exec(d)[1];
-		// 	const shortName = getShortName(readableName);
-		// 	return shortName;
-		// });
-		//
-		// // add axes labels
-		// let xAxisLabel = 'Total Funds Disbursed by Core Capacity';
-		// if (param.moneyType === 'r') xAxisLabel = 'Total Funds Received by Core Capacity';
-		// chart.append('text')
-		// 	.attr('class', 'axis-label')
-		// 	.attr('x', width / 2)
-		// 	.attr('y', -35)
-		// 	.style('font-size', '1.25em')
-		// 	.text(xAxisLabel);
+
+		// add axes labels
+		let xAxisLabel = 'Total Funds Disbursed by Core Capacity';
+		if (param.moneyType === 'r') xAxisLabel = 'Total Funds Received by Core Capacity';
+		chart.append('text')
+			.attr('class', 'axis-label')
+			.attr('x', width / 2)
+			.attr('y', -35)
+			.style('font-size', '1.25em')
+			.text(xAxisLabel);
 
 		chart.update = (rawData, newSelector = selected) => {
-			const data = getRunningValues(rawData, newSelector);
+			const data = getRunningValues(rawData, newSelector)
+				.sort((a, b) => a[newSelector] < b[newSelector]);
 			// set new axes and transition
 			const maxVal = d3.max(data, d => d[newSelector]);
 			x.domain([0, 1.1 * maxVal]);
 			y.domain(data.map(d => d.name));
-;
-			xAxis.scale(x);
-			xAxisG.transition().duration(1000).call(xAxis);
-
-			yAxis.scale(y);
-			yAxisG.transition().duration(1000).call(yAxis);
-
-			// TODO get the shortnames working after transition
-			yAxisG.selectAll('text').transition().duration(1000).text(function(d) {
-				const readableName = / - (.*)$/.exec(d)[1];
-				const shortName = getShortName(readableName);
-				return shortName;
-			});
-
 			const bandwidth = y.bandwidth();
 
-			// merge bars
-			// const barGroups = chart.selectAll('.bar-group')
-			// 	.data(data)
-			// 	.enter().append('g')
-			// 	.attr('class', 'bar-group')
-			// 	.attr('transform', d => `translate(0, ${y(d.name)})`);
-			// barGroups.selectAll('rect')
-			// 	.data(d => d.children.map(c => ({ cc: d.name, country: c })))
-			// 	.enter().append('rect')
-			// 	.attr('x', d => x(d.country.value0))
-			// 	.attr('width', d => x(d.country.value1) - x(d.country.value0))
-			// 	.attr('height', y.bandwidth())
-			// 	.style('fill', d => colorScale(d.country.iso))
-			// 	.each(function addTooltip(d) {
-			// 		$(this).tooltipster({
-			// 			content: `<b>Core Capacity:</b> ${d.cc}` +
-			// 			`<br><b>${oppNoun}:</b> ${App.getCountryName(d.country.iso)}` +
-			// 			`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.country.total_committed)}` +
-			// 			`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.country.total_spent)}`,
-			// 		});
-			// 	});
-			// barGroups.append('text')
-			// 	.attr('class', 'bar-label')
-			// 	.attr('x', d => x(d[selected]) + 5)
-			// 	.attr('y', y.bandwidth() / 2)
-			// 	.attr('dy', '.35em')
-			// 	.text(d => {
-			// 		if (d[selected] !== 0) {
-			// 			return App.formatMoney(d[selected]);
-			// 		}
-			// 	});
-
+			// remove first
 			let barGroups = allBars.selectAll('.bar-group')
-				.data(data);
-
-			barGroups.exit()
-				.remove();
+				.remove().exit().data(data);
 
 			const newGroups = barGroups.enter()
 				.append('g')
 				.attr('class', 'bar-group')
-				.attr('transform', d => {
-					return `translate(0, ${y(d.name)})`;
-				});
+				.attr('transform', d => `translate(0, ${y(d.name)})`);
 
 			barGroups = newGroups.merge(barGroups);
 
@@ -195,10 +105,12 @@
 				.data(d => d.children.map(c => ({ cc: d.name, country: c })))
 				.enter()
 				.append('rect')
-				.attr('x', d => x(d.country.value0))
-				.attr('width', d => x(d.country.value1) - x(d.country.value0))
 				.attr('height', bandwidth)
 				.style('fill', d => colorScale(d.country.iso))
+				.transition()
+				.duration(1000)
+				.attr('x', d => x(d.country.value0))
+				.attr('width', d => x(d.country.value1) - x(d.country.value0))
 				.each(function addTooltip(d) {
 					$(this).tooltipster({
 						content: `<b>Core Capacity:</b> ${d.cc}` +
@@ -210,14 +122,16 @@
 
 			barGroups.append('text')
 				.attr('class', 'bar-label')
-				.attr('x', d => x(d[selected]) + 5)
 				.attr('y', y.bandwidth() / 2)
 				.attr('dy', '.35em')
 				.text(d => {
-					if (d[selected] !== 0) {
-						return App.formatMoney(d[selected]);
+					if (d[newSelector] !== 0) {
+						return App.formatMoney(d[newSelector]);
 					}
-				});
+				})
+				.transition()
+				.duration(1000)
+				.attr('x', d => x(d[newSelector]) + 5);
 
 			// attach tooltips to y-axis labels
 			chart.selectAll('.y.axis .tick text').each(function attachTooltip(d) {
@@ -229,25 +143,23 @@
 				return shortName;
 			});
 
-			// add axes labels
-			let xAxisLabel = 'Total Funds Disbursed by Core Capacity';
+			// set axes labels
+			xAxisLabel = 'Total Funds Disbursed by Core Capacity';
 			if (param.moneyType === 'r') xAxisLabel = 'Total Funds Received by Core Capacity';
-			chart.append('text')
-				.attr('class', 'axis-label')
-				.attr('x', width / 2)
-				.attr('y', -35)
-				.style('font-size', '1.25em')
-				.text(xAxisLabel);
+			chart.select('.axis-label').text(xAxisLabel);
 
-		};
+			xAxis.scale(x);
+			xAxisG.transition().duration(1000).call(xAxis);
 
-		chart.showSmall = () => {
-			newData = data.map(function(d) {
-				d.children = d.children.filter(c => c[selected] < 1000000);
-				return d;
+			yAxis.scale(y);
+			yAxisG.transition().duration(1000).call(yAxis);
+
+			yAxisG.selectAll('text').transition().duration(1000).text(function(d) {
+				const readableName = / - (.*)$/.exec(d)[1];
+				const shortName = getShortName(readableName);
+				return shortName;
 			});
 
-			console.log(newData);
 		};
 
 		return chart;
@@ -255,7 +167,11 @@
 
 	function getShortName(s, maxLen=20) {
 		if (s.length > maxLen) {
-			return `${s.slice(0, maxLen)}...`;
+			if (/ /.test(s[maxLen - 1])) {
+				return `${s.slice(0, maxLen - 2)}...`;
+			} else {
+				return `${s.slice(0, maxLen)}...`;
+			}
 		} else {
 			return s;
 		}
