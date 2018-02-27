@@ -8,21 +8,69 @@
 			P: 'Prevent',
 			D: 'Detect',
 			R: 'Respond',
+			PoE: 'Point of Entry',
+			CE: 'Chemical Events',
+			RE: 'Radiation Emergencies',
 		};
 
-		const colors = [];
-		data.forEach((d, i) => {
-			if (i === 0) {
-				colors.push(color);
-			} else {
-				colors.push(d3.color(colors[i - 1]).brighter());
-			}
-		});
+		const rootData = {
+			name: 'Funds Disbursed',
+			abbrev: '',
+			children: data.map(d => {
+				return {
+					name: ccMapping[d.cc],
+					abbrev: d.cc,
+					children: [
+						{
+							name: "Total Committed",
+							value: d.total_committed,
+							children: [
+								{
+									name: "Total Spent",
+									value: d.total_spent,
+								},
+							],
+						},
+					],
+				};
+			}),
+		};
+
+		const rootColors = d3.scaleOrdinal()
+			.domain(Object.keys(ccMapping))
+			.range([
+				'#a6cee3',
+				'#1f78b4',
+				'#b2df8a',
+				'#33a02c',
+				'#fb9a99',
+				'#e31a1c',
+			]);
 
 		// start building the chart
-		const margin = { top: 0, right: 10, bottom: 0, left: 10 };
+		const margin = { top: 50, right: 50, bottom: 50, left: 50, };
 		const outerRadius = 200;
-		const innerRadius = 125;
+		const innerRadius = 75;
+		const arcHeight = 50;
+
+		const root = d3.hierarchy(rootData)
+			.sum(d => d.value);
+
+		// trees range in size from 0->1
+		const tree = d3.partition()
+			.size([2 * Math.PI, outerRadius]);
+
+		/* SCALES FOR CONVERSION */
+		const arc = d3.arc()
+			.innerRadius(d => d.y0)
+			.outerRadius(d => d.y1)
+			.startAngle(d => d.x0)
+			.endAngle(d => d.x1);
+
+		const textArc = d3.arc()
+			.outerRadius(d => (d.y0 + d.y1) / 2)
+			.startAngle(d => d.x0 + 0.05)
+			.endAngle(d => d.x1);
 
 		const chartContainer = d3.select(selector).append('svg')
 			.classed('progress-circle-chart', true)
@@ -44,65 +92,60 @@
 		feMerge.append('feMergeNode')
 			.attr('in', 'SourceGraphic');
 
-		const arc = d3.arc()
-			.innerRadius(innerRadius)
-			.outerRadius(outerRadius);
-
-		const pie = d3.pie()
-			.value(d => d.total_spent);
-
-		const arcs = chart.selectAll('.arc')
-			.data(pie(data))
+		// Start plotting
+		console.log(tree(root).descendants());
+		const treeGroup = chart.append('g')
+			.selectAll('g')
+			.data(tree(root).descendants())
 			.enter()
-			.append('g')
-			.attr('class', 'arc');
+			.append('g');
 
-		arcs.append('path')
+		treeGroup.append('path')
 			.attr('d', arc)
-			.style('fill', (d, i) => colors[i])
+			.style('stroke', 'black')
+			.style('fill', d => {
+				if (d.depth === 1) {
+					return rootColors(d.data.abbrev);
+				} else {
+					return 'white';
+				}
+			})
+			.style('fill-opacity', '1')
 			.each(function(d) {
-				const content = `<b>${ccMapping[d.data.cc]}</b><br>`;
-				$(this).tooltipster({
+				var content = `<b>${d.data.name}</b>`;
+				if (d.data.value !== undefined) {
+					content += `<br><i>${App.formatMoney(d.data.value)}</i>`;
+				}
+				return $(this).tooltipster({
 					content: content,
 				});
 			});
 
-		arcs.append('text')
-			.attr('transform', d => `translate(${arc.centroid(d)})`)
-			.style('text-anchor', 'middle')
-			.style('fill', 'white')
-			.text(d => ccMapping[d.data.cc]);
+		textPaths = chart.append('defs')
+			.selectAll('path')
+			.data(tree(root).descendants())
+			.enter()
+			.append('path')
+			.attr('id', (d, i) => `textPath-${i}`)
+			.attr('d', textArc);
 
-		// // build components
-		// chart.append('path')
-		// 	.datum({ endAngle: tau })
-		// 	.style('fill', '#ccc')
-		// 	.attr('d', arc);
-		// const foreground = chart.append('path')
-		// 	.datum({ endAngle: 0 })
-		// 	.style('fill', color)
-		// 	.attr('d', arc);
-		//
-		// // fill middle text
-		// chart.append('text')
-		// 	.attr('class', 'progress-circle-value')
-		// 	.attr('dy', '.35em')
-		// 	.text(data.total_committed ? d3.format('.0%')(percSpent) : 'N/A');
-		//
-		// // animate progress circle filling
-		// foreground.transition()
-		// 	.duration(1000)
-		// 	.attrTween('d', arcTween(percSpent * tau));
-		//
-		// function arcTween(newAngle) {
-		// 	return (d) => {
-		// 		const interpolate = d3.interpolate(d.endAngle, newAngle);
-		// 		return (t) => {
-		// 			d.endAngle = interpolate(t);
-		// 			return arc(d);
-		// 		};
-		// 	};
-		// }
+		treeGroup.append('text')
+			.append('textPath')
+			.attr('xlink:href', (d, i) => `#textPath-${i}`)
+			// .style('text-anchor', 'middle')
+			.style('fill', 'black')
+			.text(d => {
+				if (d.depth > 0) {
+					if (d.x1 - d.x0 > Math.PI / 4) {
+						if (d.data.value === undefined) {
+							return d.data.name;
+						} else {
+							return `${d.data.name} - ${App.formatMoney(d.data.value)}`;
+						}
+					}
+				}
+			});
+
 
 		return chart;
 	};
