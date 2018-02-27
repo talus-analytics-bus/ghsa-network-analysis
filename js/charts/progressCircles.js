@@ -1,8 +1,11 @@
 (() => {
-	App.drawProgressCircles = (selector, data, color) => {
-		const tau = 2 * Math.PI;
-		let percSpent = data.total_spent / data.total_committed;
-		if (!data.total_committed) percSpent = 0;
+	App.drawProgressCircles = (selector, moneyType) => {
+		let palette;
+		if (moneyType === 'd') {
+			palette = App.fundColorPalette;
+		} else {
+			palette = App.receiveColorPalette;
+		}
 
 		const ccMapping = {
 			P: 'Prevent',
@@ -10,19 +13,10 @@
 			R: 'Respond',
 		};
 
-		const colors = [];
-		data.forEach((d, i) => {
-			if (i === 0) {
-				colors.push(color);
-			} else {
-				colors.push(d3.color(colors[i - 1]).brighter());
-			}
-		});
-
 		// start building the chart
 		const margin = { top: 0, right: 10, bottom: 0, left: 10 };
 		const outerRadius = 200;
-		const innerRadius = 125;
+		const innerRadius = 50;
 
 		const chartContainer = d3.select(selector).append('svg')
 			.classed('progress-circle-chart', true)
@@ -46,63 +40,68 @@
 
 		const arc = d3.arc()
 			.innerRadius(innerRadius)
-			.outerRadius(outerRadius);
+			.outerRadius(outerRadius)
+			.padAngle(0.025);
 
-		const pie = d3.pie()
-			.value(d => d.total_spent);
-
-		const arcs = chart.selectAll('.arc')
-			.data(pie(data))
-			.enter()
-			.append('g')
+		const arcGroup = chart.append('g')
 			.attr('class', 'arc');
 
-		arcs.append('path')
-			.attr('d', arc)
-			.style('fill', (d, i) => colors[i])
-			.each(function(d) {
-				const content = `<b>${ccMapping[d.data.cc]}</b><br>`;
-				$(this).tooltipster({
-					content: content,
+		chart.update = (newData, plotType) => {
+			const justVals = newData.filter(d => d[plotType] !== 0)
+				.map(d => d[plotType])
+				.sort((a, b) => a < b);
+			const colorScale = d3.scaleLinear()
+				.domain([
+					justVals[0],
+					justVals[justVals.length - 1],
+				])
+				.range(palette);
+
+			const pie = d3.pie()
+				.value(d => d[plotType]);
+
+			let newGroup = arcGroup.selectAll('.arc')
+				.remove().exit().data(pie(newData));
+
+			const newArcs = newGroup.enter()
+				.append('g')
+				.attr('class', 'arc');
+
+			newGroup = newArcs.merge(arcGroup);
+
+			newGroup.append('path')
+				.style('fill', d => colorScale(d.value))
+				.each(function(d) {
+					var content = `<b>${ccMapping[d.data.cc]}</b><br>`;
+					content += App.formatMoney(d.value);
+					$(this).tooltipster({
+						content: content,
+					});
+				})
+				.transition()
+				.duration(600)
+				.attrTween('d', function(d) {
+					const startAngle = d3.interpolate(0, d.startAngle);
+					const endAngle = d3.interpolate(0, d.endAngle);
+					return function(t) {
+						d.startAngle = startAngle(t);
+						d.endAngle = endAngle(t);
+						return arc(d);
+					};
 				});
-			});
 
-		arcs.append('text')
-			.attr('transform', d => `translate(${arc.centroid(d)})`)
-			.style('text-anchor', 'middle')
-			.style('fill', 'white')
-			.text(d => ccMapping[d.data.cc]);
+			newGroup.append('text')
+				.attr('transform', d => `translate(${arc.centroid(d)})`)
+				.style('text-anchor', 'middle')
+				.style('fill', 'white')
+				.text(d => {
+					if (d.endAngle - d.startAngle > Math.PI / 4) {
+						return `${ccMapping[d.data.cc]}` +
+							` (${App.formatMoney(d.value)})`;
+					}
+				});
 
-		// // build components
-		// chart.append('path')
-		// 	.datum({ endAngle: tau })
-		// 	.style('fill', '#ccc')
-		// 	.attr('d', arc);
-		// const foreground = chart.append('path')
-		// 	.datum({ endAngle: 0 })
-		// 	.style('fill', color)
-		// 	.attr('d', arc);
-		//
-		// // fill middle text
-		// chart.append('text')
-		// 	.attr('class', 'progress-circle-value')
-		// 	.attr('dy', '.35em')
-		// 	.text(data.total_committed ? d3.format('.0%')(percSpent) : 'N/A');
-		//
-		// // animate progress circle filling
-		// foreground.transition()
-		// 	.duration(1000)
-		// 	.attrTween('d', arcTween(percSpent * tau));
-		//
-		// function arcTween(newAngle) {
-		// 	return (d) => {
-		// 		const interpolate = d3.interpolate(d.endAngle, newAngle);
-		// 		return (t) => {
-		// 			d.endAngle = interpolate(t);
-		// 			return arc(d);
-		// 		};
-		// 	};
-		// }
+		};
 
 		return chart;
 	};

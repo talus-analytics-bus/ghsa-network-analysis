@@ -1057,6 +1057,9 @@ b {
 .vert-space-20 {
   height: 20px; }
 
+.toggle-pie-div {
+  padding-left: 40px; }
+
 .analysis-global-content .analysis-global-tab-container {
   margin-top: 20px;
   text-align: center; }

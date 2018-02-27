@@ -204,25 +204,23 @@
 			const fundsByCcList = [];
 			ccs.forEach(cc => fundsByCcList.push(fundsByCc[cc]));
 
-			App.drawProgressCircles('.core-circle-chart', fundsByCcList, color);
+			const chart = App.drawProgressCircles('.core-circle-chart', moneyType);
+			chart.update(
+				fundsByCcList,
+				'total_spent',
+			);
 
-			// App.drawProgressCircles('.prevent-circle-chart', fundsByCc.P, color);
-			// App.drawProgressCircles('.detect-circle-chart', fundsByCc.D, color);
-			// App.drawProgressCircles('.respond-circle-chart', fundsByCc.R, color);
-
-			// const percFormat = d3.format('.0%');
-			// const fillValueText = (valueSelector, ind) => {
-			// 	if (fundsByCc[ind].total_committed) {
-			// 		const pValue = fundsByCc[ind].total_spent / fundsByCc[ind].total_committed;
-			// 		$(valueSelector).text(percFormat(pValue));
-			// 	} else {
-			// 		$(valueSelector).parent().text('No funds committed for this core element');
-			// 	}
-			// };
-
-			// fillValueText('.prevent-value', 'P');
-			// fillValueText('.detect-value', 'D');
-			// fillValueText('.respond-value', 'R');
+			// bind radio buttons
+			$('input[type=radio][name=pieradio]').on('change', function() {
+				let type;
+				if (this.id === 'pie_committed') {
+					type = 'total_committed';
+				} else {
+					type = 'total_spent';
+				}
+				chart.update(fundsByCcList, type);
+			});
+			$('#pie_spent').prop('checked', true);
 		}
 
 		function drawCountryTable() {
