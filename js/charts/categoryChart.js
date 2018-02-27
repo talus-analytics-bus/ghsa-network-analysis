@@ -144,8 +144,20 @@
 			});
 
 			// set axes labels
-			xAxisLabel = 'Total Funds Disbursed by Core Capacity';
-			if (param.moneyType === 'r') xAxisLabel = 'Total Funds Received by Core Capacity';
+			let xAxisLabel;
+			if (param.moneyType === 'r') {
+				if (newSelector === 'total_spent') {
+					xAxisLabel = 'Total Funds Received by Core Capacity';
+				} else {
+					xAxisLabel = 'Total Funds Promised by Core Capacity';
+				}
+			} else {
+				if (newSelector === 'total_spent') {
+					xAxisLabel = 'Total Funds Disbursed by Core Capacity';
+				} else {
+					xAxisLabel = 'Total Funds Committed by Core Capacity';
+				}
+			}
 			chart.select('.axis-label').text(xAxisLabel);
 
 			xAxis.scale(x);
