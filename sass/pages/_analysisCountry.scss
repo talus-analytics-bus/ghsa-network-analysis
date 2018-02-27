@@ -20,12 +20,11 @@
 }
 
 .country-header {
-  border-bottom: $light-border;
 }
 
 .country-summary-text {
   float: left;
-  text-align: right;
+  text-align: left;
 }
 
 .country-summary-label {
@@ -126,6 +125,8 @@
   .progress-circle-text {
     float: left;
     max-width: 400px;
+    text-align: left;
+    margin-top: 30px;
   }
   .time-chart-container {
     margin-left: 365px;
@@ -211,6 +212,11 @@
     text-align: right;
     font-size: 0.95em;
   }
+
+  .description {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 .toggle-type {
@@ -234,4 +240,9 @@
 
 .toggle-pie-div {
   padding-left: 40px;
+}
+
+.category-chart-controls {
+  width: 100%;
+  padding-left: 45px;
 }

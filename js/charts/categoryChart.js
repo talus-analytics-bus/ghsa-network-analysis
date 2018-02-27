@@ -135,13 +135,15 @@
 
 			// attach tooltips to y-axis labels
 			chart.selectAll('.y.axis .tick text').each(function attachTooltip(d) {
-				const capName = App.capacities.find(c => c.name === d).name;
-				$(this).tooltipster({ content: `<b>${capName}</b>` });
-			}).text(function(d) {
-				const readableName = / - (.*)$/.exec(d)[1];
-				const shortName = getShortName(readableName);
-				return shortName;
-			});
+					const capName = App.capacities.find(c => c.name === d).name;
+					$(this).tooltipster({ content: `<b>${capName}</b>` });
+				})
+				.text(function(d) {
+					// const readableName = / - (.*)$/.exec(d)[1];
+					const readableName = d;
+					const shortName = getShortName(readableName);
+					return shortName;
+				});
 
 			// set axes labels
 			let xAxisLabel;
@@ -167,7 +169,8 @@
 			yAxisG.transition().duration(1000).call(yAxis);
 
 			yAxisG.selectAll('text').transition().duration(1000).text(function(d) {
-				const readableName = / - (.*)$/.exec(d)[1];
+				// const readableName = / - (.*)$/.exec(d)[1];
+				const readableName = d;
 				const shortName = getShortName(readableName);
 				return shortName;
 			});

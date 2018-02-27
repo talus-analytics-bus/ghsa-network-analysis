@@ -2,9 +2,15 @@
 	App.drawProgressCircles = (selector, moneyType) => {
 		let palette;
 		if (moneyType === 'd') {
-			palette = App.fundColorPalette;
+			palette = [
+				App.fundColorPalette[0],
+				App.fundColorPalette.slice(-1)[0],
+			];
 		} else {
-			palette = App.receiveColorPalette;
+			palette = [
+				App.receiveColorPalette[0],
+				App.receiveColorPalette.slice(-1)[0],
+			];
 		}
 
 		const ccMapping = {
@@ -14,9 +20,14 @@
 		};
 
 		// start building the chart
-		const margin = { top: 0, right: 10, bottom: 0, left: 10 };
+		const margin = {
+			top: 40,
+			right: 120,
+			bottom: 40,
+			left: 120,
+		};
 		const outerRadius = 200;
-		const innerRadius = 50;
+		const innerRadius = 100;
 
 		const chartContainer = d3.select(selector).append('svg')
 			.classed('progress-circle-chart', true)
@@ -45,6 +56,10 @@
 
 		const arcGroup = chart.append('g')
 			.attr('class', 'arc');
+
+		const sum = chart.append('text')
+			.style('font-size', '1.25em')
+			.style('text-anchor', 'middle');
 
 		chart.update = (newData, plotType) => {
 			const justVals = newData.filter(d => d[plotType] !== 0)
@@ -91,16 +106,32 @@
 				});
 
 			newGroup.append('text')
-				.attr('transform', d => `translate(${arc.centroid(d)})`)
-				.style('text-anchor', 'middle')
-				.style('fill', 'white')
-				.text(d => {
-					if (d.endAngle - d.startAngle > Math.PI / 4) {
-						return `${ccMapping[d.data.cc]}` +
-							` (${App.formatMoney(d.value)})`;
+				.attr('transform', d => {
+					const midpoint = d.startAngle + ((d.endAngle - d.startAngle) / 2);
+					const r = outerRadius + 20;
+					const x = r * Math.cos(midpoint - Math.PI / 2);
+					const y = r * Math.sin(midpoint - Math.PI / 2);
+					return `translate(${x}, ${y})`;
+				})
+				.style('text-anchor', d => {
+					const midpoint = d.startAngle + ((d.endAngle - d.startAngle) / 2);
+					if (midpoint > Math.PI) {
+						return 'end';
+					} else {
+						return 'start';
+					}
+				})
+				.style('fill', 'black')
+				.style('font-size', '1.25em')
+				.html(d => {
+					if (d.value !== 0) {
+						return `<tspan>${ccMapping[d.data.cc]}</tspan>` +
+							`<tspan x="0" dy="1.25em">${App.formatMoney(d.value)}</tspan>`;
 					}
 				});
 
+			// const total = newData.reduce((acc, cval) => acc + cval[plotType], 0);
+			// sum.text(App.formatMoney(total));
 		};
 
 		return chart;

@@ -882,12 +882,9 @@ b {
 .analysis-country-content .flag {
   border: 1px solid #555; }
 
-.country-header {
-  border-bottom: 1px solid #ccc; }
-
 .country-summary-text {
   float: left;
-  text-align: right; }
+  text-align: left; }
 
 .country-summary-label {
   font-weight: 400;
@@ -969,7 +966,9 @@ b {
   .progress-circle-section .country-summary-text,
   .progress-circle-section .progress-circle-text {
     float: left;
-    max-width: 400px; }
+    max-width: 400px;
+    text-align: left;
+    margin-top: 30px; }
   .country-flow-summary .time-chart-container,
   .progress-circle-section .time-chart-container {
     margin-left: 365px; }
@@ -1041,6 +1040,9 @@ b {
   .category-chart-section .source-text {
     text-align: right;
     font-size: 0.95em; }
+  .category-chart-section .description {
+    width: 100%;
+    max-width: 100%; }
 
 .toggle-type {
   text-align: right;
@@ -1059,6 +1061,10 @@ b {
 
 .toggle-pie-div {
   padding-left: 40px; }
+
+.category-chart-controls {
+  width: 100%;
+  padding-left: 45px; }
 
 .analysis-global-content .analysis-global-tab-container {
   margin-top: 20px;

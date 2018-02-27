@@ -346,11 +346,19 @@
 			});
 			Util.sortByKey(catData, 'total_spent', true);
 
-			const largestVal = 100000;
+			const largestSpent = d3.mean(
+				catData.reduce(
+					(acc, cval) => acc.concat(cval.children), []),
+				d => d.total_spent);
+			const largestCommitted = d3.mean(
+				catData.reduce(
+					(acc, cval) => acc.concat(cval.children), []),
+				d => d.total_spent);
+
 			const smallData = catData.map(d => {
 				const newD = Object.assign({}, d);
 				newD.children = d.children
-					.filter(c => (c.total_committed < largestVal) || (c.total_spent < largestVal));
+					.filter(c => (c.total_committed < largestCommitted) || (c.total_spent < largestSpent));
 				newD.total_spent = newD.children
 					.reduce((acc, cval) => acc + cval.total_spent, 0);
 				newD.total_committed = newD.children

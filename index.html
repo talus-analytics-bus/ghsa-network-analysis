@@ -385,13 +385,9 @@
                     <div class="col-sm-4">
                         <h2 class="analysis-country-title"></h2>
                     </div>
-                    <div class="col-sm-4 country-summary-text">
-                        <span class="country-summary-value"></span><br>
-                        <span class="money-type-cap"></span>
-                        from <span class="start-year"></span> to <span class="end-year"></span>
-                    </div>
                 </div>
             </div>
+
             <div class="country-summary-content row">
                 <div class="donor-column column col-sm-6">
                     <div class="summary-value-box">
@@ -418,6 +414,37 @@
                     </div>
                 </div>
             </div>
+            <div class="country-flow-summary">
+                <div class="col-sm-4 country-summary-text">
+                    <span class="country-summary-value"></span><br>
+                    Total Funds<br>
+                    <span class="money-type-cap"></span>
+                    from <span class="start-year"></span> to <span class="end-year"></span>
+                </div>
+                <div class="time-chart-container">
+                    <div class="source-text">
+                        <b>Source:</b>
+                        IATI registry via
+                        <a href="http://d-portal.org" target="_blank">d-portal</a>,
+                        2014-2017.
+                    </div>
+                </div>
+            </div>
+            <div class="country-flow-summary-empty">
+                <div class="no-text">
+                    <p>
+                        No funding data are currently available where
+                        <b class="country-name"></b>
+                        is a <b class="money-type-noun"></b>.
+                    </p>
+                    <p>
+                        To submit data, click the button below. Or switch to the
+                        <span class="opp-money-type-noun"></span> profile by clicking
+                        the top-right button.
+                    </p>
+                </div>
+                <div class="submit-data-btn btn btn-default">Submit Data</div>
+            </div>
             <div class="country-flow-content">
                 <div class="row category-chart-section">
                     <div class="row col-lg-12">
@@ -431,21 +458,16 @@
                             <br><br>
                             <i>Hover over a bar to see additional funding details.</i>
                         </div>
-                        <div class="row">
-                            <div class="col-sm-12">
+                        <div class="row category-chart-controls">
+                            <div class="row">
                                 <form>
                                     <div class="checkbox">
                                         <label><input type="checkbox" value="showsmall">
-                                            Only Show Small Funds (< 100,000)</label>
+                                            Zoom to bottom 50%</label>
                                     </div>
                                 </form>
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="row">
-                                <div class="category-chart-container"></div>
-                            </div>
-                            <div class="row toggle-category-chart">
                                 <form class="toggle-category-form">
                                     <label class="radio-inline">
                                         <input type="radio" name="optradio" id="total_spent">
@@ -456,6 +478,11 @@
                                         View committed
                                     </label>
                                 </form>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row">
+                                <div class="category-chart-container"></div>
                             </div>
                             <div class="row">
                                 <div class="col-sm-12 source-text">
@@ -494,13 +521,12 @@
                 <div class="progress-circle-section">
                     <div class="progress-circle-text">
                         <div class="progress-circle-title">
-                            % Committed Funds <span class="money-type-cap"></span> by Core Element
-                            <img src="img/info.png" class="info-img"/>
+                            Funds <span class="money-type-cap"></span> by Core Element
                         </div>
                         <div class="progress-circle-description description">
-                            The circles to the right show the percent of committed funds that were <span
-                                class="money-type"></span>, for all projects with corresponding commitment data.
-                            Percentages are shown for each of the three core elements of global health security: <b>Prevent</b>,
+                            The circle to the right shows the percent of funds that were <span
+                                class="money-type"></span> for all projects by each of the core elements
+                            of global health security: <b>Prevent</b>,
                             <b>Detect</b>, and <b>Respond</b>.
                         </div>
                         <div class="row toggle-pie-div">
@@ -527,31 +553,6 @@
                         <a href="http://d-portal.org" target="_blank">d-portal</a>,
                         2014-2017.
                     </div>
-                </div>
-                <div class="country-flow-summary">
-                    <div class="time-chart-container">
-                        <div class="source-text">
-                            <b>Source:</b>
-                            IATI registry via
-                            <a href="http://d-portal.org" target="_blank">d-portal</a>,
-                            2014-2017.
-                        </div>
-                    </div>
-                </div>
-                <div class="country-flow-summary-empty">
-                    <div class="no-text">
-                        <p>
-                            No funding data are currently available where
-                            <b class="country-name"></b>
-                            is a <b class="money-type-noun"></b>.
-                        </p>
-                        <p>
-                            To submit data, click the button below. Or switch to the
-                            <span class="opp-money-type-noun"></span> profile by clicking
-                            the top-right button.
-                        </p>
-                    </div>
-                    <div class="submit-data-btn btn btn-default">Submit Data</div>
                 </div>
             </div>
         </div>
