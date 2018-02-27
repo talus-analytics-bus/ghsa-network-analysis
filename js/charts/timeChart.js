@@ -39,7 +39,14 @@
 			.attr('class', 'y axis')
 			.call(yAxis);
 
+		const line = d3.line()
+			.x(d => x(d.x))
+			.y(d => y(d.y));
+
 		// add bars
+		chart.update = (newData) => {
+
+		};
 		const barGroups = chart.selectAll('.bar-group')
 			.data(data)
 			.enter().append('g')
