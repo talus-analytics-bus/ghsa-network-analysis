@@ -165,11 +165,19 @@
 			for (const y in fundsByYear) {
 				timeData.push(fundsByYear[y]);
 			}
-			App.buildTimeChart('.time-chart-container', timeData, {
+			const chart = App.buildTimeChart('.time-chart-container', {
 				color,
 				lightColor,
 				moneyType,
 			});
+
+			chart.update(timeData, 'total_spent');
+
+			// bind radio buttons
+			$('input[type=radio][name=timeradio]').on('change', function() {
+				chart.update(timeData, this.id);
+			});
+			$('#total_spent').prop('checked', true);
 		}
 
 		function drawProgressCircles() {
