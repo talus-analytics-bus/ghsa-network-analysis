@@ -48,14 +48,14 @@
 				.x(d => x(d.year))
 				.y(d => y(d[type]));
 
-			lineGroup.select('path').remove();
+			lineGroup.selectAll('path').remove();
 			lineGroup.datum(newData)
 				.append('path')
 				.style('fill', 'none')
 				.style('stroke-width', 1.5)
 				.style('stroke', 'black')
 				.transition()
-				.duration(1200)
+				.duration(1000)
 				.attrTween('d', function(d) {
 					const yfunc = d3.interpolate(0, d[type]);
 					return function(t) {
@@ -77,11 +77,15 @@
 			newGroup.append('circle')
 				.style('fill', 'none')
 				.style('stroke', 'black')
+				.transition()
+				.duration(1000)
 				.attr('cx', d => x(d.year))
 				.attr('cy', d => y(d[type]))
 				.attr('r', 5);
 
 			newGroup.append('text')
+				.transition()
+				.duration(1000)
 				.attr('x', d => x(d.year))
 				.attr('y', d => y(d[type]))
 				.attr('dy', '-1em')

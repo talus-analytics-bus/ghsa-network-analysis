@@ -175,9 +175,15 @@
 
 			// bind radio buttons
 			$('input[type=radio][name=timeradio]').on('change', function() {
-				chart.update(timeData, this.id);
+				let type;
+				if (this.id === 'time_spent') {
+					type = 'total_spent';
+				} else {
+					type = 'total_committed';
+				}
+				chart.update(timeData, type);
 			});
-			$('#total_spent').prop('checked', true);
+			$('#time_spent').prop('checked', true);
 		}
 
 		function drawProgressCircles() {
