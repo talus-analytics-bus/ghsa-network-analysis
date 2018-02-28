@@ -23,9 +23,12 @@
 			.range([height, 0]);
 
 		const xAxis = d3.axisBottom()
+			.tickSize(0)
+			.tickPadding(8)
 			.scale(x);
 		const yAxis = d3.axisLeft()
 			.ticks(4)
+			.tickSize(0)
 			.tickFormat(App.siFormat)
 			.scale(y);
 
@@ -38,59 +41,64 @@
 			.call(yAxis);
 
 		const lineGroup = chart.append('g');
+		const line = chart.append('path')
+			.style('fill', 'none')
+			.style('stroke-width', 1.5)
+			.style('stroke', 'black');
 
+		let init = false;
 		chart.update = (newData, type) => {
 			const maxVal = d3.max(newData, d => d[type]);
 			x.domain(newData.map(d => d.year));
 			y.domain([0, 1.2 * maxVal]);
 
-			const line = d3.line()
+			const lineFunc = d3.line()
 				.x(d => x(d.year))
 				.y(d => y(d[type]));
 
-			lineGroup.selectAll('path').remove();
-			lineGroup.datum(newData)
-				.append('path')
-				.style('fill', 'none')
-				.style('stroke-width', 1.5)
-				.style('stroke', 'black')
-				.transition()
+			line.transition()
 				.duration(1000)
-				.attrTween('d', function(d) {
-					const yfunc = d3.interpolate(0, d[type]);
-					return function(t) {
-						d[type] = yfunc(t);
-						return line(d);
-					};
-				});
+				.attr('d', lineFunc(newData));
 
+			// Join to new Data
+			let newGroup = lineGroup.selectAll('.node')
+				.data(newData);
 
-			let newGroup = lineGroup.selectAll('.line')
-				.remove().exit().data(newData);
+			// remove unneeded
+			newGroup.exit().remove();
 
-			const newLines = newGroup.enter()
-				.append('g')
-				.attr('class', 'line');
+			// Create new groups
+			const nodeGroup = newGroup.enter().append('g')
+				.attr('class', 'node');
 
-			newGroup = newLines.merge(lineGroup);
-
-			newGroup.append('circle')
+			// Add new objects
+			nodeGroup.append('circle')
 				.style('fill', 'none')
 				.style('stroke', 'black')
+				.attr('r', 5)
+				.attr('cx', d => x(d.year))
+				.attr('cy', d => y(d[type]));
+
+			nodeGroup.append('text')
+				.attr('dy', '-1em')
+				.attr('dx', '1em')
+				.style('text-anchor', 'middle')
+				.attr('x', d => x(d.year))
+				.attr('y', d => y(d[type]))
+				.text(d => App.formatMoney(d[type]));
+
+			// Update circles
+			newGroup.selectAll('circle')
 				.transition()
 				.duration(1000)
 				.attr('cx', d => x(d.year))
-				.attr('cy', d => y(d[type]))
-				.attr('r', 5);
+				.attr('cy', d => y(d[type]));
 
-			newGroup.append('text')
+			newGroup.selectAll('text')
 				.transition()
 				.duration(1000)
 				.attr('x', d => x(d.year))
 				.attr('y', d => y(d[type]))
-				.attr('dy', '-1em')
-				.attr('dx', '1em')
-				.style('text-anchor', 'middle')
 				.text(d => App.formatMoney(d[type]));
 
 			xAxis.scale(x);
