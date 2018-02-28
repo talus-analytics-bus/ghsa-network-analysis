@@ -83,7 +83,14 @@
 
 		chart.update = (rawData, newSelector = selected) => {
 			const data = getRunningValues(rawData, newSelector)
-				.sort((a, b) => a[newSelector] < b[newSelector]);
+				.sort((a, b) => {
+					if (a[newSelector] < b[newSelector]) {
+						return 1;
+					} else {
+						return -1;
+					}
+				});
+			console.log(data);
 			// set new axes and transition
 			const maxVal = d3.max(data, d => d[newSelector]);
 			x.domain([0, 1.1 * maxVal]);
