@@ -1,9 +1,9 @@
 (() => {
 	App.buildTimeChart = (selector, param = {}) => {
 		// start building the chart
-		const margin = { top: 30, right: 150, bottom: 35, left: 60 };
-		const width = 480;
-		const height = 90;
+		const margin = { top: 30, right: 50, bottom: 35, left: 60 };
+		const width = 600;
+		const height = 100;
 		const color = d3.color(param.color || 'steelblue');
 		const lightColor = param.lightColor || color.brighter(2);
 
@@ -16,10 +16,8 @@
 
 		const x = d3.scalePoint()
 			.padding(0.2)
-			.domain([0, 1])
 			.range([0, width]);
 		const y = d3.scaleLinear()
-			.domain([0, 1])
 			.range([height, 0]);
 
 		const xAxis = d3.axisBottom()

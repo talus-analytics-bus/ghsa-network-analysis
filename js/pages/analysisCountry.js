@@ -129,6 +129,25 @@
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
 			}
 
+			$('.toggle-disbursed')
+				.addClass('active');
+
+			$('.toggle-disbursed').click(function() {
+				if ($(this).hasClass('active')) {
+				} else {
+					$('.toggle-disbursed').addClass('active');
+					$('.toggle-committed').removeClass('active');
+				}
+			});
+
+			$('.toggle-committed').click(function() {
+				if ($(this).hasClass('active')) {
+				} else {
+					$('.toggle-committed').addClass('active');
+					$('.toggle-disbursed').removeClass('active');
+				}
+			});
+
 			// draw charts
 			if (hasNoData) {
 				$('.country-flow-summary, .progress-circle-section, .country-chart-container').hide();
@@ -173,17 +192,11 @@
 
 			chart.update(timeData, 'total_spent');
 
-			// bind radio buttons
-			$('input[type=radio][name=timeradio]').on('change', function() {
-				let type;
-				if (this.id === 'time_spent') {
-					type = 'total_spent';
-				} else {
-					type = 'total_committed';
-				}
+			$('.toggle-disbursed-container').click(function() {
+				const type = $('.toggle-disbursed-container .active').attr('value');
 				chart.update(timeData, type);
 			});
-			$('#time_spent').prop('checked', true);
+
 		}
 
 		function drawProgressCircles() {
@@ -224,17 +237,10 @@
 				'total_spent',
 			);
 
-			// bind radio buttons
-			$('input[type=radio][name=pieradio]').on('change', function() {
-				let type;
-				if (this.id === 'pie_committed') {
-					type = 'total_committed';
-				} else {
-					type = 'total_spent';
-				}
+			$('.toggle-disbursed-container').click(function() {
+				const type = $('.toggle-disbursed-container .active').attr('value');
 				chart.update(fundsByCcList, type);
 			});
-			$('#pie_spent').prop('checked', true);
 		}
 
 		function drawCountryTable() {
@@ -389,13 +395,6 @@
 
 			chart.update(catData, selected);
 
-			// bind radio buttons
-			$('input[type=radio][name=optradio]').on('change', function() {
-				selected = this.id;
-				updateData();
-			});
-			$('#total_spent').prop('checked', true);
-
 			$('input[type=checkbox][value=showsmall]').on('change', function() {
 				const isChecked = $(this).prop('checked');
 				if (isChecked) {
@@ -403,6 +402,10 @@
 				} else {
 					filterData = 'big';
 				}
+				updateData();
+			});
+			$('.toggle-disbursed-container').click(function() {
+				selected = $('.toggle-disbursed-container .active').attr('value');
 				updateData();
 			});
 

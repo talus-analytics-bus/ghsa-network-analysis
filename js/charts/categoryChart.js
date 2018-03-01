@@ -20,7 +20,7 @@
 	App.buildCategoryChart = (selector, param = {}) => {
 		const oppNoun = (param.moneyType === 'r') ? 'Funder' : 'Recipient';
 		let colors = (param.moneyType === 'r') ? App.receiveColorPalette : App.fundColorPalette;
-		colors = colors.slice(0, 5);
+		// colors = colors.slice(0, 5);
 
 		const selected = param.selected || 'total_spent';
 
@@ -40,19 +40,22 @@
 		//
 		// const maxValue = d3.max(data, d => d[selected]);
 		const x = d3.scaleLinear()
-			.range([0, width]);
+			.range([1, width]);
 		const y = d3.scaleBand()
 			.padding(0.25)
 			.range([0, height]);
-		const colorScale = d3.scaleOrdinal()
-			.range(colors);
+		const colorScale = d3.scaleLinear()
+			.domain([0, 1])
+			.range([
+				colors[colors.length - 2],
+				colors[0],
+			]);
 
 		const xAxis = d3.axisTop()
 			.ticks(5)
 			.tickFormat(App.siFormat)
 			.scale(x)
 			.tickSize(0)
-			.tickSizeOuter(5)
 			.tickPadding(7);
 		const yAxis = d3.axisLeft()
 			.scale(y)
@@ -60,16 +63,18 @@
 			.tickSizeOuter(5)
 			.tickPadding(7);
 
+		const allBars = chart.append('g');
+
 		const xAxisG = chart.append('g')
 			.attr('class', 'x axis')
+			.style('stroke-width', 0)
 			.call(xAxis);
+
 		const yAxisG = chart.append('g')
 			.attr('class', 'y axis')
 			.call(yAxis)
 			.style('font-size', '0.4em')
 			.style('font-weight', '600');
-
-		const allBars = chart.append('g');
 
 		// add axes labels
 		let xAxisLabel = 'Total Funds Disbursed by Core Capacity';
@@ -90,11 +95,12 @@
 						return -1;
 					}
 				});
-			console.log(data);
 			// set new axes and transition
 			const maxVal = d3.max(data, d => d[newSelector]);
+			const maxChild = d3.max(data, d => d3.max(d.children, c => c[newSelector]));
 			x.domain([0, 1.1 * maxVal]);
 			y.domain(data.map(d => d.name));
+			colorScale.domain([0, maxChild]);
 			const bandwidth = y.bandwidth();
 
 			// remove first
@@ -113,7 +119,7 @@
 				.enter()
 				.append('rect')
 				.attr('height', bandwidth)
-				.style('fill', d => colorScale(d.country.iso))
+				.style('fill', d => colorScale(d.country[newSelector]))
 				.transition()
 				.duration(1000)
 				.attr('x', d => x(d.country.value0))
@@ -126,6 +132,41 @@
 						`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.country.total_spent)}`,
 					});
 				});
+
+			// set axes labels
+			let xAxisLabel;
+			if (param.moneyType === 'r') {
+				if (newSelector === 'total_spent') {
+					xAxisLabel = 'Total Funds Received by Core Capacity';
+				} else {
+					xAxisLabel = 'Total Funds Promised by Core Capacity';
+				}
+			} else {
+				if (newSelector === 'total_spent') {
+					xAxisLabel = 'Total Funds Disbursed by Core Capacity';
+				} else {
+					xAxisLabel = 'Total Funds Committed by Core Capacity';
+				}
+			}
+			chart.select('.axis-label').text(xAxisLabel);
+
+			xAxis.scale(x);
+			xAxisG.transition()
+				.duration(1000)
+				.call(xAxis);
+
+			yAxis.scale(y);
+			yAxisG.transition()
+				.duration(1000)
+				.call(yAxis);
+
+			yAxisG.selectAll('text').transition().duration(1000).text(function(d) {
+				// const readableName = / - (.*)$/.exec(d)[1];
+				const readableName = d;
+				const shortName = getShortName(readableName);
+				return shortName;
+			});
+
 
 			barGroups.append('text')
 				.attr('class', 'bar-label')
@@ -151,36 +192,6 @@
 					const shortName = getShortName(readableName);
 					return shortName;
 				});
-
-			// set axes labels
-			let xAxisLabel;
-			if (param.moneyType === 'r') {
-				if (newSelector === 'total_spent') {
-					xAxisLabel = 'Total Funds Received by Core Capacity';
-				} else {
-					xAxisLabel = 'Total Funds Promised by Core Capacity';
-				}
-			} else {
-				if (newSelector === 'total_spent') {
-					xAxisLabel = 'Total Funds Disbursed by Core Capacity';
-				} else {
-					xAxisLabel = 'Total Funds Committed by Core Capacity';
-				}
-			}
-			chart.select('.axis-label').text(xAxisLabel);
-
-			xAxis.scale(x);
-			xAxisG.transition().duration(1000).call(xAxis);
-
-			yAxis.scale(y);
-			yAxisG.transition().duration(1000).call(yAxis);
-
-			yAxisG.selectAll('text').transition().duration(1000).text(function(d) {
-				// const readableName = / - (.*)$/.exec(d)[1];
-				const readableName = d;
-				const shortName = getShortName(readableName);
-				return shortName;
-			});
 
 		};
 

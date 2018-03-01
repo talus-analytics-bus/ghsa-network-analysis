@@ -378,11 +378,19 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-sm-12 toggle-disbursed-container">
+                    View
+                    <div class="btn-group">
+                        <div class="btn btn-default btn-sm toggle-disbursed" value="total_spent">Disbursed</div>
+                        <div class="btn btn-default btn-sm toggle-committed" value="total_committed">Committed</div>
+                    </div>
+                </div>
+            </div>
             <div class="row vert-space-20"></div>
             <div class="row country-header">
                 <div class="row">
-                    <div class="col-sm-4"></div>
-                    <div class="col-sm-4">
+                    <div class="col-md-6 col-md-offset-4">
                         <h2 class="analysis-country-title"></h2>
                     </div>
                 </div>
@@ -420,18 +428,6 @@
                     Total Funds<br>
                     <span class="money-type-cap"></span>
                     from <span class="start-year"></span> to <span class="end-year"></span>
-                </div>
-                <div>
-                    <form class="toggle-timechart-form">
-                        <label class="radio-inline">
-                            <input type="radio" name="timeradio" id="time_spent">
-                            View <span class="money-type" />
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="timeradio" id="time_committed">
-                            View committed
-                        </label>
-                    </form>
                 </div>
                 <div class="time-chart-container">
                     <div class="source-text">
@@ -477,18 +473,6 @@
                                         <label><input type="checkbox" value="showsmall">
                                             Zoom to bottom 50%</label>
                                     </div>
-                                </form>
-                            </div>
-                            <div class="row">
-                                <form class="toggle-category-form">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="optradio" id="total_spent">
-                                        View <span class="money-type" />
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="optradio" id="total_committed">
-                                        View committed
-                                    </label>
                                 </form>
                             </div>
                         </div>
@@ -540,18 +524,6 @@
                                 class="money-type"></span> for all projects by each of the core elements
                             of global health security: <b>Prevent</b>,
                             <b>Detect</b>, and <b>Respond</b>.
-                        </div>
-                        <div class="row toggle-pie-div">
-                            <form class="toggle-pie-form">
-                                <label class="radio">
-                                    <input type="radio" name="pieradio" id="pie_spent">
-                                    View <span class="money-type" />
-                                </label>
-                                <label class="radio">
-                                    <input type="radio" name="pieradio" id="pie_committed">
-                                    View committed
-                                </label>
-                            </form>
                         </div>
                     </div>
                     <div class="progress-circle-container">
