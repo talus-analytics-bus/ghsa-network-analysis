@@ -131,12 +131,14 @@
 
 			$('.toggle-disbursed')
 				.addClass('active');
+			$('.money-type-cap').text('Disbursed');
 
 			$('.toggle-disbursed').click(function() {
 				if ($(this).hasClass('active')) {
 				} else {
 					$('.toggle-disbursed').addClass('active');
 					$('.toggle-committed').removeClass('active');
+					$('.money-type-cap').text('Disbursed');
 				}
 			});
 
@@ -145,6 +147,7 @@
 				} else {
 					$('.toggle-committed').addClass('active');
 					$('.toggle-disbursed').removeClass('active');
+					$('.money-type-cap').text('Committed');
 				}
 			});
 
