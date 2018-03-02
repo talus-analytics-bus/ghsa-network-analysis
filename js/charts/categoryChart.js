@@ -25,7 +25,7 @@
 		const selected = param.selected || 'total_spent';
 
 		// start building the chart
-		const margin = { top: 70, right: 80, bottom: 30, left: 200 };
+		const margin = { top: 100, right: 20, bottom: 50, left: 250 };
 		const width = 800;
 		const height = 500;
 
@@ -40,7 +40,7 @@
 		//
 		// const maxValue = d3.max(data, d => d[selected]);
 		const x = d3.scaleLinear()
-			.range([1, width]);
+			.range([0, width]);
 		const y = d3.scaleBand()
 			.padding(0.25)
 			.range([0, height]);
@@ -53,12 +53,16 @@
 
 		const xAxis = d3.axisTop()
 			.ticks(5)
+			.tickSizeInner(0)
+			.tickSizeOuter(5)
+			.tickPadding(8)
 			.tickFormat(App.siFormat)
 			.scale(x);
 		const yAxis = d3.axisLeft()
 			.scale(y)
 			.tickSize(0)
 			.tickSizeOuter(5)
+			.tickFormat(getShortName)
 			.tickPadding(7);
 
 		const allBars = chart.append('g');
@@ -71,11 +75,10 @@
 		const yAxisG = chart.append('g')
 			.attr('class', 'y axis')
 			.call(yAxis)
-			.style('font-size', '0.4em')
-			.style('font-weight', '600');
+			.style('font-size', '0.4em');
 
 		const legendG = chart.append('g')
-			.attr('transform', `translate(${width / 3}, ${height})`);
+			.attr('transform', `translate(${width / 3}, ${height + 30})`);
 		const defs = chart.append('defs');
 
 		const gradient = defs.append('linearGradient')
@@ -108,7 +111,7 @@
 		chart.append('text')
 			.attr('class', 'axis-label')
 			.attr('x', width / 2)
-			.attr('y', -50)
+			.attr('y', -70)
 			.style('font-size', '1.25em')
 			.text(xAxisLabel);
 
@@ -117,14 +120,16 @@
 			.attr('y', -30)
 			.style('font-weight', 600)
 			.style('text-anchor', 'middle')
+			.style('font-size', '14px')
 			.text('Funds');
 
 		chart.append('text')
 			.attr('transform', 'rotate(-90)')
-			.attr('y', -170)
+			.attr('y', -230)
 			.attr('x', -height / 2)
 			.style('font-weight', 600)
 			.style('text-anchor', 'middle')
+			.style('font-size', '14px')
 			.text('Core Capacity');
 
 		chart.update = (rawData, newSelector = selected) => {
@@ -139,7 +144,8 @@
 			// set new axes and transition
 			const maxVal = d3.max(data, d => d[newSelector]);
 			const maxChild = d3.max(data, d => d3.max(d.children, c => c[newSelector]));
-			x.domain([0, 1.1 * maxVal]);
+			const xMax = 1.1 * maxVal;
+			x.domain([0, xMax]);
 			y.domain(data.map(d => d.name));
 			colorScale.domain([0, maxChild]);
 			const bandwidth = y.bandwidth();
@@ -147,18 +153,24 @@
 			// legend labels
 			legendG.selectAll('text').remove();
 			legendG.append('text')
-				.attr('x', 300)
-				.attr('y', -10)
-				.style('text-anchor', 'middle')
+				.attr('x', 290)
+				.attr('y', 15)
+				.style('text-anchor', 'end')
+				.style('fill', 'white')
+				.style('font-weight', 200)
 				.text(App.formatMoney(maxChild));
 			legendG.append('text')
-				.attr('y', -10)
-				.style('text-anchor', 'middle')
+				.attr('y', 15)
+				.attr('x', 10)
+				.style('text-anchor', 'start')
+				.style('fill', 'white')
+				.style('font-weight', 200)
 				.text(App.formatMoney(0));
 			legendG.append('text')
 				.attr('x', 150)
-				.attr('y', -10)
+				.attr('y', -5)
 				.style('text-anchor', 'middle')
+				.style('font-weight', 600)
 				.text('Funds');
 
 			// remove first
@@ -211,19 +223,19 @@
 			xAxis.scale(x);
 			xAxisG.transition()
 				.duration(1000)
-				.call(xAxis);
+				.call(xAxis.tickValues(getTickValues(xMax, 7)));
 
 			yAxis.scale(y);
 			yAxisG.transition()
 				.duration(1000)
 				.call(yAxis);
-
-			yAxisG.selectAll('text').transition().duration(1000).text(function(d) {
-				// const readableName = / - (.*)$/.exec(d)[1];
-				const readableName = d;
-				const shortName = getShortName(readableName);
-				return shortName;
-			});
+			//
+			// yAxisG.selectAll('text').transition().duration(1000).text(function(d) {
+			// 	// const readableName = / - (.*)$/.exec(d)[1];
+			// 	const readableName = d;
+			// 	const shortName = getShortName(readableName);
+			// 	return shortName;
+			// });
 
 
 			barGroups.append('text')
@@ -243,29 +255,48 @@
 			chart.selectAll('.y.axis .tick text').each(function attachTooltip(d) {
 					const capName = App.capacities.find(c => c.name === d).name;
 					$(this).tooltipster({ content: `<b>${capName}</b>` });
-				})
-				.text(function(d) {
-					// const readableName = / - (.*)$/.exec(d)[1];
-					const readableName = d;
-					const shortName = getShortName(readableName);
-					return shortName;
 				});
+				// .text(function(d) {
+				// 	// const readableName = / - (.*)$/.exec(d)[1];
+				// 	const readableName = d;
+				// 	const shortName = getShortName(readableName);
+				// 	return shortName;
+				// });
 
 		};
 
 		return chart;
 	};
 
-	function getShortName(s, maxLen=20) {
+	function getShortName(s) {
+		const maxLen = 20;
 		if (s.length > maxLen) {
-			if (/ /.test(s[maxLen - 1])) {
-				return `${s.slice(0, maxLen - 2)}...`;
-			} else {
-				return `${s.slice(0, maxLen)}...`;
+			const shortened = s.split(' ').slice(0, 4).join(' ');
+			if (/[^a-z]$/.test(shortened.toLowerCase())) {
+				return `${shortened.slice(0, shortened.length - 1)}...`;
 			}
+			return `${shortened}...`;
 		} else {
 			return s;
 		}
+	}
+
+	function getTickValues(maxVal, numTicks) {
+		const magnitude = Math.floor(Math.log10(maxVal)) - 1;
+		var vals = [0];
+		for (var i = 1; i <= numTicks; i++) {
+			if (i === numTicks) {
+				vals.push(maxVal);
+			} else {
+				vals.push(precisionRound((i / numTicks) * maxVal, -magnitude));
+			}
+		}
+		return vals;
+	}
+
+	function precisionRound(number, precision) {
+		const factor = Math.pow(10, precision);
+		return Math.round(number * factor) / factor;
 	}
 
 })();

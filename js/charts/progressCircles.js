@@ -20,6 +20,13 @@
 			Other: 'Other',
 		};
 
+		const sortOrder = {
+			P: 1,
+			Other: 2,
+			D: 3,
+			R: 4,
+		};
+
 		// start building the chart
 		const margin = {
 			top: 60,
@@ -79,7 +86,6 @@
 			});
 			otherData.push(runningOther);
 			const newData = otherData;
-			console.log(newData);
 			const justVals = newData.filter(d => d[plotType] !== 0)
 				.map(d => d[plotType])
 				.sort((a, b) => a < b);
@@ -91,7 +97,8 @@
 				.range(palette);
 
 			const pie = d3.pie()
-				.value(d => d[plotType]);
+				.value(d => d[plotType])
+				.sort((a, b) => sortOrder[a.cc] > sortOrder[b.cc]);
 
 			let newGroup = arcGroup.selectAll('.arc')
 				.remove().exit().data(pie(newData));
@@ -105,13 +112,11 @@
 			newGroup.append('path')
 				.style('fill', d => colorScale(d.value))
 				.each(function(d) {
-					if (d.endAngle - d.startAngle < Math.PI / 4) {
-						var content = `<b>${ccMapping[d.data.cc]}</b><br>`;
-						content += App.formatMoney(d.value);
-						$(this).tooltipster({
-							content: content,
-						});
-					}
+					var content = `<b>${ccMapping[d.data.cc]}</b><br>`;
+					content += App.formatMoney(d.value);
+					$(this).tooltipster({
+						content: content,
+					});
 				})
 				.transition()
 				.duration(600)
@@ -145,10 +150,8 @@
 				.style('font-size', '1.25em')
 				.html(d => {
 					if (d.value !== 0) {
-						if (d.endAngle - d.startAngle > Math.PI / 4) {
-							return `<tspan>${ccMapping[d.data.cc]}</tspan>` +
-								`<tspan x="0" dy="1.25em">${App.formatMoney(d.value)}</tspan>`;
-						}
+						return ccMapping[d.data.cc];
+							// `<tspan x="0" dy="1.25em">${App.formatMoney(d.value)}</tspan>`;
 					}
 				});
 

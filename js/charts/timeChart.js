@@ -2,8 +2,8 @@
 	App.buildTimeChart = (selector, param = {}) => {
 		// start building the chart
 		const margin = { top: 70, right: 50, bottom: 50, left: 60 };
-		const width = 700;
-		const height = 100;
+		const width = 600;
+		const height = 200;
 		const color = d3.color(param.color || 'steelblue');
 		const lightColor = param.lightColor || color.brighter(2);
 		const palette = (param.moneyType === 'd') ? App.fundColorPalette : App.receiveColorPalette;
@@ -22,9 +22,15 @@
 			.range([height, 0]);
 
 		const xAxis = d3.axisBottom()
+			.tickSize(0)
+			.tickPadding(8)
+			.tickSizeOuter(8)
 			.scale(x);
 		const yAxis = d3.axisLeft()
 			.ticks(4)
+			.tickSize(0)
+			.tickSizeOuter(5)
+			.tickPadding(8)
 			.tickFormat(App.siFormat)
 			.scale(y);
 
@@ -48,8 +54,9 @@
 		let init = false;
 		chart.update = (newData, type) => {
 			const maxVal = d3.max(newData, d => d[type]);
+			const yMax = 1.2 * maxVal;
 			x.domain(newData.map(d => d.year));
-			y.domain([0, 1.2 * maxVal]);
+			y.domain([0, yMax]);
 
 			const lineFunc = d3.line()
 				.x(d => x(d.year))
@@ -70,20 +77,20 @@
 			const nodeGroup = newGroup.enter().append('g')
 				.attr('class', 'node');
 
-			// Add new objects
-			nodeGroup.append('circle')
-				.style('fill', 'white')
-				.style('fill-opacity', 1)
-				.style('stroke', 'black')
-				.attr('r', 5)
-				.attr('cx', d => x(d.year))
-				.attr('cy', d => y(d[type]))
-				.on('mouseover', function(d) {
-					d3.select(this).style('fill', param.lightColor);
-				})
-				.on('mouseout', function(d) {
-					d3.select(this).style('fill', 'white');
-				});
+			// // Add new objects
+			// nodeGroup.append('circle')
+			// 	.style('fill', 'white')
+			// 	.style('fill-opacity', 1)
+			// 	.style('stroke', 'black')
+			// 	.attr('r', 5)
+			// 	.attr('cx', d => x(d.year))
+			// 	.attr('cy', d => y(d[type]))
+			// 	.on('mouseover', function(d) {
+			// 		d3.select(this).style('fill', param.lightColor);
+			// 	})
+			// 	.on('mouseout', function(d) {
+			// 		d3.select(this).style('fill', 'white');
+			// 	});
 
 			nodeGroup.append('text')
 				.attr('dy', '-1em')
@@ -92,12 +99,12 @@
 				.style('text-anchor', 'middle')
 				.text(d => App.formatMoney(d[type]));
 
-			// Update circles
-			newGroup.selectAll('circle')
-				.transition()
-				.duration(1000)
-				.attr('cx', d => x(d.year))
-				.attr('cy', d => y(d[type]));
+			// // Update circles
+			// newGroup.selectAll('circle')
+			// 	.transition()
+			// 	.duration(1000)
+			// 	.attr('cx', d => x(d.year))
+			// 	.attr('cy', d => y(d[type]));
 
 			newGroup.selectAll('text')
 				.transition()
@@ -110,7 +117,9 @@
 			xAxisG.transition().duration(1000).call(xAxis);
 
 			yAxis.scale(y);
-			yAxisG.transition().duration(1000).call(yAxis);
+			yAxisG.transition()
+				.duration(1000)
+				.call(yAxis.tickValues(getTickValues(yMax, 4)));
 
 			// labels
 			labels.selectAll('text').remove();
@@ -145,4 +154,23 @@
 
 		return chart;
 	};
+
+	function getTickValues(maxVal, numTicks) {
+		const magnitude = Math.floor(Math.log10(maxVal)) - 1;
+		var vals = [0];
+		for (var i = 1; i <= numTicks; i++) {
+			if (i === numTicks) {
+				vals.push(maxVal);
+			} else {
+				vals.push(precisionRound((i / numTicks) * maxVal, -magnitude));
+			}
+		}
+		return vals;
+	}
+
+	function precisionRound(number, precision) {
+		const factor = Math.pow(10, precision);
+		return Math.round(number * factor) / factor;
+	}
+
 })();

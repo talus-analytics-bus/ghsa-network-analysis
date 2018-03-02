@@ -151,7 +151,7 @@
 				}
 			});
 
-			$('.other-text').tooltipster({content: 'Poe, CE, and RE'});
+			$('.other-text').tooltipster({content: '<b>Other</b> includesPoe, CE, and RE'});
 
 			// draw charts
 			if (hasNoData) {
@@ -296,7 +296,7 @@
 				const body = table.append('tbody');
 
 				const rows = body.selectAll('tr')
-					.data(fundedData)
+					.data(fundedData.sort((a, b) => a[type] < b[type]))
 					.enter().append('tr')
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {
@@ -328,7 +328,8 @@
 					pageLength: 10,
 					scrollCollapse: false,
 					autoWidth: false,
-					order: [[1, 'desc']],
+					ordering: false,
+					bLengthChange: false,
 				});
 			};
 

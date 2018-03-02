@@ -868,7 +868,7 @@ b {
     text-decoration: underline; }
 
 .analysis-country-content .analysis-country-title {
-  text-align: left;
+  text-align: right;
   cursor: pointer; }
   .analysis-country-content .analysis-country-title h2 {
     font-size: 50px; }
@@ -883,6 +883,12 @@ b {
   display: inline-block; }
 .analysis-country-content .flag {
   border: 1px solid #555; }
+.analysis-country-content div .btn-sm {
+  font-size: 0.8em;
+  width: 125px; }
+
+.country-header {
+  text-align: center; }
 
 .country-summary-text {
   float: left;
