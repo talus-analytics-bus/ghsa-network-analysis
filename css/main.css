@@ -870,6 +870,8 @@ b {
 .analysis-country-content .analysis-country-title {
   text-align: left;
   cursor: pointer; }
+  .analysis-country-content .analysis-country-title h2 {
+    font-size: 3em; }
 .analysis-country-content .profile-type-container {
   position: absolute;
   top: 71px;
@@ -951,7 +953,7 @@ b {
   .country-flow-summary .progress-circle-title,
   .progress-circle-section .progress-circle-title {
     font-weight: 600;
-    font-size: 1.2em; }
+    font-size: 1.5em; }
   .country-flow-summary .country-summary-label,
   .progress-circle-section .country-summary-label {
     font-weight: 600;
@@ -977,7 +979,8 @@ b {
     margin-left: 430px; }
   .country-flow-summary .progress-circle-title,
   .progress-circle-section .progress-circle-title {
-    white-space: nowrap; }
+    white-space: nowrap;
+    font-size: 1.5em; }
     .country-flow-summary .progress-circle-title .info-img,
     .progress-circle-section .progress-circle-title .info-img {
       position: relative;

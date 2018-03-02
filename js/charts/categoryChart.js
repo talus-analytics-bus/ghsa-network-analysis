@@ -25,7 +25,7 @@
 		const selected = param.selected || 'total_spent';
 
 		// start building the chart
-		const margin = { top: 70, right: 80, bottom: 10, left: 200 };
+		const margin = { top: 70, right: 80, bottom: 30, left: 200 };
 		const width = 800;
 		const height = 500;
 
@@ -76,6 +76,34 @@
 			.style('font-size', '0.4em')
 			.style('font-weight', '600');
 
+		const legendG = chart.append('g')
+			.attr('transform', `translate(${width / 3}, ${height})`);
+		const defs = chart.append('defs');
+
+		const gradient = defs.append('linearGradient')
+			.attr('id', 'legend-gradient')
+			.attr('y1', '0%')
+			.attr('y2', '0%')
+			.attr('x1', '0%')
+			.attr('x2', '100%');
+
+		gradient.append('stop')
+			.attr('class', 'gradient-start')
+			.attr('offset', '0%')
+			.attr('stop-color', colors[0])
+			.attr('stop-opacity', 1);
+
+		gradient.append('stop')
+			.attr('class', 'gradient-stop')
+			.attr('offset', '100%')
+			.attr('stop-color', colors[colors.length - 2])
+			.attr('stop-opacity', 1);
+
+		legendG.append('rect')
+			.attr('height', 20)
+			.attr('width', 300)
+			.style('fill', 'url(#legend-gradient');
+
 		// add axes labels
 		let xAxisLabel = 'Total Funds Disbursed by Core Capacity';
 		if (param.moneyType === 'r') xAxisLabel = 'Total Funds Received by Core Capacity';
@@ -102,6 +130,18 @@
 			y.domain(data.map(d => d.name));
 			colorScale.domain([0, maxChild]);
 			const bandwidth = y.bandwidth();
+
+			// legend labels
+			legendG.selectAll('text').remove();
+			legendG.append('text')
+				.attr('y', -10)
+				.style('text-anchor', 'middle')
+				.text(App.formatMoney(maxChild));
+			legendG.append('text')
+				.attr('x', 300)
+				.attr('y', -10)
+				.style('text-anchor', 'middle')
+				.text(App.formatMoney(0));
 
 			// remove first
 			let barGroups = allBars.selectAll('.bar-group')
@@ -137,15 +177,15 @@
 			let xAxisLabel;
 			if (param.moneyType === 'r') {
 				if (newSelector === 'total_spent') {
-					xAxisLabel = 'Total Funds Received by Core Capacity';
+					xAxisLabel = 'Funds Received by Core Capacity';
 				} else {
-					xAxisLabel = 'Total Funds Promised by Core Capacity';
+					xAxisLabel = 'Funds Promised by Core Capacity';
 				}
 			} else {
 				if (newSelector === 'total_spent') {
-					xAxisLabel = 'Total Funds Disbursed by Core Capacity';
+					xAxisLabel = 'Funds Disbursed by Core Capacity';
 				} else {
-					xAxisLabel = 'Total Funds Committed by Core Capacity';
+					xAxisLabel = 'Funds Committed by Core Capacity';
 				}
 			}
 			chart.select('.axis-label').text(xAxisLabel);

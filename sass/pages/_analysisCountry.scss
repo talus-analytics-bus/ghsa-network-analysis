@@ -2,6 +2,9 @@
   .analysis-country-title {
     text-align: left;
     cursor: pointer;
+    h2 {
+      font-size: 3em;
+    }
   }
   .profile-type-container {
     position: absolute;
@@ -110,7 +113,7 @@
 
   .progress-circle-title {
     font-weight: 600;
-    font-size: 1.2em;
+    font-size: 1.5em;
   }
   .country-summary-label {
     font-weight: 600;
@@ -136,6 +139,7 @@
   }
   .progress-circle-title {
     white-space: nowrap;
+    font-size: 1.5em;
 
     .info-img {
       position: relative;

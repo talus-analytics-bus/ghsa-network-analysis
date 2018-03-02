@@ -21,12 +21,12 @@
 
 		// start building the chart
 		const margin = {
-			top: 40,
+			top: 60,
 			right: 120,
-			bottom: 40,
+			bottom: 60,
 			left: 120,
 		};
-		const outerRadius = 200;
+		const outerRadius = 180;
 		const innerRadius = 100;
 
 		const chartContainer = d3.select(selector).append('svg')

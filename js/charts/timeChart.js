@@ -1,11 +1,12 @@
 (() => {
 	App.buildTimeChart = (selector, param = {}) => {
 		// start building the chart
-		const margin = { top: 30, right: 50, bottom: 35, left: 60 };
+		const margin = { top: 70, right: 50, bottom: 50, left: 60 };
 		const width = 600;
 		const height = 100;
 		const color = d3.color(param.color || 'steelblue');
 		const lightColor = param.lightColor || color.brighter(2);
+		const palette = (param.moneyType === 'd') ? App.fundColorPalette : App.receiveColorPalette;
 
 		const chart = d3.select(selector).append('svg')
 			.classed('time-chart', true)
@@ -33,6 +34,7 @@
 		const xAxisG = chart.append('g')
 			.attr('class', 'x axis')
 			.attr('transform', `translate(0, ${height})`)
+			.style('stroke-width', 0)
 			.call(xAxis);
 		const yAxisG = chart.append('g')
 			.attr('class', 'y axis')
@@ -43,6 +45,8 @@
 			.style('fill', 'none')
 			.style('stroke-width', 1.5)
 			.style('stroke', 'black');
+
+		const labels = chart.append('g');
 
 		let init = false;
 		chart.update = (newData, type) => {
@@ -71,11 +75,18 @@
 
 			// Add new objects
 			nodeGroup.append('circle')
-				.style('fill', 'none')
+				.style('fill', 'white')
+				.style('fill-opacity', 1)
 				.style('stroke', 'black')
 				.attr('r', 5)
 				.attr('cx', d => x(d.year))
-				.attr('cy', d => y(d[type]));
+				.attr('cy', d => y(d[type]))
+				.on('mouseover', function(d) {
+					d3.select(this).style('fill', param.lightColor);
+				})
+				.on('mouseout', function(d) {
+					d3.select(this).style('fill', 'white');
+				});
 
 			nodeGroup.append('text')
 				.attr('dy', '-1em')
@@ -104,6 +115,35 @@
 
 			yAxis.scale(y);
 			yAxisG.transition().duration(1000).call(yAxis);
+
+			// labels
+			labels.selectAll('text').remove();
+			labels.append('text')
+				.attr('x', width / 2)
+				.attr('y', -40)
+				.style('font-size', '1.25em')
+				.style('font-weight', 600)
+				.style('text-anchor', 'middle')
+				.text(() => {
+					if (type === 'total_spent') {
+						return 'Disbursed Funds by Year';
+					} else {
+						return 'Committed Funds by Year';
+					}
+				});
+			// labels.append('text')
+			// 	.attr('x', width / 2)
+			// 	.attr('y', height + 40)
+			// 	.style('font-weight', 600)
+			// 	.style('text-anchor', 'middle')
+			// 	.text('Year');
+			// labels.append('text')
+			// 	.attr('transform', 'rotate(-90)')
+			// 	.attr('y', -50)
+			// 	.attr('x', -height / 2)
+			// 	.style('font-weight', 600)
+			// 	.style('text-anchor', 'middle')
+			// 	.text('Funds');
 
 		};
 
