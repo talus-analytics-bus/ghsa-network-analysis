@@ -108,7 +108,7 @@
 			newGroup.append('text')
 				.attr('transform', d => {
 					const midpoint = d.startAngle + ((d.endAngle - d.startAngle) / 2);
-					const r = outerRadius + 20;
+					const r = outerRadius + 30;
 					const x = r * Math.cos(midpoint - Math.PI / 2);
 					const y = r * Math.sin(midpoint - Math.PI / 2);
 					return `translate(${x}, ${y})`;

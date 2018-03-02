@@ -153,7 +153,7 @@
 
 			// draw charts
 			if (hasNoData) {
-				$('.country-flow-summary, .progress-circle-section, .country-chart-container').hide();
+				$('.country-flow-summary, .progress-circle-section, .country-chart-container, .country-flow-content').hide();
 				$('.country-flow-summary-empty').slideDown();
 				$('.submit-data-btn').click(() => hasher.setHash('submit'))
 			} else {
@@ -161,10 +161,9 @@
 				drawProgressCircles();
 				drawCountryTable();
 				drawCategoryChart();
+				// display content
+				$('.country-flow-content').slideDown();
 			}
-
-			// display content
-			$('.country-flow-content').slideDown();
 		}
 
 		function drawTimeChart() {
