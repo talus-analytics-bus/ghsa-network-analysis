@@ -115,6 +115,7 @@
 					var content = `<b>${ccMapping[d.data.cc]}</b><br>`;
 					content += App.formatMoney(d.value);
 					$(this).tooltipster({
+						side: 'right',
 						content: content,
 					});
 				})

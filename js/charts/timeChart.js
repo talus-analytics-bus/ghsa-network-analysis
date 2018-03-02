@@ -99,6 +99,15 @@
 				.style('text-anchor', 'middle')
 				.text(d => App.formatMoney(d[type]));
 
+			nodeGroup.append('line')
+				.style('stroke-width', 1)
+				.style('stroke', 'black')
+				.style('stroke-dasharray', '3, 3')
+				.attr('x1', d => x(d.year))
+				.attr('x2', d => x(d.year))
+				.attr('y1', height)
+				.attr('y2', d => y(d[type]));
+
 			// // Update circles
 			// newGroup.selectAll('circle')
 			// 	.transition()
@@ -112,6 +121,14 @@
 				.attr('x', d => x(d.year))
 				.attr('y', d => y(d[type]))
 				.text(d => App.formatMoney(d[type]));
+
+			newGroup.selectAll('line')
+				.transition()
+				.duration(1000)
+				.attr('x1', d => x(d.year))
+				.attr('x2', d => x(d.year))
+				.attr('y1', height)
+				.attr('y2', d => y(d[type]));
 
 			xAxis.scale(x);
 			xAxisG.transition().duration(1000).call(xAxis);
