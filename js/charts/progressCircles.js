@@ -17,6 +17,7 @@
 			P: 'Prevent',
 			D: 'Detect',
 			R: 'Respond',
+			Other: 'Other',
 		};
 
 		// start building the chart
@@ -78,6 +79,7 @@
 			});
 			otherData.push(runningOther);
 			const newData = otherData;
+			console.log(newData);
 			const justVals = newData.filter(d => d[plotType] !== 0)
 				.map(d => d[plotType])
 				.sort((a, b) => a < b);
