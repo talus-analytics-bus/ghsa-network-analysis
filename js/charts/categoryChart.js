@@ -47,16 +47,14 @@
 		const colorScale = d3.scaleLinear()
 			.domain([0, 1])
 			.range([
-				colors[colors.length - 2],
+				colors[2],
 				colors[0],
 			]);
 
 		const xAxis = d3.axisTop()
 			.ticks(5)
 			.tickFormat(App.siFormat)
-			.scale(x)
-			.tickSize(0)
-			.tickPadding(7);
+			.scale(x);
 		const yAxis = d3.axisLeft()
 			.scale(y)
 			.tickSize(0)
@@ -67,7 +65,7 @@
 
 		const xAxisG = chart.append('g')
 			.attr('class', 'x axis')
-			.style('stroke-width', 0)
+			.style('stroke-width', 1)
 			.call(xAxis);
 
 		const yAxisG = chart.append('g')
@@ -90,13 +88,13 @@
 		gradient.append('stop')
 			.attr('class', 'gradient-start')
 			.attr('offset', '0%')
-			.attr('stop-color', colors[0])
+			.attr('stop-color', colors[2])
 			.attr('stop-opacity', 1);
 
 		gradient.append('stop')
 			.attr('class', 'gradient-stop')
 			.attr('offset', '100%')
-			.attr('stop-color', colors[colors.length - 2])
+			.attr('stop-color', colors[0])
 			.attr('stop-opacity', 1);
 
 		legendG.append('rect')
@@ -110,9 +108,24 @@
 		chart.append('text')
 			.attr('class', 'axis-label')
 			.attr('x', width / 2)
-			.attr('y', -35)
+			.attr('y', -50)
 			.style('font-size', '1.25em')
 			.text(xAxisLabel);
+
+		chart.append('text')
+			.attr('x', width / 2)
+			.attr('y', -30)
+			.style('font-weight', 600)
+			.style('text-anchor', 'middle')
+			.text('Funds');
+
+		chart.append('text')
+			.attr('transform', 'rotate(-90)')
+			.attr('y', -170)
+			.attr('x', -height / 2)
+			.style('font-weight', 600)
+			.style('text-anchor', 'middle')
+			.text('Core Capacity');
 
 		chart.update = (rawData, newSelector = selected) => {
 			const data = getRunningValues(rawData, newSelector)
@@ -134,14 +147,19 @@
 			// legend labels
 			legendG.selectAll('text').remove();
 			legendG.append('text')
+				.attr('x', 300)
 				.attr('y', -10)
 				.style('text-anchor', 'middle')
 				.text(App.formatMoney(maxChild));
 			legendG.append('text')
-				.attr('x', 300)
 				.attr('y', -10)
 				.style('text-anchor', 'middle')
 				.text(App.formatMoney(0));
+			legendG.append('text')
+				.attr('x', 150)
+				.attr('y', -10)
+				.style('text-anchor', 'middle')
+				.text('Funds');
 
 			// remove first
 			let barGroups = allBars.selectAll('.bar-group')

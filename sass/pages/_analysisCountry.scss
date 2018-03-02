@@ -3,7 +3,7 @@
     text-align: left;
     cursor: pointer;
     h2 {
-      font-size: 3em;
+      font-size: 50px;
     }
   }
   .profile-type-container {
@@ -68,7 +68,7 @@
   .country-summary-value {
     margin-top: 10px;
     font-family: 'Raleway', sans-serif;
-    font-size: 2.4em;
+    font-size: 16px;
   }
 }
 
@@ -106,15 +106,14 @@
 .country-flow-summary,
 .progress-circle-section {
   position: relative;
-  padding: 35px 30px 20px;
+  padding-top: 10px;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-bottom: 20px;
   border-bottom: $light-border;
   margin-bottom: 20px;
   min-height: 180px;
 
-  .progress-circle-title {
-    font-weight: 600;
-    font-size: 1.5em;
-  }
   .country-summary-label {
     font-weight: 600;
     font-size: 1.2em;
@@ -124,18 +123,21 @@
     font-family: 'Raleway', sans-serif;
     font-size: 2.4em;
   }
-  .country-summary-text,
-  .progress-circle-text {
+  .country-summary-text {
     float: left;
     max-width: 400px;
     text-align: left;
     margin-top: 30px;
+    padding-top: 50px;
+  }
+  .progress-circle-text {
+    float: left;
+    max-width: 400px;
+    text-align: left;
   }
   .time-chart-container {
-    margin-left: 365px;
   }
   .progress-circle-container {
-    margin-left: 430px;
   }
   .progress-circle-title {
     white-space: nowrap;
@@ -175,7 +177,9 @@
 }
 
 .progress-circle-section {
-  padding-bottom: 60px;
+  .source-text {
+    padding-top: 65px;
+  }
 }
 
 .country-chart-container {
@@ -186,12 +190,7 @@
   min-height: 180px;
 
   .circle-pack-content {
-    margin-top: 30px;
     text-align: center;
-  }
-  .circle-pack-title,
-  .category-chart-title {
-    font-size: 1.5em;
   }
   .circle-pack-description {
     max-width: 500px;
@@ -211,7 +210,10 @@
 
 .category-chart-section {
   position: relative;
-  padding: 10px 30px 20px;
+  padding-top: 0px;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-bottom: 10px;
   border-bottom: $light-border;
   margin-bottom: 20px;
   min-height: 180px;
@@ -234,6 +236,7 @@
 }
 
 .toggle-disbursed-container {
+  padding-top: 5px;
   text-align: right;
 }
 
@@ -257,4 +260,15 @@
 .category-chart-controls {
   width: 100%;
   padding-left: 45px;
+}
+
+.right-border {
+  border-right: $light-border;
+}
+.circle-pack-title,
+.progress-circle-title,
+.category-chart-title {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-top: 0px;
 }

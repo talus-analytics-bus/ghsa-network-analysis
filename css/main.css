@@ -871,7 +871,7 @@ b {
   text-align: left;
   cursor: pointer; }
   .analysis-country-content .analysis-country-title h2 {
-    font-size: 3em; }
+    font-size: 50px; }
 .analysis-country-content .profile-type-container {
   position: absolute;
   top: 71px;
@@ -918,7 +918,7 @@ b {
   .country-summary-content .country-summary-value {
     margin-top: 10px;
     font-family: 'Raleway', sans-serif;
-    font-size: 2.4em; }
+    font-size: 16px; }
 
 /* --- Detail Page --- */
 .switch-type-button {
@@ -946,14 +946,13 @@ b {
 .country-flow-summary,
 .progress-circle-section {
   position: relative;
-  padding: 35px 30px 20px;
+  padding-top: 10px;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-bottom: 20px;
   border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
   min-height: 180px; }
-  .country-flow-summary .progress-circle-title,
-  .progress-circle-section .progress-circle-title {
-    font-weight: 600;
-    font-size: 1.5em; }
   .country-flow-summary .country-summary-label,
   .progress-circle-section .country-summary-label {
     font-weight: 600;
@@ -964,19 +963,17 @@ b {
     font-family: 'Raleway', sans-serif;
     font-size: 2.4em; }
   .country-flow-summary .country-summary-text,
-  .country-flow-summary .progress-circle-text,
-  .progress-circle-section .country-summary-text,
-  .progress-circle-section .progress-circle-text {
+  .progress-circle-section .country-summary-text {
     float: left;
     max-width: 400px;
     text-align: left;
-    margin-top: 30px; }
-  .country-flow-summary .time-chart-container,
-  .progress-circle-section .time-chart-container {
-    margin-left: 365px; }
-  .country-flow-summary .progress-circle-container,
-  .progress-circle-section .progress-circle-container {
-    margin-left: 430px; }
+    margin-top: 30px;
+    padding-top: 50px; }
+  .country-flow-summary .progress-circle-text,
+  .progress-circle-section .progress-circle-text {
+    float: left;
+    max-width: 400px;
+    text-align: left; }
   .country-flow-summary .progress-circle-title,
   .progress-circle-section .progress-circle-title {
     white-space: nowrap;
@@ -1012,8 +1009,8 @@ b {
     text-align: right;
     font-size: 0.95em; }
 
-.progress-circle-section {
-  padding-bottom: 60px; }
+.progress-circle-section .source-text {
+  padding-top: 65px; }
 
 .country-chart-container {
   position: relative;
@@ -1022,11 +1019,7 @@ b {
   margin-bottom: 20px;
   min-height: 180px; }
   .country-chart-container .circle-pack-content {
-    margin-top: 30px;
     text-align: center; }
-  .country-chart-container .circle-pack-title,
-  .country-chart-container .category-chart-title {
-    font-size: 1.5em; }
   .country-chart-container .circle-pack-description {
     max-width: 500px; }
   .country-chart-container .country-table-container {
@@ -1040,7 +1033,10 @@ b {
 
 .category-chart-section {
   position: relative;
-  padding: 10px 30px 20px;
+  padding-top: 0px;
+  padding-right: 30px;
+  padding-left: 30px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
   min-height: 180px; }
@@ -1057,6 +1053,7 @@ b {
   vertical-align: middle; }
 
 .toggle-disbursed-container {
+  padding-top: 5px;
   text-align: right; }
 
 .return-button {
@@ -1075,6 +1072,16 @@ b {
 .category-chart-controls {
   width: 100%;
   padding-left: 45px; }
+
+.right-border {
+  border-right: 1px solid #ccc; }
+
+.circle-pack-title,
+.progress-circle-title,
+.category-chart-title {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-top: 0px; }
 
 .analysis-global-content .analysis-global-tab-container {
   margin-top: 20px;

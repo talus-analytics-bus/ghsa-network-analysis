@@ -9,7 +9,7 @@
 		} else {
 			palette = [
 				App.receiveColorPalette[0],
-				App.receiveColorPalette.slice(-1)[0],
+				App.receiveColorPalette.slice(-3)[0],
 			];
 		}
 
@@ -26,8 +26,8 @@
 			bottom: 60,
 			left: 120,
 		};
-		const outerRadius = 180;
-		const innerRadius = 100;
+		const outerRadius = 120;
+		const innerRadius = 60;
 
 		const chartContainer = d3.select(selector).append('svg')
 			.classed('progress-circle-chart', true)
@@ -61,7 +61,23 @@
 			.style('font-size', '1.25em')
 			.style('text-anchor', 'middle');
 
-		chart.update = (newData, plotType) => {
+		chart.update = (rawData, plotType) => {
+			var otherData = [];
+			var runningOther = {
+				cc: 'Other',
+				total_committed: 0,
+				total_spent: 0,
+			};
+			rawData.forEach(function(d) {
+				if (['P', 'D', 'R'].includes(d.cc)) {
+					otherData.push(Object.assign({}, d));
+				} else {
+					runningOther.total_committed += d.total_committed;
+					runningOther.total_spent += d.total_spent;
+				}
+			});
+			otherData.push(runningOther);
+			const newData = otherData;
 			const justVals = newData.filter(d => d[plotType] !== 0)
 				.map(d => d[plotType])
 				.sort((a, b) => a < b);
@@ -86,13 +102,13 @@
 
 			newGroup.append('path')
 				.style('fill', d => colorScale(d.value))
-				.each(function(d) {
-					var content = `<b>${ccMapping[d.data.cc]}</b><br>`;
-					content += App.formatMoney(d.value);
-					$(this).tooltipster({
-						content: content,
-					});
-				})
+				// .each(function(d) {
+				// 	var content = `<b>${ccMapping[d.data.cc]}</b><br>`;
+				// 	content += App.formatMoney(d.value);
+				// 	$(this).tooltipster({
+				// 		content: content,
+				// 	});
+				// })
 				.transition()
 				.duration(600)
 				.attrTween('d', function(d) {

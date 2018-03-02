@@ -2,7 +2,7 @@
 	App.buildTimeChart = (selector, param = {}) => {
 		// start building the chart
 		const margin = { top: 70, right: 50, bottom: 50, left: 60 };
-		const width = 600;
+		const width = 700;
 		const height = 100;
 		const color = d3.color(param.color || 'steelblue');
 		const lightColor = param.lightColor || color.brighter(2);
@@ -22,19 +22,16 @@
 			.range([height, 0]);
 
 		const xAxis = d3.axisBottom()
-			.tickSize(0)
-			.tickPadding(8)
 			.scale(x);
 		const yAxis = d3.axisLeft()
 			.ticks(4)
-			.tickSize(0)
 			.tickFormat(App.siFormat)
 			.scale(y);
 
 		const xAxisG = chart.append('g')
 			.attr('class', 'x axis')
 			.attr('transform', `translate(0, ${height})`)
-			.style('stroke-width', 0)
+			.style('stroke-width', 1)
 			.call(xAxis);
 		const yAxisG = chart.append('g')
 			.attr('class', 'y axis')
@@ -90,10 +87,9 @@
 
 			nodeGroup.append('text')
 				.attr('dy', '-1em')
-				.attr('dx', '1em')
-				.style('text-anchor', 'middle')
 				.attr('x', d => x(d.year))
 				.attr('y', d => y(d[type]))
+				.style('text-anchor', 'middle')
 				.text(d => App.formatMoney(d[type]));
 
 			// Update circles
@@ -131,19 +127,19 @@
 						return 'Committed Funds by Year';
 					}
 				});
-			// labels.append('text')
-			// 	.attr('x', width / 2)
-			// 	.attr('y', height + 40)
-			// 	.style('font-weight', 600)
-			// 	.style('text-anchor', 'middle')
-			// 	.text('Year');
-			// labels.append('text')
-			// 	.attr('transform', 'rotate(-90)')
-			// 	.attr('y', -50)
-			// 	.attr('x', -height / 2)
-			// 	.style('font-weight', 600)
-			// 	.style('text-anchor', 'middle')
-			// 	.text('Funds');
+			labels.append('text')
+				.attr('x', width / 2)
+				.attr('y', height + 40)
+				.style('font-weight', 600)
+				.style('text-anchor', 'middle')
+				.text('Year');
+			labels.append('text')
+				.attr('transform', 'rotate(-90)')
+				.attr('y', -50)
+				.attr('x', -height / 2)
+				.style('font-weight', 600)
+				.style('text-anchor', 'middle')
+				.text('Funds');
 
 		};
 

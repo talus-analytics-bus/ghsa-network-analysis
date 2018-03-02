@@ -151,6 +151,8 @@
 				}
 			});
 
+			$('.other-text').tooltipster({content: 'Poe, CE, and RE'});
+
 			// draw charts
 			if (hasNoData) {
 				$('.country-flow-summary, .progress-circle-section, .country-chart-container, .country-flow-content').hide();
@@ -274,14 +276,28 @@
 				fundedData.push(fundedByCountry[recIso]);
 			}
 			Util.sortByKey(fundedData, 'total_spent', true);
-
 			// draw table
-			const firstColLabel = (moneyType === 'd') ? 'Recipient' : 'Funder';
-			$('.country-table thead tr td:first-child').text(firstColLabel);
+			const drawTable = (type) => {
+				$('.country-table-container').empty();
+				const table = d3.select('.country-table-container')
+					.append('table')
+						.classed('country-table', true)
+						.classed('table', true)
+						.classed('table-bordered', true)
+						.classed('table-hover', true);
 
-			const rows = d3.select('.country-table tbody').selectAll('tr')
-				.data(fundedData.slice(0, 10))
-				.enter().append('tr')
+				const header = table.append('thead').append('tr');
+				const firstColLabel = (moneyType === 'd') ? 'Recipient' : 'Funder';
+				const lastColLabel = (type === 'total_spent') ? 'Disbursed' : 'Committed';
+
+				header.append('td').html(firstColLabel);
+				header.append('td').html(lastColLabel);
+
+				const body = table.append('tbody');
+
+				const rows = body.selectAll('tr')
+					.data(fundedData)
+					.enter().append('tr')
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {
 							if (moneyType === 'd') {
@@ -291,28 +307,36 @@
 							}
 						}
 					});
-			rows.append('td').html((d) => {
-				const recCountry = App.countries.find(c => c.ISO2 === d.iso);
-				const flagHtml = recCountry ? App.getFlagHtml(d.iso) : '';
-				let cName = d.iso;
-				if (App.codeToNameMap.has(d.iso)) {
-					cName = App.codeToNameMap.get(d.iso);
-				}
-				const onClickStr = `event.stopPropagation();hasher.setHash('analysis/${d.iso}')`;
-				return `<div class="flag-container">${flagHtml}</div>` +
-					'<div class="name-container">' +
-					`<span onclick="${onClickStr}">${cName}</span>` +
-					'</div>';
-			});
+				rows.append('td').html((d) => {
+					const recCountry = App.countries.find(c => c.ISO2 === d.iso);
+					const flagHtml = recCountry ? App.getFlagHtml(d.iso) : '';
+					let cName = d.iso;
+					if (App.codeToNameMap.has(d.iso)) {
+						cName = App.codeToNameMap.get(d.iso);
+					}
+					const onClickStr = `event.stopPropagation();hasher.setHash('analysis/${d.iso}')`;
+					return `<div class="flag-container">${flagHtml}</div>` +
+						'<div class="name-container">' +
+						`<span onclick="${onClickStr}">${cName}</span>` +
+						'</div>';
+				});
 
-			rows.append('td').text(d => App.formatMoney(d.total_committed));
-			rows.append('td').text(d => App.formatMoney(d.total_spent));
+				rows.append('td').text(d => App.formatMoney(d[type]));
 
-			// re-initialize DataTables plugin
-			infoDataTable = $('.country-table').DataTable({
-				pageLength: 10,
-				scrollCollapse: false,
-				autoWidth: false,
+				// initialize DataTables plugin
+				const infoDataTable = $('.country-table').DataTable({
+					pageLength: 10,
+					scrollCollapse: false,
+					autoWidth: false,
+					order: [[1, 'desc']],
+				});
+			};
+
+			drawTable('total_spent');
+
+			$('.toggle-disbursed-container').click(function() {
+				const selected = $('.toggle-disbursed-container .active').attr('value');
+				drawTable(selected);
 			});
 		}
 
@@ -416,6 +440,15 @@
 					chart.update(smallData, selected);
 				} else {
 					chart.update(catData, selected);
+				}
+				if (selected === 'total_spent') {
+					if (moneyType === 'r') {
+						$('.money-type').text('recieved');
+					} else {
+						$('.money-type').text('disbursed');
+					}
+				} else {
+					$('.money-type').text('committed');
 				}
 			}
 		}

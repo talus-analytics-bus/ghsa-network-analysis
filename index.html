@@ -367,31 +367,26 @@
     <div class="analysis-container container">
         <div class="analysis-country-content analysis-content">
             <div class="row">
-                <div class="col-sm-6 return-button">
+                <div class="col-sm-4 return-button">
                     <div class="btn btn-default"><span class="glyphicon glyphicon-menu-left"/>Return to Overview</div>
                 </div>
-                <div class="col-sm-6 toggle-type">
-                    View
-                    <div class="btn-group">
-                        <div class="btn btn-default btn-sm toggle-funder-profile">Funder Profile</div>
-                        <div class="btn btn-default btn-sm toggle-recipient-profile">Recipient Profile</div>
-                    </div>
+                <div class="col-md-4 country-header">
+                    <h2 class="analysis-country-title"></h2>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12 toggle-disbursed-container">
-                    View
-                    <div class="btn-group">
-                        <div class="btn btn-default btn-sm toggle-disbursed" value="total_spent">Disbursed Funds</div>
-                        <div class="btn btn-default btn-sm toggle-committed" value="total_committed">Committed Funds</div>
+                <div class="col-sm-4">
+                    <div class="row col-sm-12 toggle-type">
+                        View
+                        <div class="btn-group">
+                            <div class="btn btn-default btn-sm toggle-funder-profile">Funder Profile</div>
+                            <div class="btn btn-default btn-sm toggle-recipient-profile">Recipient Profile</div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="row vert-space-20"></div>
-            <div class="row country-header">
-                <div class="row">
-                    <div class="col-md-6 col-md-offset-4">
-                        <h2 class="analysis-country-title"></h2>
+                    <div class="row col-sm-12 toggle-disbursed-container">
+                        View
+                        <div class="btn-group">
+                            <div class="btn btn-default btn-sm toggle-disbursed" value="total_spent">Disbursed Funds</div>
+                            <div class="btn btn-default btn-sm toggle-committed" value="total_committed">Committed Funds</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -422,14 +417,14 @@
                     </div>
                 </div>
             </div>
-            <div class="country-flow-summary">
+            <div class="row country-flow-summary">
                 <div class="col-sm-3 country-summary-text">
                     <span class="country-summary-value"></span><br>
                     Total Funds<br>
                     <span class="money-type-cap"></span>
                     from <span class="start-year"></span> to <span class="end-year"></span>
                 </div>
-                <div class="time-chart-container">
+                <div class="col-sm-9 time-chart-container">
                     <div class="source-text">
                         <b>Source:</b>
                         IATI registry via
@@ -461,7 +456,7 @@
                         </h3>
                         <div class="description">
                             The chart below shows the amount of money <span class="money-type"></span> for each core
-                            capacity. Colors represent each <span class="opp-money-type-noun"></span>. Note that a
+                            capacity. Colors represent the amount of funds <span class="money-type"></span>. Note that a
                             single funding commitment or disbursal may map to multiple core capacities.
                             <br><br>
                             <i>Hover over a bar to see additional funding details.</i>
@@ -491,22 +486,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="progress-circle-section">
-                    <div class="row">
-                        <div class="col-md-3 progress-circle-text">
-                            <div class="progress-circle-title">
-                                Funds <span class="money-type-cap"></span><br>by Core Element
-                            </div>
-                            <div class="progress-circle-description description">
-                                The circle to the right shows the percent of funds that were <span
-                                    class="money-type"></span> for all projects by each of the core elements
-                                of global health security: <b>Prevent</b>,
-                                <b>Detect</b>, and <b>Respond</b>.
+                <div class="row progress-circle-section">
+                    <div class="col-lg-6 right-border">
+                        <div class="row">
+                            <div class="col-sm-12 progress-circle-text">
+                                <div class="progress-circle-title">
+                                    Funds <span class="money-type-cap"></span> by Core Element
+                                </div>
+                                <div class="progress-circle-description description">
+                                    The circle below shows the percent of funds that were <span
+                                        class="money-type"></span> for all projects by each of the core elements
+                                    of global health security: <b>Prevent</b>,
+                                    <b>Detect</b>, <b>Respond</b>, and
+                                    <span class="other-text"><b>Other</b> <img src="img/info.png" style="height: 1em;"/></span>.
+                                </div>
                             </div>
                         </div>
-                        <div class="progress-circle-container">
-                            <div class="circle-chart-content">
-                                <div class="core-circle-chart circle-chart"></div>
+                        <div class="row">
+                            <div class="progress-circle-container">
+                                <div class="circle-chart-content">
+                                    <div class="core-circle-chart circle-chart"></div>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -518,26 +518,25 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="country-chart-container row">
-                    <div class="col-lg-12">
-                        <div class="circle-pack-container">
-                            <h3 class="circle-pack-title"></h3>
-                            <div class="circle-pack-description description">
-                                The table below displays <span class="opp-money-type-noun"></span>s in order of amount
-                                of funds <span class="opp-money-type-verb"></span>. Click on a row to view details.
-                            </div>
-                            <div class="country-table-container">
-                                <table class="country-table table table-bordered table-hover">
-                                    <thead>
-                                    <tr>
-                                        <td></td>
-                                        <td>Committed</td>
-                                        <td>Disbursed</td>
-                                    </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
+                    <div class="col-lg-6">
+                        <div class="col-lg-12">
+                            <div class="circle-pack-container">
+                                <h3 class="circle-pack-title"></h3>
+                                <div class="circle-pack-description description">
+                                    The table below displays <span class="opp-money-type-noun"></span>s in order of amount
+                                    of funds <span class="opp-money-type-verb"></span>. Click on a row to view details.
+                                </div>
+                                <div class="country-table-container">
+                                    <table class="country-table table table-bordered table-hover">
+                                        <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
