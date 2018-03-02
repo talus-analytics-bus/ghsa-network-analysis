@@ -104,13 +104,15 @@
 
 			newGroup.append('path')
 				.style('fill', d => colorScale(d.value))
-				// .each(function(d) {
-				// 	var content = `<b>${ccMapping[d.data.cc]}</b><br>`;
-				// 	content += App.formatMoney(d.value);
-				// 	$(this).tooltipster({
-				// 		content: content,
-				// 	});
-				// })
+				.each(function(d) {
+					if (d.endAngle - d.startAngle < Math.PI / 4) {
+						var content = `<b>${ccMapping[d.data.cc]}</b><br>`;
+						content += App.formatMoney(d.value);
+						$(this).tooltipster({
+							content: content,
+						});
+					}
+				})
 				.transition()
 				.duration(600)
 				.attrTween('d', function(d) {
@@ -143,8 +145,10 @@
 				.style('font-size', '1.25em')
 				.html(d => {
 					if (d.value !== 0) {
-						return `<tspan>${ccMapping[d.data.cc]}</tspan>` +
-							`<tspan x="0" dy="1.25em">${App.formatMoney(d.value)}</tspan>`;
+						if (d.endAngle - d.startAngle > Math.PI / 4) {
+							return `<tspan>${ccMapping[d.data.cc]}</tspan>` +
+								`<tspan x="0" dy="1.25em">${App.formatMoney(d.value)}</tspan>`;
+						}
 					}
 				});
 
