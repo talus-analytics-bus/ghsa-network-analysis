@@ -4,7 +4,7 @@
 		if (moneyType === 'd') {
 			palette = [
 				App.fundColorPalette[0],
-				App.fundColorPalette.slice(-1)[0],
+				App.fundColorPalette.slice(-2)[0],
 			];
 		} else {
 			palette = [
@@ -60,7 +60,7 @@
 		const arc = d3.arc()
 			.innerRadius(innerRadius)
 			.outerRadius(outerRadius)
-			.padAngle(0.025);
+			.padAngle(0.01);
 
 		const arcGroup = chart.append('g')
 			.attr('class', 'arc');
@@ -88,7 +88,13 @@
 			const newData = otherData;
 			const justVals = newData.filter(d => d[plotType] !== 0)
 				.map(d => d[plotType])
-				.sort((a, b) => a < b);
+				.sort((a, b) => {
+					if (a < b) {
+						return 1;
+					} else {
+						return -1;
+					}
+				});
 			const colorScale = d3.scaleLinear()
 				.domain([
 					justVals[0],
@@ -100,6 +106,8 @@
 				.value(d => d[plotType])
 				.sort((a, b) => sortOrder[a.cc] > sortOrder[b.cc]);
 
+			// console.log(pie(newData));
+
 			let newGroup = arcGroup.selectAll('.arc')
 				.remove().exit().data(pie(newData));
 
@@ -109,16 +117,17 @@
 
 			newGroup = newArcs.merge(arcGroup);
 
+			newGroup.each(function(d) {
+				var content = `<b>${ccMapping[d.data.cc]}</b><br>`;
+				content += App.formatMoney(d.value);
+				$(this).tooltipster({
+					side: 'right',
+					content: content,
+				});
+			});
+
 			newGroup.append('path')
 				.style('fill', d => colorScale(d.value))
-				.each(function(d) {
-					var content = `<b>${ccMapping[d.data.cc]}</b><br>`;
-					content += App.formatMoney(d.value);
-					$(this).tooltipster({
-						side: 'right',
-						content: content,
-					});
-				})
 				.transition()
 				.duration(600)
 				.attrTween('d', function(d) {

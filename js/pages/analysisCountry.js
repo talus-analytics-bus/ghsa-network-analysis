@@ -12,7 +12,7 @@
 			const name = App.codeToNameMap.get(iso);
 			const flagHtml = country ? App.getFlagHtml(iso) : '';
 			$('.analysis-country-title')
-				.html(`${flagHtml} ${name} ${flagHtml}`)
+				.html(`${flagHtml} ${name}`)
 				.on('click', () => hasher.setHash(`analysis/${iso}`));
 
 			$('.return-button').on('click', () => hasher.setHash('/'));
@@ -151,7 +151,9 @@
 				}
 			});
 
-			$('.other-text').tooltipster({content: '<b>Other</b> includesPoe, CE, and RE'});
+			$('.other-text').tooltipster({
+				content: '<b>Other</b> includes Point of Entry (Poe), Chemical Events (CE), and Radiation Emergencies (RE).'
+			});
 
 			// draw charts
 			if (hasNoData) {
@@ -296,7 +298,13 @@
 				const body = table.append('tbody');
 
 				const rows = body.selectAll('tr')
-					.data(fundedData.sort((a, b) => a[type] < b[type]))
+					.data(fundedData.sort((a, b) => {
+						if (a[type] < b[type]) {
+							return 1;
+						} else {
+							return -1;
+						}
+					}))
 					.enter().append('tr')
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {

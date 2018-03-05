@@ -25,7 +25,7 @@
 		const selected = param.selected || 'total_spent';
 
 		// start building the chart
-		const margin = { top: 100, right: 20, bottom: 50, left: 250 };
+		const margin = { top: 100, right: 20, bottom: 80, left: 250 };
 		const width = 800;
 		const height = 500;
 
@@ -115,7 +115,7 @@
 			.style('font-size', '1.25em')
 			.text(xAxisLabel);
 
-		chart.append('text')
+		const xLabel = chart.append('text')
 			.attr('x', width / 2)
 			.attr('y', -30)
 			.style('font-weight', 600)
@@ -140,7 +140,8 @@
 					} else {
 						return -1;
 					}
-				});
+				})
+				.filter(d => d[newSelector] !== 0);
 			// set new axes and transition
 			const maxVal = d3.max(data, d => d[newSelector]);
 			const maxChild = d3.max(data, d => d3.max(d.children, c => c[newSelector]));
@@ -154,19 +155,15 @@
 			legendG.selectAll('text').remove();
 			legendG.append('text')
 				.attr('x', 290)
-				.attr('y', 15)
+				.attr('y', 35)
 				.style('text-anchor', 'end')
-				.style('fill', 'white')
-				.style('font-weight', 200)
 				.text(App.formatMoney(maxChild));
 			legendG.append('text')
-				.attr('y', 15)
+				.attr('y', 35)
 				.attr('x', 10)
 				.style('text-anchor', 'start')
-				.style('fill', 'white')
-				.style('font-weight', 200)
 				.text(App.formatMoney(0));
-			legendG.append('text')
+			const legendTitle = legendG.append('text')
 				.attr('x', 150)
 				.attr('y', -5)
 				.style('text-anchor', 'middle')
@@ -214,11 +211,16 @@
 			} else {
 				if (newSelector === 'total_spent') {
 					xAxisLabel = 'Funds Disbursed by Core Capacity';
+					xLabel.text('Funds Disbursed');
+					legendTitle.text(`Funds Disbursed (${App.formatMoney(0).split(' ')[1]})`);
 				} else {
 					xAxisLabel = 'Funds Committed by Core Capacity';
+					xLabel.text('Funds Committed');
+					legendTitle.text(`Funds Committed (${App.formatMoney(0).split(' ')[1]})`);
 				}
 			}
 			chart.select('.axis-label').text(xAxisLabel);
+
 
 			xAxis.scale(x);
 			xAxisG.transition()
