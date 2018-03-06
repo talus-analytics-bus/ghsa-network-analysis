@@ -887,9 +887,6 @@ b {
   font-size: 0.8em;
   width: 125px; }
 
-.country-header {
-  text-align: center; }
-
 .country-summary-text {
   float: left;
   text-align: left; }
@@ -952,11 +949,11 @@ b {
 .country-flow-summary,
 .progress-circle-section {
   position: relative;
-  padding-top: 10px;
   padding-right: 30px;
   padding-left: 30px;
   padding-bottom: 20px;
-  border-bottom: 1px solid #ccc;
+  padding-top: 30px;
+  margin-top: 30px;
   margin-bottom: 20px;
   min-height: 180px; }
   .country-flow-summary .country-summary-label,
@@ -971,15 +968,17 @@ b {
   .country-flow-summary .country-summary-text,
   .progress-circle-section .country-summary-text {
     float: left;
-    max-width: 400px;
     text-align: left;
-    margin-top: 30px;
-    padding-top: 50px; }
+    margin-bottom: 20px;
+    padding-bottom: 20px; }
   .country-flow-summary .progress-circle-text,
   .progress-circle-section .progress-circle-text {
     float: left;
-    max-width: 400px;
+    max-width: 100%;
     text-align: left; }
+  .country-flow-summary .time-chart-container,
+  .progress-circle-section .time-chart-container {
+    text-align: right; }
   .country-flow-summary .progress-circle-title,
   .progress-circle-section .progress-circle-title {
     white-space: nowrap;
@@ -996,9 +995,7 @@ b {
   .country-flow-summary .circle-chart-content,
   .progress-circle-section .circle-chart-content {
     display: inline-block;
-    margin: 0 20px;
-    max-width: 500px;
-    text-align: center;
+    text-align: left;
     vertical-align: top; }
   .country-flow-summary .circle-chart-label,
   .progress-circle-section .circle-chart-label {
@@ -1021,7 +1018,6 @@ b {
 .country-chart-container {
   position: relative;
   padding: 10px 30px 20px;
-  border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
   min-height: 180px; }
   .country-chart-container .circle-pack-content {
@@ -1043,7 +1039,6 @@ b {
   padding-right: 30px;
   padding-left: 30px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
   min-height: 180px; }
   .category-chart-section .source-text {

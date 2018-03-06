@@ -1,23 +1,28 @@
 (() => {
 	App.buildTimeChart = (selector, param = {}) => {
 		// start building the chart
-		const margin = { top: 70, right: 200, bottom: 50, left: 60 };
-		const width = 600;
-		const height = 200;
+		const margin = { top: 70, right: 150, bottom: 50, left: 60 };
+		const width = 400;
+		const height = 300;
 		const color = d3.color(param.color || 'steelblue');
 		const lightColor = param.lightColor || color.brighter(2);
 		const palette = (param.moneyType === 'd') ? App.fundColorPalette : App.receiveColorPalette;
-		const ccs = ['P', 'D', 'R', 'PoE', 'CE', 'RE'];
+		const ccs = ['P', 'D', 'R', 'Other'];
 		const lineColors = d3.scaleOrdinal()
-			.domain(ccs)
-			.range(palette);
+			.domain(['Title'].concat(ccs))
+			.range(['black'].concat(palette));
 
 		function getColor(d) {
 			let color;
 			if (d[0].cc === 'Total') {
 				color = 'black';
 			} else {
-				color = lineColors(d[0].cc.split('.')[0]);
+				const cc = d[0].cc.split('.')[0];
+				if (['P', 'D', 'R'].includes(cc)) {
+					color = lineColors(cc);
+				} else {
+					color = lineColors('Other');
+				}
 			}
 			return color;
 		}
@@ -67,7 +72,7 @@
 			.attr('transform', `translate(${width - 20}, 20)`);
 
 		const legend = legendG.selectAll('g')
-			.data(ccs)
+			.data(['Title'].concat(ccs))
 			.enter()
 			.append('g');
 
@@ -76,20 +81,22 @@
 			.attr('y', (d, i) => `${i}em`)
 			.text(d => {
 				return {
+					Title: 'Title',
 					P: 'Prevent',
 					D: 'Detect',
 					R: 'Respond',
 					PoE: 'Point of Entry',
 					CE: 'Chemical Events',
 					RE: 'Radiation Emergencies',
+					Other: 'Other',
 				}[d];
 			});
 
 		legend.append('line')
 			.attr('x1', 0)
-			.attr('x2', 20)
-			.attr('y1', (d, i) => i * 15 - 6)
-			.attr('y2', (d, i) => i * 15 - 6)
+			.attr('x2', 19)
+			.attr('y1', (d, i) => i * 14 - 5)
+			.attr('y2', (d, i) => i * 14 - 5)
 			.style('stroke-width', 10)
 			.style('stroke', d => lineColors(d));
 
@@ -99,7 +106,7 @@
 
 			// now update scales
 			const maxVal = d3.max(rawData, d => d[type]);
-			const yMax = 1.2 * maxVal;
+			const yMax = 1.05 * maxVal;
 			x.domain(rawData.map(d => d.year));
 			y.domain([0, yMax]);
 
@@ -120,6 +127,7 @@
 
 			// Add new lines
 			lines.append('path')
+				.attr('class', d => d[0].cc.split('.')[0])
 				.style('fill', 'none')
 				.style('stroke-width', 2)
 				.style('stroke', getColor)
@@ -138,7 +146,7 @@
 				})
 				.on('mouseover', function() {
 					d3.selectAll('.line')
-						.style('stroke-opacity', 0.2);
+						.style('stroke-opacity', 0);
 					d3.select(this)
 						.style('stroke-opacity', 1);
 				})
@@ -169,10 +177,15 @@
 			legend.on('mouseover', function(d) {
 					d3.selectAll('.line')
 						.style('stroke-opacity', l => {
-							if (l[0].cc.split('.')[0] === d) {
+							const lineCC = l[0].cc.split('.')[0];
+							if (lineCC === 'Total') {
+								return 1;
+							} else if (lineCC === d) {
+								return 1;
+							} else if ((d === 'Other') && (!['P', 'D', 'R'].includes(lineCC))) {
 								return 1;
 							} else {
-								return 0.2;
+								return 0;
 							}
 						});
 				})
@@ -200,10 +213,11 @@
 				.style('font-weight', 600)
 				.style('text-anchor', 'middle')
 				.text(() => {
+					const dollar = App.formatMoney(0).split(' ')[1];
 					if (type === 'total_spent') {
-						return 'Disbursed Funds by Year';
+						return `Disbursed Funds (${dollar}) by Year`;
 					} else {
-						return 'Committed Funds by Year';
+						return `Committed Funds (${dollar}) by Year`;
 					}
 				});
 			labels.append('text')
@@ -218,7 +232,10 @@
 				.attr('x', -height / 2)
 				.style('font-weight', 600)
 				.style('text-anchor', 'middle')
-				.text('Funds');
+				.text(() => {
+					const dollar = App.formatMoney(0).split(' ')[1];
+					return `Funds (${dollar})`;
+				});
 
 		};
 
@@ -253,6 +270,7 @@
 				total_spent: y.total_spent,
 			};
 		}));
+		console.log(data);
 		App.capacities.forEach(c => {
 			lines.push(data.map(d => {
 				if (d.ccs[c.id] !== undefined) {
@@ -272,6 +290,7 @@
 				}
 			}));
 		});
+		console.log(lines);
 		return lines.filter(l => {
 			return l.reduce((acc, cval) => {
 				return acc || ((cval.total_committed !== 0) || (cval.total_spent !== 0));

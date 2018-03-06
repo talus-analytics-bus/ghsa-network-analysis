@@ -78,6 +78,7 @@
 			.style('font-size', '0.4em');
 
 		const legendG = chart.append('g')
+			.attr('class', 'legend-group')
 			.attr('transform', `translate(${width / 3}, ${height + 30})`);
 		const defs = chart.append('defs');
 
@@ -157,6 +158,7 @@
 			const bandwidth = y.bandwidth();
 
 			// legend labels
+			legendG.attr('transform', `translate(${width / 3}, ${newHeight + 30})`);
 			legendG.selectAll('text').remove();
 			legendG.append('text')
 				.attr('x', 290)
@@ -197,6 +199,9 @@
 				.attr('x', d => x(d.country.value0))
 				.attr('width', d => x(d.country.value1) - x(d.country.value0))
 				.each(function addTooltip(d) {
+					if ($(this).hasClass('tooltipstered')) {
+						$(this).tooltipster('destroy');
+					}
 					$(this).tooltipster({
 						content: `<b>Core Capacity:</b> ${d.cc}` +
 						`<br><b>${oppNoun}:</b> ${App.getCountryName(d.country.iso)}` +
@@ -260,6 +265,9 @@
 
 			// attach tooltips to y-axis labels
 			chart.selectAll('.y.axis .tick text').each(function attachTooltip(d) {
+					if ($(this).hasClass('tooltipstered')) {
+						$(this).tooltipster('destroy');
+					}
 					const capName = App.capacities.find(c => c.name === d).name;
 					$(this).tooltipster({ content: `<b>${capName}</b>` });
 				});

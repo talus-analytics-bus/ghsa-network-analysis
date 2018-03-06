@@ -29,7 +29,6 @@
 }
 
 .country-header {
-  text-align: center;
 }
 
 .country-summary-text {
@@ -113,11 +112,12 @@
 .country-flow-summary,
 .progress-circle-section {
   position: relative;
-  padding-top: 10px;
   padding-right: 30px;
   padding-left: 30px;
   padding-bottom: 20px;
-  border-bottom: $light-border;
+  padding-top: 30px;
+  margin-top: 30px;
+  //border-bottom: $light-border;
   margin-bottom: 20px;
   min-height: 180px;
 
@@ -132,17 +132,18 @@
   }
   .country-summary-text {
     float: left;
-    max-width: 400px;
+    //max-width: 400px;
     text-align: left;
-    margin-top: 30px;
-    padding-top: 50px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
   }
   .progress-circle-text {
     float: left;
-    max-width: 400px;
+    max-width: 100%;
     text-align: left;
   }
   .time-chart-container {
+    text-align: right;
   }
   .progress-circle-container {
   }
@@ -162,9 +163,9 @@
   }
   .circle-chart-content {
     display: inline-block;
-    margin: 0 20px;
-    max-width: 500px;
-    text-align: center;
+    //margin: 0 20px;
+    //max-width: 500px;
+    text-align: left;
     vertical-align: top;
   }
   .circle-chart-label {
@@ -192,7 +193,7 @@
 .country-chart-container {
   position: relative;
   padding: 10px 30px 20px;
-  border-bottom: $light-border;
+  //border-bottom: $light-border;
   margin-bottom: 20px;
   min-height: 180px;
 
@@ -221,7 +222,7 @@
   padding-right: 30px;
   padding-left: 30px;
   padding-bottom: 10px;
-  border-bottom: $light-border;
+  //border-bottom: $light-border;
   margin-bottom: 20px;
   min-height: 180px;
 
