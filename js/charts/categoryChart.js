@@ -3,14 +3,15 @@
 	const getRunningValues = (data, selected) => {
 		data.map(d => {
 			let runningValue = 0;
-			d.children = d.children
-				.sort((a, b) => a[selected] < b[selected])
-				.map(c => {
-					c.value0 = runningValue;
-					runningValue += c[selected];
-					c.value1 = runningValue;
-					return c;
-				});
+			d.children = d3.shuffle(
+				d.children
+					.map(c => {
+						c.value0 = runningValue;
+						runningValue += c[selected];
+						c.value1 = runningValue;
+						return c;
+					})
+			);
 			return d;
 		})
 		.sort((a, b) => a[selected] > b[selected]);
@@ -42,8 +43,7 @@
 		const x = d3.scaleLinear()
 			.range([0, width]);
 		const y = d3.scaleBand()
-			.padding(0.25)
-			.range([0, height]);
+			.padding(0.25);
 		const colorScale = d3.scaleLinear()
 			.domain([0, 1])
 			.range([
@@ -142,12 +142,17 @@
 					}
 				})
 				.filter(d => d[newSelector] !== 0);
+
+			const newHeight = 30 * data.length;
+			d3.select('.category-chart')
+				.attr('height', newHeight + margin.top + margin.bottom);
 			// set new axes and transition
 			const maxVal = d3.max(data, d => d[newSelector]);
 			const maxChild = d3.max(data, d => d3.max(d.children, c => c[newSelector]));
 			const xMax = 1.1 * maxVal;
 			x.domain([0, xMax]);
-			y.domain(data.map(d => d.name));
+			y.domain(data.map(d => d.name))
+				.range([0, newHeight]);
 			colorScale.domain([0, maxChild]);
 			const bandwidth = y.bandwidth();
 

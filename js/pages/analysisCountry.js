@@ -179,6 +179,7 @@
 					year: i,
 					total_committed: 0,
 					total_spent: 0,
+					ccs: {},
 				};
 			}
 			lookup[iso].forEach((p) => {
@@ -186,6 +187,21 @@
 					fundsByYear[i].total_committed += p.committed_by_year[i];
 					fundsByYear[i].total_spent += p.spent_by_year[i];
 				}
+				p.core_capacities.forEach(cc => {
+					for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
+						const currentYear = fundsByYear[i];
+						if (Object.keys(currentYear.ccs).includes(cc)) {
+							fundsByYear[i].ccs[cc].total_spent += p.spent_by_year[i];
+							fundsByYear[i].ccs[cc].total_committed += p.committed_by_year[i];
+						} else {
+							fundsByYear[i].ccs[cc] = {
+								cc: cc,
+								total_spent: p.spent_by_year[i],
+								total_committed: p.committed_by_year[i],
+							}
+						}
+					}
+				});
 			});
 			for (const y in fundsByYear) {
 				timeData.push(fundsByYear[y]);
@@ -223,7 +239,6 @@
 			});
 			lookup[iso].forEach((p) => {
 				ccs.forEach((cc) => {
-					// console.log(p.core_capacities);
 					if (p.core_capacities.some(pcc => cc === pcc.split('.')[0])) {
 						const committed = p.total_committed;
 						let spent = p.total_spent;

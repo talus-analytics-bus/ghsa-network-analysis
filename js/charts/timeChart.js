@@ -1,12 +1,26 @@
 (() => {
 	App.buildTimeChart = (selector, param = {}) => {
 		// start building the chart
-		const margin = { top: 70, right: 50, bottom: 50, left: 60 };
+		const margin = { top: 70, right: 200, bottom: 50, left: 60 };
 		const width = 600;
 		const height = 200;
 		const color = d3.color(param.color || 'steelblue');
 		const lightColor = param.lightColor || color.brighter(2);
 		const palette = (param.moneyType === 'd') ? App.fundColorPalette : App.receiveColorPalette;
+		const ccs = ['P', 'D', 'R', 'PoE', 'CE', 'RE'];
+		const lineColors = d3.scaleOrdinal()
+			.domain(ccs)
+			.range(palette);
+
+		function getColor(d) {
+			let color;
+			if (d[0].cc === 'Total') {
+				color = 'black';
+			} else {
+				color = lineColors(d[0].cc.split('.')[0]);
+			}
+			return color;
+		}
 
 		const chart = d3.select(selector).append('svg')
 			.classed('time-chart', true)
@@ -43,92 +57,110 @@
 			.attr('class', 'y axis')
 			.call(yAxis);
 
+		const labelGroup = chart.append('g');
 		const lineGroup = chart.append('g');
-		const line = chart.append('path')
-			.style('fill', 'none')
-			.style('stroke-width', 1.5)
-			.style('stroke', 'black');
 
 		const labels = chart.append('g');
 
-		let init = false;
-		chart.update = (newData, type) => {
-			const maxVal = d3.max(newData, d => d[type]);
+		const legendG = chart.append('g')
+			.attr('transform', `translate(${width - 20}, 20)`);
+
+		const legend = legendG.selectAll('g')
+			.data(ccs)
+			.enter()
+			.append('g');
+
+		legend.append('text')
+			.attr('x', 20)
+			.attr('y', (d, i) => `${i}em`)
+			.text(d => {
+				return {
+					P: 'Prevent',
+					D: 'Detect',
+					R: 'Respond',
+					PoE: 'Point of Entry',
+					CE: 'Chemical Events',
+					RE: 'Radiation Emergencies',
+				}[d];
+			});
+
+		legend.append('line')
+			.attr('x1', 0)
+			.attr('x2', 20)
+			.attr('y1', (d, i) => i * 15 - 6)
+			.attr('y2', (d, i) => i * 15 - 6)
+			.style('stroke-width', 10)
+			.style('stroke', d => lineColors(d));
+
+		chart.update = (rawData, type) => {
+			// need to first rotate timeseries data
+			const lineData = convertData(rawData, type);
+
+			// now update scales
+			const maxVal = d3.max(rawData, d => d[type]);
 			const yMax = 1.2 * maxVal;
-			x.domain(newData.map(d => d.year));
+			x.domain(rawData.map(d => d.year));
 			y.domain([0, yMax]);
 
 			const lineFunc = d3.line()
 				.x(d => x(d.year))
 				.y(d => y(d[type]));
 
-			line.transition()
-				.duration(1000)
-				.attr('d', lineFunc(newData));
-
 			// Join to new Data
-			let newGroup = lineGroup.selectAll('.node')
-				.data(newData);
+			let newGroup = lineGroup.selectAll('.line')
+				.data(lineData);
 
 			// remove unneeded
 			newGroup.exit().remove();
 
 			// Create new groups
-			const nodeGroup = newGroup.enter().append('g')
-				.attr('class', 'node');
+			const lines = newGroup.enter().append('g')
+				.attr('class', 'line');
 
-			// // Add new objects
-			// nodeGroup.append('circle')
-			// 	.style('fill', 'white')
-			// 	.style('fill-opacity', 1)
-			// 	.style('stroke', 'black')
-			// 	.attr('r', 5)
-			// 	.attr('cx', d => x(d.year))
-			// 	.attr('cy', d => y(d[type]))
-			// 	.on('mouseover', function(d) {
-			// 		d3.select(this).style('fill', param.lightColor);
-			// 	})
-			// 	.on('mouseout', function(d) {
-			// 		d3.select(this).style('fill', 'white');
-			// 	});
+			// Add new lines
+			lines.append('path')
+				.style('fill', 'none')
+				.style('stroke-width', 2)
+				.style('stroke', getColor)
+				.attr('d', d => lineFunc(d));
 
-			nodeGroup.append('text')
-				.attr('dy', '-1em')
-				.attr('x', d => x(d.year))
-				.attr('y', d => y(d[type]))
-				.style('text-anchor', 'middle')
-				.text(d => App.formatMoney(d[type]));
-
-			nodeGroup.append('line')
-				.style('stroke-width', 1)
-				.style('stroke', 'black')
-				.style('stroke-dasharray', '3, 3')
-				.attr('x1', d => x(d.year))
-				.attr('x2', d => x(d.year))
-				.attr('y1', height)
-				.attr('y2', d => y(d[type]));
-
-			// // Update circles
-			// newGroup.selectAll('circle')
-			// 	.transition()
-			// 	.duration(1000)
-			// 	.attr('cx', d => x(d.year))
-			// 	.attr('cy', d => y(d[type]));
-
-			newGroup.selectAll('text')
+			// update old lines
+			newGroup.selectAll('path')
 				.transition()
 				.duration(1000)
-				.attr('x', d => x(d.year))
-				.attr('y', d => y(d[type]))
-				.text(d => App.formatMoney(d[type]));
+				.attr('d', d => lineFunc(d));
 
-			newGroup.selectAll('line')
-				.transition()
-				.duration(1000)
-				.attr('x1', d => x(d.year))
-				.attr('x2', d => x(d.year))
-				.attr('y1', height)
-				.attr('y2', d => y(d[type]));
+			d3.selectAll('.line')
+				.on('mouseout', function() {
+					d3.selectAll('.line')
+						.style('stroke-opacity', 1);
+				})
+				.on('mouseover', function() {
+					d3.selectAll('.line')
+						.style('stroke-opacity', 0.2);
+					d3.select(this)
+						.style('stroke-opacity', 1);
+				})
+				.each(function(d) {
+					let name;
+					if (d[0].cc !== 'Total') {
+						name = App.capacities.filter(c => c.id === d[0].cc)[0].name;
+					} else {
+						name = 'Total';
+					}
+					const content = name;
+					// var content = `<b>${name}</b><br>`;
+					// if (type === 'total_spent') {
+					// 	content += 'Disbursed Funds<br>';
+					// } else {
+					// 	content += 'Committed Funds<br>';
+					// }
+					// content += d.map(x => `${x.year} - ${App.formatMoney(x[type])}`).join('<br>');
+					$(this).tooltipster({
+						content: content,
+						side: 'top',
+					});
+				});
 
 			xAxis.scale(x);
 			xAxisG.transition().duration(1000).call(xAxis);
@@ -188,6 +220,42 @@
 	function precisionRound(number, precision) {
 		const factor = Math.pow(10, precision);
 		return Math.round(number * factor) / factor;
+	}
+
+	function convertData(data, type) {
+		const lines = [];
+		lines.push(data.map(y => {
+			return {
+				year: y.year,
+				cc: 'Total',
+				total_committed: y.total_committed,
+				total_spent: y.total_spent,
+			};
+		}));
+		App.capacities.forEach(c => {
+			lines.push(data.map(d => {
+				if (d.ccs[c.id] !== undefined) {
+					return {
+						year: d.year,
+						cc: c.id,
+						total_committed: d.ccs[c.id].total_committed,
+						total_spent: d.ccs[c.id].total_spent,
+					};
+				} else {
+					return {
+						year: d.year,
+						cc: c.id,
+						total_committed: 0,
+						total_spent: 0,
+					};
+				}
+			}));
+		});
+		return lines.filter(l => {
+			return l.reduce((acc, cval) => {
+				return acc || ((cval.total_committed !== 0) || (cval.total_spent !== 0));
+			}, false);
+		});
 	}
 
 })();
