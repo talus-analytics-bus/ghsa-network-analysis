@@ -129,8 +129,7 @@
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
 			}
 
-			$('.toggle-disbursed')
-				.addClass('active');
+			$('input[type=radio][value="total_spent"]').prop('checked', true);
 			$('.money-type-cap').text('Disbursed');
 
 			$('.toggle-disbursed').click(function() {
@@ -215,7 +214,7 @@
 			chart.update(timeData, 'total_spent');
 
 			$('.toggle-disbursed-container').click(function() {
-				const type = $('.toggle-disbursed-container .active').attr('value');
+				const type = $('input[name=fundtype]:checked').val();
 				chart.update(timeData, type);
 			});
 
@@ -259,7 +258,7 @@
 			);
 
 			$('.toggle-disbursed-container').click(function() {
-				const type = $('.toggle-disbursed-container .active').attr('value');
+				const type = $('input[name=fundtype]:checked').val();
 				chart.update(fundsByCcList, type);
 			});
 		}
@@ -359,7 +358,7 @@
 			drawTable('total_spent');
 
 			$('.toggle-disbursed-container').click(function() {
-				const selected = $('.toggle-disbursed-container .active').attr('value');
+				selected = $('input[name=fundtype]:checked').val();
 				drawTable(selected);
 			});
 		}
@@ -455,7 +454,7 @@
 				updateData();
 			});
 			$('.toggle-disbursed-container').click(function() {
-				selected = $('.toggle-disbursed-container .active').attr('value');
+				selected = $('input[name=fundtype]:checked').val();
 				updateData();
 			});
 

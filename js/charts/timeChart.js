@@ -63,6 +63,7 @@
 		const labels = chart.append('g');
 
 		const legendG = chart.append('g')
+			.style('cursor', 'default')
 			.attr('transform', `translate(${width - 20}, 20)`);
 
 		const legend = legendG.selectAll('g')
@@ -142,6 +143,9 @@
 						.style('stroke-opacity', 1);
 				})
 				.each(function(d) {
+					if ($(this).hasClass('tooltipstered')) {
+						$(this).tooltipster('destroy');
+					}
 					let name;
 					if (d[0].cc !== 'Total') {
 						name = App.capacities.filter(c => c.id === d[0].cc)[0].name;
@@ -160,6 +164,23 @@
 						content: content,
 						side: 'top',
 					});
+				});
+
+			legend.on('mouseover', function(d) {
+					d3.selectAll('.line')
+						.style('stroke-opacity', l => {
+							if (l[0].cc.split('.')[0] === d) {
+								return 1;
+							} else {
+								return 0.2;
+							}
+						});
+				})
+				.on('mouseout', function(d) {
+					d3.selectAll('.line')
+						.style('stroke-opacity', l => {
+							return 1;
+						});
 				});
 
 			xAxis.scale(x);
