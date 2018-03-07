@@ -380,15 +380,15 @@
 
 				rows.append('td').text(d => App.formatMoney(d[type]));
 				if (type === 'total_spent') {
-					rows.append('td').text(d => App.formatMoney(d.spent_on_prevent));
-					rows.append('td').text(d => App.formatMoney(d.spent_on_detect));
-					rows.append('td').text(d => App.formatMoney(d.spent_on_respond));
-					rows.append('td').text(d => App.formatMoney(d.spent_on_other));
+					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_prevent));
+					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_detect));
+					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_respond));
+					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_other));
 				} else {
-					rows.append('td').text(d => App.formatMoney(d.committed_on_prevent));
-					rows.append('td').text(d => App.formatMoney(d.committed_on_detect));
-					rows.append('td').text(d => App.formatMoney(d.committed_on_respond));
-					rows.append('td').text(d => App.formatMoney(d.committed_on_other));
+					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_prevent));
+					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_detect));
+					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_respond));
+					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_other));
 				}
 
 				// initialize DataTables plugin

@@ -872,8 +872,7 @@ b {
   cursor: pointer;
   margin: 2px 0 0;
   padding: 2px 0 0;
-  font-size: 40px;
-  object-fit: contain; }
+  font-size: 40px; }
 .analysis-country-content .profile-type-container {
   position: absolute;
   top: 71px;
@@ -1088,6 +1087,9 @@ b {
   font-size: 1.5em;
   font-weight: 600;
   margin-top: 0px; }
+
+.slightly-dark {
+  background-color: #fbfbfb; }
 
 .analysis-global-content .analysis-global-tab-container {
   margin-top: 20px;
