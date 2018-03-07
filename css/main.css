@@ -871,7 +871,8 @@ b {
   text-align: right;
   cursor: pointer;
   font-size: 40px;
-  margin: 0; }
+  margin: 2px 0 0;
+  padding: 2px 0 0; }
 .analysis-country-content .profile-type-container {
   position: absolute;
   top: 71px;

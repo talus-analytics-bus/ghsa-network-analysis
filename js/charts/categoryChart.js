@@ -211,25 +211,21 @@
 				});
 
 			// set axes labels
-			let xAxisLabel;
 			if (param.moneyType === 'r') {
 				if (newSelector === 'total_spent') {
-					xAxisLabel = 'Funds Received by Core Capacity';
+					legendTitle.text(`Funds Disbursed (${App.formatMoney(0).split(' ')[1]})`);
 				} else {
-					xAxisLabel = 'Funds Promised by Core Capacity';
+					legendTitle.text(`Funds Committed (${App.formatMoney(0).split(' ')[1]})`);
 				}
 			} else {
 				if (newSelector === 'total_spent') {
-					xAxisLabel = 'Funds Disbursed by Core Capacity';
-					xLabel.text('Funds Disbursed');
 					legendTitle.text(`Funds Disbursed (${App.formatMoney(0).split(' ')[1]})`);
 				} else {
-					xAxisLabel = 'Funds Committed by Core Capacity';
-					xLabel.text('Funds Committed');
 					legendTitle.text(`Funds Committed (${App.formatMoney(0).split(' ')[1]})`);
 				}
 			}
-			chart.select('.axis-label').text(xAxisLabel);
+			xLabel.text(`Funds (${App.formatMoney(0).split(' ')[1]})`);
+			chart.select('.axis-label').text('Funds by Core Capacity');
 
 
 			xAxis.scale(x);
