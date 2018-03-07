@@ -155,20 +155,16 @@
 					if ($(this).hasClass('tooltipstered')) {
 						$(this).tooltipster('destroy');
 					}
-					let name;
-					if (d[0].cc !== 'Total') {
-						name = App.capacities.filter(c => c.id === d[0].cc)[0].name;
-					} else {
-						name = 'Total';
-					}
-					const content = name;
-					// var content = `<b>${name}</b><br>`;
-					// if (type === 'total_spent') {
-					// 	content += 'Disbursed Funds<br>';
-					// } else {
-					// 	content += 'Committed Funds<br>';
-					// }
-					// content += d.map(x => `${x.year} - ${App.formatMoney(x[type])}`).join('<br>');
+					const content = {
+						Total: 'Total',
+						P: 'Prevent',
+						D: 'Detect',
+						R: 'Respond',
+						PoE: 'Point of Entry',
+						CE: 'Chemical Events',
+						RE: 'Radiation Emergencies',
+						Other: 'Other',
+					}[d[0].cc];
 					$(this).tooltipster({
 						content: content,
 						side: 'top',
@@ -188,29 +184,27 @@
 			};
 
 			legend.on('mouseover', function(d) {
-					d3.selectAll('.arc')
-						.selectAll('path')
-						.style('stroke-opacity', a => opacityFunc(d, a.data.cc))
-						.style('fill-opacity', a => opacityFunc(d, a.data.cc));
+				d3.selectAll('.arc path')
+					.style('stroke-opacity', a => opacityFunc(d, a.data.cc))
+					.style('fill-opacity', a => opacityFunc(d, a.data.cc));
 
-					d3.selectAll('.arc')
-						.selectAll('text')
-						.style('stroke-opacity', a => opacityFunc(d, a.data.cc))
-						.style('fill-opacity', a => opacityFunc(d, a.data.cc));
+				d3.selectAll('.arc text')
+					.style('stroke-opacity', a => opacityFunc(d, a.data.cc))
+					.style('fill-opacity', a => opacityFunc(d, a.data.cc));
 
-					d3.selectAll('.line')
-						.style('stroke-opacity', l => opacityFunc(d, l[0].cc.split('.')[0]));
-				})
-				.on('mouseout', function(d) {
-					d3.selectAll('.line')
-						.style('stroke-opacity', 1);
-					d3.selectAll('.arc path')
-						.style('stroke-opacity', 1)
-						.style('fill-opacity', 1);
-					d3.selectAll('.arc text')
-						.style('stroke-opacity', 1)
-						.style('fill-opacity', 1);
-				});
+				d3.selectAll('.line')
+					.style('stroke-opacity', l => opacityFunc(d, l[0].cc.split('.')[0]));
+			})
+			.on('mouseout', function(d) {
+				d3.selectAll('.line')
+					.style('stroke-opacity', 1);
+				d3.selectAll('.arc path')
+					.style('stroke-opacity', 1)
+					.style('fill-opacity', 1);
+				d3.selectAll('.arc text')
+					.style('stroke-opacity', 1)
+					.style('fill-opacity', 1);
+			});
 
 			xAxis.scale(x);
 			xAxisG.transition().duration(1000).call(xAxis);
@@ -305,11 +299,42 @@
 				}
 			}));
 		});
-		return lines.filter(l => {
-			return l.reduce((acc, cval) => {
-				return acc || ((cval.total_committed !== 0) || (cval.total_spent !== 0));
-			}, false);
-		});
+		const newLines = d3.nest()
+			.key(l => {
+				const cc = l[0].cc.split('.')[0];
+				if (['Total', 'P', 'D', 'R'].includes(cc)) {
+					return cc;
+				} else {
+					return 'Other';
+				}
+			})
+			.rollup(v => {
+				const agg = [];
+				for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
+					const cYear = v.reduce((acc, cval) => {
+						const found = cval.filter(c => c.year === i)[0];
+						return {
+							total_committed: acc.total_committed + found.total_committed,
+							total_spent: acc.total_spent + found.total_spent,
+						};
+					}, {total_committed: 0, total_spent: 0});
+
+					agg.push({
+						year: i,
+						total_committed: cYear.total_committed,
+						total_spent: cYear.total_spent,
+					});
+				}
+				return agg;
+			})
+			.entries(lines)
+			.map(d => {
+				return d.value.map(v => {
+					v.cc = d.key;
+					return v;
+				});
+			});
+		return newLines;
 	}
 
 })();
