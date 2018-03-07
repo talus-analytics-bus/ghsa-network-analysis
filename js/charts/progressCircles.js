@@ -51,13 +51,13 @@
 
 		// start building the chart
 		const margin = {
-			top: 100,
-			right: 80,
+			top: 60,
+			right: 90,
 			bottom: 60,
-			left: 80,
+			left: 90,
 		};
-		const outerRadius = 80;
-		const innerRadius = 20;
+		const outerRadius = 100;
+		const innerRadius = 40;
 
 		const chartContainer = d3.select(selector).append('svg')
 			.classed('progress-circle-chart', true)

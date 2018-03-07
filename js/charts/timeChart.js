@@ -79,6 +79,7 @@
 		legend.append('text')
 			.attr('x', 20)
 			.attr('y', (d, i) => `${i}em`)
+			.style('font-size', '0.8em')
 			.text(d => {
 				return {
 					Total: 'Total',
@@ -95,9 +96,9 @@
 		legend.append('line')
 			.attr('x1', 0)
 			.attr('x2', 19)
-			.attr('y1', (d, i) => i * 14 - 5)
-			.attr('y2', (d, i) => i * 14 - 5)
-			.style('stroke-width', 10)
+			.attr('y1', (d, i) => i * 12 - 5)
+			.attr('y2', (d, i) => i * 12 - 5)
+			.style('stroke-width', 6)
 			.style('stroke', d => lineColors(d));
 
 		chart.update = (rawData, type) => {

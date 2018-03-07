@@ -870,9 +870,10 @@ b {
 .analysis-country-content .analysis-country-title {
   text-align: right;
   cursor: pointer;
-  font-size: 40px;
   margin: 2px 0 0;
-  padding: 2px 0 0; }
+  padding: 2px 0 0;
+  font-size: 40px;
+  object-fit: contain; }
 .analysis-country-content .profile-type-container {
   position: absolute;
   top: 71px;

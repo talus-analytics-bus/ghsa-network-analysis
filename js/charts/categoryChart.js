@@ -124,7 +124,8 @@
 			.style('font-size', '14px')
 			.text('Funds');
 
-		chart.append('text')
+		const yLabel = chart.append('text')
+			.attr('class', 'y-label-text')
 			.attr('transform', 'rotate(-90)')
 			.attr('y', -230)
 			.attr('x', -height / 2)
@@ -227,6 +228,8 @@
 			xLabel.text(`Funds (${App.formatMoney(0).split(' ')[1]})`);
 			chart.select('.axis-label').text('Funds by Core Capacity');
 
+			chart.select('.y-label-text')
+				.attr('x', -newHeight / 2);
 
 			xAxis.scale(x);
 			xAxisG.transition()

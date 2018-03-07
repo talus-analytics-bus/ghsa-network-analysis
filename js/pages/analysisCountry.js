@@ -150,8 +150,14 @@
 				}
 			});
 
-			$('.other-text').tooltipster({
-				content: '<b>Other</b> includes Point of Entry (Poe), Chemical Events (CE), and Radiation Emergencies (RE).'
+			const text = 'The Core Elements are <b>Prevent</b>, <b>Detect</b>, <b>Respond</b> and <b>Other</b>. ' +
+				'<b>Other</b> includes Point of Entry (Poe), Chemical Events (CE), and Radiation Emergencies (RE).';
+			$('.core-element-text').tooltipster({
+				content: text,
+			});
+
+			$('.core-capacity-text').tooltipster({
+				content: 'Each core element is associated with one or more core capacities, indicated by prefix.',
 			});
 
 			// draw charts
@@ -328,7 +334,7 @@
 
 				const header = table.append('thead').append('tr');
 				const firstColLabel = (moneyType === 'd') ? 'Recipient' : 'Funder';
-				const lastColLabel = (type === 'total_spent') ? 'Disbursed' : 'Committed';
+				const lastColLabel = (type === 'total_spent') ? 'Total Disbursed' : 'Total Committed';
 
 				header.append('td').html(firstColLabel);
 				header.append('td').html(lastColLabel);
