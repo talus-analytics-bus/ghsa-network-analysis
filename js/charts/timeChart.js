@@ -2,8 +2,8 @@
 	App.buildTimeChart = (selector, param = {}) => {
 		// start building the chart
 		const margin = { top: 70, right: 150, bottom: 50, left: 60 };
-		const width = 400;
-		const height = 300;
+		const width = 450;
+		const height = 200;
 		const color = d3.color(param.color || 'steelblue');
 		const lightColor = param.lightColor || color.brighter(2);
 		const palette = (param.moneyType === 'd') ? App.fundColorPalette : App.receiveColorPalette;
@@ -174,42 +174,41 @@
 					});
 				});
 
+			const opacityFunc = (d, a) => {
+				if (d === 'Total') {
+					return 1;
+				} else if (d === a) {
+					return 1;
+				} else if ((d === 'Other') && (!['P', 'D', 'R'].includes(a))) {
+					return 1;
+				} else {
+					return 0.1;
+				}
+			};
+
 			legend.on('mouseover', function(d) {
-					const arcOpacity = a => {
-						if (d === 'Total') {
-							return 1;
-						} else if (d[0] === a.data.cc) {
-							return 1;
-						}
-					};
 					d3.selectAll('.arc')
 						.selectAll('path')
-						.style('stroke-opacity', arcOpacity)
-						.style('fill-opacity', arcOpacity);
+						.style('stroke-opacity', a => opacityFunc(d, a.data.cc))
+						.style('fill-opacity', a => opacityFunc(d, a.data.cc));
 
 					d3.selectAll('.arc')
 						.selectAll('text')
-						.style('stroke-opacity', arcOpacity);
+						.style('stroke-opacity', a => opacityFunc(d, a.data.cc))
+						.style('fill-opacity', a => opacityFunc(d, a.data.cc));
 
 					d3.selectAll('.line')
-						.style('stroke-opacity', l => {
-							const lineCC = l[0].cc.split('.')[0];
-							if (lineCC === 'Total') {
-								return 1;
-							} else if (lineCC === d) {
-								return 1;
-							} else if ((d === 'Other') && (!['P', 'D', 'R'].includes(lineCC))) {
-								return 1;
-							} else {
-								return 0;
-							}
-						});
+						.style('stroke-opacity', l => opacityFunc(d, l[0].cc.split('.')[0]));
 				})
 				.on('mouseout', function(d) {
 					d3.selectAll('.line')
-						.style('stroke-opacity', l => {
-							return 1;
-						});
+						.style('stroke-opacity', 1);
+					d3.selectAll('.arc path')
+						.style('stroke-opacity', 1)
+						.style('fill-opacity', 1);
+					d3.selectAll('.arc text')
+						.style('stroke-opacity', 1)
+						.style('fill-opacity', 1);
 				});
 
 			xAxis.scale(x);
@@ -286,7 +285,6 @@
 				total_spent: y.total_spent,
 			};
 		}));
-		console.log(data);
 		App.capacities.forEach(c => {
 			lines.push(data.map(d => {
 				if (d.ccs[c.id] !== undefined) {
@@ -306,7 +304,6 @@
 				}
 			}));
 		});
-		console.log(lines);
 		return lines.filter(l => {
 			return l.reduce((acc, cval) => {
 				return acc || ((cval.total_committed !== 0) || (cval.total_spent !== 0));

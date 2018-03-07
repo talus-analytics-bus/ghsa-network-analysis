@@ -282,10 +282,34 @@
 							iso: recIso,
 							total_committed: 0,
 							total_spent: 0,
+							spent_on_prevent: 0,
+							spent_on_detect: 0,
+							spent_on_respond: 0,
+							spent_on_other: 0,
+							committed_on_prevent: 0,
+							committed_on_detect: 0,
+							committed_on_respond: 0,
+							committed_on_other: 0,
 						};
 					}
 					fundedByCountry[recIso].total_committed += p.total_committed;
 					fundedByCountry[recIso].total_spent += p.total_spent;
+					p.core_capacities.forEach(cc => {
+						const ccAbbrev = cc.split('.')[0];
+						if (ccAbbrev === 'P') {
+							fundedByCountry[recIso].spent_on_prevent += p.total_spent;
+							fundedByCountry[recIso].committed_on_prevent += p.total_spent;
+						} else if (ccAbbrev === 'D') {
+							fundedByCountry[recIso].spent_on_detect += p.total_spent;
+							fundedByCountry[recIso].committed_on_detect += p.total_spent;
+						} else if (ccAbbrev === 'R') {
+							fundedByCountry[recIso].spent_on_respond += p.total_spent;
+							fundedByCountry[recIso].committed_on_respond += p.total_spent;
+						} else {
+							fundedByCountry[recIso].spent_on_other += p.total_spent;
+							fundedByCountry[recIso].committed_on_other += p.total_spent;
+						}
+					})
 				}
 			});
 			for (const recIso in fundedByCountry) {
@@ -308,6 +332,11 @@
 
 				header.append('td').html(firstColLabel);
 				header.append('td').html(lastColLabel);
+
+				header.append('td').html('Prevent');
+				header.append('td').html('Detect');
+				header.append('td').html('Respond');
+				header.append('td').html('Other');
 
 				const body = table.append('tbody');
 
@@ -344,6 +373,17 @@
 				});
 
 				rows.append('td').text(d => App.formatMoney(d[type]));
+				if (type === 'total_spent') {
+					rows.append('td').text(d => App.formatMoney(d.spent_on_prevent));
+					rows.append('td').text(d => App.formatMoney(d.spent_on_detect));
+					rows.append('td').text(d => App.formatMoney(d.spent_on_respond));
+					rows.append('td').text(d => App.formatMoney(d.spent_on_other));
+				} else {
+					rows.append('td').text(d => App.formatMoney(d.committed_on_prevent));
+					rows.append('td').text(d => App.formatMoney(d.committed_on_detect));
+					rows.append('td').text(d => App.formatMoney(d.committed_on_respond));
+					rows.append('td').text(d => App.formatMoney(d.committed_on_other));
+				}
 
 				// initialize DataTables plugin
 				const infoDataTable = $('.country-table').DataTable({

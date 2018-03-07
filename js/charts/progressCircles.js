@@ -2,15 +2,37 @@
 	App.drawProgressCircles = (selector, moneyType) => {
 		let palette;
 		if (moneyType === 'd') {
-			palette = [
-				App.fundColorPalette[0],
-				App.fundColorPalette.slice(-2)[0],
-			];
+			palette = App.fundColorPalette;
+			// palette = [
+			// 	App.fundColorPalette[0],
+			// 	App.fundColorPalette.slice(-2)[0],
+			// ];
 		} else {
-			palette = [
-				App.receiveColorPalette[0],
-				App.receiveColorPalette.slice(-3)[0],
-			];
+			palette = App.receiveColorPalette;
+			// palette = [
+			// 	App.receiveColorPalette[0],
+			// 	App.receiveColorPalette.slice(-3)[0],
+			// ];
+		}
+
+		const ccs = ['P', 'D', 'R', 'Other'];
+		const lineColors = d3.scaleOrdinal()
+			.domain(['Total'].concat(ccs))
+			.range(['black'].concat(palette));
+
+		function getColor(d) {
+			let color;
+			if (d.data.cc === 'Total') {
+				color = 'black';
+			} else {
+				const cc = d.data.cc;
+				if (['P', 'D', 'R'].includes(cc)) {
+					color = lineColors(cc);
+				} else {
+					color = lineColors('Other');
+				}
+			}
+			return color;
 		}
 
 		const ccMapping = {
@@ -30,12 +52,12 @@
 		// start building the chart
 		const margin = {
 			top: 100,
-			right: 120,
+			right: 80,
 			bottom: 60,
-			left: 120,
+			left: 80,
 		};
-		const outerRadius = 120;
-		const innerRadius = 50;
+		const outerRadius = 80;
+		const innerRadius = 20;
 
 		const chartContainer = d3.select(selector).append('svg')
 			.classed('progress-circle-chart', true)
@@ -95,12 +117,6 @@
 						return -1;
 					}
 				});
-			const colorScale = d3.scaleLinear()
-				.domain([
-					justVals[0],
-					justVals[justVals.length - 1],
-				])
-				.range(palette);
 
 			const pie = d3.pie()
 				.value(d => d[plotType])
@@ -128,9 +144,9 @@
 			});
 
 			newGroup.append('path')
-				.style('fill', d => colorScale(d.value))
+				.style('fill', getColor)
 				.transition()
-				.duration(600)
+				.duration(1000)
 				.attrTween('d', function(d) {
 					const startAngle = d3.interpolate(0, d.startAngle);
 					const endAngle = d3.interpolate(0, d.endAngle);
@@ -144,7 +160,7 @@
 			newGroup.append('text')
 				.attr('transform', d => {
 					const midpoint = d.startAngle + ((d.endAngle - d.startAngle) / 2);
-					const r = outerRadius + 30;
+					const r = outerRadius + 15;
 					const x = r * Math.cos(midpoint - Math.PI / 2);
 					const y = r * Math.sin(midpoint - Math.PI / 2);
 					return `translate(${x}, ${y})`;
@@ -164,6 +180,40 @@
 						return ccMapping[d.data.cc];
 							// `<tspan x="0" dy="1.25em">${App.formatMoney(d.value)}</tspan>`;
 					}
+				});
+			const opacityFunc = (d, a) => {
+				if (d === 'Total') {
+					return 1;
+				} else if (d === a) {
+					return 1;
+				} else if ((d === 'Other') && (!['P', 'D', 'R'].includes(a))) {
+					return 1;
+				} else {
+					return 0.1;
+				}
+			};
+
+			newGroup.on('mouseover', function(d) {
+				d3.selectAll('.arc path')
+					.style('stroke-opacity', a => opacityFunc(d.data.cc, a.data.cc))
+					.style('fill-opacity', a => opacityFunc(d.data.cc, a.data.cc));
+
+				d3.selectAll('.arc text')
+					.style('stroke-opacity', a => opacityFunc(d.data.cc, a.data.cc))
+					.style('fill-opacity', a => opacityFunc(d.data.cc, a.data.cc));
+
+				d3.selectAll('.line')
+					.style('stroke-opacity', a => opacityFunc(d.data.cc, a[0].cc.split('.')[0]));
+			})
+				.on('mouseout', function(d) {
+					d3.selectAll('.line')
+						.style('stroke-opacity', 1);
+					d3.selectAll('.arc path')
+						.style('stroke-opacity', 1)
+						.style('fill-opacity', 1);
+					d3.selectAll('.arc text')
+						.style('stroke-opacity', 1)
+						.style('fill-opacity', 1);
 				});
 		};
 
