@@ -952,8 +952,9 @@ b {
   padding-right: 30px;
   padding-left: 30px;
   padding-bottom: 20px;
-  padding-top: 30px;
-  margin-top: 30px;
+  padding-top: 20px;
+  margin-top: 20px;
+  border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
   min-height: 180px; }
   .country-flow-summary .country-summary-label,
@@ -1018,6 +1019,7 @@ b {
 .country-chart-container {
   position: relative;
   padding: 10px 30px 20px;
+  border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
   min-height: 180px; }
   .country-chart-container .circle-pack-content {
@@ -1039,6 +1041,7 @@ b {
   padding-right: 30px;
   padding-left: 30px;
   padding-bottom: 10px;
+  border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
   min-height: 180px; }
   .category-chart-section .source-text {
@@ -1055,7 +1058,7 @@ b {
 
 .toggle-disbursed-container {
   padding-top: 5px;
-  text-align: right; }
+  text-align: left; }
 
 .return-button {
   margin-top: 10px; }

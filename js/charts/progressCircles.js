@@ -106,8 +106,6 @@
 				.value(d => d[plotType])
 				.sort((a, b) => sortOrder[a.cc] > sortOrder[b.cc]);
 
-			// console.log(pie(newData));
-
 			let newGroup = arcGroup.selectAll('.arc')
 				.remove().exit().data(pie(newData));
 
@@ -118,6 +116,9 @@
 			newGroup = newArcs.merge(arcGroup);
 
 			newGroup.each(function(d) {
+				if ($(this).hasClass('tooltipstered')) {
+					$(this).tooltipster('destroy');
+				}
 				var content = `<b>${ccMapping[d.data.cc]}</b><br>`;
 				content += App.formatMoney(d.value);
 				$(this).tooltipster({
@@ -164,9 +165,6 @@
 							// `<tspan x="0" dy="1.25em">${App.formatMoney(d.value)}</tspan>`;
 					}
 				});
-
-			// const total = newData.reduce((acc, cval) => acc + cval[plotType], 0);
-			// sum.text(App.formatMoney(total));
 		};
 
 		return chart;

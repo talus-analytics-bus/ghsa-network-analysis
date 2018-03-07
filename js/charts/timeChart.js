@@ -9,7 +9,7 @@
 		const palette = (param.moneyType === 'd') ? App.fundColorPalette : App.receiveColorPalette;
 		const ccs = ['P', 'D', 'R', 'Other'];
 		const lineColors = d3.scaleOrdinal()
-			.domain(['Title'].concat(ccs))
+			.domain(['Total'].concat(ccs))
 			.range(['black'].concat(palette));
 
 		function getColor(d) {
@@ -72,7 +72,7 @@
 			.attr('transform', `translate(${width - 20}, 20)`);
 
 		const legend = legendG.selectAll('g')
-			.data(['Title'].concat(ccs))
+			.data(['Total'].concat(ccs))
 			.enter()
 			.append('g');
 
@@ -81,7 +81,7 @@
 			.attr('y', (d, i) => `${i}em`)
 			.text(d => {
 				return {
-					Title: 'Title',
+					Total: 'Total',
 					P: 'Prevent',
 					D: 'Detect',
 					R: 'Respond',
@@ -175,6 +175,22 @@
 				});
 
 			legend.on('mouseover', function(d) {
+					const arcOpacity = a => {
+						if (d === 'Total') {
+							return 1;
+						} else if (d[0] === a.data.cc) {
+							return 1;
+						}
+					};
+					d3.selectAll('.arc')
+						.selectAll('path')
+						.style('stroke-opacity', arcOpacity)
+						.style('fill-opacity', arcOpacity);
+
+					d3.selectAll('.arc')
+						.selectAll('text')
+						.style('stroke-opacity', arcOpacity);
+
 					d3.selectAll('.line')
 						.style('stroke-opacity', l => {
 							const lineCC = l[0].cc.split('.')[0];
