@@ -868,11 +868,11 @@ b {
     text-decoration: underline; }
 
 .analysis-country-content .analysis-country-title {
-  text-align: right;
+  text-align: center;
   cursor: pointer;
   margin: 2px 0 0;
   padding: 2px 0 0;
-  font-size: 40px; }
+  font-size: 30px; }
 .analysis-country-content .profile-type-container {
   position: absolute;
   top: 71px;
@@ -889,8 +889,9 @@ b {
   width: 125px; }
 
 .country-summary-text {
+  margin-top: 5px;
   float: left;
-  text-align: left; }
+  text-align: center; }
 
 .country-summary-label {
   font-weight: 400;
@@ -899,7 +900,7 @@ b {
 .country-summary-value {
   margin-top: 10px;
   font-family: 'Raleway', sans-serif;
-  font-size: 2em; }
+  font-size: 25px; }
 
 /* --- Buffer Page --- */
 .country-summary-content {
