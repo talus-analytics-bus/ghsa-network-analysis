@@ -776,12 +776,19 @@ b {
 
 .time-chart-container {
   position: relative;
-  padding-bottom: 20px; }
+  padding-bottom: 20px;
+  /*.source-text {
+  	position: absolute;
+  	bottom: 0px;
+  	right: 0px;
+  	font-size: 0.9em;
+  }*/ }
   .time-chart-container .source-text {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    font-size: 0.9em; }
+    right: 30px;
+    bottom: 20px;
+    font-size: 0.95em;
+    float: right;
+    padding-top: 20px; }
 
 .analysis-container {
   padding: 0;
@@ -934,7 +941,11 @@ b {
 .country-flow-content {
   display: none;
   position: relative;
-  margin-top: 10px; }
+  margin-top: 10px;
+  padding-top: 35px;
+  padding-right: 30px;
+  padding-bottom: 20px;
+  padding-left: 20px; }
   .country-flow-content .show-table-btn {
     margin-top: 10px; }
 
@@ -950,15 +961,39 @@ b {
 
 .country-flow-summary,
 .progress-circle-section {
-  position: relative;
+  /*position: relative;
   padding-right: 30px;
   padding-left: 30px;
   padding-bottom: 20px;
   padding-top: 20px;
   margin-top: 20px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: $light-border;
   margin-bottom: 20px;
-  min-height: 180px; }
+  min-height: 180px;
+*/
+  padding-bottom: 60px;
+  padding-top: 20px;
+  padding-right: 2%;
+  padding-left: 20px;
+  border-bottom: 1px solid #ccc;
+  /*.circle-chart-content {
+    display: inline-block;
+    //margin: 0 20px;
+    //max-width: 500px;
+    text-align: left;
+    vertical-align: top;
+  }*/
+  /*.source-text {
+    text-align: right;
+    font-size: 0.95em;
+  }*/ }
+  .country-flow-summary .source-text,
+  .progress-circle-section .source-text {
+    right: 30px;
+    bottom: 20px;
+    font-size: 0.95em;
+    float: right;
+    padding-top: 20px; }
   .country-flow-summary .country-summary-label,
   .progress-circle-section .country-summary-label {
     font-weight: 600;
@@ -974,31 +1009,44 @@ b {
     text-align: left;
     margin-bottom: 20px;
     padding-bottom: 20px; }
-  .country-flow-summary .progress-circle-text,
-  .progress-circle-section .progress-circle-text {
-    float: left;
-    max-width: 100%;
-    text-align: left; }
   .country-flow-summary .time-chart-container,
   .progress-circle-section .time-chart-container {
     text-align: right; }
+  .country-flow-summary .progress-circle-text,
+  .progress-circle-section .progress-circle-text {
+    float: left;
+    max-width: 400px; }
+  .country-flow-summary .time-chart-container,
+  .progress-circle-section .time-chart-container {
+    margin-left: 365px; }
+  .country-flow-summary .progress-circle-container,
+  .progress-circle-section .progress-circle-container {
+    margin-left: 430px; }
   .country-flow-summary .progress-circle-title,
   .progress-circle-section .progress-circle-title {
-    white-space: nowrap;
-    font-size: 1.5em; }
+    font-weight: 600;
+    font-size: 1.2em; }
+  .country-flow-summary .progress-circle-description,
+  .progress-circle-section .progress-circle-description {
+    margin-top: 15px; }
+  .country-flow-summary .progress-circle-container,
+  .progress-circle-section .progress-circle-container {
+    margin-left: 430px; }
+  .country-flow-summary .progress-circle-title,
+  .progress-circle-section .progress-circle-title {
+    white-space: nowrap; }
     .country-flow-summary .progress-circle-title .info-img,
     .progress-circle-section .progress-circle-title .info-img {
       position: relative;
       width: 16px;
       height: 16px;
       margin-left: 5px; }
-  .country-flow-summary .progress-circle-description,
-  .progress-circle-section .progress-circle-description {
-    margin-top: 15px; }
   .country-flow-summary .circle-chart-content,
   .progress-circle-section .circle-chart-content {
     display: inline-block;
-    text-align: left;
+    margin: 0 20px;
+    max-width: 160px;
+    text-align: center;
     vertical-align: top; }
   .country-flow-summary .circle-chart-label,
   .progress-circle-section .circle-chart-label {
@@ -1010,13 +1058,16 @@ b {
     font-size: 0.95em;
     line-height: 1.25;
     margin-top: 4px; }
-  .country-flow-summary .source-text,
-  .progress-circle-section .source-text {
-    text-align: right;
-    font-size: 0.95em; }
-
-.progress-circle-section .source-text {
-  padding-top: 65px; }
+  .country-flow-summary .circle-chart-label,
+  .progress-circle-section .circle-chart-label {
+    margin-top: 5px;
+    font-size: 1.1em;
+    font-weight: 600; }
+  .country-flow-summary .circle-chart-sublabel,
+  .progress-circle-section .circle-chart-sublabel {
+    font-size: 0.95em;
+    line-height: 1.25;
+    margin-top: 4px; }
 
 .country-chart-container {
   position: relative;
@@ -1037,11 +1088,15 @@ b {
   .country-chart-container .name-container {
     width: 200px; }
 
+.progress-container {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px; }
+
 .category-chart-section {
   position: relative;
   padding-top: 0px;
   padding-right: 30px;
-  padding-left: 30px;
+  padding-left: 0px;
   padding-bottom: 10px;
   border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
@@ -1051,7 +1106,8 @@ b {
     font-size: 0.95em; }
   .category-chart-section .description {
     width: 100%;
-    max-width: 100%; }
+    max-width: 100%;
+    margin-top: 0px; }
 
 .toggle-type {
   text-align: right;
@@ -1059,8 +1115,12 @@ b {
   vertical-align: middle; }
 
 .toggle-disbursed-container {
-  padding-top: 5px;
-  text-align: left; }
+  padding-top: 10px;
+  text-align: left;
+  float: left; }
+
+.toggle-disbursed-chart-container {
+  padding-top: 10px; }
 
 .return-button {
   margin-top: 10px; }
@@ -1083,7 +1143,6 @@ b {
   border-right: 1px solid #ccc; }
 
 .circle-pack-title,
-.progress-circle-title,
 .category-chart-title {
   font-size: 1.5em;
   font-weight: 600;
@@ -1091,6 +1150,9 @@ b {
 
 .slightly-dark {
   background-color: #fbfbfb; }
+
+.circle-pack-container .description {
+  margin-top: 0px; }
 
 .analysis-global-content .analysis-global-tab-container {
   margin-top: 20px;

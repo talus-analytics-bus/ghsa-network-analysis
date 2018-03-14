@@ -109,22 +109,24 @@
 					.addClass('active');
 				$('.toggle-recipient-profile')
 					.on('click', () => hasher.setHash(`analysis/${iso}/r`));
-				// $('.switch-type-button')
-				// 	.text('Switch to Recipient Profile')
-				// 	.on('click', () => hasher.setHash(`analysis/${iso}/r`));
+				 $('.switch-type-button')
+				 	.text('Switch to Recipient Profile')
+				 	.on('click', () => hasher.setHash(`analysis/${iso}/r`));
 
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
 			} else if (moneyType === 'r') {
 				if (!totalReceived) hasNoData = true;
 
-				// fill out "switch profile" text and behavior
+
+
+                // fill out "switch profile" text and behavior
 				$('.toggle-recipient-profile')
 					.addClass('active');
 				$('.toggle-funder-profile')
 					.on('click', () => hasher.setHash(`analysis/${iso}/d`));
-				// $('.switch-type-button')
-				// 	.text('Switch to Funder Profile')
-				// 	.on('click', () => hasher.setHash(`analysis/${iso}/d`));
+				$('.switch-type-button')
+				 	.text('Switch to Funder Profile')
+				 	.on('click', () => hasher.setHash(`analysis/${iso}/d`));
 
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
 			}
@@ -175,7 +177,7 @@
 			}
 		}
 
-		function drawTimeChart() {
+		/*function drawTimeChart() {
 			// get data
 			const timeData = [];
 			const fundsByYear = {};
@@ -219,14 +221,34 @@
 
 			chart.update(timeData, 'total_spent');
 
-			$('.toggle-disbursed-container').click(function() {
-				const type = $('input[name=fundtype]:checked').val();
-				chart.update(timeData, type);
-			});
+			//$('.toggle-disbursed-container').click(function() {
+			//	const type = $('input[name=fundtype]:checked').val();
+			//	chart.update(timeData, type);
+			//});
 
-		}
+            $('.toggle-disbursed-container').click(function() {
+                selected = $('.toggle-disbursed-container input[name=fundtype]:checked').val();
+                // make sure that you check the other radio buttons as well
+                if (selected === 'total_spent') {
+                    $('#chart-spent').prop("checked", true);
+                } else  {
+                    $('#chart-committed').prop("checked", true);
+                }
+                chart.update(timeData, selected);
+            });
+            $('.toggle-disbursed-chart-container').click(function() {
+                selected = $('.toggle-disbursed-chart-container input[name=fundtype]:checked').val();
+                // make sure that you check the other radio buttons as well
+                if (selected === 'total_spent') {
+                    $('#progress-spent').prop("checked", true);
+                } else  {
+                    $('#progress-committed').prop("checked", true);
+                }
+                chart.update(timeData, selected);
+            });
+		}*/
 
-		function drawProgressCircles() {
+		/*function drawProgressCircles() {
 			$('.progress-circle-title .info-img').tooltipster({
 				content: 'The <b>percent of committed funds</b> that were disbursed is shown. ' +
 					'However, note that not all projects with disbursals have corresponding commitments, ' +
@@ -263,11 +285,81 @@
 				'total_spent',
 			);
 
-			$('.toggle-disbursed-container').click(function() {
-				const type = $('input[name=fundtype]:checked').val();
-				chart.update(fundsByCcList, type);
-			});
-		}
+
+			//$('.toggle-disbursed-container').click(function() {
+			//	const type = $('input[name=fundtype]:checked').val();
+			//	chart.update(fundsByCcList, type);
+			//});
+
+
+            $('.toggle-disbursed-container').click(function() {
+                selected = $('.toggle-disbursed-container input[name=fundtype]:checked').val();
+                // make sure that you check the other radio buttons as well
+                if (selected === 'total_spent') {
+                    $('#chart-spent').prop("checked", true);
+                } else  {
+                    $('#chart-committed').prop("checked", true);
+                }
+                chart.update(fundsByCcList, selected);
+            });
+            $('.toggle-disbursed-chart-container').click(function() {
+                selected = $('.toggle-disbursed-chart-container input[name=fundtype]:checked').val();
+                // make sure that you check the other radio buttons as well
+                if (selected === 'total_spent') {
+                    $('#progress-spent').prop("checked", true);
+                } else  {
+                    $('#progress-committed').prop("checked", true);
+                }
+                chart.update(fundsByCcList, selected);
+            });
+		}*/
+
+        function drawProgressCircles() {
+            $('.progress-circle-title .info-img').tooltipster({
+                content: 'The <b>percent of committed funds</b> that were disbursed is shown. ' +
+                'However, note that not all projects with disbursals have corresponding commitments, ' +
+                'so these figures do not take into account all known funding initiatives.',
+            });
+
+            const ccs = ['P', 'D', 'R'];
+            const fundsByCc = {};
+            ccs.forEach((cc) => {
+                fundsByCc[cc] = {
+                    cc,
+                    total_committed: 0,
+                    total_spent: 0,
+                };
+            });
+            lookup[iso].forEach((p) => {
+                ccs.forEach((cc) => {
+                    console.log(p.core_capacities);
+                    if (p.core_capacities.some(pcc => cc === pcc.charAt(0))) {
+                        const committed = p.total_committed;
+                        let spent = p.total_spent;
+                        if (spent > committed) spent = committed;
+                        fundsByCc[cc].total_committed += committed;
+                        fundsByCc[cc].total_spent += spent;
+                    }
+                });
+            });
+            App.drawProgressCircles('.prevent-circle-chart', fundsByCc.P, color);
+            App.drawProgressCircles('.detect-circle-chart', fundsByCc.D, color);
+            App.drawProgressCircles('.respond-circle-chart', fundsByCc.R, color);
+
+            const percFormat = d3.format('.0%');
+            const fillValueText = (valueSelector, ind) => {
+                if (fundsByCc[ind].total_committed) {
+                    const pValue = fundsByCc[ind].total_spent / fundsByCc[ind].total_committed;
+                    $(valueSelector).text(percFormat(pValue));
+                } else {
+                    $(valueSelector).parent().text('No funds committed for this core element');
+                }
+            };
+
+            fillValueText('.prevent-value', 'P');
+            fillValueText('.detect-value', 'D');
+            fillValueText('.respond-value', 'R');
+        }
 
 		function drawCountryTable() {
 			if (moneyType === 'd') {
@@ -342,7 +434,10 @@
 				header.append('td').html('Prevent');
 				header.append('td').html('Detect');
 				header.append('td').html('Respond');
+
 				header.append('td').html('Other');
+                /*header.append('td').html('Dispersed');
+                header.append('td').html('Committed');*/
 
 				const body = table.append('tbody');
 
@@ -384,11 +479,18 @@
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_detect));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_respond));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_other));
+                    /*rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.total_committed));
+                    rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.total_spent));*/
+
+
 				} else {
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_prevent));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_detect));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_respond));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_other));
+					/*rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.total_committed));
+                    rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.total_spent));*/
+
 				}
 
 				// initialize DataTables plugin
@@ -404,9 +506,25 @@
 			drawTable('total_spent');
 
 			$('.toggle-disbursed-container').click(function() {
-				selected = $('input[name=fundtype]:checked').val();
+                selected = $('.toggle-disbursed-container input[name=fundtype]:checked').val();
+				// make sure that you check the other radio buttons as well
+				if (selected === 'total_spent') {
+					$('#chart-spent').prop("checked", true);
+                } else  {
+                    $('#chart-committed').prop("checked", true);
+				}
 				drawTable(selected);
 			});
+            $('.toggle-disbursed-chart-container').click(function() {
+                selected = $('.toggle-disbursed-chart-container input[name=fundtype]:checked').val();
+                // make sure that you check the other radio buttons as well
+                if (selected === 'total_spent') {
+                    $('#progress-spent').prop("checked", true);
+                } else  {
+                    $('#progress-committed').prop("checked", true);
+                }
+                drawTable(selected);
+            });
 		}
 
 		function drawCategoryChart() {
@@ -499,10 +617,35 @@
 				}
 				updateData();
 			});
+
+			/*
 			$('.toggle-disbursed-container').click(function() {
 				selected = $('input[name=fundtype]:checked').val();
 				updateData();
 			});
+			*/
+
+            $('.toggle-disbursed-container').click(function() {
+                selected = $('.toggle-disbursed-container input[name=fundtype]:checked').val();
+                // make sure that you check the other radio buttons as well
+                if (selected === 'total_spent') {
+                    $('#chart-spent').prop("checked", true);
+                } else  {
+                    $('#chart-committed').prop("checked", true);
+                }
+                updateData();
+            });
+            $('.toggle-disbursed-chart-container').click(function() {
+                selected = $('.toggle-disbursed-chart-container input[name=fundtype]:checked').val();
+                // make sure that you check the other radio buttons as well
+                if (selected === 'total_spent') {
+                    $('#progress-spent').prop("checked", true);
+                } else  {
+                    $('#progress-committed').prop("checked", true);
+                }
+                updateData();
+            });
+
 
 			const updateData = () => {
 				if (filterData === 'small') {
@@ -522,6 +665,32 @@
 			}
 		}
 
+        function drawTimeChart() {
+            // get data
+            const timeData = [];
+            const fundsByYear = {};
+            for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
+                fundsByYear[i] = {
+                    year: i,
+                    total_committed: 0,
+                    total_spent: 0,
+                };
+            }
+            lookup[iso].forEach((p) => {
+                for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
+                    fundsByYear[i].total_committed += p.committed_by_year[i];
+                    fundsByYear[i].total_spent += p.spent_by_year[i];
+                }
+            });
+            for (const y in fundsByYear) {
+                timeData.push(fundsByYear[y]);
+            }
+            App.buildTimeChart('.time-chart-container', timeData, {
+                color,
+                lightColor,
+                moneyType,
+            });
+        }
 		init();
 	};
 })();

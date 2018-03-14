@@ -16,10 +16,17 @@
 	position: relative;
 	padding-bottom: 20px;
 
-	.source-text {
+	/*.source-text {
 		position: absolute;
 		bottom: 0px;
 		right: 0px;
 		font-size: 0.9em;
+	}*/
+	.source-text {
+		right: 30px;
+		bottom: 20px;
+		font-size: 0.95em;
+		float: right;
+		padding-top: 20px;
 	}
 }

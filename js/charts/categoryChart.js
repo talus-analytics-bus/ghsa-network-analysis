@@ -21,12 +21,12 @@
 	App.buildCategoryChart = (selector, param = {}) => {
 		const oppNoun = (param.moneyType === 'r') ? 'Funder' : 'Recipient';
 		let colors = (param.moneyType === 'r') ? App.receiveColorPalette : App.fundColorPalette;
-		// colors = colors.slice(0, 5);
+		colors = colors.slice(0, 5);
 
 		const selected = param.selected || 'total_spent';
 
 		// start building the chart
-		const margin = { top: 100, right: 20, bottom: 80, left: 250 };
+		const margin = { top: 50, right: 20, bottom: 20, left: 250 };
 		const width = 800;
 		const height = 500;
 
@@ -44,12 +44,14 @@
 			.range([0, width]);
 		const y = d3.scaleBand()
 			.padding(0.25);
-		const colorScale = d3.scaleLinear()
+		/*const colorScale = d3.scaleLinear()
 			.domain([0, 1])
 			.range([
 				colors[2],
 				colors[0],
-			]);
+			]);*/
+        const colorScale = d3.scaleOrdinal()
+        .range(colors);
 
 		const xAxis = d3.axisTop()
 			.ticks(5)
@@ -77,7 +79,7 @@
 			.call(yAxis)
 			.style('font-size', '0.4em');
 
-		const legendG = chart.append('g')
+		/*const legendG = chart.append('g')
 			.attr('class', 'legend-group')
 			.attr('transform', `translate(${width / 3}, ${height + 30})`);
 		const defs = chart.append('defs');
@@ -104,11 +106,12 @@
 		legendG.append('rect')
 			.attr('height', 20)
 			.attr('width', 300)
-			.style('fill', 'url(#legend-gradient');
+			.style('fill', 'url(#legend-gradient');*/
 
 		// add axes labels
-		let xAxisLabel = 'Total Funds Disbursed by Core Capacity';
-		if (param.moneyType === 'r') xAxisLabel = 'Total Funds Received by Core Capacity';
+		//let xAxisLabel = 'Total Funds Disbursed by Core Capacity';
+        let xAxisLabel = ''; // per Ellie, no xAxisLabel
+		//if (param.moneyType === 'r') xAxisLabel = 'Total Funds Received by Core Capacity';
 		chart.append('text')
 			.attr('class', 'axis-label')
 			.attr('x', width / 2)
@@ -159,7 +162,7 @@
 			const bandwidth = y.bandwidth();
 
 			// legend labels
-			legendG.attr('transform', `translate(${width / 3}, ${newHeight + 30})`);
+			/*legendG.attr('transform', `translate(${width / 3}, ${newHeight + 30})`);
 			legendG.selectAll('text').remove();
 			legendG.append('text')
 				.attr('x', 290)
@@ -177,7 +180,7 @@
 				.style('text-anchor', 'middle')
 				.style('font-weight', 600)
 				.text('Funds');
-
+*/
 			// remove first
 			let barGroups = allBars.selectAll('.bar-group')
 				.remove().exit().data(data);
@@ -212,21 +215,26 @@
 				});
 
 			// set axes labels
+			let xLabelPreText = 'Dispersed';
 			if (param.moneyType === 'r') {
 				if (newSelector === 'total_spent') {
-					legendTitle.text(`Funds Disbursed (${App.formatMoney(0).split(' ')[1]})`);
+					//legendTitle.text(`Funds Disbursed (${App.formatMoney(0).split(' ')[1]})`);
+                    xLabelPreText = 'Dispersed';
 				} else {
 					legendTitle.text(`Funds Committed (${App.formatMoney(0).split(' ')[1]})`);
+                    xLabelPreText = 'Committed';
 				}
 			} else {
 				if (newSelector === 'total_spent') {
-					legendTitle.text(`Funds Disbursed (${App.formatMoney(0).split(' ')[1]})`);
+					//legendTitle.text(`Funds Disbursed (${App.formatMoney(0).split(' ')[1]})`);
+                    xLabelPreText = 'Dispersed';
 				} else {
-					legendTitle.text(`Funds Committed (${App.formatMoney(0).split(' ')[1]})`);
+					//legendTitle.text(`Funds Committed (${App.formatMoney(0).split(' ')[1]})`);
+                    xLabelPreText = 'Committed';
 				}
 			}
-			xLabel.text(`Funds (${App.formatMoney(0).split(' ')[1]})`);
-			chart.select('.axis-label').text('Funds by Core Capacity');
+			xLabel.text(`Funds ${xLabelPreText} (${App.formatMoney(0).split(' ')[1]})`);
+			//chart.select('.axis-label').text('Funds by Core Capacity');
 
 			chart.select('.y-label-text')
 				.attr('x', -newHeight / 2);
