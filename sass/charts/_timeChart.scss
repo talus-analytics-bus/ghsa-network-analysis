@@ -14,7 +14,7 @@
 }
 .time-chart-container {
 	position: relative;
-	padding-bottom: 20px;
+	//padding-bottom: 20px;
 
 	/*.source-text {
 		position: absolute;
@@ -28,5 +28,11 @@
 		font-size: 0.95em;
 		float: right;
 		padding-top: 20px;
+	}
+
+	.country-summary-label {
+		font-weight: 400;
+		font-size: 1.2em;
+		text-align: left;
 	}
 }

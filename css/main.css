@@ -776,7 +776,6 @@ b {
 
 .time-chart-container {
   position: relative;
-  padding-bottom: 20px;
   /*.source-text {
   	position: absolute;
   	bottom: 0px;
@@ -789,6 +788,10 @@ b {
     font-size: 0.95em;
     float: right;
     padding-top: 20px; }
+  .time-chart-container .country-summary-label {
+    font-weight: 400;
+    font-size: 1.2em;
+    text-align: left; }
 
 .analysis-container {
   padding: 0;
@@ -935,14 +938,13 @@ b {
 /* --- Detail Page --- */
 .switch-type-button {
   position: absolute;
-  top: 43px;
+  top: 29px;
   right: 30px; }
 
 .country-flow-content {
   display: none;
   position: relative;
-  margin-top: 10px;
-  padding-top: 35px;
+  padding-top: 20px;
   padding-right: 30px;
   padding-bottom: 20px;
   padding-left: 20px; }
@@ -1008,7 +1010,8 @@ b {
     float: left;
     text-align: left;
     margin-bottom: 20px;
-    padding-bottom: 20px; }
+    padding-bottom: 20px;
+    padding-top: 50px; }
   .country-flow-summary .time-chart-container,
   .progress-circle-section .time-chart-container {
     text-align: right; }
@@ -1018,23 +1021,20 @@ b {
     max-width: 400px; }
   .country-flow-summary .time-chart-container,
   .progress-circle-section .time-chart-container {
-    margin-left: 365px; }
-  .country-flow-summary .progress-circle-container,
-  .progress-circle-section .progress-circle-container {
-    margin-left: 430px; }
-  .country-flow-summary .progress-circle-title,
-  .progress-circle-section .progress-circle-title {
-    font-weight: 600;
-    font-size: 1.2em; }
+    margin-left: 255px; }
   .country-flow-summary .progress-circle-description,
   .progress-circle-section .progress-circle-description {
-    margin-top: 15px; }
+    margin-top: 15px;
+    padding-bottom: 20px; }
   .country-flow-summary .progress-circle-container,
   .progress-circle-section .progress-circle-container {
-    margin-left: 430px; }
+    margin-left: 336px; }
   .country-flow-summary .progress-circle-title,
   .progress-circle-section .progress-circle-title {
-    white-space: nowrap; }
+    white-space: nowrap;
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 0px; }
     .country-flow-summary .progress-circle-title .info-img,
     .progress-circle-section .progress-circle-title .info-img {
       position: relative;
@@ -1097,7 +1097,7 @@ b {
   padding-top: 0px;
   padding-right: 30px;
   padding-left: 0px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   border-bottom: 1px solid #ccc;
   margin-bottom: 20px;
   min-height: 180px; }

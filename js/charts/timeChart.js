@@ -1,9 +1,9 @@
 (() => {
     App.buildTimeChart = (selector, data, param = {}) => {
         // start building the chart
-        const margin = { top: 30, right: 150, bottom: 35, left: 60 };
-        const width = 480;
-        const height = 90;
+        const margin = { top: 30, right: 150, bottom: 35, left: 75 };
+        const width = 630;
+        const height = 150;
         const color = d3.color(param.color || 'steelblue');
         const lightColor = param.lightColor || color.brighter(2);
 
@@ -83,12 +83,16 @@
         .attr('class', 'chart-label')
         .attr('x', width / 2)
         .attr('y', height + 35)
+        .style('font-weight', '600')
         .text('Year');
+
         chart.append('text')
         .attr('class', 'chart-label')
-        .attr('x', -48)
-        .attr('y', -12)
+        .attr('transform', 'rotate(-90)')
+        .attr('x', -height + 25)
+        .attr('y', -55)
         .style('text-anchor', 'start')
+        .style('font-weight', '600')
         .text('Amount (in USD)');
 
         // add legend

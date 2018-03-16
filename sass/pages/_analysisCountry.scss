@@ -71,6 +71,7 @@
   .country-summary-label {
     font-weight: 400;
     font-size: 1.2em;
+
   }
   .country-summary-value {
     margin-top: 10px;
@@ -82,15 +83,15 @@
 /* --- Detail Page --- */
 .switch-type-button {
   position: absolute;
-  top: 43px;
+  top: 29px;
   right: 30px;
 }
 
 .country-flow-content {
   display: none;
   position: relative;
-  margin-top: 10px;
-  padding-top: 35px;
+  //margin-top: 10px;
+  padding-top: 20px;
   padding-right: 30px;
   padding-bottom: 20px;
   padding-left: 20px;
@@ -158,6 +159,7 @@
     text-align: left;
     margin-bottom: 20px;
     padding-bottom: 20px;
+    padding-top: 50px;
   }
 
   .time-chart-container {
@@ -170,27 +172,24 @@
     max-width: 400px;
   }
   .time-chart-container {
-    margin-left: 365px;
-  }
-  .progress-circle-container {
-    margin-left: 430px;
-  }
-  .progress-circle-title {
-    font-weight: 600;
-    font-size: 1.2em;
+    margin-left: 255px;
   }
 
   .progress-circle-description {
     margin-top: 15px;
+    padding-bottom: 20px;
   }
 
 
   .progress-circle-container {
-    margin-left: 430px;
+    margin-left: 336px;
   }
 
   .progress-circle-title {
     white-space: nowrap;
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 0px;
 
     .info-img {
       position: relative;
@@ -282,7 +281,7 @@
   padding-top: 0px;
   padding-right: 30px;
   padding-left: 0px;
-  padding-bottom: 10px;
+  padding-bottom: 20px;
   border-bottom: $light-border;
   margin-bottom: 20px;
   min-height: 180px;
