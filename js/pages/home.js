@@ -24,6 +24,7 @@
 
 		// function for initializing the page
 		function init() {
+            App.setSources();
 			// build map and initialize search
 			map = buildMap();
 			initMapOptions();

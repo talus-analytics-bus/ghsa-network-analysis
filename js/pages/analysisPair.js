@@ -23,6 +23,7 @@
 		}
 
 		function init() {
+            App.setSources();
 			// fill title
 			const fundFlagHtml = donorCountry ? App.getFlagHtml(fundIso) : '';
 			const recFlagHtml = recipientCountry ? App.getFlagHtml(recIso) : '';

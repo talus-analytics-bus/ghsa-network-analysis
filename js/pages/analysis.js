@@ -7,6 +7,7 @@
 		let activeCountry;
 
 		function init() {
+            App.setSources();
 			initTabs();
 			updateTab();
 

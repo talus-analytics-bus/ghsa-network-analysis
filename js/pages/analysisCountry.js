@@ -8,6 +8,7 @@
 
 		// initializes the whole page
 		function init() {
+            App.setSources();
 			// fill title
 			const name = App.codeToNameMap.get(iso);
 			const flagHtml = country ? App.getFlagHtml(iso) : '';
