@@ -1025,7 +1025,7 @@ b {
   .country-flow-summary .progress-circle-description,
   .progress-circle-section .progress-circle-description {
     margin-top: 15px;
-    padding-bottom: 20px; }
+    padding-bottom: 10px; }
   .country-flow-summary .progress-circle-container,
   .progress-circle-section .progress-circle-container {
     margin-left: 336px; }
