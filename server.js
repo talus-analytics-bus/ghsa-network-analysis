@@ -6,6 +6,21 @@ var fs = require('fs');
 
 
 var formidable = require('formidable');
+const useHTTPSRedirection = true;
+
+
+
+// Set the useHTTPSRedirection to false if you don't want the auto-redirection from HTTP to HTTPS
+if (useHTTPSRedirection === true) {
+    // Redirect HTTP to HTTPS
+    app.use(function(req, res, next) {
+        if((!req.secure) && (req.get('X-Forwarded-Proto') !== 'https')) {
+            res.redirect('https://' + req.get('Host') + req.url);
+        }
+        else
+            next();
+    });
+}
 
 // if no hash, send to index
 app.get('/', function(req, res) {
@@ -89,7 +104,7 @@ if (enableS3) {
 
 
 // Start the HTTP Server
-server.listen(process.env.PORT || 8888, function() {
+server.listen(process.env.PORT || 8800, function() {
 	console.log('Server set up!');
 	console.log(server.address());
 });

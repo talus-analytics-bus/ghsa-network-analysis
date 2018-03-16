@@ -776,12 +776,22 @@ b {
 
 .time-chart-container {
   position: relative;
-  padding-bottom: 20px; }
+  /*.source-text {
+  	position: absolute;
+  	bottom: 0px;
+  	right: 0px;
+  	font-size: 0.9em;
+  }*/ }
   .time-chart-container .source-text {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    font-size: 0.9em; }
+    right: 30px;
+    bottom: 20px;
+    font-size: 0.95em;
+    float: right;
+    padding-top: 20px; }
+  .time-chart-container .country-summary-label {
+    font-weight: 400;
+    font-size: 1.2em;
+    text-align: left; }
 
 .analysis-container {
   padding: 0;
@@ -819,7 +829,7 @@ b {
 .analysis-content {
   position: relative;
   margin: 0;
-  padding: 20px 30px 50px;
+  padding: 20px 30px 10px;
   z-index: 100; }
 
 .flag {
@@ -867,6 +877,12 @@ b {
   .country-table .name-container span:hover {
     text-decoration: underline; }
 
+.funds-dispursed-title {
+  white-space: nowrap;
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-top: 0px; }
+
 .analysis-country-content .analysis-country-title {
   text-align: center;
   cursor: pointer;
@@ -875,7 +891,7 @@ b {
   font-size: 30px; }
 .analysis-country-content .profile-type-container {
   position: absolute;
-  top: 71px;
+  top: 66px;
   left: 0;
   width: 100%;
   font-weight: 600;
@@ -928,13 +944,16 @@ b {
 /* --- Detail Page --- */
 .switch-type-button {
   position: absolute;
-  top: 43px;
+  top: 29px;
   right: 30px; }
 
 .country-flow-content {
   display: none;
   position: relative;
-  margin-top: 10px; }
+  padding-top: 20px;
+  padding-right: 30px;
+  padding-bottom: 20px;
+  padding-left: 20px; }
   .country-flow-content .show-table-btn {
     margin-top: 10px; }
 
@@ -950,15 +969,29 @@ b {
 
 .country-flow-summary,
 .progress-circle-section {
-  position: relative;
-  padding-right: 30px;
-  padding-left: 30px;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
   padding-top: 20px;
-  margin-top: 20px;
+  padding-right: 2%;
+  padding-left: 20px;
   border-bottom: 1px solid #ccc;
-  margin-bottom: 20px;
-  min-height: 180px; }
+  /*.circle-chart-content {
+    display: inline-block;
+    //margin: 0 20px;
+    //max-width: 500px;
+    text-align: left;
+    vertical-align: top;
+  }*/
+  /*.source-text {
+    text-align: right;
+    font-size: 0.95em;
+  }*/ }
+  .country-flow-summary .source-text,
+  .progress-circle-section .source-text {
+    right: 30px;
+    bottom: 20px;
+    font-size: 0.95em;
+    float: right;
+    padding-top: 20px; }
   .country-flow-summary .country-summary-label,
   .progress-circle-section .country-summary-label {
     font-weight: 600;
@@ -973,32 +1006,43 @@ b {
     float: left;
     text-align: left;
     margin-bottom: 20px;
-    padding-bottom: 20px; }
-  .country-flow-summary .progress-circle-text,
-  .progress-circle-section .progress-circle-text {
-    float: left;
-    max-width: 100%;
-    text-align: left; }
+    padding-bottom: 20px;
+    padding-top: 50px; }
   .country-flow-summary .time-chart-container,
   .progress-circle-section .time-chart-container {
     text-align: right; }
+  .country-flow-summary .progress-circle-text,
+  .progress-circle-section .progress-circle-text {
+    float: left;
+    max-width: 400px; }
+  .country-flow-summary .time-chart-container,
+  .progress-circle-section .time-chart-container {
+    margin-left: 255px; }
+  .country-flow-summary .progress-circle-description,
+  .progress-circle-section .progress-circle-description {
+    margin-top: 15px;
+    padding-bottom: 10px; }
+  .country-flow-summary .progress-circle-container,
+  .progress-circle-section .progress-circle-container {
+    margin-left: 336px; }
   .country-flow-summary .progress-circle-title,
   .progress-circle-section .progress-circle-title {
     white-space: nowrap;
-    font-size: 1.5em; }
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 0px; }
     .country-flow-summary .progress-circle-title .info-img,
     .progress-circle-section .progress-circle-title .info-img {
       position: relative;
       width: 16px;
       height: 16px;
       margin-left: 5px; }
-  .country-flow-summary .progress-circle-description,
-  .progress-circle-section .progress-circle-description {
-    margin-top: 15px; }
   .country-flow-summary .circle-chart-content,
   .progress-circle-section .circle-chart-content {
     display: inline-block;
-    text-align: left;
+    margin: 0 20px;
+    max-width: 160px;
+    text-align: center;
     vertical-align: top; }
   .country-flow-summary .circle-chart-label,
   .progress-circle-section .circle-chart-label {
@@ -1010,13 +1054,22 @@ b {
     font-size: 0.95em;
     line-height: 1.25;
     margin-top: 4px; }
-  .country-flow-summary .source-text,
-  .progress-circle-section .source-text {
-    text-align: right;
-    font-size: 0.95em; }
-
-.progress-circle-section .source-text {
-  padding-top: 65px; }
+  .country-flow-summary .country-flow-summary-container,
+  .progress-circle-section .country-flow-summary-container {
+    padding-bottom: 40px;
+    padding-top: 20px;
+    padding-right: 2%;
+    padding-left: 20px; }
+  .country-flow-summary .circle-chart-label,
+  .progress-circle-section .circle-chart-label {
+    margin-top: 5px;
+    font-size: 1.1em;
+    font-weight: 600; }
+  .country-flow-summary .circle-chart-sublabel,
+  .progress-circle-section .circle-chart-sublabel {
+    font-size: 0.95em;
+    line-height: 1.25;
+    margin-top: 4px; }
 
 .country-chart-container {
   position: relative;
@@ -1037,21 +1090,25 @@ b {
   .country-chart-container .name-container {
     width: 200px; }
 
+.progress-container {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px; }
+
 .category-chart-section {
   position: relative;
   padding-top: 0px;
   padding-right: 30px;
-  padding-left: 30px;
-  padding-bottom: 10px;
+  padding-left: 0px;
+  padding-bottom: 3px;
   border-bottom: 1px solid #ccc;
-  margin-bottom: 20px;
   min-height: 180px; }
   .category-chart-section .source-text {
     text-align: right;
     font-size: 0.95em; }
   .category-chart-section .description {
     width: 100%;
-    max-width: 100%; }
+    max-width: 100%;
+    margin-top: 0px; }
 
 .toggle-type {
   text-align: right;
@@ -1059,8 +1116,12 @@ b {
   vertical-align: middle; }
 
 .toggle-disbursed-container {
-  padding-top: 5px;
-  text-align: left; }
+  padding-top: 10px;
+  text-align: left;
+  float: left; }
+
+.toggle-disbursed-chart-container {
+  padding-top: 10px; }
 
 .return-button {
   margin-top: 10px; }
@@ -1083,7 +1144,6 @@ b {
   border-right: 1px solid #ccc; }
 
 .circle-pack-title,
-.progress-circle-title,
 .category-chart-title {
   font-size: 1.5em;
   font-weight: 600;
@@ -1091,6 +1151,14 @@ b {
 
 .slightly-dark {
   background-color: #fbfbfb; }
+
+.circle-pack-container {
+  padding-top: 20px; }
+  .circle-pack-container .dataTables_filter {
+    text-align: right;
+    margin-top: -24px; }
+  .circle-pack-container .description {
+    margin-top: 0px; }
 
 .analysis-global-content .analysis-global-tab-container {
   margin-top: 20px;

@@ -337,7 +337,7 @@
                                 <tbody></tbody>
                             </table>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="">
                             <h3 class="fund-table-title">Top Recipients</h3>
                             <table class="recipient-table country-table table table-bordered table-hover">
                                 <thead>
@@ -367,29 +367,17 @@
     <div class="analysis-container container">
         <div class="analysis-country-content analysis-content">
             <div class="row">
-                <div class="col-sm-2 toggle-type">
-                    <div class="btn-group-vertical">
-                        <div class="btn btn-default btn-sm toggle-funder-profile">Funder Profile</div>
-                        <div class="btn btn-default btn-sm toggle-recipient-profile">Recipient Profile</div>
-                    </div>
-                </div>
-                <div class="col-sm-8 country-header">
+
+                <div class="col-sm-12 country-header">
                     <div class="row col-md-12 analysis-country-title">
                     </div>
-                    <div class="row col-sm-12 country-summary-text">
-                        <span class="country-summary-value"></span><br>
-                        Total Funds
-                        <span class="money-type-cap"></span>
-                        from <span class="start-year"></span> to <span class="end-year"></span>
-                    </div>
+
                 </div>
-                <div class="col-sm-2 toggle-disbursed-container">
-                    <form>
-                        <label class="radio-inline"><input type="radio" name="fundtype" value="total_spent">Disbursed
-                            Funds</label><br>
-                        <label class="radio-inline"><input type="radio" name="fundtype" value="total_committed">Committed
-                            Funds</label>
-                    </form>
+                <div class="col-sm-2 switch-type-button btn btn-default">Switch to Recipient Profile</div>
+                <div class="profile-type-container">
+                    <div class="profile-type-text">
+                        <span class="money-type-noun-cap"></span> Profile
+                    </div>
                 </div>
             </div>
 
@@ -419,40 +407,88 @@
                     </div>
                 </div>
             </div>
-            <div class="row country-flow-summary">
-                <div class="row">
-                    <div class="col-md-4 progress-circle-text">
+            <div class="row country-flow-summary-container">
+                <div class="country-flow-summary">
+                    <div class="funds-dispursed-title">
+                        Total Funds <span class="money-type-cap">Disbursed</span>
+                            from <span class="start-year">2014</span> to <span class="end-year">2017</span>
+                    </div>
+                    <div class="country-summary-text">
+
+                        <div class="country-summary-value"></div>
+                        <div class="show-table-btn btn btn-default">Show All Funds</div>
+                    </div>
+                    <div>
+                        <div class="time-chart-container">
+
+
+                            <div class="time-chart-graphic"> </div>
+
+                        </div>
+                        <div class="source-text">
+                            <b>Source:</b>
+                            IATI registry via
+                            <a href="http://d-portal.org" target="_blank">d-portal</a>,
+                            2014-2017.
+                        </div>
+                    </div>
+                </div>
+                <div class="country-flow-summary-empty">
+                    <div class="no-text">
+                        <p>
+                            No funding data are currently available where
+                            <b class="country-name"></b>
+                            is a <b class="money-type-noun"></b>.
+                        </p>
+                        <p>
+                            To submit data, click the button below. Or switch to the
+                            <span class="opp-money-type-noun"></span> profile by clicking
+                            the top-right button.
+                        </p>
+                    </div>
+                    <div class="submit-data-btn btn btn-default">Submit Data</div>
+                </div>
+                <div class="progress-circle-section">
+                    <div class="progress-circle-text">
                         <div class="progress-circle-title">
                             Funding by Core Element
                         </div>
                         <div class="progress-circle-description description">
-                            This chart shows the percent of funds <span class="money-type"></span>, organized by
-                             <span class="core-element-text">core element <img src="img/info.png" style="height: 1em;"/></span>.
-                             Only funded core elements are shown.
-                            <br><br>
-                            <i>Hover to view funding details.</i>
+                            Percentages shown for each core element.
                         </div>
-                    </div>
-                    <div class="col-md-7 col-md-offset-1">
-                        <div class="progress-circle-title">
-                            Funding over Time
-                        </div>
-                        <div class="progress-circle-description description">
-                            The chart below shows <span class="money-type"></span> funds over time.
-                            Only funded core elements are shown
-                            <span class="core-element-text"><img src="img/info.png" style="height: 1em;"/></span>.
 
-                            <br><br>
-                            <i>Hover over a line or label to highlight funding details.</i>
+                        <div class="">
+                            <div class="toggle-progress-circle-chart-container">
+                                <form>
+                                    <label class="radio-inline"><input id="progress-spent" type="radio" name="fundtype" value="total_spent">Disbursed
+                                        Funds</label><br>
+                                    <label class="radio-inline"><input id="progress-committed" type="radio" name="fundtype" value="total_committed">Committed
+                                        Funds</label>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-sm-4 progress-circle-container">
-                    <div class="circle-chart-content">
-                        <div class="core-circle-chart circle-chart"></div>
+
+                    <div class="progress-circle-container">
+                        <div class="circle-chart-content">
+                            <div class="prevent-circle-chart circle-chart"></div>
+                            <div class="circle-chart-label">Prevent</div>
+
+                        </div>
+                        <div class="circle-chart-content">
+                            <div class="detect-circle-chart circle-chart"></div>
+                            <div class="circle-chart-label">Detect</div>
+
+                        </div>
+                        <div class="circle-chart-content">
+                            <div class="respond-circle-chart circle-chart"></div>
+                            <div class="circle-chart-label">Respond</div>
+                        </div>
+                        <div class="circle-chart-content">
+                            <div class="other-circle-chart circle-chart"></div>
+                            <div class="circle-chart-label">Other</div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-7 col-sm-offset-1 time-chart-container">
                     <div class="source-text">
                         <b>Source:</b>
                         IATI registry via
@@ -460,7 +496,6 @@
                         2014-2017.
                     </div>
                 </div>
-            </div>
             <div class="country-flow-summary-empty">
                 <div class="no-text">
                     <p>
@@ -476,27 +511,39 @@
                 </div>
                 <div class="submit-data-btn btn btn-default">Submit Data</div>
             </div>
+                <!-- The barchart that displays funds dispersed by core capacity-->
             <div class="country-flow-content">
-                <div class="row category-chart-section">
-                    <div class="row col-lg-12">
+                <div class=" category-chart-section">
+                    <div class=" ">
                         <h3 class="category-chart-title">
                             Funding by Core Capacity
                         </h3>
-                        <div class="description">
-                            The chart below shows the funds <span class="money-type"></span>
-                            by core capacity
-                            <span class="core-capacity-text"><img src="img/info.png" style="height: 1em;"/></span>.
-                            Only funded core capacities are shown.
-
-                            <br><br>
-                            <i>Hover over a bar to see additional funding details.</i>
+                        <div class="">
+                            <div class="">
+                                <div class="description">
+                                    The chart below shows the funds <span class="money-type"></span>
+                                    by core capacity
+                                    <span class="core-capacity-text"><img src="img/info.png" style="height: 1em;"/></span>.
+                                    Only funded core capacities are shown. Hover over a bar to see additional funding details.
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="toggle-disbursed-chart-container">
+                                    <form>
+                                        <label class="radio-inline"><input id="chart-spent" type="radio" name="fundtype" value="total_spent">Disbursed
+                                            Funds</label><br>
+                                        <label class="radio-inline"><input id="chart-committed" type="radio" name="fundtype" value="total_committed">Committed
+                                            Funds</label>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="row">
                                 <div class="category-chart-container"></div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-12 source-text">
+                                <div class="source-text">
                                     <b>Source:</b>
                                     IATI registry via
                                     <a href="http://d-portal.org" target="_blank">d-portal</a>,
@@ -506,30 +553,30 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="col-lg-12">
-                            <div class="circle-pack-container">
-                                <h3 class="circle-pack-title"></h3>
-                                <div class="circle-pack-description description">
-                                    The table below displays <span class="opp-money-type-noun"></span>s in order of
-                                    amount of funds received. Click on a row to view details.
-                                </div>
-                                <div class="country-table-container">
-                                    <table class="country-table table table-bordered table-hover">
-                                        <thead>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        </thead>
-                                        <tbody></tbody>
-                                    </table>
-                                </div>
+
+
+                <div class="">
+                        <div class="circle-pack-container">
+                            <h3 class="circle-pack-title"></h3>
+                            <div class="circle-pack-description description">
+                                The table below displays <span class="opp-money-type-noun"></span>s in order of
+                                amount of funds received. Click on a row to view details.
+                            </div>
+                            <div class="country-table-container">
+                                <table class="country-table table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                </div>
+
+
             </div>
         </div>
 </script>

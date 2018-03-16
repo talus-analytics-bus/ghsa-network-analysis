@@ -1,3 +1,10 @@
+.funds-dispursed-title {
+  white-space: nowrap;
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-top: 0px;
+}
+
 .analysis-country-content {
   .analysis-country-title {
     text-align: center;
@@ -8,7 +15,7 @@
   }
   .profile-type-container {
     position: absolute;
-    top: 71px;
+    top: 66px;
     left: 0;
     width: 100%;
     font-weight: 600;
@@ -71,6 +78,7 @@
   .country-summary-label {
     font-weight: 400;
     font-size: 1.2em;
+
   }
   .country-summary-value {
     margin-top: 10px;
@@ -82,14 +90,18 @@
 /* --- Detail Page --- */
 .switch-type-button {
   position: absolute;
-  top: 43px;
+  top: 29px;
   right: 30px;
 }
 
 .country-flow-content {
   display: none;
   position: relative;
-  margin-top: 10px;
+  //margin-top: 10px;
+  padding-top: 20px;
+  padding-right: 30px;
+  padding-bottom: 20px;
+  padding-left: 20px;
 
   .show-table-btn {
     margin-top: 10px;
@@ -112,15 +124,23 @@
 
 .country-flow-summary,
 .progress-circle-section {
-  position: relative;
-  padding-right: 30px;
-  padding-left: 30px;
-  padding-bottom: 20px;
+
+  padding-bottom: 40px;
   padding-top: 20px;
-  margin-top: 20px;
+  padding-right: 2%;
+  padding-left: 20px;
+
   border-bottom: $light-border;
-  margin-bottom: 20px;
-  min-height: 180px;
+
+
+  .source-text {
+    //position: absolute;
+    right: 30px;
+    bottom: 20px;
+    font-size: 0.95em;
+    float: right;
+    padding-top: 20px;
+  }
 
   .country-summary-label {
     font-weight: 600;
@@ -137,20 +157,37 @@
     text-align: left;
     margin-bottom: 20px;
     padding-bottom: 20px;
+    padding-top: 50px;
   }
-  .progress-circle-text {
-    float: left;
-    max-width: 100%;
-    text-align: left;
-  }
+
   .time-chart-container {
     text-align: right;
   }
-  .progress-circle-container {
+
+
+  .progress-circle-text {
+    float: left;
+    max-width: 400px;
   }
+  .time-chart-container {
+    margin-left: 255px;
+  }
+
+  .progress-circle-description {
+    margin-top: 15px;
+    padding-bottom: 10px;
+  }
+
+
+  .progress-circle-container {
+    margin-left: 336px;
+  }
+
   .progress-circle-title {
     white-space: nowrap;
     font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 0px;
 
     .info-img {
       position: relative;
@@ -159,14 +196,12 @@
       margin-left: 5px;
     }
   }
-  .progress-circle-description {
-    margin-top: 15px;
-  }
+
   .circle-chart-content {
     display: inline-block;
-    //margin: 0 20px;
-    //max-width: 500px;
-    text-align: left;
+    margin: 0 20px;
+    max-width: 160px;
+    text-align: center;
     vertical-align: top;
   }
   .circle-chart-label {
@@ -179,17 +214,39 @@
     line-height: 1.25;
     margin-top: 4px;
   }
-  .source-text {
+
+  .country-flow-summary-container {
+    padding-bottom: 40px;
+    padding-top: 20px;
+    padding-right: 2%;
+    padding-left: 20px;
+
+  }
+
+  /*.circle-chart-content {
+    display: inline-block;
+    //margin: 0 20px;
+    //max-width: 500px;
+    text-align: left;
+    vertical-align: top;
+  }*/
+  .circle-chart-label {
+    margin-top: 5px;
+    font-size: 1.1em;
+    font-weight: 600;
+  }
+  .circle-chart-sublabel {
+    font-size: 0.95em;
+    line-height: 1.25;
+    margin-top: 4px;
+  }
+  /*.source-text {
     text-align: right;
     font-size: 0.95em;
-  }
+  }*/
 }
 
-.progress-circle-section {
-  .source-text {
-    padding-top: 65px;
-  }
-}
+
 
 .country-chart-container {
   position: relative;
@@ -209,6 +266,8 @@
     padding-right: 25px;
     width: 100%;
   }
+
+
   .country-table {
     width: 100%;
   }
@@ -217,14 +276,19 @@
   }
 }
 
+.progress-container {
+  border-bottom: $light-border;
+  padding-bottom: 10px;
+}
+
 .category-chart-section {
   position: relative;
   padding-top: 0px;
   padding-right: 30px;
-  padding-left: 30px;
-  padding-bottom: 10px;
+  padding-left: 0px;
+  padding-bottom: 3px;
   border-bottom: $light-border;
-  margin-bottom: 20px;
+  //margin-bottom: 20px;
   min-height: 180px;
 
   .source-text {
@@ -235,6 +299,7 @@
   .description {
     width: 100%;
     max-width: 100%;
+    margin-top: 0px;
   }
 }
 
@@ -245,8 +310,13 @@
 }
 
 .toggle-disbursed-container {
-  padding-top: 5px;
+  padding-top: 10px;
   text-align: left;
+  float: left;
+}
+
+.toggle-disbursed-chart-container {
+  padding-top: 10px;
 }
 
 .return-button {
@@ -275,13 +345,28 @@
   border-right: $light-border;
 }
 .circle-pack-title,
-.progress-circle-title,
+//.progress-circle-title,
 .category-chart-title {
   font-size: 1.5em;
   font-weight: 600;
   margin-top: 0px;
 }
 
+
 .slightly-dark {
   background-color: #fbfbfb;
+}
+
+.circle-pack-container {
+
+  padding-top: 20px;
+
+  .dataTables_filter {
+    text-align: right;
+    margin-top: -24px;
+  }
+
+  .description {
+    margin-top: 0px;
+  }
 }
