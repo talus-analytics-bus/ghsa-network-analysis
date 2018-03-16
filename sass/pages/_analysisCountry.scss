@@ -89,9 +89,9 @@
 
 /* --- Detail Page --- */
 .switch-type-button {
-  position: absolute;
-  top: 29px;
-  right: 30px;
+  // position: absolute;
+  // top: 29px;
+  // right: 30px;
 }
 
 .country-flow-content {
@@ -133,14 +133,14 @@
   border-bottom: $light-border;
 
 
-  .source-text {
-    //position: absolute;
-    right: 30px;
-    bottom: 20px;
-    font-size: 0.95em;
-    float: right;
-    padding-top: 20px;
-  }
+  //.source-text {
+  //  //position: absolute;
+  //  right: 30px;
+  //  bottom: 20px;
+  //  font-size: 0.95em;
+  //  float: right;
+  //  padding-top: 20px;
+  //}
 
   .country-summary-label {
     font-weight: 600;
@@ -291,10 +291,10 @@
   //margin-bottom: 20px;
   min-height: 180px;
 
-  .source-text {
-    text-align: right;
-    font-size: 0.95em;
-  }
+  //.source-text {
+  //  text-align: right;
+  //  font-size: 0.95em;
+  //}
 
   .description {
     width: 100%;

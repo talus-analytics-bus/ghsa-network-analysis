@@ -19,6 +19,7 @@
 
 		// define content in container
 		function init() {
+            App.setSources();
 			// fill title
 			const flagHtml = country ? App.getFlagHtml(iso) : '';
 			$('.analysis-country-title')

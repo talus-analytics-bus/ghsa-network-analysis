@@ -314,10 +314,6 @@
     margin-left: 5px;
     width: 16px;
     height: 16px; }
-  .info-container .source-text {
-    text-align: right;
-    margin-top: 20px;
-    font-size: 0.95em; }
 
 select.form-control {
   display: inline-block;
@@ -668,6 +664,14 @@ b {
 .tooltip-row-content {
   margin-top: 10px; }
 
+.source-text {
+  font-size: 1.1em;
+  width: 80px;
+  float: right; }
+  .source-text a {
+    color: black;
+    text-decoration: none; }
+
 .category-chart .bar-label {
   font-size: 0.9em;
   font-weight: 600; }
@@ -679,11 +683,6 @@ b {
 
 .category-chart-container {
   position: relative; }
-  .category-chart-container .source-text {
-    font-size: 0.9em;
-    position: absolute;
-    bottom: 0;
-    right: 0; }
 
 .tick text {
   font-family: 'Open Sans', sans-serif;
@@ -782,12 +781,6 @@ b {
   	right: 0px;
   	font-size: 0.9em;
   }*/ }
-  .time-chart-container .source-text {
-    right: 30px;
-    bottom: 20px;
-    font-size: 0.95em;
-    float: right;
-    padding-top: 20px; }
   .time-chart-container .country-summary-label {
     font-weight: 400;
     font-size: 1.2em;
@@ -942,11 +935,6 @@ b {
     font-size: 16px; }
 
 /* --- Detail Page --- */
-.switch-type-button {
-  position: absolute;
-  top: 29px;
-  right: 30px; }
-
 .country-flow-content {
   display: none;
   position: relative;
@@ -985,13 +973,6 @@ b {
     text-align: right;
     font-size: 0.95em;
   }*/ }
-  .country-flow-summary .source-text,
-  .progress-circle-section .source-text {
-    right: 30px;
-    bottom: 20px;
-    font-size: 0.95em;
-    float: right;
-    padding-top: 20px; }
   .country-flow-summary .country-summary-label,
   .progress-circle-section .country-summary-label {
     font-weight: 600;
@@ -1102,9 +1083,6 @@ b {
   padding-bottom: 3px;
   border-bottom: 1px solid #ccc;
   min-height: 180px; }
-  .category-chart-section .source-text {
-    text-align: right;
-    font-size: 0.95em; }
   .category-chart-section .description {
     width: 100%;
     max-width: 100%;
@@ -1187,13 +1165,6 @@ b {
     text-align: center;
     font-style: italic;
     font-size: 1.1em; }
-  .network-map-container .source-text {
-    position: absolute;
-    font-size: 0.95em;
-    text-align: right;
-    width: 290px;
-    bottom: 10px;
-    right: 10px; }
 
 .network-right-column {
   position: relative;
@@ -1308,10 +1279,6 @@ b {
     display: inline-block; }
   .global-tab-content[tab="country"] .table-country-search input {
     width: 400px; }
-.global-tab-content[tab="country"] .source-text {
-  margin-top: 20px;
-  font-size: 0.95em;
-  text-align: right; }
 
 .analysis-pair-content {
   position: relative;
