@@ -1,7 +1,7 @@
 (() => {
     App.buildTimeChart = (selector, data, param = {}) => {
         // start building the chart
-        const margin = { top: 30, right: 150, bottom: 35, left: 75 };
+        const margin = { top: 15, right: 150, bottom: 35, left: 75 };
         const width = 630;
         const height = 150;
         const color = d3.color(param.color || 'steelblue');
@@ -32,7 +32,7 @@
         .scale(x);
         const yAxis = d3.axisLeft()
         .ticks(4)
-        .tickSize(0)
+        .tickSize(3)
         .tickSizeOuter(3)
         .tickPadding(10)
         .tickFormat(App.siFormat)

@@ -829,7 +829,7 @@ b {
 .analysis-content {
   position: relative;
   margin: 0;
-  padding: 20px 30px 50px;
+  padding: 20px 30px 10px;
   z-index: 100; }
 
 .flag {
@@ -876,6 +876,12 @@ b {
     cursor: pointer; }
   .country-table .name-container span:hover {
     text-decoration: underline; }
+
+.funds-dispursed-title {
+  white-space: nowrap;
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-top: 0px; }
 
 .analysis-country-content .analysis-country-title {
   text-align: center;
@@ -963,17 +969,7 @@ b {
 
 .country-flow-summary,
 .progress-circle-section {
-  /*position: relative;
-  padding-right: 30px;
-  padding-left: 30px;
-  padding-bottom: 20px;
-  padding-top: 20px;
-  margin-top: 20px;
-  border-bottom: $light-border;
-  margin-bottom: 20px;
-  min-height: 180px;
-*/
-  padding-bottom: 60px;
+  padding-bottom: 40px;
   padding-top: 20px;
   padding-right: 2%;
   padding-left: 20px;
@@ -1058,6 +1054,12 @@ b {
     font-size: 0.95em;
     line-height: 1.25;
     margin-top: 4px; }
+  .country-flow-summary .country-flow-summary-container,
+  .progress-circle-section .country-flow-summary-container {
+    padding-bottom: 40px;
+    padding-top: 20px;
+    padding-right: 2%;
+    padding-left: 20px; }
   .country-flow-summary .circle-chart-label,
   .progress-circle-section .circle-chart-label {
     margin-top: 5px;
@@ -1097,9 +1099,8 @@ b {
   padding-top: 0px;
   padding-right: 30px;
   padding-left: 0px;
-  padding-bottom: 20px;
+  padding-bottom: 3px;
   border-bottom: 1px solid #ccc;
-  margin-bottom: 20px;
   min-height: 180px; }
   .category-chart-section .source-text {
     text-align: right;
@@ -1151,8 +1152,13 @@ b {
 .slightly-dark {
   background-color: #fbfbfb; }
 
-.circle-pack-container .description {
-  margin-top: 0px; }
+.circle-pack-container {
+  padding-top: 20px; }
+  .circle-pack-container .dataTables_filter {
+    text-align: right;
+    margin-top: -24px; }
+  .circle-pack-container .description {
+    margin-top: 0px; }
 
 .analysis-global-content .analysis-global-tab-container {
   margin-top: 20px;
