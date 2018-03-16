@@ -206,10 +206,15 @@ const App = {};
 	};
 
     App.setSources = () => {
-        const content = '<a href="#about">Sources</a>';
-        const tooltipContent = '<a target="_blank" href="https://iatiregistry.org/">IATI</a><br>' +
+        const content = '<a href="#about"><b>Sources</b></a>';
+		// const tooltipContent = '<b>Sources</b><br>' +
+		// 	'<a target="_blank" href="https://iatiregistry.org/">IATI</a><br>' +
+		// 	'BTWC Article X Compendium<br>' +
+		// 	'<a target="_blank" href="https://www.ghsagenda.org/docs/default-source/default-document-library/global-health-security-agenda-2017-progress-and-impact-from-u-s-investments.pdf">US GHSA Investment Report</a>';
+        const tooltipContent = '<b>Sources</b><br>' +
+			'IATI<br>' +
 			'BTWC Article X Compendium<br>' +
-			'<a target="_blank" href="https://www.ghsagenda.org/docs/default-source/default-document-library/global-health-security-agenda-2017-progress-and-impact-from-u-s-investments.pdf">US GHSA Investment Report</a>';
+			'US GHSA Investment Report';
         $('.source-text,.funds-source-text').html(content)
             .tooltipster({
                 content: tooltipContent,
