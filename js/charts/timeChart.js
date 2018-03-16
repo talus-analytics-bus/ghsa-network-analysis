@@ -19,14 +19,22 @@
         .domain(data.map(d => d.year))
         .range([0, width]);
         const maxValue = d3.max(data, d => d3.max([d.total_spent, d.total_committed]));
+
         const y = d3.scaleLinear()
         .domain([0, 1.2 * maxValue])
-        .range([height, 0]);
+        .range([height, 0])
+        .nice();
 
         const xAxis = d3.axisBottom()
+        .tickSize(0)
+        .tickSizeOuter(3)
+        .tickPadding(10)
         .scale(x);
         const yAxis = d3.axisLeft()
         .ticks(4)
+        .tickSize(0)
+        .tickSizeOuter(3)
+        .tickPadding(10)
         .tickFormat(App.siFormat)
         .scale(y);
         const bandwidth = x.bandwidth();
