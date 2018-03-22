@@ -6,7 +6,7 @@ var fs = require('fs');
 
 
 var formidable = require('formidable');
-const useHTTPSRedirection = false;
+const useHTTPSRedirection = true;
 
 
 
@@ -37,7 +37,7 @@ app.get(/^(.+)$/, function(req, res) {
 // and functions on that page will fail unless it is true.
 // To run locally, disable S3, otherwise you will receive a Node.js error about credentials not being correct
 //
-var enableS3 = truehttps://ghsa-network-analysis-test2.uk5km8kfpf.us-west-1.elasticbeanstalk.com;
+var enableS3 = true;
 if (enableS3) {
 	var aws = require('aws-sdk');
 	aws.config.loadFromPath('./config/config.json');
