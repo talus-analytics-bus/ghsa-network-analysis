@@ -6,9 +6,11 @@ var fs = require('fs');
 
 
 var formidable = require('formidable');
-const useHTTPSRedirection = true;
 
-
+// The Amazon environment property is set in the EC2 instance under the Configuration section, under Software Configuration
+// USE_HTTPS_REDIRECTION = true will enable HTTPS redirection
+//
+const useHTTPSRedirection = process.env.USE_HTTPS_REDIRECTION;
 
 // Set the useHTTPSRedirection to false if you don't want the auto-redirection from HTTP to HTTPS
 if (useHTTPSRedirection === true) {
