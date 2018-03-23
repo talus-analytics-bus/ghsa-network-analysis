@@ -97,12 +97,12 @@ const App = {};
 					regionMap.set(d['ISO-alpha3 Code'], d);
 				});
 				App.countries.forEach((c) => {
+					App.codeToNameMap.set(c.ISO2, c.NAME);
 					if (c.ISO2 === "XK") return;
 					const regionInfo = regionMap.get(c.ISO3);
 					c.regionName = regionInfo['Region Name'];
 					c.subRegionName = regionInfo['Sub-region Name'];
 					c.intermediateRegionName = regionInfo['Intermediate Region Name'];
-					App.codeToNameMap.set(c.ISO2, c.NAME);
 				});
 				App.codeToNameMap.set('General Global Benefit', 'General Global Benefit');
 
