@@ -17,6 +17,8 @@
 		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
 		const lightColor = (moneyType === 'd') ? App.fundColorPalette[4] : App.receiveColorPalette[4];
 
+		console.log(country)
+
 		// initializes the whole page
 		function init() {
 			// fill title

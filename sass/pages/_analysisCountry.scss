@@ -20,6 +20,10 @@
   .flag {
     border: 1px solid #555;
   }
+
+  .flag.globe {
+    border: none;
+  }
   div {
     .btn-sm {
       font-size: 0.8em;

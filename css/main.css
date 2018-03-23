@@ -884,6 +884,8 @@ b {
   display: inline-block; }
 .analysis-country-content .flag {
   border: 1px solid #555; }
+.analysis-country-content .flag.globe {
+  border: none; }
 .analysis-country-content div .btn-sm {
   font-size: 0.8em;
   width: 125px; }

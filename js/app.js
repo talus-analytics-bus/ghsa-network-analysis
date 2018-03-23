@@ -90,6 +90,7 @@ const App = {};
 					c.intermediateRegionName = regionInfo['Intermediate Region Name'];
 					App.codeToNameMap.set(c.ISO2, c.NAME);
 				});
+				App.codeToNameMap.set('General Global Benefit', 'General Global Benefit');
 
 				// fill code to name map
 				donorCodeData.forEach((d) => {
@@ -188,7 +189,13 @@ const App = {};
 		return iso;
 	};
 
-	App.getFlagHtml = iso => `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
+	App.getFlagHtml = (iso) => {
+		if (iso !== "General Global Benefit") {
+			return `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
+		} else {
+			return `<img class="flag globe" src="img/flags/${iso.toLowerCase()}.png" />`;
+		}
+	};
 
 	App.getScoreNameHtml = (score) => {
 		let className = '';
