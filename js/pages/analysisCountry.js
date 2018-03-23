@@ -17,7 +17,11 @@
 		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
 		const lightColor = (moneyType === 'd') ? App.fundColorPalette[4] : App.receiveColorPalette[4];
 
-		console.log(country)
+		if (iso === "General Global Benefit") {
+			$('.toggle-type').css('visibility','hidden');
+		} else {
+			$('.toggle-type').css('visibility','');
+		}
 
 		// initializes the whole page
 		function init() {
