@@ -1,7 +1,18 @@
 (() => {
 	App.initAnalysisCountry = (iso, moneyType) => {
+		// define "country" parameters for General Global Benefit recipient
+		const ggb = {
+		  "FIPS": "ggb",
+		  "ISO2": "ggb",
+		  "ISO3": "ggb",
+		  "NAME": "General Global Benefit",
+		  "regionName": "General Global Benefit",
+		  "subRegionName": "General Global Benefit",
+		  "intermediateRegionName": "General Global Benefit"
+		};
+
 		// get country information
-		const country = App.countries.find(c => c.ISO2 === iso);
+		const country = (iso === "General Global Benefit") ? ggb : App.countries.find(c => c.ISO2 === iso);
 		const lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
 		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
 		const lightColor = (moneyType === 'd') ? App.fundColorPalette[4] : App.receiveColorPalette[4];
@@ -55,6 +66,8 @@
 			} else {
 				$('.country-intermediate').closest('.country-details-row').hide();
 			}
+
+			if (iso !== "General Global Benefit")
 			$('.country-population').text(d3.format(',')(country.POP2005));
 
 			// fill summary values
