@@ -207,7 +207,7 @@ const App = {};
 		if (iso !== "General Global Benefit") {
 			return `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
 		} else {
-			return `<img class="flag globe" src="img/flags/${iso.toLowerCase()}.png" />`;
+			return `<img class="flag globe" src="img/flags/ggb.png" />`;
 		}
 	};
 

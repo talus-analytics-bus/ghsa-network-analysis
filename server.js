@@ -20,7 +20,7 @@ app.get(/^(.+)$/, function(req, res) {
 // If enableS3 is true, then the aws-sdk package will be loaded (can cause some
 // Mac machines to crash). This package is required for the "Submit Data" page
 // and functions on that page will fail unless it is true.
-var enableS3 = true;
+var enableS3 = false;
 if (enableS3) {
 	var aws = require('aws-sdk');
 	aws.config.loadFromPath('./config/config.json');
