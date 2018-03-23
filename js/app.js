@@ -78,12 +78,26 @@ const App = {};
 				App.countries = worldData.objects.countries.geometries
 					.map(c => c.properties);
 
+				// append Kosovo to countries data
+				App.countries = App.countries.concat(
+					{
+					  "FIPS": "XK",
+					  "ISO2": "XK",
+					  "NAME": "Kosovo",
+					  "POP2005": 1706000,
+					  "regionName": "Europe",
+					  "subRegionName": "Southern Europe",
+					  "intermediateRegionName": ""
+					}
+				);
+
 				// save region names to countries
 				const regionMap = d3.map();
 				unsdData.forEach((d) => {
 					regionMap.set(d['ISO-alpha3 Code'], d);
 				});
 				App.countries.forEach((c) => {
+					if (c.ISO2 === "XK") return;
 					const regionInfo = regionMap.get(c.ISO3);
 					c.regionName = regionInfo['Region Name'];
 					c.subRegionName = regionInfo['Sub-region Name'];
