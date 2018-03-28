@@ -37,8 +37,8 @@ app.get(/^(.+)$/, function(req, res) {
 // and functions on that page will fail unless it is true.
 // To run locally, disable S3, otherwise you will receive a Node.js error about credentials not being correct
 //
-var enableS3 = false;
-if (enableS3) {
+var enableS3 = process.env.ENABLE_S3_BUCKET || 'false';
+if (enableS3 === 'true') {
 	var aws = require('aws-sdk');
 	aws.config.loadFromPath('./config/config.json');
 	var s3 = new aws.S3({ apiVersion: '2006-03-01' });

@@ -211,8 +211,10 @@
 			for (let i = 0; i < App.countries.length; i++) {
 				const c = App.countries[i];
 				const iso = c.ISO2;
-				const fundedPayments = App.fundingLookup[iso];
+				// remove general global benefit
+				const fundedPaymentsTmp = App.fundingLookup[iso];
 				const receivedPayments = App.recipientLookup[iso];
+				const fundedPayments = (fundedPaymentsTmp) ? fundedPaymentsTmp.filter((project) => project.recipient_name !== "General Global Benefit") : undefined;
 
 				// construct chord data; sort by region and subregion
 				let totalFunded = 0;

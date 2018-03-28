@@ -3094,6 +3094,15 @@ let countries_json = [
     "LAT": 44.032
   },
   {
+      "FIPS": "XK",
+      "ISO2": "XK",
+      "NAME": "Kosovo",
+      "POP2005": 1706000,
+      "regionName": "Europe",
+      "subRegionName": "Southern Europe",
+      "intermediateRegionName": ""
+    },
+  {
     "FIPS": "VT",
     "ISO2": "VA",
     "ISO3": "VAT",

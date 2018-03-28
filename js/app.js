@@ -66,7 +66,7 @@ const App = {};
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
 			.defer(d3.json, 'data/donor_codes.json')
-			.defer(d3.json, 'data/funding_data_v12.json')
+			.defer(d3.json, 'data/funding_data.json') // VERSION 13, created 23 March 2018
 			.defer(d3.json, 'data/jee_score_data.json')
 			.defer(d3.json, 'data/currencies.json')
 			.await((error, worldData, unsdData, donorCodeData, fundingData, jeeData, currencies) => {
@@ -78,18 +78,33 @@ const App = {};
 				App.countries = worldData.objects.countries.geometries
 					.map(c => c.properties);
 
+				// append Kosovo to countries data
+				App.countries = App.countries.concat(
+					{
+					  "FIPS": "XK",
+					  "ISO2": "XK",
+					  "NAME": "Kosovo",
+					  "POP2005": 1706000,
+					  "regionName": "Europe",
+					  "subRegionName": "Southern Europe",
+					  "intermediateRegionName": ""
+					}
+				);
+
 				// save region names to countries
 				const regionMap = d3.map();
 				unsdData.forEach((d) => {
 					regionMap.set(d['ISO-alpha3 Code'], d);
 				});
 				App.countries.forEach((c) => {
+					App.codeToNameMap.set(c.ISO2, c.NAME);
+					if (c.ISO2 === "XK") return;
 					const regionInfo = regionMap.get(c.ISO3);
 					c.regionName = regionInfo['Region Name'];
 					c.subRegionName = regionInfo['Sub-region Name'];
 					c.intermediateRegionName = regionInfo['Intermediate Region Name'];
-					App.codeToNameMap.set(c.ISO2, c.NAME);
 				});
+				App.codeToNameMap.set('General Global Benefit', 'General Global Benefit');
 
 				// fill code to name map
 				donorCodeData.forEach((d) => {
@@ -188,7 +203,13 @@ const App = {};
 		return iso;
 	};
 
-	App.getFlagHtml = iso => `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
+	App.getFlagHtml = (iso) => {
+		if (iso !== "General Global Benefit") {
+			return `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
+		} else {
+			return `<img class="flag globe" src="img/flags/ggb.png" />`;
+		}
+	};
 
 	App.getScoreNameHtml = (score) => {
 		let className = '';
