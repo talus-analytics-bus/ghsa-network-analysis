@@ -184,7 +184,7 @@
 
 			// draw charts
 			if (hasNoData) {
-				$('.country-flow-summary, .progress-circle-section, .country-chart-container, .country-flow-content').hide();
+				$('.country-flow-summary, .progress-circle-section, .country-chart-container, .country-flow-content, .category-chart-section, .circle-pack-container').hide();
 				$('.country-flow-summary-empty').slideDown();
 				$('.submit-data-btn').click(() => hasher.setHash('submit'))
 			} else {

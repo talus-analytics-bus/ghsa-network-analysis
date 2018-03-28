@@ -1094,12 +1094,11 @@ b {
   padding-bottom: 10px; }
 
 .category-chart-section {
-  position: relative;
-  padding-top: 0px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #ccc;
-  padding-right: 20px;
+  padding-bottom: 40px;
+  padding-top: 20px;
+  padding-right: 2%;
   padding-left: 20px;
+  border-bottom: 1px solid #ccc;
   min-height: 180px; }
   .category-chart-section .description {
     width: 100%;
@@ -1149,6 +1148,10 @@ b {
   background-color: #fbfbfb; }
 
 .circle-pack-container {
+  padding-bottom: 40px;
+  padding-top: 20px;
+  padding-right: 2%;
+  padding-left: 20px;
   padding-top: 20px; }
   .circle-pack-container .dataTables_filter {
     text-align: right;
