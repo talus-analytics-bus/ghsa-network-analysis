@@ -257,7 +257,10 @@
   .info-container .info-box {
     display: inline-block;
     position: relative;
-    padding: 18px 15px 20px;
+    padding-top: 18px;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-bottom: 8px;
     width: 420px;
     border: 1px solid #999;
     background-color: rgba(255, 255, 255, 0.96);
@@ -665,9 +668,9 @@ b {
   margin-top: 10px; }
 
 .source-text {
-  margin-top: 15px;
+  margin-top: 10px;
   font-size: 1.1em;
-  width: 120px;
+  width: 80px;
   float: right; }
   .source-text a {
     color: black;
@@ -675,6 +678,10 @@ b {
 
 .no-link {
   color: black; }
+
+.bump-right {
+  position: relative;
+  left: 30px; }
 
 .category-chart .bar-label {
   font-size: 0.9em;
@@ -1089,10 +1096,10 @@ b {
 .category-chart-section {
   position: relative;
   padding-top: 0px;
-  padding-right: 30px;
-  padding-left: 0px;
-  padding-bottom: 3px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #ccc;
+  padding-right: 20px;
+  padding-left: 20px;
   min-height: 180px; }
   .category-chart-section .description {
     width: 100%;
@@ -1505,6 +1512,9 @@ b {
   margin-top: 3px; }
 .settings-page-container .settings-content {
   margin-top: 20px; }
+
+.sources-tooltip-div {
+  font-size: 0.8em; }
 
 .submit-page-container {
   position: relative; }

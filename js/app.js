@@ -227,15 +227,17 @@ const App = {};
 	};
 
     App.setSources = () => {
-        const content = '<a href="#about"><b>Data Sources</b></a>';
+        const content = '<a href="#about" style="font-size: 0.7em;">Data Sources</a>';
 		// const tooltipContent = '<b>Sources</b><br>' +
 		// 	'<a target="_blank" href="https://iatiregistry.org/">IATI</a><br>' +
 		// 	'BTWC Article X Compendium<br>' +
 		// 	'<a target="_blank" href="https://www.ghsagenda.org/docs/default-source/default-document-library/global-health-security-agenda-2017-progress-and-impact-from-u-s-investments.pdf">US GHSA Investment Report</a>';
-        const tooltipContent = '<a href="#about" class="no-link"><b>Data Sources</b></a><br>' +
+        const tooltipContent = '<a href="#about" class="no-link"><u>Data Sources</u></a><br>' +
+			'<div class="sources-tooltip-div">' +
 			'IATI<br>' +
 			'BTWC Article X Compendium<br>' +
-			'US GHSA Investment Report';
+			'US GHSA Investment Report' +
+			'</div>';
         $('.source-text,.funds-source-text').html(content)
             .tooltipster({
                 content: tooltipContent,

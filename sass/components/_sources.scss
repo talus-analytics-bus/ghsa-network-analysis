@@ -1,5 +1,5 @@
 .source-text {
-  margin-top: 15px;
+  margin-top: 10px;
 
   a {
     color: black;
@@ -8,10 +8,15 @@
 
   font-size: 1.1em;
 
-  width: 120px;
+  width: 80px;
   float: right;
 }
 
 .no-link {
   color: black;
+}
+
+.bump-right {
+  position: relative;
+  left: 30px;
 }
