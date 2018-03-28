@@ -6,12 +6,12 @@ var fs = require('fs');
 
 
 var formidable = require('formidable');
-const useHTTPSRedirection = true;
+const useHTTPSRedirection = process.env.USE_HTTPS_REDIRECTION || 'false';
 
 
 
 // Set the useHTTPSRedirection to false if you don't want the auto-redirection from HTTP to HTTPS
-if (useHTTPSRedirection === true) {
+if (useHTTPSRedirection === 'true') {
     // Redirect HTTP to HTTPS
     app.use(function(req, res, next) {
         if((!req.secure) && (req.get('X-Forwarded-Proto') !== 'https')) {
@@ -37,7 +37,7 @@ app.get(/^(.+)$/, function(req, res) {
 // and functions on that page will fail unless it is true.
 // To run locally, disable S3, otherwise you will receive a Node.js error about credentials not being correct
 //
-var enableS3 = true;
+var enableS3 = false;
 if (enableS3) {
 	var aws = require('aws-sdk');
 	aws.config.loadFromPath('./config/config.json');

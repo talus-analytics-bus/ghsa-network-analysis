@@ -473,10 +473,6 @@ div.DTS{display:block !important}div.DTS tbody th,div.DTS tbody td{white-space:n
     margin-left: 5px;
     width: 16px;
     height: 16px; }
-  .info-container .source-text {
-    text-align: right;
-    margin-top: 20px;
-    font-size: 0.95em; }
 
 select.form-control {
   display: inline-block;
@@ -827,6 +823,18 @@ b {
 .tooltip-row-content {
   margin-top: 10px; }
 
+.source-text {
+  margin-top: 15px;
+  font-size: 1.1em;
+  width: 120px;
+  float: right; }
+  .source-text a {
+    color: black;
+    text-decoration: none; }
+
+.no-link {
+  color: black; }
+
 .category-chart .bar-label {
   font-size: 0.9em;
   font-weight: 600; }
@@ -838,11 +846,6 @@ b {
 
 .category-chart-container {
   position: relative; }
-  .category-chart-container .source-text {
-    font-size: 0.9em;
-    position: absolute;
-    bottom: 0;
-    right: 0; }
 
 .tick text {
   font-family: 'Open Sans', sans-serif;
@@ -935,12 +938,16 @@ b {
 
 .time-chart-container {
   position: relative;
-  padding-bottom: 20px; }
-  .time-chart-container .source-text {
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    font-size: 0.9em; }
+  /*.source-text {
+  	position: absolute;
+  	bottom: 0px;
+  	right: 0px;
+  	font-size: 0.9em;
+  }*/ }
+  .time-chart-container .country-summary-label {
+    font-weight: 400;
+    font-size: 1.2em;
+    text-align: left; }
 
 .analysis-container {
   padding: 0;
@@ -978,7 +985,7 @@ b {
 .analysis-content {
   position: relative;
   margin: 0;
-  padding: 20px 30px 50px;
+  padding: 20px 30px 10px;
   z-index: 100; }
 
 .flag {
@@ -1026,14 +1033,21 @@ b {
   .country-table .name-container span:hover {
     text-decoration: underline; }
 
+.funds-dispursed-title {
+  white-space: nowrap;
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-top: 0px; }
+
 .analysis-country-content .analysis-country-title {
   text-align: center;
   cursor: pointer;
-  margin-left: 225px;
-  margin-right: 225px; }
+  margin: 2px 0 0;
+  padding: 2px 0 0;
+  font-size: 30px; }
 .analysis-country-content .profile-type-container {
   position: absolute;
-  top: 71px;
+  top: 66px;
   left: 0;
   width: 100%;
   font-weight: 600;
@@ -1042,6 +1056,23 @@ b {
   display: inline-block; }
 .analysis-country-content .flag {
   border: 1px solid #555; }
+.analysis-country-content div .btn-sm {
+  font-size: 0.8em;
+  width: 125px; }
+
+.country-summary-text {
+  margin-top: 5px;
+  float: left;
+  text-align: center; }
+
+.country-summary-label {
+  font-weight: 400;
+  font-size: 2em; }
+
+.country-summary-value {
+  margin-top: 10px;
+  font-family: 'Raleway', sans-serif;
+  font-size: 25px; }
 
 /* --- Buffer Page --- */
 .country-summary-content {
@@ -1064,18 +1095,21 @@ b {
   .country-summary-content .country-summary-value {
     margin-top: 10px;
     font-family: 'Raleway', sans-serif;
-    font-size: 2.4em; }
+    font-size: 16px; }
 
 /* --- Detail Page --- */
 .switch-type-button {
   position: absolute;
-  top: 43px;
+  top: 29px;
   right: 30px; }
 
 .country-flow-content {
   display: none;
   position: relative;
-  margin-top: 10px; }
+  padding-top: 20px;
+  padding-right: 30px;
+  padding-bottom: 20px;
+  padding-left: 20px; }
   .country-flow-content .show-table-btn {
     margin-top: 10px; }
 
@@ -1091,15 +1125,22 @@ b {
 
 .country-flow-summary,
 .progress-circle-section {
-  position: relative;
-  padding: 35px 30px 20px;
+  padding-bottom: 40px;
+  padding-top: 20px;
+  padding-right: 2%;
+  padding-left: 20px;
   border-bottom: 1px solid #ccc;
-  margin-bottom: 20px;
-  min-height: 180px; }
-  .country-flow-summary .progress-circle-title,
-  .progress-circle-section .progress-circle-title {
-    font-weight: 600;
-    font-size: 1.2em; }
+  /*.circle-chart-content {
+    display: inline-block;
+    //margin: 0 20px;
+    //max-width: 500px;
+    text-align: left;
+    vertical-align: top;
+  }*/
+  /*.source-text {
+    text-align: right;
+    font-size: 0.95em;
+  }*/ }
   .country-flow-summary .country-summary-label,
   .progress-circle-section .country-summary-label {
     font-weight: 600;
@@ -1110,29 +1151,41 @@ b {
     font-family: 'Raleway', sans-serif;
     font-size: 2.4em; }
   .country-flow-summary .country-summary-text,
+  .progress-circle-section .country-summary-text {
+    float: left;
+    text-align: left;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    padding-top: 50px; }
+  .country-flow-summary .time-chart-container,
+  .progress-circle-section .time-chart-container {
+    text-align: right; }
   .country-flow-summary .progress-circle-text,
-  .progress-circle-section .country-summary-text,
   .progress-circle-section .progress-circle-text {
     float: left;
     max-width: 400px; }
   .country-flow-summary .time-chart-container,
   .progress-circle-section .time-chart-container {
-    margin-left: 365px; }
+    margin-left: 255px; }
+  .country-flow-summary .progress-circle-description,
+  .progress-circle-section .progress-circle-description {
+    margin-top: 15px;
+    padding-bottom: 10px; }
   .country-flow-summary .progress-circle-container,
   .progress-circle-section .progress-circle-container {
-    margin-left: 430px; }
+    margin-left: 336px; }
   .country-flow-summary .progress-circle-title,
   .progress-circle-section .progress-circle-title {
-    white-space: nowrap; }
+    white-space: nowrap;
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-top: 0px; }
     .country-flow-summary .progress-circle-title .info-img,
     .progress-circle-section .progress-circle-title .info-img {
       position: relative;
       width: 16px;
       height: 16px;
       margin-left: 5px; }
-  .country-flow-summary .progress-circle-description,
-  .progress-circle-section .progress-circle-description {
-    margin-top: 15px; }
   .country-flow-summary .circle-chart-content,
   .progress-circle-section .circle-chart-content {
     display: inline-block;
@@ -1150,37 +1203,108 @@ b {
     font-size: 0.95em;
     line-height: 1.25;
     margin-top: 4px; }
-
-.progress-circle-section {
-  padding-bottom: 60px; }
-  .progress-circle-section .source-text {
-    position: absolute;
-    right: 30px;
-    bottom: 20px;
-    font-size: 0.95em; }
+  .country-flow-summary .country-flow-summary-container,
+  .progress-circle-section .country-flow-summary-container {
+    padding-bottom: 40px;
+    padding-top: 20px;
+    padding-right: 2%;
+    padding-left: 20px; }
+  .country-flow-summary .circle-chart-label,
+  .progress-circle-section .circle-chart-label {
+    margin-top: 5px;
+    font-size: 1.1em;
+    font-weight: 600; }
+  .country-flow-summary .circle-chart-sublabel,
+  .progress-circle-section .circle-chart-sublabel {
+    font-size: 0.95em;
+    line-height: 1.25;
+    margin-top: 4px; }
 
 .country-chart-container {
-  padding: 0 30px; }
+  position: relative;
+  padding: 10px 30px 20px;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 20px;
+  min-height: 180px; }
   .country-chart-container .circle-pack-content {
-    margin-top: 30px;
     text-align: center; }
-  .country-chart-container .circle-pack-title,
-  .country-chart-container .category-chart-title {
-    font-size: 1.5em; }
   .country-chart-container .circle-pack-description {
     max-width: 500px; }
   .country-chart-container .country-table-container {
     margin-top: 20px;
-    padding-right: 25px; }
+    padding-right: 25px;
+    width: 100%; }
+  .country-chart-container .country-table {
+    width: 100%; }
   .country-chart-container .name-container {
     width: 200px; }
 
+.progress-container {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px; }
+
 .category-chart-section {
   position: relative;
-  padding: 35px 30px 20px;
+  padding-top: 0px;
+  padding-right: 30px;
+  padding-left: 0px;
+  padding-bottom: 3px;
   border-bottom: 1px solid #ccc;
-  margin-bottom: 20px;
   min-height: 180px; }
+  .category-chart-section .description {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 0px; }
+
+.toggle-type {
+  text-align: right;
+  margin-top: 10px;
+  vertical-align: middle; }
+
+.toggle-disbursed-container {
+  padding-top: 10px;
+  text-align: left;
+  float: left; }
+
+.toggle-disbursed-chart-container {
+  padding-top: 10px; }
+
+.return-button {
+  margin-top: 10px; }
+
+.toggle-category-chart {
+  text-align: center;
+  font-style: italic; }
+
+.vert-space-20 {
+  height: 20px; }
+
+.toggle-pie-div {
+  padding-left: 40px; }
+
+.category-chart-controls {
+  width: 100%;
+  padding-left: 45px; }
+
+.right-border {
+  border-right: 1px solid #ccc; }
+
+.circle-pack-title,
+.category-chart-title {
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-top: 0px; }
+
+.slightly-dark {
+  background-color: #fbfbfb; }
+
+.circle-pack-container {
+  padding-top: 20px; }
+  .circle-pack-container .dataTables_filter {
+    text-align: right;
+    margin-top: -24px; }
+  .circle-pack-container .description {
+    margin-top: 0px; }
 
 .analysis-global-content .analysis-global-tab-container {
   margin-top: 20px;
@@ -1209,13 +1333,6 @@ b {
     text-align: center;
     font-style: italic;
     font-size: 1.1em; }
-  .network-map-container .source-text {
-    position: absolute;
-    font-size: 0.95em;
-    text-align: right;
-    width: 290px;
-    bottom: 10px;
-    right: 10px; }
 
 .network-right-column {
   position: relative;
@@ -1330,10 +1447,6 @@ b {
     display: inline-block; }
   .global-tab-content[tab="country"] .table-country-search input {
     width: 400px; }
-.global-tab-content[tab="country"] .source-text {
-  margin-top: 20px;
-  font-size: 0.95em;
-  text-align: right; }
 
 .analysis-pair-content {
   position: relative;
