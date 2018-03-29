@@ -1,5 +1,6 @@
 (() => {
 	App.buildNetworkMap = (selector, initData, param = {}) => {
+		//to test git
 		// define colors
 		const fundColor = App.fundColor;
 		const receiveColor = App.receiveColor;
