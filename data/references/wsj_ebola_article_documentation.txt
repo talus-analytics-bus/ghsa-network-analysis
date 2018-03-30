@@ -1,0 +1,61 @@
+From: https://www.wsj.com/articles/ebola-funds-pledged-for-recovery-are-slow-to-come-1521547201;
+Guinea data: https://ebolarecoverydotorg.files.wordpress.com/2018/01/guinea.pdf
+Liberia data: https://ebolarecoverydotorg.files.wordpress.com/2018/01/liberia.pdf
+Sierra Leone data: https://ebolarecoverydotorg.files.wordpress.com/2018/01/sierra-leone.pdf
+
+An article published on March 30, 2018 in the Wall Street Journal drew attention to 
+the Ebola Recovery Tracking Initiative formed by the office of Paul Farmer, the U.N. secretary-general’s 
+special adviser on Community-Based Medicine and Lessons from Haiti. Data were extracted from 
+the Ebola Recovery Tracking Initiative.
+
+Of note, the Ebola Recovery Tracking Intiatives uses the following defintions:
+Pledge: "a general promise to provide assistance and is usually made for a particular time frame, though not always." 
+Commitment: "Committed (or obligated) funds are those for which projects have been approved or agreements/contracts have been signed or are in the process of being transferred or disbursed. Committed funds are exclusive of disbursed funds."
+Disbursal: "Disbursement is the transfer of funds from a donor to implementing partners (which could be governments, non-governmental organizations, UN entities, or private contractors, among others)."
+
+We only incorporate data on commitments (official agreements) and not on pledges (non-official agreements).
+Coded data from the European Commission as data from the European Union, based on existing data coding from other sources (EC is part of EU)
+
+Incorporated data:
+Recipient Guinea:
+- World Bank funding to Guinea, 2015-2017 $221.8 US million committed, $125.4 US million dispsered
+- European Union funding to Guinea, 2015-2017 $119.2 US million committed, $45.1 US million dispsered
+- Germany funding to Guinea, 2015-2017 $44.4 US million committed, $15.5 US million dispsered
+- US funding to Guinea, 2015-2017 $19.1 US million committed, $27.9 US million dispsered
+- Luxembourg funding to Guinea, 2015-2017 $0.44 US million dispersed
+
+Recipient Liberia:
+- World Bank funding to Liberia, 2015-2017 $659 US million committed, $195.9 US million dispsered
+- European Union funding to Liberia, 2015-2017 $35.4 US million committed, $98.2 US million dispsered
+- Germany funding to Liberia, 2015-2017 $80.7 US million committed, $30.4 US million dispsered
+- UK funding to Liberia, 2015-2017 $5.5 US million committed, $5.0 US million dispsered
+
+Recipient Sierra Leone:
+- World Bank funding to Sierra Leone, 2015-2017 $442.3 US million committed, $141.2 US million dispsered
+- US funding to Sierra Leone, 2015-2017 $12.3 US million committed, $53.9 US million dispsered
+- Germany funding to Sierra Leone, 2015-2017 $57.8 US million committed, $6.5 US million dispsered
+- Ireland funding to Sierra Leone, $6 US million dispsered
+
+Recipient Mano River Union:
+Coded as split 50-50 between Sierra Leone and Liberia:
+- US funding to Manu River Union, 2015-2017 $8.7 US million committed, $20.9 US million dispsered
+- EU funding to Manu River Union, 2015-2017, $8.8 US million dispsered
+- Netherlands funding to Manu River Union, 2015-2017, $2.4 US million dispsered
+
+Not incorporated data:
+Information on pledges, which did not meet commitment and disperal funding tracking framework
+Islamic Development Bank funding to Guinea (pledge, no corresponding commitment)
+French funding to Guinea (pledge, no corresponding commitment)
+Japanese funding to Guinea (pledge, no corresponding commitment)
+US funding to Liberia, duplicates contained within existing IATI, Article 10, and US White House report data
+Japanese funding to Liberia (pledge, no corresponding commitment)
+Ireland funding to Liberia, duplicates contained within existing IATI, Article 10, and US White House report data
+Spanish funding to Libera (pledge, no corresponding commitment)
+UK funding to Sierra Leone, duplicates contained within existing IATI, Article 10, and US White House report data
+EU funding to Sierra Leone, duplicates contained within existing IATI, Article 10, and US White House report data
+Islamic Development Bank funding to Sierra Leone (pledge, no corresponding commitment)
+Japanese funding to Sierra Leone (pledge, no corresponding commitment)
+Italian funding to Sierra Leone (pledge, no corresponding commitment)
+African Development bank funding to Mano River Union (pledge, no corresponding commitment)
+Japanese funding to Mano River Union (pledge, no corresponding commitment)
+
