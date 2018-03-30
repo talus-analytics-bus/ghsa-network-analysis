@@ -106,7 +106,7 @@ if (enableS3 === 'true') {
 
 
 // Start the HTTP Server
-server.listen(process.env.PORT || 8800, function() {
+server.listen(process.env.PORT || 8805, function() {
 	console.log('Server set up!');
 	console.log(server.address());
 });
