@@ -2,6 +2,7 @@
 	App.initHome = () => {
 		// variables used throughout home page
 		let map;  // the world map
+		let nonCountries; // non-country donors
 		let activeCountry = d3.select(null);  // the active country
 		const currentNodeDataMap = d3.map();  // maps country iso to the value on map
 		let startYear = App.dataStartYear;  // the start year of the time range shown
@@ -30,11 +31,90 @@
 			initLegend();
 			initCountryInfoBox();
 			updateAll();
+			nonCountries = buildNonCountries();
 		}
 
 
 		/* ---------------------- Functions ----------------------- */
 		// builds the map, attaches tooltips to countries, populates coordinates dict
+		function buildNonCountries () {
+			var otherDonors = $(App.donorCodeData)
+			    .filter(function (i,n){
+			        return n.donor_sector!='Government';
+			    });
+			var INGO = $(otherDonors)
+			    .filter(function (i,n){
+			        return n.donor_sector==='International NGO';
+			    });
+			var notINGO = $(otherDonors)
+			    .filter(function (i,n){
+			        return n.donor_sector!='International NGO';
+			    });
+			var otherNames = [];
+			var INGONames = [];
+			var notINGONames = [];
+			otherDonors.each(function (d) {otherNames.push(otherDonors[d].donor_name)});
+			INGO.each(function (d) {INGONames.push(INGO[d].donor_name)});
+			notINGO.each(function (d) {notINGONames.push(notINGO[d].donor_name)});
+			/*Academic, Training and Research:2
+			Foundation:4
+			International NGO:34
+			Multilateral:15
+			National NGO:1
+			Other Public Sector:1
+			Private Sector:3
+			Public Private Partnership:1*/
+
+			//It's all pretty useless from here...
+			const colorScale = getColorScale();
+			var nonCountries = d3.select(".left-container").append("svg")
+				.attr("width", 100)
+				.attr("height", 650);
+			var nonCountries2 = d3.select(".left-container2").append("svg")
+				.attr("width", 170)
+				.attr("height", 650);
+
+			const innerNodesScale = d3.scaleBand()
+				.domain(INGONames)
+				.range([10, 640]);
+			const innerNodesScale2 = d3.scaleBand()
+				.domain(notINGONames)
+				.range([10, 640]);
+
+			const rectGroup = nonCountries.append("g")
+				.selectAll('g')
+				.data(INGONames)
+				.enter()
+				.append('g');
+			const rectGroup2 = nonCountries2.append("g")
+				.selectAll('g')
+				.data(notINGONames)
+				.enter()
+				.append('g');
+
+			rectGroup.append("circle")
+                .attr('cx', 10)
+				.attr('cy', innerNodesScale)
+                .attr("r", 10)
+                .attr("stroke", "white")
+                .style("fill", "gray");
+            rectGroup2.append("circle")
+                .attr('cx', 10)
+				.attr('cy', innerNodesScale2)
+                .attr("r", 10)
+                .attr("stroke", "white")
+                .style("fill", "gray");
+            d3.selectAll("circle")
+            	.each(function addTooltip(d) {
+					$(this).tooltipster({
+						plugins: ['follower'],
+						delay: 100,
+						minWidth: 200,
+						content: d,
+					});
+				});
+			//...to here
+		}
 		function buildMap() {
 			// add map to map container
 			const mapObj = Map.createWorldMap('.map-container', App.geoData);

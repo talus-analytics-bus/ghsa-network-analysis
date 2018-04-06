@@ -94,4 +94,5 @@ const Map = {};
 
 		return { element: svg, projection, path, zoomTo, reset };
 	};
+
 })();

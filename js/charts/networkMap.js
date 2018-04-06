@@ -1,10 +1,9 @@
 (() => {
 	App.buildNetworkMap = (selector, initData, param = {}) => {
-		//to test git
 		// define colors
 		const fundColor = App.fundColor;
 		const receiveColor = App.receiveColor;
-
+		
 		// define geo collection variables and maps
 		let subregions = [];
 		let countries = [];

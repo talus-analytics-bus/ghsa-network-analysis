@@ -1327,8 +1327,17 @@ b {
   text-align: center;
   background-color: #222; }
 
+.left-container {
+  width: 100px;
+  height: 700px;
+  float: left;}
+
+.left-container2 {
+  width: 100px;
+  height: 700px;
+  float: left;}
+
 .map-container {
-  width: 100%;
   max-height: calc(100vh - 51px);
   overflow-y: hidden; }
 

@@ -72,6 +72,7 @@ const App = {};
 			.await((error, worldData, unsdData, donorCodeData, fundingData, jeeData, currencies) => {
 				if (error) throw error;
 
+				App.donorCodeData = donorCodeData;
 				/* -------- Populate global variables -------- */
 				// save geo data; save list of countries in namespace
 				App.geoData = worldData;
