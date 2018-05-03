@@ -1,0 +1,452 @@
+[{
+  "project_id": "whocontingency.1",
+  "project_name": "WHO Contingency Fund for Emergencies",
+  "project_disease": [
+    {
+      "p": "",
+      "c": ""
+    }
+  ],
+  "donor_code": "CA",
+  "donor_sector": "Government",
+  "donor_name": "Canada",
+  "recipient_sector": "UN Organization",
+  "recipient_name": "WHO Contingency Fund for Emergencies",
+  "transactions": [
+    {
+      "type": "commitment",
+      "amount": 785546 ,
+      "cy": "2018",
+      "currency": "USD"
+    }
+  ],
+  "total_currency": "USD",
+  "source": {
+    "name": "WHO Contingency Fund for Emergencies",
+    "id": "whocfe",
+    "added_by": "Talus",
+    "mmddyyyy_added": "053018"
+  },
+  "core_capacities": [
+  ],
+  "spent_by_year": {
+    "2018": 0
+  },
+  "committed_by_year": {
+    "2018": 785546,
+  },
+  "total_spent": 0,
+  "total_committed": 785546
+},
+
+{
+  "project_id": "whocontingency.2",
+  "project_name": "WHO Contingency Fund for Emergencies",
+  "project_disease": [
+    {
+      "p": "",
+      "c": ""
+    }
+  ],
+  "donor_code": "DK",
+  "donor_sector": "Government",
+  "donor_name": "Denmark",
+  "recipient_sector": "UN Organization",
+  "recipient_name": "WHO Contingency Fund for Emergencies",
+  "transactions": [
+    {
+      "type": "commitment",
+      "amount": 1647175,
+      "cy": "2018",
+      "currency": "USD"
+    }
+  ],
+  "total_currency": "USD",
+  "source": {
+    "name": "WHO Contingency Fund for Emergencies",
+    "id": "whocfe",
+    "added_by": "Talus",
+    "mmddyyyy_added": "053018"
+  },
+  "core_capacities": [
+  ],
+  "spent_by_year": {
+    "2018": 0
+  },
+  "committed_by_year": {
+    "2018": 1647175,
+  },
+  "total_spent": 0,
+  "total_committed": 1647175
+},
+
+{
+  "project_id": "whocontingency.3",
+  "project_name": "WHO Contingency Fund for Emergencies",
+  "project_disease": [
+    {
+      "p": "",
+      "c": ""
+    }
+  ],
+  "donor_code": "EE",
+  "donor_sector": "Government",
+  "donor_name": "Estonia",
+  "recipient_sector": "UN Organization",
+  "recipient_name": "WHO Contingency Fund for Emergencies",
+  "transactions": [
+    {
+      "type": "commitment",
+      "amount": 61350,
+      "cy": "2018",
+      "currency": "USD"
+    }
+  ],
+  "total_currency": "USD",
+  "source": {
+    "name": "WHO Contingency Fund for Emergencies",
+    "id": "whocfe",
+    "added_by": "Talus",
+    "mmddyyyy_added": "053018"
+  },
+  "core_capacities": [
+  ],
+  "spent_by_year": {
+    "2018": 0
+  },
+  "committed_by_year": {
+    "2018": 61350,
+  },
+  "total_spent": 0,
+  "total_committed": 61350
+},
+
+{
+  "project_id": "whocontingency.4",
+  "project_name": "WHO Contingency Fund for Emergencies",
+  "project_disease": [
+    {
+      "p": "",
+      "c": ""
+    }
+  ],
+  "donor_code": "DE",
+  "donor_sector": "Government",
+  "donor_name": "Germany",
+  "recipient_sector": "UN Organization",
+  "recipient_name": "WHO Contingency Fund for Emergencies",
+  "transactions": [
+    {
+      "type": "commitment",
+      "amount": 2638037,
+      "cy": "2018",
+      "currency": "USD"
+    }
+  ],
+  "total_currency": "USD",
+  "source": {
+    "name": "WHO Contingency Fund for Emergencies",
+    "id": "whocfe",
+    "added_by": "Talus",
+    "mmddyyyy_added": "053018"
+  },
+  "core_capacities": [
+  ],
+  "spent_by_year": {
+    "2018": 0
+  },
+  "committed_by_year": {
+    "2018": 2638037,
+  },
+  "total_spent": 0,
+  "total_committed": 2638037
+},
+
+{
+  "project_id": "whocontingency.5",
+  "project_name": "WHO Contingency Fund for Emergencies",
+  "project_disease": [
+    {
+      "p": "",
+      "c": ""
+    }
+  ],
+  "donor_code": "KR",
+  "donor_sector": "Government",
+  "donor_name": "Republic of Korea",
+  "recipient_sector": "UN Organization",
+  "recipient_name": "WHO Contingency Fund for Emergencies",
+  "transactions": [
+    {
+      "type": "commitment",
+      "amount": 1000000,
+      "cy": "2018",
+      "currency": "USD"
+    }
+  ],
+  "total_currency": "USD",
+  "source": {
+    "name": "WHO Contingency Fund for Emergencies",
+    "id": "whocfe",
+    "added_by": "Talus",
+    "mmddyyyy_added": "053018"
+  },
+  "core_capacities": [
+  ],
+  "spent_by_year": {
+    "2018": 0
+  },
+  "committed_by_year": {
+    "2018": 1000000,
+  },
+  "total_spent": 0,
+  "total_committed": 1000000
+},
+
+{
+  "project_id": "whocontingency.6",
+  "project_name": "WHO Contingency Fund for Emergencies",
+  "project_disease": [
+    {
+      "p": "",
+      "c": ""
+    }
+  ],
+  "donor_code": "KW",
+  "donor_sector": "Government",
+  "donor_name": "Kuwait",
+  "recipient_sector": "UN Organization",
+  "recipient_name": "WHO Contingency Fund for Emergencies",
+  "transactions": [
+    {
+      "type": "commitment",
+      "amount": 500000,
+      "cy": "2018",
+      "currency": "USD"
+    }
+  ],
+  "total_currency": "USD",
+  "source": {
+    "name": "WHO Contingency Fund for Emergencies",
+    "id": "whocfe",
+    "added_by": "Talus",
+    "mmddyyyy_added": "053018"
+  },
+  "core_capacities": [
+  ],
+  "spent_by_year": {
+    "2018": 0
+  },
+  "committed_by_year": {
+    "2018": 500000,
+  },
+  "total_spent": 0,
+  "total_committed": 500000
+},
+
+{
+  "project_id": "whocontingency.7",
+  "project_name": "WHO Contingency Fund for Emergencies",
+  "project_disease": [
+    {
+      "p": "",
+      "c": ""
+    }
+  ],
+  "donor_code": "LUX",
+  "donor_sector": "Government",
+  "donor_name": "Luxembourg",
+  "recipient_sector": "UN Organization",
+  "recipient_name": "WHO Contingency Fund for Emergencies",
+  "transactions": [
+    {
+      "type": "commitment",
+      "amount": 613497,
+      "cy": "2018",
+      "currency": "USD"
+    }
+  ],
+  "total_currency": "USD",
+  "source": {
+    "name": "WHO Contingency Fund for Emergencies",
+    "id": "whocfe",
+    "added_by": "Talus",
+    "mmddyyyy_added": "053018"
+  },
+  "core_capacities": [
+  ],
+  "spent_by_year": {
+    "2018": 0
+  },
+  "committed_by_year": {
+    "2018": 613497,
+  },
+  "total_spent": 0,
+  "total_committed": 613497
+},
+
+{
+  "project_id": "whocontingency.8",
+  "project_name": "WHO Contingency Fund for Emergencies",
+  "project_disease": [
+    {
+      "p": "",
+      "c": ""
+    }
+  ],
+  "donor_code": "MT",
+  "donor_sector": "Government",
+  "donor_name": "Malta",
+  "recipient_sector": "UN Organization",
+  "recipient_name": "WHO Contingency Fund for Emergencies",
+  "transactions": [
+    {
+      "type": "commitment",
+      "amount": 20000,
+      "cy": "2018",
+      "currency": "USD"
+    }
+  ],
+  "total_currency": "USD",
+  "source": {
+    "name": "WHO Contingency Fund for Emergencies",
+    "id": "whocfe",
+    "added_by": "Talus",
+    "mmddyyyy_added": "053018"
+  },
+  "core_capacities": [
+  ],
+  "spent_by_year": {
+    "2018": 0
+  },
+  "committed_by_year": {
+    "2018": 20000,
+  },
+  "total_spent": 0,
+  "total_committed": 20000
+},
+
+{
+  "project_id": "whocontingency.9",
+  "project_name": "WHO Contingency Fund for Emergencies",
+  "project_disease": [
+    {
+      "p": "",
+      "c": ""
+    }
+  ],
+  "donor_code": "NL",
+  "donor_sector": "Government",
+  "donor_name": "Netherlands",
+  "recipient_sector": "UN Organization",
+  "recipient_name": "WHO Contingency Fund for Emergencies",
+  "transactions": [
+    {
+      "type": "commitment",
+      "amount": 1226994,
+      "cy": "2018",
+      "currency": "USD"
+    }
+  ],
+  "total_currency": "USD",
+  "source": {
+    "name": "WHO Contingency Fund for Emergencies",
+    "id": "whocfe",
+    "added_by": "Talus",
+    "mmddyyyy_added": "053018"
+  },
+  "core_capacities": [
+  ],
+  "spent_by_year": {
+    "2018": 0
+  },
+  "committed_by_year": {
+    "2018": 1226994,
+  },
+  "total_spent": 0,
+  "total_committed": 1226994
+},
+
+{
+  "project_id": "whocontingency.10",
+  "project_name": "WHO Contingency Fund for Emergencies",
+  "project_disease": [
+    {
+      "p": "",
+      "c": ""
+    }
+  ],
+  "donor_code": "NO",
+  "donor_sector": "Government",
+  "donor_name": "Norway",
+  "recipient_sector": "UN Organization",
+  "recipient_name": "WHO Contingency Fund for Emergencies",
+  "transactions": [
+    {
+      "type": "commitment",
+      "amount": 1275348,
+      "cy": "2018",
+      "currency": "USD"
+    }
+  ],
+  "total_currency": "USD",
+  "source": {
+    "name": "WHO Contingency Fund for Emergencies",
+    "id": "whocfe",
+    "added_by": "Talus",
+    "mmddyyyy_added": "053018"
+  },
+  "core_capacities": [
+  ],
+  "spent_by_year": {
+    "2018": 0
+  },
+  "committed_by_year": {
+    "2018": 1275348,
+  },
+  "total_spent": 0,
+  "total_committed": 1275348
+},
+
+{
+  "project_id": "whocontingency.11",
+  "project_name": "WHO Contingency Fund for Emergencies",
+  "project_disease": [
+    {
+      "p": "",
+      "c": ""
+    }
+  ],
+  "donor_code": "GB",
+  "donor_sector": "Government",
+  "donor_name": "United Kingdom",
+  "recipient_sector": "UN Organization",
+  "recipient_name": "WHO Contingency Fund for Emergencies",
+  "transactions": [
+    {
+      "type": "commitment",
+      "amount": 5555556,
+      "cy": "2018",
+      "currency": "USD"
+    }
+  ],
+  "total_currency": "USD",
+  "source": {
+    "name": "WHO Contingency Fund for Emergencies",
+    "id": "whocfe",
+    "added_by": "Talus",
+    "mmddyyyy_added": "053018"
+  },
+  "core_capacities": [
+  ],
+  "spent_by_year": {
+    "2018": 0
+  },
+  "committed_by_year": {
+    "2018": 5555556,
+  },
+  "total_spent": 0,
+  "total_committed": 5555556
+}]
+
+
