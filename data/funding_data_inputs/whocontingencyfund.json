@@ -447,6 +447,49 @@
   },
   "total_spent": 0,
   "total_committed": 5555556
+},
+
+{
+  "project_id": "whocontingency.12",
+  "project_name": "WHO Contingency Fund for Emergencies",
+  "project_disease": [
+    {
+      "p": "",
+      "c": ""
+    }
+  ],
+  "donor_code": "AU",
+  "donor_sector": "Government",
+  "donor_name": "Austrailia",
+  "recipient_sector": "UN Organization",
+  "recipient_name": "WHO Contingency Fund for Emergencies",
+  "transactions": [
+    {
+      "type": "commitment",
+      "amount": 6000000,
+      "cy": "2018",
+      "currency": "USD"
+    }
+  ],
+  "total_currency": "USD",
+  "source": {
+    "name": "WHO Contingency Fund for Emergencies",
+    "id": "whocfe",
+    "added_by": "Talus",
+    "mmddyyyy_added": "053018"
+  },
+  "core_capacities": [
+  ],
+  "spent_by_year": {
+    "2017": 0,
+    "2017": 0
+  },
+  "committed_by_year": {
+    "2018": 3000000,
+    "2018": 3000000,
+  },
+  "total_spent": 0,
+  "total_committed": 6000000
 }]
 
 
