@@ -22,7 +22,7 @@
   ],
   "total_currency": "USD",
   "source": {
-    "name": "NTI GHSA Data",
+    "name": "NTI Commitment Tracker",
     "id": "nti",
     "added_by": "Talus",
     "mmddyyyy_added": "050418"
@@ -33,7 +33,7 @@
     "2017": 0
   },
   "committed_by_year": {
-    "2017": 500000,
+    "2017": 500000
   },
   "total_spent": 0,
   "total_committed": 500000
@@ -63,7 +63,7 @@
   ],
   "total_currency": "USD",
   "source": {
-    "name": "NTI GHSA Data",
+    "name": "NTI Commitment Tracker",
     "id": "nti",
     "added_by": "Talus",
     "mmddyyyy_added": "050418"
@@ -74,7 +74,7 @@
     "2017": 0
   },
   "committed_by_year": {
-    "2017": 500000,
+    "2017": 500000
   },
   "total_spent": 0,
   "total_committed": 500000
@@ -104,7 +104,7 @@
   ],
   "total_currency": "USD",
   "source": {
-    "name": "NTI GHSA Data",
+    "name": "NTI Commitment Tracker",
     "id": "nti",
     "added_by": "Talus",
     "mmddyyyy_added": "050418"
@@ -115,7 +115,7 @@
     "2017": 0
   },
   "committed_by_year": {
-    "2017": 100000000,
+    "2017": 100000000
   },
   "total_spent": 0,
   "total_committed": 100000000
