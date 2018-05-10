@@ -217,6 +217,9 @@ const App = {};
 			App.fundingLookup[donor].push(p);
 			if (!App.recipientLookup[recipient]) App.recipientLookup[recipient] = [];
 			App.recipientLookup[recipient].push(p);
+		
+			// calculate per year spending/commits
+			App.getFundsByYear(p);
 		});
 	};
 
@@ -230,6 +233,58 @@ const App = {};
 	App.getTotalReceived = (iso) => {
 		if (!App.recipientLookup[iso]) return 0;
 		return d3.sum(App.recipientLookup[iso], d => d.total_spent + d.total_committed);
+	};
+
+	App.getFundsByYear = (project) => {
+		// console.log(project.transactions)
+		const transactions = project.transactions;
+		const spendTrans = transactions.filter(d => { return d.type === "disbursement" || d.type === "expenditure"; });
+		const commitmentTrans = transactions.filter(d => { return d.type === "commitment"; });
+		
+		project.total_spent = 0.0;
+		project.total_committed = 0.0;
+		// const curYear = new Date().getFullYear();
+		const curYear = App.dataEndYear;
+		const minYear = App.dataStartYear;
+
+		project.spent_by_year = {
+			2014: 0.0,
+			2015: 0.0,
+			2016: 0.0,
+			2017: 0.0,
+			2018: 0.0,
+		};
+		spendTrans.forEach(transaction => {
+			const transCy = transaction.cy;
+			if (project.spent_by_year[transCy] === undefined) {
+				project.spent_by_year[transCy] = transaction.amount;
+			} else {
+				project.spent_by_year[transCy] = project.spent_by_year[transCy] + transaction.amount;
+			}
+			if (parseInt(transCy) <= curYear && parseInt(transCy) >= minYear) project.total_spent = project.total_spent + transaction.amount;
+		});
+
+		project.committed_by_year = {
+			2014: 0.0,
+			2015: 0.0,
+			2016: 0.0,
+			2017: 0.0,
+			2018: 0.0,
+		};
+		commitmentTrans.forEach(transaction => {
+			const transCy = transaction.cy;
+			if (project.committed_by_year[transCy] === undefined) {
+				project.committed_by_year[transCy] = transaction.amount;
+			} else {
+				project.committed_by_year[transCy] = project.committed_by_year[transCy] + transaction.amount;
+			}
+			if (parseInt(transCy) <= curYear && parseInt(transCy) >= minYear) project.total_committed = project.total_committed + transaction.amount;
+		});
+
+		// set negative funds to zero
+		transactions.forEach((transaction) => {
+			if (transaction.amount < 0) transaction.amount = 0;
+		});
 	};
 
 
