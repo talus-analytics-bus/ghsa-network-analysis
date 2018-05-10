@@ -132,6 +132,9 @@
 
 		// update everything if any parameters change
 		function updateAll() {
+			// update funding data
+			App.loadFundingData({showGhsaOnly: App.showGhsaOnly});
+
 			// update data map and actual map
 			updateDataMaps();
 			updateMap();

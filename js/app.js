@@ -18,6 +18,9 @@ const App = {};
 		App.dataStartYear = 2014;
 		App.dataEndYear = 2017;
 
+		// Settings
+		App.showGhsaOnly = false;
+
 		// (purple, orange) color scheme
 		/* App.fundColor = '#283375';
 		App.receiveColor = '#aa4e2a';

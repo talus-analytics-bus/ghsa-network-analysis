@@ -28,6 +28,11 @@
 		@include border-radius(5px);
 	}
 }
+.radio-option.multi-line * {
+		display: inline-block;
+		vertical-align: top;
+	}
+
 .map-options-container {
 	display: none;
 	width: 280px;
@@ -40,6 +45,10 @@
 	&:hover {
 		background-color: rgba(240,240,240,0.925);
 	}
+
+
+
+
 	.map-options-title {
 		display: flex;
 		justify-content: space-between;
@@ -79,6 +88,10 @@
 	.radio-option {
 		margin-left: 10px;
 		cursor: pointer;
+		span, div {
+			position: relative;
+			top: 3px;
+		}
 	}
 	.radio-option input {
 		position: relative;
@@ -102,6 +115,10 @@
 		width: 13px;
 		height: 13px;
 		margin-left: 3px;
+	}
+	.info-img.ghsa-info-img {
+		top: 25px;
+	    right: 140px;
 	}
 	.or-text {
 		padding-left: 27px;

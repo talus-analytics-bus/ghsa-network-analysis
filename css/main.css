@@ -1411,6 +1411,10 @@ b {
     -moz-background-clip: padding;
     background-clip: padding-box; }
 
+.radio-option.multi-line * {
+  display: inline-block;
+  vertical-align: top; }
+
 .map-options-container {
   display: none;
   width: 280px;
@@ -1453,6 +1457,9 @@ b {
   .map-options-container .radio-option {
     margin-left: 10px;
     cursor: pointer; }
+    .map-options-container .radio-option span, .map-options-container .radio-option div {
+      position: relative;
+      top: 3px; }
   .map-options-container .radio-option input {
     position: relative;
     top: 2px; }
@@ -1471,6 +1478,9 @@ b {
     width: 13px;
     height: 13px;
     margin-left: 3px; }
+  .map-options-container .info-img.ghsa-info-img {
+    top: 25px;
+    right: 140px; }
   .map-options-container .or-text {
     padding-left: 27px;
     font-size: 0.95em; }

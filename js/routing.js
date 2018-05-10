@@ -16,38 +16,36 @@ const Routing = {};
 			loadPage('home', App.initHome, query);
 		});
 		crossroads.addRoute('/analysis:?{query}:', (query) => {
-			loadPage('analysis', App.initAnalysis, 'network');
+			loadPage('analysis', App.initAnalysis, 'network', query);
 		});
-		crossroads.addRoute('/analysis/country', () => {
-			loadPage('analysis', App.initAnalysis, 'country');
+		crossroads.addRoute('/analysis/country:?{query}:', (query) => {
+			loadPage('analysis', App.initAnalysis, 'country', query);
 		});
-		crossroads.addRoute('/analysis/{iso}', (iso) => {
+		crossroads.addRoute('/analysis/{iso}:?{query}:', (iso, query) => {
 			loadPage('analysis-country', App.initAnalysisCountry, iso);
 		});
-		crossroads.addRoute('/analysis/{iso}/d', (iso) => {
+		crossroads.addRoute('/analysis/{iso}/d:?{query}:', (iso, query) => {
 			loadPage('analysis-country', App.initAnalysisCountry, iso, 'd');
 		});
-		crossroads.addRoute('/analysis/{iso}/r', (iso) => {
-			// check for url params and keep them
-
+		crossroads.addRoute('/analysis/{iso}/r:?{query}:', (iso, query) => {
 			loadPage('analysis-country', App.initAnalysisCountry, iso, 'r');
 		});
-		crossroads.addRoute('/analysis/{iso}/{type}/table', (iso, type) => {
+		crossroads.addRoute('/analysis/{iso}/{type}/table:?{query}:', (iso, type, query) => {
 			loadPage('analysis-table', App.initAnalysisTable, iso, type);
 		});
-		crossroads.addRoute('/analysis/{fundIso}/{recIso}', (fundIso, recIso, query) => {
+		crossroads.addRoute('/analysis/{fundIso}/{recIso}:?{query}:', (fundIso, recIso, query) => {
 			loadPage('analysis-pair', App.initAnalysisPair, fundIso, recIso);
 		});
-		crossroads.addRoute('/submit', () => {
+		crossroads.addRoute('/submit:?{query}:', () => {
 			loadPage('submit', App.initSubmit);
 		});
-		crossroads.addRoute('/glossary', () => {
+		crossroads.addRoute('/glossary:?{query}:', () => {
 			loadPage('glossary');
 		});
-		crossroads.addRoute('/settings', () => {
+		crossroads.addRoute('/settings:?{query}:', () => {
 			loadPage('settings', App.initSettings);
 		});
-		crossroads.addRoute('/about', () => {
+		crossroads.addRoute('/about:?{query}:', () => {
 			loadPage('about');
 		});
 
