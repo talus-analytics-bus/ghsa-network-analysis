@@ -6,7 +6,12 @@ const App = {};
 		$('.nav a').on('click', function(){
 			const menuOption = $(this);
 			const page = menuOption.attr('page');
-			hasher.setHash(`#${page}`);
+			const hashArr = hasher.getHash().split('?');
+			if (hashArr.length > 1) {
+				hasher.setHash(`#${page}?${hashArr[1]}`);
+			} else {
+				hasher.setHash(`#${page}`);
+			}
 		});
 
 		// data definition variables
@@ -122,9 +127,10 @@ const App = {};
 
 				// save funding data
 				App.fundingData = fundingData.filter(d => d.ghsa_funding);
-				App.fundingDataFull = fundingData.filter(d => d.ghsa_funding);
+				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d)).filter(d => d.ghsa_funding);
 
-				App.loadFundingLookupTables(false);
+				// Prepare funding lookup tables, etc.
+				App.loadFundingData({showGhsaOnly: false});
 
 				// save indicator scores by country
 				jeeData.forEach((sRow) => {
@@ -183,24 +189,23 @@ const App = {};
 
 	/* ------------------ Data Functions ------------------- */
 	// reloads the funding data to use GHSA Only or All
-	App.loadFundingLookupTables = (showGhsaOnly) => {
-		const ghsaFilter = showGhsaOnly ? (p) => p.ghsa_funding === true : (p) => p;
-		if (!showGhsaOnly) {
-			// populate lookup variables from funding data
-			App.fundingData = App.fundingDataFull.filter(ghsaFilter);
-			App.fundingData.forEach((p) => {
-				const donor = p.donor_code;
-				const recipient = p.recipient_country;
+	App.loadFundingData = (params = {}) => {
+		console.log(params)
+		App.fundingLookup = {};
+		App.recipientLookup = {};
+		const ghsaFilter = params.showGhsaOnly ? (p) => p.ghsa_funding === true : (p) => p;
+		// populate lookup variables from funding data
+		App.fundingData = App.fundingDataFull.filter(ghsaFilter);
+		App.fundingData.forEach((p) => {
+			const donor = p.donor_code;
+			const recipient = p.recipient_country;
 
-				// store payments in lookup objects
-				if (!App.fundingLookup[donor]) App.fundingLookup[donor] = [];
-				App.fundingLookup[donor].push(p);
-				if (!App.recipientLookup[recipient]) App.recipientLookup[recipient] = [];
-				App.recipientLookup[recipient].push(p);
-			});
-		} else {
-
-		}
+			// store payments in lookup objects
+			if (!App.fundingLookup[donor]) App.fundingLookup[donor] = [];
+			App.fundingLookup[donor].push(p);
+			if (!App.recipientLookup[recipient]) App.recipientLookup[recipient] = [];
+			App.recipientLookup[recipient].push(p);
+		});
 	};
 
 	// returns the total amount of money donated by a given country

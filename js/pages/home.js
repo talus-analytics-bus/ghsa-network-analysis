@@ -1,5 +1,5 @@
 (() => {
-	App.initHome = () => {
+	App.initHome = (params = {}) => {
 		// variables used throughout home page
 		let map;  // the world map
 		let activeCountry = d3.select(null);  // the active country
@@ -24,6 +24,7 @@
 
 		// function for initializing the page
 		function init() {
+			App.loadFundingData({ showGhsaOnly: params.showGhsaOnly === 'true' });
             App.setSources();
 			// build map and initialize search
 			map = buildMap();

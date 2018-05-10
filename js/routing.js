@@ -13,9 +13,11 @@ const Routing = {};
 	Routing.initializeRoutes = () => {
 		// setup crossroads for routing
 		crossroads.addRoute('/:?{query}:', (query) => {
-			loadPage('home', App.initHome);
+			loadPage('home', App.initHome, query);
 		});
-		crossroads.addRoute('/analysis', () => {
+		crossroads.addRoute('/analysis:?{query}:', (query) => {
+			console.log('query')
+			console.log(query)
 			loadPage('analysis', App.initAnalysis, 'network');
 		});
 		crossroads.addRoute('/analysis/country', () => {
