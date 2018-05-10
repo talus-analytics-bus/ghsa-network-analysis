@@ -225,7 +225,7 @@
                         const committed = p.total_committed;
                         let spent = p.total_spent;
 
-                        if (spent > committed) spent = committed;
+                        // if (spent > committed) spent = committed;
                         fundsByCc[cc].total_committed += committed;
                         fundsByCc[cc].total_spent += spent;
 
