@@ -568,6 +568,11 @@
 			// populate dropdowns
 			App.populateCcDropdown('.cc-select', { dropRight: true });
 
+			// set GHSA radio button to checked if that is set
+			if (App.showGhsaOnly) {
+				$('input[type=radio][name="ind"][ind="ghsa"]').prop('checked',true);
+			}
+
 			// update indicator type ('money' or 'score') on change
 			$('.ind-type-filter .radio-option').click(function updateIndType() {
 				indType = $(this).find('input').attr('ind');

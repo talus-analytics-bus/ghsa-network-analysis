@@ -20,6 +20,10 @@
 			} else if (tab === 'country') {
 				initTableSearch();
 				populateTables('.donor-table', '.recipient-table');
+				// set GHSA radio button to checked if that is set
+				if (App.showGhsaOnly) {
+					$('input[type=radio][name="ind"][ind="ghsa"]').prop('checked',true);
+				}
 			}
 		}
 
@@ -47,6 +51,11 @@
 			// populate dropdowns
 			App.populateCcDropdown('.cc-select');
 			$('.cc-select').on('change', updateNetworkMap);
+
+			// set GHSA radio button to checked if that is set
+			if (App.showGhsaOnly) {
+				$('input[type=radio][name="ind"][ind="ghsa"]').prop('checked',true);
+			}
 
 			// initialize radio button functionality
 			$('.network-map-options .radio-option').click(function clickedRadio() {
@@ -151,8 +160,14 @@
 				const country = App.countries.find(c => c.ISO2 === d.iso);
 				const flagHtml = country ? App.getFlagHtml(d.iso) : '';
 				const name = App.codeToNameMap.get(d.iso);
-				return `<div class="flag-container">${flagHtml}</div>` +
-					`<div class="name-container">${name}</div>`;
+				if (country.country === false) {
+					return `<div class="flag-container"></div>` +
+						`<div class="name-container">${name}</div>`;
+				}
+				else {
+					return `<div class="flag-container">${flagHtml}</div>` +
+						`<div class="name-container">${name}</div>`;
+				}
 			});
 			dRows.append('td').text(d => App.formatMoney(d.total_committed));
 			dRows.append('td').text(d => App.formatMoney(d.total_spent));
@@ -172,8 +187,14 @@
 				const country = App.countries.find(c => c.ISO2 === d.iso);
 				const flagHtml = country ? App.getFlagHtml(d.iso) : '';
 				const name = country ? country.NAME : d.iso;
-				return `<div class="flag-container">${flagHtml}</div>` +
-					`<div class="name-container">${name}</div>`;
+				if (country.country === false) {
+					return `<div class="flag-container"></div>` +
+						`<div class="name-container">${name}</div>`;
+				}
+				else {
+					return `<div class="flag-container">${flagHtml}</div>` +
+						`<div class="name-container">${name}</div>`;
+				}
 			});
 			rRows.append('td').text(d => App.formatMoney(d.total_committed));
 			rRows.append('td').text(d => App.formatMoney(d.total_spent));
@@ -371,8 +392,6 @@
 
 		function buildNetworkMap() {
 			const networkData = getNetworkData();
-			console.log('networkData');
-			console.log(networkData);
 			const chart = App.buildNetworkMap('.network-map-content', networkData, {
 				countryClickFn: displayCountryInNetwork,
 			});
@@ -381,6 +400,7 @@
 		}
 
 		function updateNetworkMap() {
+			App.loadFundingData({showGhsaOnly: App.showGhsaOnly});
 			const moneyType = $('.money-type-filter input:checked').attr('ind');
 			const networkData = getNetworkData();
 			if (!networkData.length) {
