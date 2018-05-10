@@ -2,6 +2,13 @@ const App = {};
 
 (() => {
 	App.initialize = (callback) => {
+		// initialize nav menu items
+		$('.nav a').on('click', function(){
+			const menuOption = $(this);
+			const page = menuOption.attr('page');
+			hasher.setHash(`#${page}`);
+		});
+
 		// data definition variables
 		App.dataStartYear = 2014;
 		App.dataEndYear = 2017;
@@ -114,7 +121,10 @@ const App = {};
 				});
 
 				// save funding data
-				App.fundingData = fundingData;
+				App.fundingData = fundingData.filter(d => d.ghsa_funding);
+				App.fundingDataFull = fundingData.filter(d => d.ghsa_funding);
+
+				App.loadFundingLookupTables(false);
 
 				// save indicator scores by country
 				jeeData.forEach((sRow) => {
@@ -161,18 +171,6 @@ const App = {};
 				App.currencies = Object.assign({}, currencies);
 				App.currencyIso = 'USD';
 
-				// populate lookup variables from funding data
-				App.fundingData.forEach((p) => {
-					const donor = p.donor_code;
-					const recipient = p.recipient_country;
-
-					// store payments in lookup objects
-					if (!App.fundingLookup[donor]) App.fundingLookup[donor] = [];
-					App.fundingLookup[donor].push(p);
-					if (!App.recipientLookup[recipient]) App.recipientLookup[recipient] = [];
-					App.recipientLookup[recipient].push(p);
-				});
-
 				// call callback and finish progress bar
 				if (callback) callback();
 				NProgress.done();
@@ -184,6 +182,27 @@ const App = {};
 
 
 	/* ------------------ Data Functions ------------------- */
+	// reloads the funding data to use GHSA Only or All
+	App.loadFundingLookupTables = (showGhsaOnly) => {
+		const ghsaFilter = showGhsaOnly ? (p) => p.ghsa_funding === true : (p) => p;
+		if (!showGhsaOnly) {
+			// populate lookup variables from funding data
+			App.fundingData = App.fundingDataFull.filter(ghsaFilter);
+			App.fundingData.forEach((p) => {
+				const donor = p.donor_code;
+				const recipient = p.recipient_country;
+
+				// store payments in lookup objects
+				if (!App.fundingLookup[donor]) App.fundingLookup[donor] = [];
+				App.fundingLookup[donor].push(p);
+				if (!App.recipientLookup[recipient]) App.recipientLookup[recipient] = [];
+				App.recipientLookup[recipient].push(p);
+			});
+		} else {
+
+		}
+	};
+
 	// returns the total amount of money donated by a given country
 	App.getTotalFunded = (iso) => {
 		if (!App.fundingLookup[iso]) return 0;
@@ -303,4 +322,5 @@ const App = {};
 	$.noty.defaults.type = 'warning';
 	$.noty.defaults.layout = 'center';
 	$.noty.defaults.timeout = 2000;
+
 })();

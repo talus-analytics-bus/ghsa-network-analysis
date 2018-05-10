@@ -12,7 +12,7 @@ const Routing = {};
 
 	Routing.initializeRoutes = () => {
 		// setup crossroads for routing
-		crossroads.addRoute('/', () => {
+		crossroads.addRoute('/:?{query}:', (query) => {
 			loadPage('home', App.initHome);
 		});
 		crossroads.addRoute('/analysis', () => {
@@ -28,12 +28,14 @@ const Routing = {};
 			loadPage('analysis-country', App.initAnalysisCountry, iso, 'd');
 		});
 		crossroads.addRoute('/analysis/{iso}/r', (iso) => {
+			// check for url params and keep them
+
 			loadPage('analysis-country', App.initAnalysisCountry, iso, 'r');
 		});
 		crossroads.addRoute('/analysis/{iso}/{type}/table', (iso, type) => {
 			loadPage('analysis-table', App.initAnalysisTable, iso, type);
 		});
-		crossroads.addRoute('/analysis/{fundIso}/{recIso}', (fundIso, recIso) => {
+		crossroads.addRoute('/analysis/{fundIso}/{recIso}', (fundIso, recIso, query) => {
 			loadPage('analysis-pair', App.initAnalysisPair, fundIso, recIso);
 		});
 		crossroads.addRoute('/submit', () => {

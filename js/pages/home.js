@@ -34,6 +34,8 @@
 		}
 
 
+
+
 		/* ---------------------- Functions ----------------------- */
 		// builds the map, attaches tooltips to countries, populates coordinates dict
 		function buildMap() {
