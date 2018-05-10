@@ -262,6 +262,7 @@
 		}
 
 		function drawLinks(moneyType) {
+			funds = funds.filter(d => countryMapByIso.get(d.recipient) !== undefined);
 			// create links
 			const links = linkG.selectAll('.link')
 				.data(funds);
@@ -327,6 +328,7 @@
 			});
 
 			// attach start/end angles to each fund
+			console.log(data);
 			data.forEach((region) => {
 				region.children.forEach((subregion) => {
 					subregion.children.forEach((fc) => {
@@ -340,6 +342,7 @@
 							fc.runningTheta += fundTheta;
 
 							const rc = countryMapByIso.get(f.recipient);
+							if (rc === undefined) return;
 							let recTheta = (rc.theta1 - rc.theta0) * (f.value / rc.totalFlow);
 							if (recTheta < 0) recTheta = 0;  // TODO need to fix this!
 							f.target = {
