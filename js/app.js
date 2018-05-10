@@ -363,6 +363,9 @@ const App = {};
             });
     };
 
+    App.setGhsaOnly = (ghsaOnly) => {
+    	App.showGhsaOnly = ghsaOnly;
+    }
 
 	/* ------------------ Format Functions ------------------- */
 	App.siFormat = (num) => {

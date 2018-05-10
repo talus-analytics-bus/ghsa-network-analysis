@@ -15,17 +15,17 @@
 
 		// colors
 		const purples = ['#e0ecf4', '#bfd3e6', '#9ebcda',
-			'#8c96c6', '#8c6bb1', '#88419d', '#810f7c', '#4d004b'];
+		'#8c96c6', '#8c6bb1', '#88419d', '#810f7c', '#4d004b'];
 		const orangesReverse = ['#fee391', '#fec44f', '#fe9929',
-			'#ec7014', '#cc4c02', '#993404', '#662506'].reverse();
+		'#ec7014', '#cc4c02', '#993404', '#662506'].reverse();
 		const jeeColors = ['#c91414', '#ede929', '#ede929', '#ede929',
-			'#ede929', '#0b6422', '#0b6422', '#0b6422'];
+		'#ede929', '#0b6422', '#0b6422', '#0b6422'];
 
 
 		// function for initializing the page
 		function init() {
 			App.loadFundingData({ showGhsaOnly: params.showGhsaOnly === 'true' });
-            App.setSources();
+			App.setSources();
 			// build map and initialize search
 			map = buildMap();
 			initMapOptions();
@@ -48,7 +48,7 @@
 
 			// define country click behavior and attach tooltips
 			d3.selectAll('.country')
-				.on('click', function onClick(d) {
+			.on('click', function onClick(d) {
 					// set country as active
 					if (activeCountry.node() === this) return resetMap();
 					activeCountry.classed('active', false);
@@ -61,14 +61,14 @@
 					displayCountryInfo();
 					return true;
 				})
-				.each(function addTooltip(d) {
-					$(this).tooltipster({
-						plugins: ['follower'],
-						delay: 100,
-						minWidth: 200,
-						content: d.properties.NAME,
-					});
+			.each(function addTooltip(d) {
+				$(this).tooltipster({
+					plugins: ['follower'],
+					delay: 100,
+					minWidth: 200,
+					content: d.properties.NAME,
 				});
+			});
 
 			// define legend display toggle behavior
 			$('.legend-display-tab').click(function toggleLegendDIsplay() {
@@ -108,26 +108,26 @@
 				else noun = 'Received';
 			}
 			return `Total <b>${noun}</b>` +
-				`<br>from ${startYear} to ${endYear - 1}` +
-				`<br>(${flowNoun})`;
+			`<br>from ${startYear} to ${endYear - 1}` +
+			`<br>(${flowNoun})`;
 		}
 
 		// gets the color scale used for the map
 		function getColorScale() {
 			if (indType === 'score' && scoreType === 'score') {
 				return d3.scaleThreshold()
-					.domain([1.5, 2, 2.5, 3, 3.5, 4, 4.5])
-					.range(jeeColors);
+				.domain([1.5, 2, 2.5, 3, 3.5, 4, 4.5])
+				.range(jeeColors);
 			}
 
 			const valueAttrName = getValueAttrName();
 			const domain = currentNodeDataMap.values()
-				.map(d => d[valueAttrName])
-				.filter(d => d);
+			.map(d => d[valueAttrName])
+			.filter(d => d);
 			if (domain.length === 1) domain.push(0);
 			return d3.scaleQuantile()
-				.domain(domain)
-				.range(indType === 'money' ? purples : orangesReverse);
+			.domain(domain)
+			.range(indType === 'money' || indType === 'ghsa' ? purples : orangesReverse);
 		}
 
 		// update everything if any parameters change
@@ -179,7 +179,7 @@
 
 					if (scoreObj) {
 						const capScores = scoreObj.avgCapScores
-							.filter(d => ccs.includes(d.capId));
+						.filter(d => ccs.includes(d.capId));
 						score = d3.mean(capScores, d => d.score);
 						const numerator = 10 + Math.log10(1 + receivedSpent);
 						const denominator = 5.01 - score;
@@ -225,19 +225,19 @@
 
 			// color countries and update tooltip content
 			map.element.selectAll('.country').transition()
-				.duration(500)
-				.style('fill', (d) => {
-					const isoCode = d.properties.ISO2;
-					if (currentNodeDataMap.has(isoCode)) {
-						d.value = currentNodeDataMap.get(isoCode)[valueAttrName];
-						d.color = d.value ? colorScale(d.value) : '#ccc';
-					} else {
-						d.value = null;
-						d.color = '#ccc';
-					}
-					return d.color;
-				})
-				.each(function updateTooltip(d) {
+			.duration(500)
+			.style('fill', (d) => {
+				const isoCode = d.properties.ISO2;
+				if (currentNodeDataMap.has(isoCode)) {
+					d.value = currentNodeDataMap.get(isoCode)[valueAttrName];
+					d.color = d.value ? colorScale(d.value) : '#ccc';
+				} else {
+					d.value = null;
+					d.color = '#ccc';
+				}
+				return d.color;
+			})
+			.each(function updateTooltip(d) {
 					// define labels and value to be shown
 					let label = getMoneyTypeLabel(moneyFlow, moneyType);
 					let value = d.value;
@@ -253,8 +253,8 @@
 					// build tooltip
 					const container = d3.select(document.createElement('div'));
 					container.append('div')
-						.attr('class', 'tooltip-title')
-						.text(d.properties.NAME);
+					.attr('class', 'tooltip-title')
+					.text(d.properties.NAME);
 					if (indType === 'score') {
 						let scoreText = 'Avg. JEE Score: ';
 						let score = 0;
@@ -267,21 +267,21 @@
 							scoreText = 'No JEE score data available';
 						}
 						container.append('div')
-							.attr('class', 'tooltip-score-text')
-							.html(scoreText);
+						.attr('class', 'tooltip-score-text')
+						.html(scoreText);
 					} else {
 						const infoLabel = (moneyFlow === 'funded') ?
-							'Funder Information' : 'Recipient Information';
+						'Funder Information' : 'Recipient Information';
 						container.append('div')
-							.attr('class', 'tooltip-profile-type')
-							.text(infoLabel);
+						.attr('class', 'tooltip-profile-type')
+						.text(infoLabel);
 					}
 					container.append('div')
-						.attr('class', 'tooltip-main-value')
-						.text(App.formatMoney(value));
+					.attr('class', 'tooltip-main-value')
+					.text(App.formatMoney(value));
 					container.append('div')
-						.attr('class', 'tooltip-main-value-label')
-						.html(label);
+					.attr('class', 'tooltip-main-value-label')
+					.html(label);
 
 					$(this).tooltipster('content', container.html());
 				});
@@ -296,23 +296,23 @@
 
 			// add starting label
 			legend.append('text')
-				.attr('class', 'legend-start-label')
-				.attr('dy', '.35em');
+			.attr('class', 'legend-start-label')
+			.attr('dy', '.35em');
 
 			// add starting tick line
 			legend.append('line')
-				.attr('class', 'legend-start-tick legend-tick')
-				.attr('x1', 1)
-				.attr('x2', 1);
+			.attr('class', 'legend-start-tick legend-tick')
+			.attr('x1', 1)
+			.attr('x2', 1);
 
 			// add legend title
 			legend.append('text').attr('class', 'legend-title');
 
 			// add tooltip for legend title
 			legend.append('image')
-				.attr('class', 'legend-tooltip')
-				.attr('xlink:href', 'img/info.png')
-				.each(function addTooltip() { $(this).tooltipster(); });
+			.attr('class', 'legend-tooltip')
+			.attr('xlink:href', 'img/info.png')
+			.each(function addTooltip() { $(this).tooltipster(); });
 		}
 
 		// update the map legend
@@ -329,93 +329,93 @@
 
 			const colors = colorScale.range();
 			const thresholds = indType === 'score' ?
-				colorScale.domain() : colorScale.quantiles();
+			colorScale.domain() : colorScale.quantiles();
 			const maxValue = d3.max(currentNodeDataMap.values()
 				.map(d => d[valueAttrName]));
 
 			const legend = d3.select('.legend')
-				.attr('width', barWidth * colors.length + 2 * legendPadding)
-				.attr('height', barHeight + 50)
-				.select('g')
-					.attr('transform', `translate(${legendPadding}, 0)`);
+			.attr('width', barWidth * colors.length + 2 * legendPadding)
+			.attr('height', barHeight + 50)
+			.select('g')
+			.attr('transform', `translate(${legendPadding}, 0)`);
 			let legendGroups = legend.selectAll('g')
-				.data(colors);
+			.data(colors);
 			legendGroups.exit().remove();
 
 			// add bars, texts, ticks for each group
 			const newLegendGroups = legendGroups.enter().append('g');
 			newLegendGroups.append('rect')
-				.attr('class', 'legend-bar')
-				.attr('height', barHeight);
+			.attr('class', 'legend-bar')
+			.attr('height', barHeight);
 			newLegendGroups.append('text')
-				.attr('class', 'legend-text')
-				.attr('dy', '.35em');
+			.attr('class', 'legend-text')
+			.attr('dy', '.35em');
 			newLegendGroups.append('line')
-				.attr('class', 'legend-tick')
-				.attr('y1', barHeight)
-				.attr('y2', barHeight + 4);
+			.attr('class', 'legend-tick')
+			.attr('y1', barHeight)
+			.attr('y2', barHeight + 4);
 
 			legendGroups = legendGroups.merge(newLegendGroups)
-				.attr('transform', (d, i) => `translate(${barWidth * i}, 0)`);
+			.attr('transform', (d, i) => `translate(${barWidth * i}, 0)`);
 			legendGroups.select('.legend-bar')
-				.attr('width', barWidth)
-				.style('fill', d => d);
+			.attr('width', barWidth)
+			.style('fill', d => d);
 			const legendText = legendGroups.select('.legend-text')
-				.attr('x', barWidth)
-				.attr('y', isJeeScore ? barHeight + 14 : barHeight + 12);
+			.attr('x', barWidth)
+			.attr('y', isJeeScore ? barHeight + 14 : barHeight + 12);
 			legendGroups.select('.legend-tick')
-				.attr('x1', (d, i) => (i === colors.length - 2 ? 2 * barWidth - 1 : 2 * barWidth))
-				.attr('x2', (d, i) => (i === colors.length - 2 ? 2 * barWidth - 1 : 2 * barWidth))
-				.style('display', (d, i) => {
-					if (!isJeeScore) return 'none';
-					return (i % 2 === 0) ? 'inline' : 'none';
-				});
+			.attr('x1', (d, i) => (i === colors.length - 2 ? 2 * barWidth - 1 : 2 * barWidth))
+			.attr('x2', (d, i) => (i === colors.length - 2 ? 2 * barWidth - 1 : 2 * barWidth))
+			.style('display', (d, i) => {
+				if (!isJeeScore) return 'none';
+				return (i % 2 === 0) ? 'inline' : 'none';
+			});
 
 			// fix starting label position
 			const legendStartLabel = legend.select('.legend-start-label')
-				.attr('y', barHeight + 12);
+			.attr('y', barHeight + 12);
 
 			// add starting tick
 			legend.select('.legend-start-tick')
-				.attr('y1', barHeight)
-				.attr('y2', barHeight + 4)
-				.style('display', isJeeScore ? 'inline' : 'none');
+			.attr('y1', barHeight)
+			.attr('y2', barHeight + 4)
+			.style('display', isJeeScore ? 'inline' : 'none');
 
 			if (isJeeScore) {
 				legendText
-					.style('text-anchor', 'middle')
-					.style('display', (d, i) => (i % 2 === 0 ? 'none' : 'inline'))
-					.text((d, i) => (i + 3) / 2);
+				.style('text-anchor', 'middle')
+				.style('display', (d, i) => (i % 2 === 0 ? 'none' : 'inline'))
+				.text((d, i) => (i + 3) / 2);
 				legendStartLabel
-					.style('text-anchor', 'middle')
-					.text('1');
+				.style('text-anchor', 'middle')
+				.text('1');
 			} else if (indType === 'score' && scoreType === 'combined') {
 				legendText
-					.style('display', 'inline')
-					.style('text-anchor', 'end')
-					.text((d, i) => {
-						if (i === 6) return 'Needs Met';
-						return '';
-					});
+				.style('display', 'inline')
+				.style('text-anchor', 'end')
+				.text((d, i) => {
+					if (i === 6) return 'Needs Met';
+					return '';
+				});
 				legendStartLabel
-					.style('text-anchor', 'start')
-					.text('Needs Unmet');
+				.style('text-anchor', 'start')
+				.text('Needs Unmet');
 			} else {
 				legendText
-					.style('display', 'inline')
-					.style('text-anchor', 'middle')
-					.text((d, i) => {
-						if (i === thresholds.length) return App.formatMoneyShort(maxValue);
-						return App.formatMoneyShort(thresholds[i]);
-					});
+				.style('display', 'inline')
+				.style('text-anchor', 'middle')
+				.text((d, i) => {
+					if (i === thresholds.length) return App.formatMoneyShort(maxValue);
+					return App.formatMoneyShort(thresholds[i]);
+				});
 				legendStartLabel
-					.style('text-anchor', 'start')
-					.text(0);
+				.style('text-anchor', 'start')
+				.text(0);
 			}
 
 			// update legend title
 			let titleText = '';
-			if (indType === 'money') {
+			if (indType === 'money' || indType === 'ghsa') {
 				if (moneyType === 'committed') {
 					titleText = 'Funds Committed';
 				} else {
@@ -432,24 +432,24 @@
 			}
 
 			legend.select('.legend-title')
-				.attr('x', barWidth * colors.length / 2)
-				.attr('y', barHeight + 45)
-				.text(titleText);
+			.attr('x', barWidth * colors.length / 2)
+			.attr('y', barHeight + 45)
+			.text(titleText);
 
 			legend.select('.legend-tooltip')
-				.attr('x', barWidth * colors.length / 2 + 134)
-				.attr('y', barHeight + 33.5);
+			.attr('x', barWidth * colors.length / 2 + 134)
+			.attr('y', barHeight + 33.5);
 
 			// if showing combination metric, populate tooltip
 			if (indType === 'score' && scoreType === 'combined') {
 				$('.legend-tooltip')
-					.show()
-					.tooltipster('content', 'This metric combines both a country\'s JEE scores and ' +
-						'the amount of disbursed funds that the country has received. ' +
-						'We use JEE scores as a proxy for country-specific needs, and ' +
-						'calculate the ratio of financial resources to need. The goal ' +
-						'of this metric is to highlight areas whose needs may still be ' +
-						'unmet based on their ratio of financial resources to need.');
+				.show()
+				.tooltipster('content', 'This metric combines both a country\'s JEE scores and ' +
+					'the amount of disbursed funds that the country has received. ' +
+					'We use JEE scores as a proxy for country-specific needs, and ' +
+					'calculate the ratio of financial resources to need. The goal ' +
+					'of this metric is to highlight areas whose needs may still be ' +
+					'unmet based on their ratio of financial resources to need.');
 			} else {
 				$('.legend-tooltip').hide();
 			}
@@ -464,15 +464,15 @@
 			// populate info title
 			$('.info-title').text(country.NAME);
 			$('.info-profile-type')
-				.css('display', indType === 'money' ? 'block' : 'none')
-				.text(moneyFlow === 'funded' ? 'Funder Information' : 'Recipient Information');
+			.css('display', indType === 'money' || indType === 'ghsa' ? 'block' : 'none')
+			.text(moneyFlow === 'funded' ? 'Funder Information' : 'Recipient Information');
 
 			// define "go to analysis" button behavior
 			$('.info-analysis-button')
-				.off('click')
-				.on('click', () => {
-					hasher.setHash(`analysis/${country.ISO2}`);
-				});
+			.off('click')
+			.on('click', () => {
+				hasher.setHash(`analysis/${country.ISO2}`);
+			});
 
 			// populate info total value
 			let totalCommitted = 0;
@@ -480,7 +480,7 @@
 			if (currentNodeDataMap.has(country.ISO2)) {
 				const valueObj = currentNodeDataMap.get(country.ISO2);
 
-				if (indType === 'money') {
+				if (indType === 'money' || indType === 'ghsa') {
 					$('.info-score-text-container').slideUp();
 				} else if (indType === 'score') {
 					let scoreText = 'Average JEE Score: ';
@@ -493,7 +493,7 @@
 					$('.info-score-text-container').slideDown();
 				}
 
-				if (indType === 'money' && moneyFlow === 'funded') {
+				if ((indType === 'money' || indType === 'ghsa' ) && moneyFlow === 'funded') {
 					totalCommitted += valueObj.fundedCommitted;
 					totalSpent += valueObj.fundedSpent;
 				} else {
@@ -532,7 +532,7 @@
 			App.initCountrySearchBar('.search-container', (result) => {
 				// get country element
 				const country = d3.selectAll('.country')
-					.filter(c => result.ISO2 === c.properties.ISO2);
+				.filter(c => result.ISO2 === c.properties.ISO2);
 
 				// set country as active
 				activeCountry.classed('active', false);
@@ -574,6 +574,11 @@
 				if (indType === 'money') {
 					$('.score-filters').slideUp();
 					$('.money-filters').slideDown();
+					App.showGhsaOnly = false;
+				} else if (indType === 'ghsa') {
+					$('.score-filters').slideUp();
+					$('.money-filters').slideDown();
+					App.showGhsaOnly = true;
 				} else if (indType === 'score') {
 					$('.money-filters').slideUp();
 					$('.score-filters').slideDown();
@@ -588,7 +593,7 @@
 
 				// update text in country info box based on money flow on change
 				$('.info-tab-container .btn[tab="country"]')
-					.text(moneyFlow === 'received' ? 'By Donor' : 'By Recipient');
+				.text(moneyFlow === 'received' ? 'By Donor' : 'By Recipient');
 			});
 
 			// update money type ('committed' or 'disbursed') on change
@@ -611,15 +616,15 @@
 			$('.score-info-img').tooltipster({
 				interactive: true,
 				content: 'The average of each country\'s most recent <b>JEE scores</b>,' +
-					' for all JEE scores selected in the filter below.',
+				' for all JEE scores selected in the filter below.',
 			});
 			$('.combined-info-img').tooltipster({
 				content: 'This metric combines both a country\'s JEE scores and ' +
-					'the amount of disbursed funds that the country has received. ' +
-					'We use JEE scores as a proxy for country-specific needs, ' +
-					'and calculate the ratio of financial resources to need. ' +
-					'The goal of this metric is to highlight areas whose needs may ' +
-					'still be unmet based on their ratio of financial resources to need.',
+				'the amount of disbursed funds that the country has received. ' +
+				'We use JEE scores as a proxy for country-specific needs, ' +
+				'and calculate the ratio of financial resources to need. ' +
+				'The goal of this metric is to highlight areas whose needs may ' +
+				'still be unmet based on their ratio of financial resources to need.',
 			});
 
 			// show map options
@@ -634,7 +639,7 @@
 			});
 
 			// update which radio buttons are checked based on state variables
-			if (indType === 'money') {
+			if (indType === 'money' || indType === 'ghsa') {
 				// uncheck score buttons
 				$('.jee-score-filter input').prop('checked', false);
 
@@ -652,7 +657,7 @@
 			} else if (indType === 'score') {
 				// uncheck money radio buttons
 				$('.money-type-filter input, .money-flow-type-filter input')
-					.prop('checked', false);
+				.prop('checked', false);
 
 				// update jee radio button
 				$('.jee-score-filter input').each(function updateInputs() {
@@ -672,8 +677,8 @@
 			// populate tooltip for avg JEE score text
 			$('.score-text-info-img').tooltipster({
 				content: 'JEE scores are taken from each country\'s ' +
-					'<a href="http://www.who.int/ihr/procedures/mission-reports/en/" target="_blank">' +
-					'World Health Organization Joint External Evaluation Report</a>, when available.',
+				'<a href="http://www.who.int/ihr/procedures/mission-reports/en/" target="_blank">' +
+				'World Health Organization Joint External Evaluation Report</a>, when available.',
 			});
 		}
 
