@@ -1,5 +1,10 @@
 [
   {
+    "donor_name": "General Global Benefit",
+    "donor_sector": "General Global Benefit",
+    "donor_code": "General Global Benefit"
+  },
+  {
     "donor_name": "Stichting fondsbeheer DGGF lokaal MKB",
     "donor_sector": "International NGO",
     "donor_code": "dggf",

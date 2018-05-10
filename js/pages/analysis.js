@@ -214,14 +214,17 @@
 				// remove general global benefit
 				const fundedPaymentsTmp = App.fundingLookup[iso];
 				const receivedPayments = App.recipientLookup[iso];
-				const fundedPayments = (fundedPaymentsTmp) ? fundedPaymentsTmp.filter((project) => project.recipient_name !== "General Global Benefit") : undefined;
-
+				const fundedPayments = (fundedPaymentsTmp) ? fundedPaymentsTmp : undefined;
 				// construct chord data; sort by region and subregion
 				let totalFunded = 0;
 				let totalReceived = 0;
 				if (fundedPayments) totalFunded = d3.sum(fundedPayments, d => totalFunc(d));
 				if (receivedPayments) totalReceived = d3.sum(receivedPayments, d => totalFunc(d));
 				if (totalFunded || totalReceived) {
+					if (c.FIPS === "General Global Benefit") {
+						console.log('receivedPayments');
+						console.log(receivedPayments);
+					}
 					const region = c.regionName;
 					const sub = c.subRegionName;
 					if (!fundsByRegion[region]) fundsByRegion[region] = {};
@@ -249,7 +252,8 @@
 				}
 			}
 
-			// add non-countries
+			// add non-countries funders
+			let otherFunders = false;
 			fundsByRegion['Other Funders'] = { 'Other Funders': {} };
 			for (const iso in App.fundingLookup) {
 				if (!App.countries.find(c => c.ISO2 === iso)) {
@@ -261,6 +265,7 @@
 					App.fundingLookup[iso].forEach((p) => {
 						const value = totalFunc(p);
 						if (value) {
+							otherFunders = true;
 							const rIso = p.recipient_country;
 							if (!fundsByRegion['Other Funders']['Other Funders'][iso].fundsByC[rIso]) {
 								fundsByRegion['Other Funders']['Other Funders'][iso].fundsByC[rIso] = 0;
@@ -268,6 +273,30 @@
 							fundsByRegion['Other Funders']['Other Funders'][iso].fundsByC[rIso] += value;
 						}
 					});
+				}
+			}
+
+			if (!otherFunders) delete fundsByRegion['Other Funders'];
+
+			// add non-countries
+			fundsByRegion['Other Recipients'] = { 'Other Recipients': {} };
+			for (const iso in App.recipientLookup) {
+				if (App.countries.find(c => c.ISO2 === iso && c.country === false)) {
+					fundsByRegion['Other Recipients']['Other Recipients'][iso] = {
+						totalReceived: d3.sum(App.recipientLookup[iso], d => totalFunc(d)),
+						totalFunded: 0,
+						fundsByC: {},
+					};
+					// App.recipientLookup[iso].forEach((p) => {
+					// 	const value = totalFunc(p);
+					// 	if (value) {
+					// 		const rIso = p.recipient_country;
+					// 		if (!fundsByRegion['Other Recipients']['Other Recipients'][iso].fundsByC[rIso]) {
+					// 			fundsByRegion['Other Recipients']['Other Recipients'][iso].fundsByC[rIso] = 0;
+					// 		}
+					// 		fundsByRegion['Other Recipients']['Other Recipients'][iso].fundsByC[rIso] += value;
+					// 	}
+					// });
 				}
 			}
 
@@ -323,6 +352,8 @@
 
 		function buildNetworkMap() {
 			const networkData = getNetworkData();
+			console.log('networkData');
+			console.log(networkData);
 			const chart = App.buildNetworkMap('.network-map-content', networkData, {
 				countryClickFn: displayCountryInNetwork,
 			});

@@ -102,7 +102,7 @@ const App = {};
 					  "intermediateRegionName": ""
 					}
 				);
-
+				
 				// save region names to countries
 				const regionMap = d3.map();
 				unsdData.forEach((d) => {
@@ -110,7 +110,7 @@ const App = {};
 				});
 				App.countries.forEach((c) => {
 					App.codeToNameMap.set(c.ISO2, c.NAME);
-					if (c.ISO2 === "XK") return;
+					if (c.ISO2 === "XK" || c.country === false) return;
 					const regionInfo = regionMap.get(c.ISO3);
 					c.regionName = regionInfo['Region Name'];
 					c.subRegionName = regionInfo['Sub-region Name'];
@@ -123,6 +123,7 @@ const App = {};
 					if (!App.codeToNameMap.has(d.donor_code)) {
 						App.codeToNameMap.set(d.donor_code, d.donor_name);
 					}
+					App.addOtherRecipients(d);
 				});
 
 				// save funding data
@@ -285,6 +286,27 @@ const App = {};
 		transactions.forEach((transaction) => {
 			if (transaction.amount < 0) transaction.amount = 0;
 		});
+	};
+
+	App.addOtherRecipients = (codeObj) => {
+		// if not a country
+		if (codeObj.donor_sector === "Government") return;
+		const code = codeObj.donor_code;
+		const name = codeObj.donor_name;
+
+		// add as a "country"
+		App.countries = App.countries.concat(
+			{
+			  "FIPS": code,
+			  "ISO2": code,
+			  "NAME": name,
+			  "POP2005": 0,
+			  "regionName": "Other Recipients",
+			  "subRegionName": "Other Recipients",
+			  "intermediateRegionName": "Other Recipients",
+			  "country": false,
+			}
+		);
 	};
 
 
