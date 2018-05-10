@@ -136,12 +136,12 @@ const App = {};
 						return true;
 					}
 				});
-				// App.fundingData = fundingData;
-				// App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
+				App.fundingData = fundingData;
+				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
 				
-				// save funding data
-				App.fundingData = fundingData.filter(d => d.ghsa_funding);
-				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d)).filter(d => d.ghsa_funding);
+				// // save funding data
+				// App.fundingData = fundingData.filter(d => d.ghsa_funding);
+				// App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d)).filter(d => d.ghsa_funding);
 
 				// Prepare funding lookup tables, etc.
 				App.loadFundingData({showGhsaOnly: false});
@@ -301,9 +301,9 @@ const App = {};
 			  "ISO2": code,
 			  "NAME": name,
 			  "POP2005": 0,
-			  "regionName": "Other Recipients",
-			  "subRegionName": "Other Recipients",
-			  "intermediateRegionName": "Other Recipients",
+			  "regionName": "Other Funders / Recipients",
+			  "subRegionName": "Other Funders / Recipients",
+			  "intermediateRegionName": "Other Funders / Recipients",
 			  "country": false,
 			}
 		);
