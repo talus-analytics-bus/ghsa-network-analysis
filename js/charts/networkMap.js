@@ -113,6 +113,10 @@
 			.text('Receives More');
 
 		chart.update = (data, moneyType) => {
+			console.log('data');
+			console.log(data);
+			console.log('moneyType');
+			console.log(moneyType);
 			addAnglesToData(data);
 			drawArcs(data, moneyType);
 			drawLinks(moneyType);
@@ -328,7 +332,6 @@
 			});
 
 			// attach start/end angles to each fund
-			console.log(data);
 			data.forEach((region) => {
 				region.children.forEach((subregion) => {
 					subregion.children.forEach((fc) => {

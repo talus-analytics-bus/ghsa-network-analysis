@@ -126,8 +126,21 @@ const App = {};
 				});
 
 				// save funding data
-				App.fundingData = fundingData.filter(d => d.ghsa_funding);
-				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d)).filter(d => d.ghsa_funding);
+				fundingData = fundingData.filter(d => {
+					if (d.assistance_type === undefined) {
+						return true;
+					} else if (d.assistance_type === "In-kind support") {
+						return false;
+					} else {
+						return true;
+					}
+				});
+				App.fundingData = fundingData;
+				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
+				
+				// // save funding data
+				// App.fundingData = fundingData.filter(d => d.ghsa_funding);
+				// App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d)).filter(d => d.ghsa_funding);
 
 				// Prepare funding lookup tables, etc.
 				App.loadFundingData({showGhsaOnly: false});
@@ -190,7 +203,6 @@ const App = {};
 	/* ------------------ Data Functions ------------------- */
 	// reloads the funding data to use GHSA Only or All
 	App.loadFundingData = (params = {}) => {
-		console.log(params)
 		App.fundingLookup = {};
 		App.recipientLookup = {};
 		const ghsaFilter = params.showGhsaOnly ? (p) => p.ghsa_funding === true : (p) => p;
@@ -211,13 +223,13 @@ const App = {};
 	// returns the total amount of money donated by a given country
 	App.getTotalFunded = (iso) => {
 		if (!App.fundingLookup[iso]) return 0;
-		return d3.sum(App.fundingLookup[iso], d => d.total_spent);
+		return d3.sum(App.fundingLookup[iso], d => d.total_spent + d.total_committed);
 	};
 
 	// returns the total amount of money received by a given country
 	App.getTotalReceived = (iso) => {
 		if (!App.recipientLookup[iso]) return 0;
-		return d3.sum(App.recipientLookup[iso], d => d.total_spent);
+		return d3.sum(App.recipientLookup[iso], d => d.total_spent + d.total_committed);
 	};
 
 

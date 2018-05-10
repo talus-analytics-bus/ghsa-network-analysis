@@ -16,8 +16,6 @@ const Routing = {};
 			loadPage('home', App.initHome, query);
 		});
 		crossroads.addRoute('/analysis:?{query}:', (query) => {
-			console.log('query')
-			console.log(query)
 			loadPage('analysis', App.initAnalysis, 'network');
 		});
 		crossroads.addRoute('/analysis/country', () => {
