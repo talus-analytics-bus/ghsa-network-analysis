@@ -1,59 +1,5 @@
 [
   {
-    "donor_name": "Stichting fondsbeheer DGGF lokaal MKB",
-    "donor_sector": "International NGO",
-    "donor_code": "dggf",
-    "funder_ref": "NL-KVK-61172863"
-  },
-  {
-    "donor_name": "Red Cross",
-    "donor_sector": "International NGO",
-    "donor_code": "arc"
-  },
-  {
-    "donor_name": "World Organisation for Animal Health",
-    "donor_sector": "International NGO",
-    "donor_code": "oie"
-  },
-  {
-    "donor_name": "Cordaid",
-    "donor_sector": "International NGO",
-    "donor_code": "cordaid",
-    "funder_ref": "NL-KVK-41160054"
-  },  
-  {
-    "donor_name": "Mano River Union",
-    "donor_sector": "Multilateral",
-    "donor_code": "mru"
-  },
-  {
-    "donor_name": "AICS - Agenzia Italiana per la Cooperazione allo Sviluppo / Italian Agency for Cooperation and Development",
-    "donor_sector": "Government",
-    "donor_code": "IT",
-    "funder_ref": "XM-DAC-6-4"
-  },
-  {
-    "donor_name": "Africa Centres for Disease Control and Prevention",
-    "donor_sector": "Multilateral",
-    "donor_code": "africacdc"
-  },
-  {
-    "donor_name": "Norad - Norwegian Agency for Development Cooperation",
-    "donor_sector": "Government",
-    "donor_code": "NO",
-    "funder_ref": "NO-BRC-971277882"
-  },
-  {
-    "donor_name": "International Criminal Police Organization",
-    "donor_sector": "Multilateral",
-    "donor_code": "interpol"
-  },
-  {
-    "donor_name": "International Atomic Energy Agency",
-    "donor_sector": "Multilateral",
-    "donor_code": "iaea"
-  },
-  {
     "donor_name": "World Health Organization",
     "donor_sector": "Multilateral",
     "donor_code": "who"
@@ -87,6 +33,11 @@
     "donor_name": "United States Agency for International Development (USAID)",
     "donor_sector": "Government",
     "donor_code": "US"
+  },
+  {
+    "donor_name": "CDC Group plc",
+    "donor_sector": "Other Public Sector",
+    "donor_code": "cdc"
   },
   {
     "donor_name": "United States",
@@ -434,11 +385,6 @@
     "donor_code": "ebrd"
   },
   {
-    "donor_name": "World Bank",
-    "donor_sector": "Multilateral",
-    "donor_code": "wb"
-  },
-  {
     "donor_name": "International Development Law Organization",
     "donor_sector": "Multilateral",
     "donor_code": "idlo"
@@ -447,118 +393,5 @@
     "donor_name": "Crown Agents Limited",
     "donor_sector": "Private Sector",
     "donor_code": "cal"
-  },
-  {
-    "donor_name": "LAMB Health Care Foundation",
-    "donor_code": "lhcf"
-  },
-  {
-    "donor_name": "CDC Group plc",
-    "donor_code": "cdc"
-  },
-  {
-    "donor_name": "World Child Cancer UK",
-    "donor_code": "wccuk"
-  },
-  {},
-  {
-    "donor_name": "Mifumi UK",
-    "donor_code": "mifumi_uk"
-  },
-  {
-    "donor_name": "Y Care International",
-    "donor_code": "ycare"
-  },
-  {
-    "donor_name": "One to One Children's Fund",
-    "donor_code": "onetoonecf"
-  },
-  {
-    "donor_name": "Food for the Hungry UK",
-    "donor_code": "fh"
-  },
-  {
-    "donor_name": "Family Aids Caring Trust",
-    "donor_code": "fact"
-  },
-  {
-    "donor_name": "Project Harar",
-    "donor_code": "phe"
-  },
-  {
-    "donor_name": "Plan International UK",
-    "donor_code": "plan_uk"
-  },
-  {
-    "donor_name": "Plan International USA",
-    "donor_code": "plan_usa"
-  },
-  {
-    "donor_name": "Protecting Families Against HIV/AIDS",
-    "donor_code": "prefa_1"
-  },
-  {
-    "donor_name": "Save the Children Netherlands",
-    "donor_code": "scnl"
-  },
-  {
-    "donor_name": "Feed the Minds",
-    "donor_code": "ftm-291333"
-  },
-  {
-    "donor_name": "Heifer Nederland",
-    "donor_code": "heifernederland"
-  },
-  {
-    "donor_name": "HealthProm",
-    "donor_code": "hp_12"
-  },
-  {
-    "donor_name": "Health Poverty Action",
-    "donor_code": "hpa"
-  },
-  {
-    "donor_name": "Amref Health Africa in Ethiopia",
-    "donor_code": "amrefeth"
-  },
-  {
-    "donor_name": "BRAC International",
-    "donor_code": "bracintl"
-  },
-  {
-    "donor_name": "ColaLife",
-    "donor_code": "colalife"
-  },
-  {
-    "donor_name": "United Purpose",
-    "donor_code": "cu"
-  },
-  {
-    "donor_name": "dance4life",
-    "donor_code": "dance4life"
-  },
-  {
-    "donor_name": "ActionAid International",
-    "donor_code": "aai"
-  },
-  {
-    "donor_name": "Disability and Development Partners",
-    "donor_code": "ddp"
-  },
-  {
-    "donor_name": "Simavi",
-    "donor_code": "simavi"
-  },
-  {
-    "donor_name": "Simprints",
-    "donor_code": "simprints"
-  },
-  {
-    "donor_name": "International Planned Parenthood Federation",
-    "donor_code": "ippf"
-  },
-  {
-    "donor_name": "Islamic Relief Worldwide",
-    "donor_code": "irw"
   }
 ]
