@@ -135,12 +135,12 @@ const App = {};
 						return true;
 					}
 				});
-				App.fundingData = fundingData;
-				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
+				// App.fundingData = fundingData;
+				// App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
 				
-				// // save funding data
-				// App.fundingData = fundingData.filter(d => d.ghsa_funding);
-				// App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d)).filter(d => d.ghsa_funding);
+				// save funding data
+				App.fundingData = fundingData.filter(d => d.ghsa_funding);
+				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d)).filter(d => d.ghsa_funding);
 
 				// Prepare funding lookup tables, etc.
 				App.loadFundingData({showGhsaOnly: false});
