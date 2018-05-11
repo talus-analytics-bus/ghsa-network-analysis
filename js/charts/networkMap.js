@@ -14,7 +14,8 @@
 		const margin = { top: 60, right: 60, bottom: 120, left: 60 };
 		const radius = param.radius || 300;
 		const regionPadding = 0.02;
-		const subregionPadding = 0.01;
+		const subregionPadding = regionPadding / 2;
+		// const subregionPadding = 0.01;
 
 		// start building the chart
 		const chartContainer = d3.select(selector).append('svg')
@@ -263,6 +264,7 @@
 
 		function drawLinks(moneyType) {
 			funds = funds.filter(d => countryMapByIso.get(d.recipient) !== undefined);
+			
 			// create links
 			const links = linkG.selectAll('.link')
 				.data(funds);

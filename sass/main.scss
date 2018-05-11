@@ -84,5 +84,15 @@ body { font-family: 'Open Sans', sans-serif; }
 	}
 }
 .flag.globe {
-		border: none;
-	}
+	border: none;
+}
+
+.no-data-message {
+	margin-left: 15px;
+    margin-top: 20px;
+    font-style: italic;
+
+    &.core-element {
+    	margin-left: 0;
+    }
+}

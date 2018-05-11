@@ -330,11 +330,11 @@
                                     <div class="dropdown-label">Click to show:</div>
                                     <div class="ind-type-filter">
                                         <div class="radio-option">
-                                            <input type="radio" name="ind-country" ind="money" checked/>
+                                            <input type="radio" name="ind-country-global" ind="money" checked/>
                                             <span>All Funding</span>
                                         </div>
                                         <div class="radio-option">
-                                            <input type="radio" name="ind-country" ind="ghsa" />
+                                            <input type="radio" name="ind-country-global" ind="ghsa" />
                                             <span>GHSA Funding Only</span>
                                             <img class="ghsa-info-img info-img" src="img/info.png" />
                                         </div>
@@ -489,6 +489,7 @@
                                     </form>
                                 </div>
                             </div>
+                            <div class="no-data-message core-element"></div>
                         </div>
                         <div class="progress-circle-container">
                             <div class="circle-chart-content">
@@ -540,7 +541,9 @@
                         </div>
                         <div class="">
                             <div class="row">
-                                <div class="category-chart-container"></div>
+                                <div class="no-data-message"></div>
+                                <div class="category-chart-container">
+                                </div>
                             </div>
                             <div class="source-text bump-right">
                                 <b>Source:</b> IATI registry via

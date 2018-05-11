@@ -685,17 +685,22 @@ b {
   position: relative;
   left: 30px; }
 
-.category-chart .bar-label {
-  font-size: 0.9em;
-  font-weight: 600; }
-.category-chart .axis-label {
-  font-weight: 600;
-  text-anchor: middle; }
-.category-chart .legend-label {
-  text-anchor: middle; }
+.category-chart {
+  min-height: 110px; }
+  .category-chart .bar-label {
+    font-size: 0.9em;
+    font-weight: 600; }
+  .category-chart .axis-label {
+    font-weight: 600;
+    text-anchor: middle; }
+  .category-chart .legend-label {
+    text-anchor: middle; }
 
 .category-chart-container {
   position: relative; }
+
+.category-chart-section .no-data-message {
+  margin-bottom: -10px; }
 
 .tick text {
   font-family: 'Open Sans', sans-serif;
@@ -1110,6 +1115,8 @@ b {
   padding-left: 20px;
   border-bottom: 1px solid #ccc;
   min-height: 180px; }
+  .category-chart-section.no-data {
+    padding-bottom: 20px; }
   .category-chart-section .description {
     width: 100%;
     max-width: 100%;
@@ -1611,5 +1618,12 @@ body {
 
 .flag.globe {
   border: none; }
+
+.no-data-message {
+  margin-left: 15px;
+  margin-top: 20px;
+  font-style: italic; }
+  .no-data-message.core-element {
+    margin-left: 0; }
 
 /*# sourceMappingURL=main.css.map */

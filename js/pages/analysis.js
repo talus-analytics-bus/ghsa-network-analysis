@@ -27,7 +27,7 @@
 		function initGhsaToggle(tab = 'network') {
 			// set GHSA radio button to checked if that is set
 			if (App.showGhsaOnly) {
-				$(`input[type=radio][name="ind-${tab}"][ind="ghsa"]`).prop('checked',true);
+				$(`input[type=radio][name="ind-${tab === 'network' ? tab : 'country-global'}"][ind="ghsa"]`).prop('checked',true);
 			}
 
 			if (tab === 'country') {
@@ -41,6 +41,9 @@
 					const donorSelector = '.donor-table';
 					const recSelector = '.recipient-table';
 					$(`${donorSelector} tbody, ${recSelector} tbody`).html('');
+
+					// check right radio
+					$(this).find('input').prop('checked',true);
 
 					// Repopulate tables with chosen data
 					populateTables(donorSelector, recSelector);
@@ -414,6 +417,7 @@
 			const networkData = getNetworkData();
 			const chart = App.buildNetworkMap('.network-map-content', networkData, {
 				countryClickFn: displayCountryInNetwork,
+				regionPadding: 1,
 			});
 			chart.select('.overlay').on('click', unselectNetworkCountry);
 			return chart;

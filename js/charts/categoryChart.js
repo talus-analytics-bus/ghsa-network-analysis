@@ -218,19 +218,19 @@
 				});
 
 			// set axes labels
-			let xLabelPreText = 'Dispersed';
+			let xLabelPreText = 'Disbursed';
 			if (param.moneyType === 'r') {
 				if (newSelector === 'total_spent') {
-					//legendTitle.text(`Funds Disbursed (${App.formatMoney(0).split(' ')[1]})`);
-                    xLabelPreText = 'Dispersed';
+					// legendTitle.text(`Funds Disbursed (${App.formatMoney(0).split(' ')[1]})`);
+                    xLabelPreText = 'Disbursed';
 				} else {
-					legendTitle.text(`Funds Committed (${App.formatMoney(0).split(' ')[1]})`);
+					// legendTitle.text(`Funds Committed (${App.formatMoney(0).split(' ')[1]})`);
                     xLabelPreText = 'Committed';
 				}
 			} else {
 				if (newSelector === 'total_spent') {
 					//legendTitle.text(`Funds Disbursed (${App.formatMoney(0).split(' ')[1]})`);
-                    xLabelPreText = 'Dispersed';
+                    xLabelPreText = 'Disbursed';
 				} else {
 					//legendTitle.text(`Funds Committed (${App.formatMoney(0).split(' ')[1]})`);
                     xLabelPreText = 'Committed';
@@ -287,6 +287,24 @@
 				// 	const shortName = getShortName(readableName);
 				// 	return shortName;
 				// });
+
+			// if no data, hide chart and show message
+			if (d3.selectAll('.bar-group').nodes().length === 0) {
+				$('.no-data-message').text('No funds were assigned a core capacity');
+				$('.no-data-message.core-element').text('No funds were assigned a core element');
+				$('.category-chart-container')
+					.css('display', 'none')
+					.css('height','0px');
+				$('div.circle-chart-content')
+					.css('visibility','hidden');
+			} else {
+				$('.no-data-message').text('');
+				$('.category-chart-container')
+					.css('display', 'block')
+					.css('height','');
+				$('div.circle-chart-content')
+					.css('visibility','visible');
+			}
 
 		};
 

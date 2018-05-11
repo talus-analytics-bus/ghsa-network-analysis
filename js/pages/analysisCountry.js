@@ -585,6 +585,7 @@
 			const chart = App.buildCategoryChart('.category-chart-container', {
 				moneyType,
 			});
+			console.log('refershign')
 
 			chart.update(catData, selected);
 
