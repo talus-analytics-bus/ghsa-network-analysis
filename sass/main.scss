@@ -54,3 +54,10 @@ body { font-family: 'Open Sans', sans-serif; }
 	height: 13px;
 	margin-left: 3px;
 }
+
+.radio-option {
+	margin-left: 10px;
+	* {
+		cursor: pointer;
+	}
+}

@@ -26,6 +26,7 @@
 		function init() {
 			App.loadFundingData({ showGhsaOnly: params.showGhsaOnly === 'true' });
 			App.setSources();
+			
 			// build map and initialize search
 			map = buildMap();
 			initMapOptions();

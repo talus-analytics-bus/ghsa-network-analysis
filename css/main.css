@@ -1297,16 +1297,21 @@ b {
   margin-top: 25px; }
 .global-tab-content[tab="country"] .table-country-search {
   position: relative;
-  margin-top: 5px; }
+  margin-top: 5px;
+  display: inline-block; }
   .global-tab-content[tab="country"] .table-country-search .search-container {
     display: inline-block; }
   .global-tab-content[tab="country"] .table-country-search input {
     width: 400px; }
-.global-tab-content[tab="country"] .radio-option span, .global-tab-content[tab="country"] .radio-option div {
-  position: relative;
-  top: 1px; }
-.global-tab-content[tab="country"] .info-img.ghsa-info-img {
-  top: 1px; }
+.global-tab-content[tab="country"] .ghsa-toggle-options {
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px 0 0 40px; }
+  .global-tab-content[tab="country"] .ghsa-toggle-options .radio-option span, .global-tab-content[tab="country"] .ghsa-toggle-options .radio-option div {
+    position: relative;
+    top: 1px; }
+  .global-tab-content[tab="country"] .ghsa-toggle-options .info-img.ghsa-info-img {
+    top: 1px; }
 
 .analysis-pair-content {
   position: relative;
@@ -1571,5 +1576,10 @@ body {
   width: 13px;
   height: 13px;
   margin-left: 3px; }
+
+.radio-option {
+  margin-left: 10px; }
+  .radio-option * {
+    cursor: pointer; }
 
 /*# sourceMappingURL=main.css.map */

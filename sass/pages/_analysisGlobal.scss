@@ -157,19 +157,25 @@
 		.table-country-search {
 			position: relative;
 			margin-top: 5px;
+			display: inline-block;
 
 			.search-container {
 				display: inline-block;
 			}
 			input { width: 400px; }
 		}
-		.radio-option {
-			span, div {
-				position: relative;
+		.ghsa-toggle-options {
+			display: inline-block;
+			vertical-align: top;
+			margin: 10px 0 0 40px;
+			.radio-option {
+				span, div {
+					position: relative;
+					top: 1px;
+				}
+			}
+			.info-img.ghsa-info-img {
 				top: 1px;
 			}
-		}
-		.info-img.ghsa-info-img {
-			top: 1px;
 		}
 	}

@@ -25,6 +25,25 @@
 					$('input[type=radio][name="ind"][ind="ghsa"]').prop('checked',true);
 				}
 			}
+			initGhsaToggle();
+		}
+
+		function initGhsaToggle() {
+			// update indicator type ('money' or 'score') on change
+			$('.ind-type-filter .radio-option').click(function updateIndType() {
+				// Load correct funding data
+				indType = $(this).find('input').attr('ind');
+				App.showGhsaOnly = indType === 'ghsa';
+				App.loadFundingData({ showGhsaOnly: App.showGhsaOnly });
+
+				// Clear tables
+				const donorSelector = '.donor-table';
+				const recSelector = '.recipient-table';
+				$(`${donorSelector} tbody, ${recSelector} tbody`).html('');
+
+				// Repopulate tables with chosen data
+				populateTables(donorSelector, recSelector);
+			});
 		}
 
 		function initTabs() {
