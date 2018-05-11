@@ -9,6 +9,7 @@
 		const name = App.codeToNameMap.get(iso);
 
 		// find all payments funded or received by this country
+		App.loadFundingData({ showGhsaOnly: App.showGhsaOnly });
 		let allPayments = [];
 		if (moneyFlow === 'd' && App.fundingLookup[iso]) {
 			allPayments = App.fundingLookup[iso].slice(0);
@@ -48,6 +49,25 @@
 			initInfoTabs();
 			updateInfoTab();
 			updateInfoTable();
+			initGhsaToggle();
+		}
+
+		function initGhsaToggle() {
+			// set GHSA radio button to checked if that is set
+			if (App.showGhsaOnly) {
+				$(`input[type=radio][name="ind-table"][ind="ghsa"]`).prop('checked',true);
+			}
+
+			$('.analysis-table-content .ind-type-filter .radio-option').off('click');
+			$('.analysis-table-content .ind-type-filter .radio-option').click(function updateIndType() {
+				console.log('toggle switch')
+				// Load correct funding data
+				indType = $(this).find('input').attr('ind');
+				App.showGhsaOnly = indType === 'ghsa';
+				
+				// Reload profile graphics and data
+				hasher.setHash(`analysis/${iso}/${moneyFlow}/table${App.showGhsaOnly ? '?ghsa_only=true' : '?ghsa_only=false'}`);
+			});
 		}
 
 		// define info table tab behavior

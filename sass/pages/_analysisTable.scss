@@ -1,3 +1,12 @@
+.analysis-table.ghsa-toggle-options {
+	margin: 14px 0 0 50px !important;
+	float: left;
+	position: relative;
+	top: 16px;
+	&.analysis-pair {
+		top: 96px;
+	}
+}
 .analysis-table-content {
 	position: relative;
 	margin-top: 30px;

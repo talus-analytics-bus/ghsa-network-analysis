@@ -890,6 +890,7 @@ b {
   margin-top: 0px; }
 
 .analysis-country-content .ghsa-toggle-options {
+  top: 0;
   margin: 10px 0 0 5px; }
   .analysis-country-content .ghsa-toggle-options.below-switch-button {
     position: relative;
@@ -1342,6 +1343,14 @@ b {
     border: 1px solid #555; }
   .analysis-pair-content .flag.globe {
     border: none; }
+
+.analysis-table.ghsa-toggle-options {
+  margin: 14px 0 0 50px !important;
+  float: left;
+  position: relative;
+  top: 16px; }
+  .analysis-table.ghsa-toggle-options.analysis-pair {
+    top: 96px; }
 
 .analysis-table-content {
   position: relative;
