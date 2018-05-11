@@ -191,14 +191,9 @@
 				const country = App.countries.find(c => c.ISO2 === d.iso);
 				const flagHtml = country ? App.getFlagHtml(d.iso) : '';
 				const name = App.codeToNameMap.get(d.iso);
-				if (country.country === false) {
-					return `<div class="flag-container"></div>` +
-						`<div class="name-container">${name}</div>`;
-				}
-				else {
-					return `<div class="flag-container">${flagHtml}</div>` +
-						`<div class="name-container">${name}</div>`;
-				}
+
+				return `<div class="flag-container">${flagHtml}</div>` +
+					`<div class="name-container">${name}</div>`;
 			});
 			dRows.append('td').text(d => App.formatMoney(d.total_committed));
 			dRows.append('td').text(d => App.formatMoney(d.total_spent));
@@ -218,14 +213,8 @@
 				const country = App.countries.find(c => c.ISO2 === d.iso);
 				const flagHtml = country ? App.getFlagHtml(d.iso) : '';
 				const name = country ? country.NAME : d.iso;
-				if (country.country === false) {
-					return `<div class="flag-container"></div>` +
+				return `<div class="flag-container">${flagHtml}</div>` +
 						`<div class="name-container">${name}</div>`;
-				}
-				else {
-					return `<div class="flag-container">${flagHtml}</div>` +
-						`<div class="name-container">${name}</div>`;
-				}
 			});
 			rRows.append('td').text(d => App.formatMoney(d.total_committed));
 			rRows.append('td').text(d => App.formatMoney(d.total_spent));
