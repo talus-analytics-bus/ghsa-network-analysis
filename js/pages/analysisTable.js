@@ -58,15 +58,16 @@
 				$(`input[type=radio][name="ind-table"][ind="ghsa"]`).prop('checked',true);
 			}
 
-			$('.analysis-table-content .ind-type-filter .radio-option').off('click');
-			$('.analysis-table-content .ind-type-filter .radio-option').click(function updateIndType() {
+			$('.analysis-table .ind-type-filter .radio-option').off('click');
+			$('.analysis-table .ind-type-filter .radio-option').click(function updateIndType() {
 				console.log('toggle switch')
 				// Load correct funding data
 				indType = $(this).find('input').attr('ind');
 				App.showGhsaOnly = indType === 'ghsa';
 				
 				// Reload profile graphics and data
-				hasher.setHash(`analysis/${iso}/${moneyFlow}/table${App.showGhsaOnly ? '?ghsa_only=true' : '?ghsa_only=false'}`);
+				crossroads.parse(hasher.getHash());
+				// hasher.setHash(`analysis/${iso}/${moneyFlow}/table${App.showGhsaOnly ? '?ghsa_only=true' : '?ghsa_only=false'}`);
 			});
 		}
 

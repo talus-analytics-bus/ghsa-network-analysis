@@ -228,15 +228,25 @@ const App = {};
 	};
 
 	// returns the total amount of money donated by a given country
-	App.getTotalFunded = (iso) => {
+	App.getTotalFunded = (iso, params = {}) => {
 		if (!App.fundingLookup[iso]) return 0;
-		return d3.sum(App.fundingLookup[iso], d => d.total_spent + d.total_committed);
+		if (params.includeCommitments === true) {
+			return d3.sum(App.fundingLookup[iso], d => d.total_spent + d.total_committed);
+		}
+		else {
+			return d3.sum(App.fundingLookup[iso], d => d.total_spent);
+		}
 	};
 
 	// returns the total amount of money received by a given country
-	App.getTotalReceived = (iso) => {
+	App.getTotalReceived = (iso, params = {}) => {
 		if (!App.recipientLookup[iso]) return 0;
-		return d3.sum(App.recipientLookup[iso], d => d.total_spent + d.total_committed);
+		if (params.includeCommitments === true) {
+			return d3.sum(App.recipientLookup[iso], d => d.total_spent + d.total_committed);
+		}
+		else {
+			return d3.sum(App.recipientLookup[iso], d => d.total_spent);
+		}
 	};
 
 	App.getFundsByYear = (project) => {

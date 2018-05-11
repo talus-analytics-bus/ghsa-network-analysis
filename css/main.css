@@ -1341,8 +1341,6 @@ b {
     right: 50px; }
   .analysis-pair-content .flag {
     border: 1px solid #555; }
-  .analysis-pair-content .flag.globe {
-    border: none; }
 
 .analysis-table.ghsa-toggle-options {
   margin: 14px 0 0 50px !important;
@@ -1599,7 +1597,8 @@ body {
 .ghsa-toggle-options {
   display: inline-block;
   vertical-align: top;
-  margin: 10px 0 0 40px; }
+  margin: 10px 0 0 40px;
+  z-index: 9999; }
   .ghsa-toggle-options .radio-option span, .ghsa-toggle-options .radio-option div {
     position: relative;
     top: 1px; }
@@ -1609,5 +1608,8 @@ body {
     position: relative;
     top: -24px;
     left: 96px; }
+
+.flag.globe {
+  border: none; }
 
 /*# sourceMappingURL=main.css.map */

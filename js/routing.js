@@ -10,7 +10,9 @@ const Routing = {};
 		});
 	};
 
+	crossroads.ignoreState = true;
 	Routing.initializeRoutes = () => {
+
 		// setup crossroads for routing
 		crossroads.addRoute('/:?{query}:', (query) => {
 			loadPage('home', App.initHome, query);
@@ -21,9 +23,9 @@ const Routing = {};
 		crossroads.addRoute('/analysis/country:?{query}:', (query) => {
 			loadPage('analysis', App.initAnalysis, 'country', query);
 		});
-		crossroads.addRoute('/analysis/{iso}:?{query}:', (iso, query) => {
-			loadPage('analysis-country', App.initAnalysisCountry, iso);
-		});
+		// crossroads.addRoute('/analysis/{iso}:?{query}:', (iso, query) => {
+		// 	loadPage('analysis-country', App.initAnalysisCountry, iso, 'd');
+		// });
 		crossroads.addRoute('/analysis/{iso}/d:?{query}:', (iso, query) => {
 			loadPage('analysis-country', App.initAnalysisCountry, iso, 'd');
 		});

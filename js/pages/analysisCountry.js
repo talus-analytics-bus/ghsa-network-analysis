@@ -61,13 +61,13 @@
 
 			$('.analysis-country-content .ind-type-filter .radio-option').off('click');
 			$('.analysis-country-content .ind-type-filter .radio-option').click(function updateIndType() {
-				console.log('toggle switch')
 				// Load correct funding data
 				indType = $(this).find('input').attr('ind');
 				App.showGhsaOnly = indType === 'ghsa';
 				
 				// Reload profile graphics and data
-				hasher.setHash(`analysis/${iso}/${moneyType}${App.showGhsaOnly ? '?ghsa_only=true' : '?ghsa_only=false'}`);
+				crossroads.parse(hasher.getHash());
+				// hasher.setHash(`analysis/${iso}/${moneyType}${App.showGhsaOnly ? '?ghsa_only=true' : '?ghsa_only=false'}`);
 			});
 		}
 
@@ -142,7 +142,8 @@
 			const totalFunded = App.getTotalFunded(iso);
 			const totalReceived = App.getTotalReceived(iso);
 			if (moneyType === 'd') {
-				if (!totalFunded) hasNoData = true;
+				// if (!totalFunded) hasNoData = true;
+				hasNoData = App.getTotalFunded(iso, {includeCommitments: true}) === 0;
 
 				// fill out "switch profile" text and behavior
 				$('.toggle-funder-profile')
@@ -155,8 +156,8 @@
 
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
 			} else if (moneyType === 'r') {
-				if (!totalReceived) hasNoData = true;
-
+				// if (!totalReceived) hasNoData = true;
+				hasNoData = App.getTotalReceived(iso, {includeCommitments: true}) === 0;
 
 
                 // fill out "switch profile" text and behavior
@@ -440,7 +441,7 @@
 					if (App.codeToNameMap.has(d.iso)) {
 						cName = App.codeToNameMap.get(d.iso);
 					}
-					const onClickStr = `event.stopPropagation();hasher.setHash('analysis/${d.iso}')`;
+					const onClickStr = `event.stopPropagation();hasher.setHash('analysis/${d.iso}/${moneyType === 'd' ? 'r' : 'd'}')`;
 					return `<div class="flag-container">${flagHtml}</div>` +
 						'<div class="name-container">' +
 						`<span onclick="${onClickStr}">${cName}</span>` +

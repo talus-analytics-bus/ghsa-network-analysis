@@ -66,6 +66,7 @@ body { font-family: 'Open Sans', sans-serif; }
 	display: inline-block;
 	vertical-align: top;
 	margin: 10px 0 0 40px;
+	z-index: 9999;
 	.radio-option {
 		span, div {
 			position: relative;
@@ -82,3 +83,6 @@ body { font-family: 'Open Sans', sans-serif; }
 		left: 96px;
 	}
 }
+.flag.globe {
+		border: none;
+	}

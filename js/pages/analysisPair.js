@@ -9,6 +9,9 @@
 		const content = d3.select('.analysis-pair-content');
 		const $content = $('.analysis-pair-content');
 
+
+		App.loadFundingData({ showGhsaOnly: App.showGhsaOnly });
+
 		// get country info
 		const donorCountry = App.countries.find(c => c.ISO2 === fundIso);
 		const recipientCountry = App.countries.find(c => c.ISO2 === recIso);
@@ -58,6 +61,26 @@
 			// fill table content
 			updateInfoTab();
 			updateInfoTable();
+			initGhsaToggle();
+		}
+
+		function initGhsaToggle() {
+			// set GHSA radio button to checked if that is set
+			if (App.showGhsaOnly) {
+				$(`input[type=radio][name="ind-pair"][ind="ghsa"]`).prop('checked',true);
+			}
+
+			$('.analysis-table.analysis-pair .ind-type-filter .radio-option').off('click');
+			$('.analysis-table.analysis-pair .ind-type-filter .radio-option').click(function updateIndType() {
+				console.log('toggle switch')
+				// Load correct funding data
+				indType = $(this).find('input').attr('ind');
+				App.showGhsaOnly = indType === 'ghsa';
+				
+				// Reload profile graphics and data
+				crossroads.parse(hasher.getHash());
+				// hasher.setHash(`analysis/${iso}/${moneyFlow}/table${App.showGhsaOnly ? '?ghsa_only=true' : '?ghsa_only=false'}`);
+			});
 		}
 
 		// update the content shwon based on tab chosen
