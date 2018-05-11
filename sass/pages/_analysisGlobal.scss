@@ -49,6 +49,10 @@
 		@include gradient(#fff, #f6f6f6);
 		@include box-shadow(1px 1px 3px rgba(0,0,0,0.2));
 
+		.ghsa-toggle-options {
+			margin: 0;
+		}
+
 		.search-container {
 			position: relative;
 			z-index: 100;
@@ -167,19 +171,5 @@
 				display: inline-block;
 			}
 			input { width: 400px; }
-		}
-		.ghsa-toggle-options {
-			display: inline-block;
-			vertical-align: top;
-			margin: 10px 0 0 40px;
-			.radio-option {
-				span, div {
-					position: relative;
-					top: 1px;
-				}
-			}
-			.info-img.ghsa-info-img {
-				top: 1px;
-			}
 		}
 	}

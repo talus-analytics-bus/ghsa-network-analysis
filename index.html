@@ -383,11 +383,27 @@
         <div class="analysis-container container">
             <div class="analysis-country-content analysis-content">
                 <div class="row">
-                    <div class="col-sm-12 country-header">
-                        <div class="row col-md-12 analysis-country-title">
+                    <div class="col-sm-3">
+                        <div class="ghsa-toggle-options">
+                            <div class="dropdown-label">Click to show:</div>
+                            <div class="ind-type-filter">
+                                <div class="radio-option">
+                                    <input type="radio" name="ind-network" ind="money" checked/>
+                                    <span>All Funding</span>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="ind-network" ind="ghsa" />
+                                    <span>GHSA Funding Only</span>
+                                    <img class="ghsa-info-img info-img" src="img/info.png" />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-2 switch-type-button btn btn-default">Switch to Recipient Profile</div>
+                    <div class="col-sm-6 country-header">
+                        <div class="analysis-country-title">
+                        </div>
+                    </div>
+                    <div class="col-sm-3 switch-type-button btn btn-default">Switch to Recipient Profile</div>
                     <div class="profile-type-container">
                         <div class="profile-type-text">
                             <span class="money-type-noun-cap"></span> Profile

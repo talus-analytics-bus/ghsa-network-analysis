@@ -889,6 +889,12 @@ b {
   font-weight: 600;
   margin-top: 0px; }
 
+.analysis-country-content .ghsa-toggle-options {
+  margin: 10px 0 0 5px; }
+  .analysis-country-content .ghsa-toggle-options.below-switch-button {
+    position: relative;
+    left: 910px;
+    top: 43px; }
 .analysis-country-content .analysis-country-title {
   text-align: center;
   cursor: pointer;
@@ -953,7 +959,8 @@ b {
 .switch-type-button {
   position: absolute;
   top: 29px;
-  right: 30px; }
+  right: 30px;
+  width: 195px; }
 
 .country-flow-content {
   display: none;
@@ -988,11 +995,11 @@ b {
     //max-width: 500px;
     text-align: left;
     vertical-align: top;
-  }*/
+    }*/
   /*.source-text {
     text-align: right;
     font-size: 0.95em;
-  }*/ }
+    }*/ }
   .country-flow-summary .country-summary-label,
   .progress-circle-section .country-summary-label {
     font-weight: 600;
@@ -1206,6 +1213,8 @@ b {
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); }
+  .network-map-options .ghsa-toggle-options {
+    margin: 0; }
   .network-map-options .search-container {
     position: relative;
     z-index: 100; }
@@ -1306,15 +1315,6 @@ b {
     display: inline-block; }
   .global-tab-content[tab="country"] .table-country-search input {
     width: 400px; }
-.global-tab-content[tab="country"] .ghsa-toggle-options {
-  display: inline-block;
-  vertical-align: top;
-  margin: 10px 0 0 40px; }
-  .global-tab-content[tab="country"] .ghsa-toggle-options .radio-option span, .global-tab-content[tab="country"] .ghsa-toggle-options .radio-option div {
-    position: relative;
-    top: 1px; }
-  .global-tab-content[tab="country"] .ghsa-toggle-options .info-img.ghsa-info-img {
-    top: 1px; }
 
 .analysis-pair-content {
   position: relative;
@@ -1586,5 +1586,15 @@ body {
   margin-left: 10px; }
   .radio-option * {
     cursor: pointer; }
+
+.ghsa-toggle-options {
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px 0 0 40px; }
+  .ghsa-toggle-options .radio-option span, .ghsa-toggle-options .radio-option div {
+    position: relative;
+    top: 1px; }
+  .ghsa-toggle-options .info-img.ghsa-info-img {
+    top: 1px; }
 
 /*# sourceMappingURL=main.css.map */
