@@ -23,9 +23,9 @@ const Routing = {};
 		crossroads.addRoute('/analysis/country:?{query}:', (query) => {
 			loadPage('analysis', App.initAnalysis, 'country', query);
 		});
-		// crossroads.addRoute('/analysis/{iso}:?{query}:', (iso, query) => {
-		// 	loadPage('analysis-country', App.initAnalysisCountry, iso, 'd');
-		// });
+		crossroads.addRoute('/analysis/{iso}', (iso) => {
+			loadPage('analysis-country', App.initAnalysisCountry, iso);
+		});
 		crossroads.addRoute('/analysis/{iso}/d:?{query}:', (iso, query) => {
 			loadPage('analysis-country', App.initAnalysisCountry, iso, 'd');
 		});

@@ -1,5 +1,8 @@
 (() => {
 	App.initAnalysisCountry = (iso, moneyType) => {
+
+		if (!moneyType) initBasicProfile();
+
 		// define "country" parameters for General Global Benefit recipient
 		const ggb = {
 		  "FIPS": "ggb",
@@ -79,8 +82,8 @@
 
 		function initBasicProfile(params = {}) {
 			// calculate total funded and received
-			const totalFunded = App.getTotalFunded(iso);
-			const totalReceived = App.getTotalReceived(iso);
+			const totalFunded = App.getTotalFunded(iso, {includeCommitments: true});
+			const totalReceived = App.getTotalReceived(iso, {includeCommitments: true});
 
 			if (totalFunded > totalReceived) {
 				hasher.setHash(`analysis/${iso}/d`);
