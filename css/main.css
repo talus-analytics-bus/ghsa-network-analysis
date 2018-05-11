@@ -1302,6 +1302,11 @@ b {
     display: inline-block; }
   .global-tab-content[tab="country"] .table-country-search input {
     width: 400px; }
+.global-tab-content[tab="country"] .radio-option span, .global-tab-content[tab="country"] .radio-option div {
+  position: relative;
+  top: 1px; }
+.global-tab-content[tab="country"] .info-img.ghsa-info-img {
+  top: 1px; }
 
 .analysis-pair-content {
   position: relative;
@@ -1472,12 +1477,6 @@ b {
   .map-options-container .slider {
     margin: 5px 0 15px 15px;
     width: 210px; }
-  .map-options-container .info-img {
-    position: relative;
-    top: -1px;
-    width: 13px;
-    height: 13px;
-    margin-left: 3px; }
   .map-options-container .info-img.ghsa-info-img {
     top: 28px;
     right: 140px; }
@@ -1565,5 +1564,12 @@ body {
 #page-content {
   margin-top: 51px;
   min-height: 100px; }
+
+.info-img {
+  position: relative;
+  top: -1px;
+  width: 13px;
+  height: 13px;
+  margin-left: 3px; }
 
 /*# sourceMappingURL=main.css.map */
