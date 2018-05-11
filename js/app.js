@@ -320,10 +320,18 @@ const App = {};
 	};
 
 	App.getFlagHtml = (iso) => {
-		if (iso !== "General Global Benefit") {
-			return `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
-		} else {
+		
+		// If GGB, return the global image
+		if (iso === "General Global Benefit") {
 			return `<img class="flag globe" src="img/flags/ggb.png" />`;
+		}
+
+		// is this country?
+		const match = App.countries.find(d => d.ISO2 === iso);
+		if (match === undefined || match.country === false) {
+			return '';
+		} else {
+			return `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
 		}
 	};
 
