@@ -1219,6 +1219,9 @@ b {
   .network-map-options .radio-option {
     margin-left: 10px;
     cursor: pointer; }
+    .network-map-options .radio-option span, .network-map-options .radio-option div {
+      position: relative;
+      top: 3px; }
   .network-map-options .radio-option input {
     position: relative;
     top: 2px;
@@ -1228,7 +1231,7 @@ b {
     margin-left: 15px; }
   .network-map-options .info-img {
     position: relative;
-    top: -1px;
+    top: 3px;
     width: 13px;
     height: 13px;
     margin-left: 5px; }
