@@ -1340,6 +1340,8 @@ b {
     right: 50px; }
   .analysis-pair-content .flag {
     border: 1px solid #555; }
+  .analysis-pair-content .flag.globe {
+    border: none; }
 
 .analysis-table-content {
   position: relative;
