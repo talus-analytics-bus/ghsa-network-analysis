@@ -145,6 +145,7 @@
 
 		function initTableSearch() {
 			App.initCountrySearchBar('.table-country-search', (result) => {
+				if (result.item !== undefined) result = result.item;
 				hasher.setHash(`analysis/${result.ISO2}`);
 			}, {
 				width: 400,
