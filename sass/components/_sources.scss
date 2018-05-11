@@ -2,11 +2,11 @@
   margin-top: 10px;
 
   a {
-    color: black;
-    text-decoration: none;
+    // color: black;
+    text-decoration: underline;
+    font-size: 11px;
   }
 
-  font-size: 1.1em;
 
   width: 80px;
   float: right;
@@ -19,4 +19,13 @@
 .bump-right {
   position: relative;
   left: 30px;
+}
+
+
+.data-source-header {
+  font-size: 1.4em;
+  font-weight: 600;
+}
+.data-source-sep {
+  margin-bottom: 10px;
 }
