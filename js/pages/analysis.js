@@ -20,30 +20,42 @@
 			} else if (tab === 'country') {
 				initTableSearch();
 				populateTables('.donor-table', '.recipient-table');
-				// set GHSA radio button to checked if that is set
-				if (App.showGhsaOnly) {
-					$('input[type=radio][name="ind"][ind="ghsa"]').prop('checked',true);
-				}
 			}
-			initGhsaToggle();
+			initGhsaToggle(tab);
 		}
 
-		function initGhsaToggle() {
-			// update indicator type ('money' or 'score') on change
-			$('.ind-type-filter .radio-option').click(function updateIndType() {
-				// Load correct funding data
-				indType = $(this).find('input').attr('ind');
-				App.showGhsaOnly = indType === 'ghsa';
-				App.loadFundingData({ showGhsaOnly: App.showGhsaOnly });
+		function initGhsaToggle(tab = 'network') {
+			// set GHSA radio button to checked if that is set
+			if (App.showGhsaOnly) {
+				$(`input[type=radio][name="ind-${tab}"][ind="ghsa"]`).prop('checked',true);
+			}
 
-				// Clear tables
-				const donorSelector = '.donor-table';
-				const recSelector = '.recipient-table';
-				$(`${donorSelector} tbody, ${recSelector} tbody`).html('');
+			if (tab === 'country') {
+				$('.global-tab-content[tab="country"] .ind-type-filter .radio-option').click(function updateIndType() {
+					// Load correct funding data
+					indType = $(this).find('input').attr('ind');
+					App.showGhsaOnly = indType === 'ghsa';
+					App.loadFundingData({ showGhsaOnly: App.showGhsaOnly });
 
-				// Repopulate tables with chosen data
-				populateTables(donorSelector, recSelector);
-			});
+					// Clear tables
+					const donorSelector = '.donor-table';
+					const recSelector = '.recipient-table';
+					$(`${donorSelector} tbody, ${recSelector} tbody`).html('');
+
+					// Repopulate tables with chosen data
+					populateTables(donorSelector, recSelector);
+				});
+			} else if (tab === 'network') {
+				$('.global-tab-content[tab="network"] .ind-type-filter .radio-option').click(function updateIndType() {
+					// Load correct funding data
+					indType = $(this).find('input').attr('ind');
+					App.showGhsaOnly = indType === 'ghsa';
+					App.loadFundingData({ showGhsaOnly: App.showGhsaOnly });
+
+					// Update chord diagram (network map)
+					updateNetworkMap();
+				});
+			}
 		}
 
 		function initTabs() {
@@ -419,7 +431,6 @@
 		}
 
 		function updateNetworkMap() {
-			App.loadFundingData({showGhsaOnly: App.showGhsaOnly});
 			const moneyType = $('.money-type-filter input:checked').attr('ind');
 			const networkData = getNetworkData();
 			if (!networkData.length) {
