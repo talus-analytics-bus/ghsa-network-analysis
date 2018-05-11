@@ -30,8 +30,8 @@
 			// fill title
 			const fundFlagHtml = donorCountry ? App.getFlagHtml(fundIso) : '';
 			const recFlagHtml = recipientCountry ? App.getFlagHtml(recIso) : '';
-			const fundOnClick = `hasher.setHash('analysis/${fundIso}')`;
-			const recOnClick = `hasher.setHash('analysis/${recIso}')`;
+			const fundOnClick = `hasher.setHash('analysis/${fundIso}/d')`;
+			const recOnClick = `hasher.setHash('analysis/${recIso}/r')`;
 			const donorNameHtml = `<span onclick="${fundOnClick}">${donorName}</span>`;
 			const recipientNameHtml = `<span onclick="${recOnClick}">${recipientName}</span>`;
 			$content.find('.analysis-country-title').html(`${fundFlagHtml} ${donorNameHtml} ` +
