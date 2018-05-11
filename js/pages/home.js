@@ -632,6 +632,10 @@
 				'The goal of this metric is to highlight areas whose needs may ' +
 				'still be unmet based on their ratio of financial resources to need.',
 			});
+			$('.ghsa-info-img').tooltipster({
+				interactive: true,
+				content: App.ghsaInfoTooltipContent,
+			});
 
 			// show map options
 			$('.map-options-container').show();

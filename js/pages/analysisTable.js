@@ -69,6 +69,12 @@
 				crossroads.parse(hasher.getHash());
 				// hasher.setHash(`analysis/${iso}/${moneyFlow}/table${App.showGhsaOnly ? '?ghsa_only=true' : '?ghsa_only=false'}`);
 			});
+
+			// init tooltip
+			$('.ghsa-info-img').tooltipster({
+				interactive: true,
+				content: App.ghsaInfoTooltipContent,
+			});
 		}
 
 		// define info table tab behavior

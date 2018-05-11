@@ -59,6 +59,12 @@
 					updateNetworkMap();
 				});
 			}
+
+			// init tooltip
+			$('.ghsa-info-img').tooltipster({
+				interactive: true,
+				content: App.ghsaInfoTooltipContent,
+			});
 		}
 
 		function initTabs() {

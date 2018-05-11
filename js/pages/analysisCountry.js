@@ -69,6 +69,12 @@
 				crossroads.parse(hasher.getHash());
 				// hasher.setHash(`analysis/${iso}/${moneyType}${App.showGhsaOnly ? '?ghsa_only=true' : '?ghsa_only=false'}`);
 			});
+
+			// init tooltip
+			$('.ghsa-info-img').tooltipster({
+				interactive: true,
+				content: App.ghsaInfoTooltipContent,
+			});
 		}
 
 		function initBasicProfile(params = {}) {
