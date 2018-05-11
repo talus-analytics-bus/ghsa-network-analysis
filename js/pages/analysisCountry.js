@@ -12,8 +12,9 @@
 		};
 
 		// get country information
+		App.loadFundingData({ showGhsaOnly: App.showGhsaOnly });
 		const country = (iso === "General Global Benefit") ? ggb : App.countries.find(c => c.ISO2 === iso);
-		const lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
+		let lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
 		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
 		const lightColor = (moneyType === 'd') ? App.fundColorPalette[4] : App.receiveColorPalette[4];
 
@@ -48,14 +49,33 @@
 
 			if (moneyType) initDonorOrRecipientProfile();
 			else initBasicProfile();
+
+			initGhsaToggle();
 		}
 
-		function initBasicProfile() {
+		function initGhsaToggle() {
+			// set GHSA radio button to checked if that is set
+			if (App.showGhsaOnly) {
+				$(`input[type=radio][name="ind-country"][ind="ghsa"]`).prop('checked',true);
+			}
+
+			$('.analysis-country-content .ind-type-filter .radio-option').off('click');
+			$('.analysis-country-content .ind-type-filter .radio-option').click(function updateIndType() {
+				console.log('toggle switch')
+				// Load correct funding data
+				indType = $(this).find('input').attr('ind');
+				App.showGhsaOnly = indType === 'ghsa';
+				
+				// Reload profile graphics and data
+				hasher.setHash(`analysis/${iso}/${moneyType}${App.showGhsaOnly ? '?ghsa_only=true' : '?ghsa_only=false'}`);
+			});
+		}
+
+		function initBasicProfile(params = {}) {
 			// calculate total funded and received
 			const totalFunded = App.getTotalFunded(iso);
 			const totalReceived = App.getTotalReceived(iso);
 
-			// if either funding or receiving is 0, go to non-zero profile
 			if (totalFunded > totalReceived) {
 				hasher.setHash(`analysis/${iso}/d`);
 				return;
@@ -184,11 +204,10 @@
 
 			// draw charts
 			if (hasNoData) {
-				$('.ghsa-toggle-options, .country-flow-summary, .progress-circle-section, .country-chart-container, .country-flow-content, .category-chart-section, .circle-pack-container').hide();
+				$('.country-flow-summary, .progress-circle-section, .country-chart-container, .country-flow-content, .category-chart-section, .circle-pack-container').hide();
 				$('.country-flow-summary-empty').slideDown();
 				$('.submit-data-btn').click(() => hasher.setHash('submit'))
 			} else {
-				$('.ghsa-toggle-options').show();
 				drawTimeChart();
 				drawProgressCircles();
 				drawCountryTable();

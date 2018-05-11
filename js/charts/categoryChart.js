@@ -19,6 +19,9 @@
 	};
 
 	App.buildCategoryChart = (selector, param = {}) => {
+		// Remove existing
+		d3.select(selector).html('');
+
 		const oppNoun = (param.moneyType === 'r') ? 'Funder' : 'Recipient';
 		let colors = (param.moneyType === 'r') ? App.receiveColorPalette : App.fundColorPalette;
 		colors = colors.slice(0, 5);

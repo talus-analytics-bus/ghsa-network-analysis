@@ -184,7 +184,7 @@
 					.style('color', (d, i) => (i < 4 ? '#fff' : 'black'))
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {
-							hasher.setHash(`analysis/${d.iso}`);
+							hasher.setHash(`analysis/${d.iso}/d`);
 						}
 					});
 			dRows.append('td').html((d) => {
@@ -206,7 +206,7 @@
 					.style('color', (d, i) => (i < 4 ? '#fff' : 'black'))
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {
-							hasher.setHash(`analysis/${d.iso}`);
+							hasher.setHash(`analysis/${d.iso}/r`);
 						}
 					});
 			rRows.append('td').html((d) => {

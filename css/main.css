@@ -1596,5 +1596,9 @@ body {
     top: 1px; }
   .ghsa-toggle-options .info-img.ghsa-info-img {
     top: 1px; }
+  .ghsa-toggle-options .ind-type-filter.two-line {
+    position: relative;
+    top: -24px;
+    left: 96px; }
 
 /*# sourceMappingURL=main.css.map */

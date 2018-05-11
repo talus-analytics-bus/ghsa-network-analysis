@@ -1,5 +1,8 @@
 (() => {
     App.drawProgressCircles = (selector, data, totalSpent, totalCommitted, type, color) => {
+        // remove existing
+        d3.select(selector).html('');
+
         const tau = 2 * Math.PI;
         //let percSpent = data.total_spent / data.total_committed;
 
