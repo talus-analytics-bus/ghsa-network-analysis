@@ -9,10 +9,16 @@
 	.global-tab-content-container .network-map-no-content {
 		font-style: italic;
 		font-size: 1.1em;
+		text-align: left;
 		position: relative;
-		left: -170px;
+		left: 180px;
 		height: 0;
 		top: 220px;
+		z-index: 9999;
+
+		.submit-data-btn {
+			font-style: normal;
+		}
 	}
 }
 

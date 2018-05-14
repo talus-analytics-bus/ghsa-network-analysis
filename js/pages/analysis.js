@@ -17,6 +17,7 @@
 				initNetworkSearch();
 				initNetworkCountryBox();
 				networkMap = buildNetworkMap();
+				$('.submit-data-btn').click(() => hasher.setHash('submit'))
 			} else if (tab === 'country') {
 				initTableSearch();
 				populateTables('.donor-table', '.recipient-table');
@@ -422,7 +423,7 @@
 
 		function toggleNetworkContent (networkData) {
 			const noContentMessage = App.showGhsaOnly ? 'Not enough GHSA funding data to show network.' : 'There are no data with the combination of filters chosen.';
-			$('.network-map-no-content').text(noContentMessage);
+			$('.network-map-no-content > span.text').text(noContentMessage);
 			if (!networkData.length || App.showGhsaOnly === true) {
 				$('.network-map-content').hide();
 				$('.network-map-no-content').show();
