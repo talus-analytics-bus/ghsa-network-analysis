@@ -60,6 +60,7 @@
 			// set GHSA radio button to checked if that is set
 			if (App.showGhsaOnly) {
 				$(`input[type=radio][name="ind-country"][ind="ghsa"]`).prop('checked',true);
+				$('.ghsa-only-text').text('GHSA-specific ')
 			}
 
 			$('.analysis-country-content .ind-type-filter .radio-option').off('click');
@@ -70,7 +71,6 @@
 				
 				// Reload profile graphics and data
 				crossroads.parse(hasher.getHash());
-				// hasher.setHash(`analysis/${iso}/${moneyType}${App.showGhsaOnly ? '?ghsa_only=true' : '?ghsa_only=false'}`);
 			});
 
 			// init tooltip
