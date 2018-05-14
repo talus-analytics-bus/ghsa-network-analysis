@@ -427,13 +427,20 @@
 				regionPadding: 1,
 			});
 			chart.select('.overlay').on('click', unselectNetworkCountry);
+			if (!networkData.length || App.showGhsaOnly === true) {
+				$('.network-map-content').hide();
+				$('.network-map-no-content').show();
+			} else {
+				$('.network-map-content').show();
+				$('.network-map-no-content').hide();
+			}
 			return chart;
 		}
 
 		function updateNetworkMap() {
 			const moneyType = $('.money-type-filter input:checked').attr('ind');
 			const networkData = getNetworkData();
-			if (!networkData.length) {
+			if (!networkData.length || App.showGhsaOnly === true) {
 				$('.network-map-content').hide();
 				$('.network-map-no-content').show();
 			} else {
