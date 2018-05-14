@@ -420,6 +420,18 @@
 			return networkData;
 		}
 
+		function toggleNetworkContent (networkData) {
+			const noContentMessage = App.showGhsaOnly ? 'Not enough GHSA funding data to show network.' : 'There are no data with the combination of filters chosen.';
+			$('.network-map-no-content').text(noContentMessage);
+			if (!networkData.length || App.showGhsaOnly === true) {
+				$('.network-map-content').hide();
+				$('.network-map-no-content').show();
+			} else {
+				$('.network-map-content').show();
+				$('.network-map-no-content').hide();
+			}
+		}
+
 		function buildNetworkMap() {
 			const networkData = getNetworkData();
 			const chart = App.buildNetworkMap('.network-map-content', networkData, {
@@ -427,26 +439,14 @@
 				regionPadding: 1,
 			});
 			chart.select('.overlay').on('click', unselectNetworkCountry);
-			if (!networkData.length || App.showGhsaOnly === true) {
-				$('.network-map-content').hide();
-				$('.network-map-no-content').show();
-			} else {
-				$('.network-map-content').show();
-				$('.network-map-no-content').hide();
-			}
+			toggleNetworkContent(networkData);
 			return chart;
 		}
 
 		function updateNetworkMap() {
 			const moneyType = $('.money-type-filter input:checked').attr('ind');
 			const networkData = getNetworkData();
-			if (!networkData.length || App.showGhsaOnly === true) {
-				$('.network-map-content').hide();
-				$('.network-map-no-content').show();
-			} else {
-				$('.network-map-content').show();
-				$('.network-map-no-content').hide();
-			}
+			toggleNetworkContent(networkData);
 			networkMap.update(networkData, moneyType);
 			if ($('.network-country-info').is(':visible')) {
 				displayCountryInNetwork(activeCountry);
