@@ -161,42 +161,40 @@
 				const scoreObj = App.scoresByCountry[c.ISO2];
 
 				// only include country in data map if it has a score or rec/don funds
-				if (paymentsFunded || paymentsReceived || scoreObj) {
-					let fundedCommitted = 0;
-					let fundedSpent = 0;
-					let receivedCommitted = 0;
-					let receivedSpent = 0;
-					let score = null;
-					let combo = null;
+				let fundedCommitted = 0;
+				let fundedSpent = 0;
+				let receivedCommitted = 0;
+				let receivedSpent = 0;
+				let score = null;
+				let combo = null;
 
-					if (paymentsFunded) {
-						({ totalCommitted: fundedCommitted, totalSpent: fundedSpent } =
-							getPaymentSum(paymentsFunded, ccs));
-					}
-					if (paymentsReceived) {
-						({ totalCommitted: receivedCommitted, totalSpent: receivedSpent } =
-							getPaymentSum(paymentsReceived, ccs));
-					}
-
-					if (scoreObj) {
-						const capScores = scoreObj.avgCapScores
-						.filter(d => ccs.includes(d.capId));
-						score = d3.mean(capScores, d => d.score);
-						const numerator = 10 + Math.log10(1 + receivedSpent);
-						const denominator = 5.01 - score;
-						combo = numerator / denominator;
-					}
-
-					// set in node map
-					currentNodeDataMap.set(c.ISO2, {
-						fundedCommitted,
-						fundedSpent,
-						receivedCommitted,
-						receivedSpent,
-						score,
-						combo,
-					});
+				if (paymentsFunded) {
+					({ totalCommitted: fundedCommitted, totalSpent: fundedSpent } =
+						getPaymentSum(paymentsFunded, ccs));
 				}
+				if (paymentsReceived) {
+					({ totalCommitted: receivedCommitted, totalSpent: receivedSpent } =
+						getPaymentSum(paymentsReceived, ccs));
+				}
+
+				if (scoreObj) {
+					const capScores = scoreObj.avgCapScores
+					.filter(d => ccs.includes(d.capId));
+					score = d3.mean(capScores, d => d.score);
+					const numerator = 10 + Math.log10(1 + receivedSpent);
+					const denominator = 5.01 - score;
+					combo = numerator / denominator;
+				}
+
+				// set in node map
+				currentNodeDataMap.set(c.ISO2, {
+					fundedCommitted,
+					fundedSpent,
+					receivedCommitted,
+					receivedSpent,
+					score,
+					combo,
+				});
 			});
 		}
 
@@ -465,7 +463,7 @@
 			// populate info title
 			$('.info-title').text(country.NAME);
 			$('.info-profile-type')
-			.css('display', indType === 'money' || indType === 'ghsa' ? 'block' : 'none')
+			.css('display', (indType === 'money' || indType === 'ghsa') ? 'block' : 'none')
 			.text(moneyFlow === 'funded' ? 'Funder Information' : 'Recipient Information');
 
 			// define "go to analysis" button behavior
@@ -480,7 +478,6 @@
 			let totalSpent = 0;
 			if (currentNodeDataMap.has(country.ISO2)) {
 				const valueObj = currentNodeDataMap.get(country.ISO2);
-
 				if (indType === 'money' || indType === 'ghsa') {
 					$('.info-score-text-container').slideUp();
 				} else if (indType === 'score') {
