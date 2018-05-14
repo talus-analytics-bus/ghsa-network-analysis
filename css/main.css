@@ -676,6 +676,8 @@ b {
   .source-text a {
     text-decoration: underline;
     font-size: 11px; }
+  .source-text.fund-table-source-text * {
+    width: auto; }
 
 .no-link {
   color: black; }

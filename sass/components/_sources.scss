@@ -6,10 +6,12 @@
     text-decoration: underline;
     font-size: 11px;
   }
-
-
   width: 80px;
   float: right;
+
+  &.fund-table-source-text *{
+    width: auto;
+  }
 }
 
 .no-link {
