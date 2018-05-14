@@ -89,7 +89,7 @@
 				hasher.setHash(`analysis/${iso}/d`);
 				return;
 			}
-			if (totalReceived > totalFunded) {
+			else {
 				hasher.setHash(`analysis/${iso}/r`);
 				return;
 			}
