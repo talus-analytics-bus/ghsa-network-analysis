@@ -120,7 +120,9 @@ const App = {};
 				jeeData.forEach((sRow) => {
 					const indId = sRow.indicator.split(' ')[0];
 					let capId = indId.split('.').slice(0, 2).join('.');
-					if (capId.split('.')[0] === 'PoE') capId = 'O.1';
+					if (capId.split('.')[0] === 'PoE') capId = capId.split('.')[0];
+					if (capId.split('.')[0] === 'RE') capId = capId.split('.')[0];
+					if (capId.split('.')[0] === 'CE') capId = capId.split('.')[0];
 
 					// check that capacity id is valid
 					if (!App.capacities.some(cc => cc.id === capId)) return;
