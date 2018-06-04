@@ -1,5 +1,5 @@
 .overlay {
-	// fill: none;
+	fill: none;
 	pointer-events: all;
 }
 .country {
@@ -51,4 +51,10 @@
 
 .viewport-cutout {
   stroke: #c4c6c6;
+}
+
+.viewport-edge {
+    stroke: #cccccc;
+    fill: none;
+    stroke-width: .25px;
 }

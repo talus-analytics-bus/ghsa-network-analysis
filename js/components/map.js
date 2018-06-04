@@ -32,6 +32,12 @@ const Map = {};
 			.append('g')
 				.on('click', stopped, true);
 
+		// add overlay: where zoom and pan events are
+		svg.append('rect')
+			.attr('class', 'overlay')
+			.attr('width', width)
+			.attr('height', height);
+
 		// add mask
 		const mask = svg.append('mask')
 			.attr('id','viewport-cutout');
@@ -44,14 +50,23 @@ const Map = {};
 			.attr('height', height)
 			.attr('fill','white');
 
+		const viewportWidth = width * 0.75;
+		const viewportHeight = height * 0.75;
+		const viewportX = (width - viewportWidth) / 2;
+		const viewportY = 50;
+
 		mask.append('rect')
 			.attr('class','viewport-ellipse')
-			.attr('x', 175)
-			.attr('y', 50)
+			.attr('x', viewportX)
+			// .attr('x', 175)
+			.attr('y', viewportY)
+			// .attr('y', 50)
 			.attr('rx', 300)
 			.attr('ry', 300)
-			.attr('width', width * .75)
-			.attr('height', 20 + height * 0.703125)
+			.attr('width', viewportWidth)
+			// .attr('width', width * .75)
+			.attr('height', viewportHeight)
+			// .attr('height', 20 + height * 0.703125)
 			.attr('fill','black');
 
 		
@@ -69,8 +84,6 @@ const Map = {};
 		// display correctly on the map.
 		const countries = topojson.feature(world, world.objects.countries).features
 			.filter(d => d.properties.NAME !== 'Antarctica');
-		console.log('countries');
-		console.log(countries);
 		nodeG.selectAll('.country')
 			.data(countries)
 			.enter().append('path')
@@ -81,13 +94,25 @@ const Map = {};
 			.attr('class', 'boundary')
 			.attr('d', path);
 
-		// add overlay
+		// add viewport cutout ellipse
 		svg.append('rect')
-			.attr('class', 'overlay')
+			.attr('class', 'viewport-ellipse')
 			.attr('width', width)
 			.attr('height', height)
-			.attr('fill','rgb(51, 51, 51)')
+			.attr('fill','#222222')
+			.style('pointer-events','none')
 			.attr('mask', 'url(#viewport-cutout)');
+
+		// add viewport edge
+		svg.append('rect')
+			.attr('class', 'viewport-edge')
+			.attr('x', viewportX)
+			// .attr('x', 175)
+			.attr('y', viewportY)
+			.attr('rx', 300)
+			.attr('ry', 300)
+			.attr('width', width * .75)
+			.attr('height', height * 0.75);
 
 		// pan and zoom function
 		function zoomed() {

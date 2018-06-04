@@ -379,6 +379,7 @@ select.form-control {
     transform: rotate(180deg); }
 
 .overlay {
+  fill: none;
   pointer-events: all; }
 
 .country {
@@ -421,6 +422,11 @@ select.form-control {
 
 .viewport-cutout {
   stroke: #c4c6c6; }
+
+.viewport-edge {
+  stroke: #cccccc;
+  fill: none;
+  stroke-width: .25px; }
 
 .navbar {
   padding-left: 15px;
