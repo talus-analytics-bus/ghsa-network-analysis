@@ -1,5 +1,5 @@
 .overlay {
-	fill: none;
+	// fill: none;
 	pointer-events: all;
 }
 .country {
@@ -34,4 +34,21 @@
 .legend-title {
 	font-size: 1.1em;
 	text-anchor: middle;
+}
+
+.viewport-base,
+.viewport-cutout {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 0;
+}
+
+.viewport-base {
+  stroke: #000;
+  fill: #000;
+}
+
+.viewport-cutout {
+  stroke: #c4c6c6;
 }

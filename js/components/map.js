@@ -32,11 +32,29 @@ const Map = {};
 			.append('g')
 				.on('click', stopped, true);
 
-		// add overlay
-		svg.append('rect')
-			.attr('class', 'overlay')
+		// add mask
+		const mask = svg.append('mask')
+			.attr('id','viewport-cutout');
+
+		mask.append('rect')
+			.attr('class','base-mask')
+			.attr('x', 0)
+			.attr('y', 0)
 			.attr('width', width)
-			.attr('height', height);
+			.attr('height', height)
+			.attr('fill','white');
+
+		mask.append('rect')
+			.attr('class','viewport-ellipse')
+			.attr('x', 175)
+			.attr('y', 50)
+			.attr('rx', 300)
+			.attr('ry', 300)
+			.attr('width', width * .75)
+			.attr('height', 20 + height * 0.703125)
+			.attr('fill','black');
+
+		
 
 		const g = svg.append('g');
 		const nodeG = g.append('g')
@@ -62,6 +80,14 @@ const Map = {};
 			.datum(topojson.mesh(world, world.objects.countries, (a, b) => a !== b))
 			.attr('class', 'boundary')
 			.attr('d', path);
+
+		// add overlay
+		svg.append('rect')
+			.attr('class', 'overlay')
+			.attr('width', width)
+			.attr('height', height)
+			.attr('fill','rgb(51, 51, 51)')
+			.attr('mask', 'url(#viewport-cutout)');
 
 		// pan and zoom function
 		function zoomed() {
