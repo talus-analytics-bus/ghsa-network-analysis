@@ -13,7 +13,7 @@ const Map = {};
 		const scale = 170;
 
 		// define projection and path
-		const projection = d3.geoMercator()
+		const projection = d3.geoNaturalEarth2()
 			.translate([width / 2, height / 2])
 			.scale(scale)
 			.precision(0.1);
@@ -48,7 +48,10 @@ const Map = {};
 		svg.call(zoom);
 
 		// add world data
-		const countries = topojson.feature(world, world.objects.countries).features;
+		const countries = topojson.feature(world, world.objects.countries).features
+			.filter(d => d.properties.NAME !== 'Antarctica');
+		console.log('countries');
+		console.log(countries);
 		nodeG.selectAll('.country')
 			.data(countries)
 			.enter().append('path')
