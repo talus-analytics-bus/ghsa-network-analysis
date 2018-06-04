@@ -47,7 +47,8 @@ const Map = {};
 		// attach zoom
 		svg.call(zoom);
 
-		// add world data
+		// add world data, and exclude Antarctica until we can get it to 
+		// display correctly on the map.
 		const countries = topojson.feature(world, world.objects.countries).features
 			.filter(d => d.properties.NAME !== 'Antarctica');
 		console.log('countries');
