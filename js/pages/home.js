@@ -55,8 +55,10 @@
 			d3.selectAll('.country')
 			.on('click', function onClick(d) {
 					// set country as active
-					if (activeCountry.node() === this) return resetMap();
-					activeCountry.classed('active', false);
+					if (activeCountry.node && activeCountry.node() === this) return resetMap();
+					
+					d3.selectAll('.country').classed('active', false);
+					// activeCountry.classed('active', false);
 					activeCountry = d3.select(this).classed('active', true);
 
 					// zoom in to country
@@ -64,6 +66,10 @@
 
 					// display info box
 					displayCountryInfo();
+
+					// deselect all list items
+					d3.selectAll('.list-item').classed('active',false);
+
 					return true;
 				})
 			.each(function addTooltip(d) {
@@ -87,7 +93,8 @@
 
 		function resetMap() {
 			map.reset();
-			activeCountry.classed('active', false);
+			d3.selectAll('.country, .list-item').classed('active', false);
+			// activeCountry.classed('active', false);
 			activeCountry = d3.select(null);
 			$('.info-container').slideUp();
 		}
@@ -462,13 +469,18 @@
 
 		// displays detailed country information
 		function displayCountryInfo() {
-			const country = activeCountry.datum().properties;
+			const countryTmp = activeCountry.datum();
+			const country = countryTmp.properties;
+			const flowTmp = countryTmp.flow;
+
+			// determine which flow to show in tooltip
+			const flowToShow = (flowTmp !== undefined) ? flowTmp : moneyFlow;
 
 			// populate info title
 			$('.info-title').text(country.NAME);
 			$('.info-profile-type')
-			.css('display', (indType === 'money' || indType === 'ghsa') ? 'block' : 'none')
-			.text(moneyFlow === 'funded' ? 'Funder Information' : 'Recipient Information');
+			.css('display', (indType === 'money' || indType === 'ghsa' || country.country === false) ? 'block' : 'none')
+			.text(flowToShow === 'funded' ? 'Funder Information' : 'Recipient Information');
 
 			// define "go to analysis" button behavior
 			$('.info-analysis-button')
@@ -492,10 +504,13 @@
 						scoreText = 'No JEE score data currently available';
 					}
 					$('.info-score-text').html(scoreText);
-					$('.info-score-text-container').slideDown();
+					if (country.country === false) {
+						$('.info-score-text-container').slideUp();
+					} else {
+						$('.info-score-text-container').slideDown();
+					}
 				}
-
-				if ((indType === 'money' || indType === 'ghsa' ) && moneyFlow === 'funded') {
+				if (flowTmp === 'funded' || ((indType === 'money' || indType === 'ghsa' ) && flowToShow === 'funded')) {
 					totalCommitted += valueObj.fundedCommitted;
 					totalSpent += valueObj.fundedSpent;
 				} else {
@@ -507,7 +522,7 @@
 			$('.info-spent-value').text(App.formatMoney(totalSpent));
 
 			// construct label for value
-			const mFlow = (indType === 'score') ? 'received' : moneyFlow;
+			const mFlow = (indType === 'score' && country.country !== false) ? 'received' : flowToShow;
 			$('.info-committed-value-label').html(getMoneyTypeLabel(mFlow, 'committed'));
 			$('.info-spent-value-label').html(getMoneyTypeLabel(mFlow, 'disbursed'));
 
@@ -833,7 +848,57 @@
 				.data(nonCountryFunderData).enter().append('div')
 					.attr('class','list-item')
 					.text(d => d.donor_data.acronym || d.donor_data.NAME)
+					.on('click', function onClick(d) {
+						// set country as active
+						// if (activeCountry.node() === this) return resetMap();
+						// activeCountry.classed('active', false);
+						// activeCountry = d3.select(this).classed('active', true);
+						const curListItem = d3.select(this);
+						if (curListItem.classed('active')) {
+							d3.selectAll('.list-item').classed('active',false);
+							return resetMap();
+						} else if ($('.list-item.active').length === 0) {
+							map.reset();
+						}
+
+						d3.selectAll('.list-item').classed('active',false);
+						curListItem.classed('active', true);
+
+						activeCountry = {
+							datum: () => { return {flow: 'funded', properties: App.nonCountries.find(dd => d.donor_data.FIPS === dd.FIPS) } }
+						};
+						// // zoom in to country
+						// mapObj.zoomTo.call(this, d);
+
+						// display info box
+						displayCountryInfo();
+						return true;
+					})
 					.insert('br');
+
+			// // define country click behavior and attach tooltips
+			// $list.selectAll('.list-item')
+			// .on('click', function onClick(d) {
+			// 		// set country as active
+			// 		if (activeCountry.node() === this) return resetMap();
+			// 		activeCountry.classed('active', false);
+			// 		activeCountry = d3.select(this).classed('active', true);
+
+			// 		// zoom in to country
+			// 		mapObj.zoomTo.call(this, d);
+
+			// 		// display info box
+			// 		displayCountryInfo();
+			// 		return true;
+			// 	})
+			// .each(function addTooltip(d) {
+			// 	$(this).tooltipster({
+			// 		plugins: ['follower'],
+			// 		delay: 100,
+			// 		minWidth: 200,
+			// 		content: d.properties.NAME,
+			// 	});
+			// });
 
 		};
 
@@ -870,6 +935,8 @@
 					.attr('class','list-item')
 					.text(d => d.recipient_data.acronym || d.recipient_data.NAME)
 					.insert('br');
+
+
 
 		};
 		
