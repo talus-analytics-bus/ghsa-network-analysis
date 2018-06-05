@@ -210,8 +210,8 @@ const App = {};
 	/* ------------------ Data Functions ------------------- */
 	// reloads the funding data to use GHSA Only or All
 	App.loadFundingData = (params = {}) => {
-		App.fundingLookup = {};
-		App.recipientLookup = {};
+		App.fundingLookup = {ghsa: [], };
+		App.recipientLookup = {ghsa: [], };
 		const ghsaFilter = params.showGhsaOnly ? (p) => p.ghsa_funding === true : (p) => p;
 		// populate lookup variables from funding data
 		App.fundingData = App.fundingDataFull.filter(ghsaFilter);
@@ -225,6 +225,13 @@ const App = {};
 			if (!App.recipientLookup[recipient]) App.recipientLookup[recipient] = [];
 			App.recipientLookup[recipient].push(p);
 		
+			// GHSA funding: store in 'ghsa' key
+			// for both dictionaries
+			if (p.ghsa_funding === true) {
+				App.fundingLookup['ghsa'].push(p);
+				App.recipientLookup['ghsa'].push(p);
+			}
+
 			// calculate per year spending/commits
 			App.getFundsByYear(p);
 		});

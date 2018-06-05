@@ -1545,7 +1545,7 @@ b {
   width: 280px;
   border: 1px solid #999;
   text-align: left;
-  background-color: rgba(240, 240, 240, 0.8);
+  background-color: #f0f0f0;
   z-index: 10;
   transition: background-color 1s; }
   .map-options-container:hover {

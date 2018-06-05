@@ -4,6 +4,12 @@
     "donor_sector": "General Global Benefit",
     "donor_code": "General Global Benefit"
   },
+    {
+    "donor_name": "Global Health Security Agenda (GHSA)",
+    "donor_sector": "Multilateral",
+    "donor_code": "ghsa",
+    "acronym": "Global Health Security Agenda (GHSA)"
+  },
   {
     "donor_name": "Stichting fondsbeheer DGGF lokaal MKB",
     "donor_sector": "International NGO",

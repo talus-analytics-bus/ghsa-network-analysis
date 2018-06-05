@@ -109,8 +109,11 @@
 			return moneyType === 'committed' ? 'receivedCommitted' : 'receivedSpent';
 		}
 
-		function getMoneyTypeLabel(mFlow, mType) {
-			const flowNoun = (mFlow === 'funded') ? 'Funder' : 'Recipient';
+		function getMoneyTypeLabel(mFlow, mType, isGhsa = false) {
+			let flowNoun = (mFlow === 'funded') ? '(Funder)' : '(Recipient)';
+			if (isGhsa) {
+				flowNoun = '';
+			}
 			let noun = '';
 			if (mType === 'committed') {
 				noun = 'Committed';
@@ -120,7 +123,7 @@
 			}
 			return `Total <b>${noun}</b>` +
 			`<br>from ${startYear} to ${endYear - 1}` +
-			`<br>(${flowNoun})`;
+			`<br>${flowNoun}`;
 		}
 
 		// gets the color scale used for the map
@@ -227,6 +230,21 @@
 			return { totalCommitted, totalSpent };
 		}
 
+		/**
+		 * Returns the correct info label text based on whether an entity is
+		 * a country, the GHSA conceptual entity, and which money flow.
+		 * @param  {Boolean} isGhsa        Is the entity the GHSA catch-all? If so, no label.
+		 * @param  {string}  moneyFlow     The money flow, either 'funded' or 'received'
+		 * @return {string}  The correct text to use as the info label in the map modal.
+		 */
+		function getInfoLabel(isGhsa, moneyFlow) {
+			if (isGhsa) {
+				return '';
+			} else {
+				return (moneyFlow === 'funded') ? 'Funder Information' : 'Recipient Information';
+			}
+		};
+
 		// updates map colors and country tooltip
 		function updateMap() {
 			const valueAttrName = getValueAttrName();
@@ -258,7 +276,6 @@
 							value = currentNodeDataMap.get(d.properties.ISO2).receivedSpent;
 						}
 					}
-
 					// build tooltip
 					const container = d3.select(document.createElement('div'));
 					container.append('div')
@@ -471,6 +488,7 @@
 			const countryTmp = activeCountry.datum();
 			const country = countryTmp.properties;
 			const flowTmp = countryTmp.flow;
+			const isGhsa = country.ISO2 === 'ghsa';
 
 			// determine which flow to show in tooltip
 			const flowToShow = (flowTmp !== undefined) ? flowTmp : moneyFlow;
@@ -479,7 +497,7 @@
 			$('.info-title').text(country.NAME);
 			$('.info-profile-type')
 			.css('display', (indType === 'money' || indType === 'ghsa' || country.country === false) ? 'block' : 'none')
-			.text(flowToShow === 'funded' ? 'Funder Information' : 'Recipient Information');
+			.text(getInfoLabel(isGhsa, flowToShow));
 
 			// define "go to analysis" button behavior
 			$('.info-analysis-button')
@@ -528,8 +546,8 @@
 
 			// construct label for value
 			const mFlow = (indType === 'score' && country.country !== false) ? 'received' : flowToShow;
-			$('.info-committed-value-label').html(getMoneyTypeLabel(mFlow, 'committed'));
-			$('.info-spent-value-label').html(getMoneyTypeLabel(mFlow, 'disbursed'));
+			$('.info-committed-value-label').html(getMoneyTypeLabel(mFlow, 'committed', isGhsa));
+			$('.info-spent-value-label').html(getMoneyTypeLabel(mFlow, 'disbursed', isGhsa));
 
 			// display content
 			$('.info-container').slideDown();
@@ -861,6 +879,20 @@
 				};
 			}).filter(d => d.projects !== undefined);;
 
+
+			// Add object representing GHSA
+			const ghsa = {
+				recipient_code: 'ghsa',
+				entity_data: {
+				    "FIPS": "ghsa",
+				    "ISO2": "ghsa",
+				    "NAME": "Global Health Security Agenda",
+				    "country": false
+				  },
+				projects: App.fundingData.filter(d => d.ghsa_funding === true), // TODO
+			};
+			nonCountryFunderData = nonCountryFunderData.concat(ghsa);
+
 			// sort A-Z by donor name
 			nonCountryFunderData = _.sortBy(nonCountryFunderData, (data) => { return data.entity_data.NAME.toLowerCase(); });
 
@@ -911,6 +943,19 @@
 					projects: fundingDataByRecipientCode[val.FIPS],
 				};
 			}).filter(d => d.projects !== undefined);
+
+			// Add object representing GHSA
+			const ghsa = {
+				recipient_code: 'ghsa',
+				entity_data: {
+				    "FIPS": "ghsa",
+				    "ISO2": "ghsa",
+				    "NAME": "Global Health Security Agenda",
+				    "country": false
+				  },
+				projects: App.fundingData.filter(d => d.ghsa_funding === true), // TODO
+			};
+			nonCountryRecipientData = nonCountryRecipientData.concat(ghsa);
 
 			// sort A-Z by donor name
 			nonCountryRecipientData = _.sortBy(nonCountryRecipientData, (data) => { return data.entity_data.NAME.toLowerCase(); });
@@ -976,9 +1021,6 @@
 			// add this to current scrollTop and scroll to it
 			const scrollTopTarget = $list.scrollTop() + diff;
 			$list.scrollTop(scrollTopTarget);
-			// $list.animate({
-			//     scrollTop: scrollTopTarget,
-			// },3000);
 		};
 		
 		init();
