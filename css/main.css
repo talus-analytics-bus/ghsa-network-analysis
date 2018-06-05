@@ -445,7 +445,7 @@ select.form-control {
     transform-origin: left top;
     -moz-transform-origin: left top; }
   .non-country-list-container .non-country-list {
-    max-height: 560px;
+    height: 560px;
     overflow-y: scroll;
     overflow-x: hidden;
     line-height: 2.5;

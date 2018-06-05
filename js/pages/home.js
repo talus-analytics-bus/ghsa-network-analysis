@@ -33,6 +33,7 @@
 			initLegend();
 			initCountryInfoBox();
 			initFunderList('.non-country-list.funder-list');
+			initRecipientList('.non-country-list.recipient-list');
 			initListScaling('.non-country-list-container.right');
 			initListScaling('.non-country-list-container.left');
 			updateAll();
@@ -810,14 +811,14 @@
 			const $list = d3.select(selector);
 
 			// get data for funders and group it by funder
-			fundingDataByDonorCode = _.groupBy(App.fundingData, 'donor_code');
-			nonCountryFunderData = App.nonCountries.map((val, key) => {
+			const fundingDataByDonorCode = _.groupBy(App.fundingData, 'donor_code');
+			let nonCountryFunderData = App.nonCountries.map((val, key) => {
 				return {
 					donor_code: val.FIPS,
 					donor_data: val,
 					projects: fundingDataByDonorCode[val.FIPS],
 				};
-			});
+			}).filter(d => d.projects !== undefined);;
 
 			// sort A-Z by donor name
 			nonCountryFunderData = _.sortBy(nonCountryFunderData, (data) => { return data.donor_data.NAME.toLowerCase(); });
@@ -832,6 +833,42 @@
 				.data(nonCountryFunderData).enter().append('div')
 					.attr('class','list-item')
 					.text(d => d.donor_data.acronym || d.donor_data.NAME)
+					.insert('br');
+
+		};
+
+		/**
+		 * Initializes the list of recipients that appears on the right side of the Map.
+		 * @param  {string} selector      D3 selector string of div that
+		 * 								  contains the list of recipients
+		 * 								  
+		 * @return {null} No return value
+		 */
+		function initRecipientList (selector) {
+			const $list = d3.select(selector);
+
+			// get data for funders and group it by funder
+			const fundingDataByRecipientCode = _.groupBy(App.fundingData, 'recipient_country');
+			let nonCountryRecipientData = App.nonCountries.map((val, key) => {
+				return {
+					recipient_code: val.FIPS,
+					recipient_data: val,
+					projects: fundingDataByRecipientCode[val.FIPS],
+				};
+			}).filter(d => d.projects !== undefined);
+
+			// sort A-Z by donor name
+			nonCountryRecipientData = _.sortBy(nonCountryRecipientData, (data) => { return data.recipient_data.NAME.toLowerCase(); });
+			// for tooltips, call getPaymentSum to get the value needed
+			// returns { totalCommitted, totalSpent }
+
+			// do it using donor_code testing against the FIPS in App.nonCountries
+
+			// populate the list with spans representing each entity
+			$list.selectAll('.list-item')
+				.data(nonCountryRecipientData).enter().append('div')
+					.attr('class','list-item')
+					.text(d => d.recipient_data.acronym || d.recipient_data.NAME)
 					.insert('br');
 
 		};
