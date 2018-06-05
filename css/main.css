@@ -477,6 +477,8 @@ select.form-control {
         color: #bfd4e7;
         cursor: pointer;
         text-decoration: underline; }
+        .non-country-list-container .non-country-list .list-item:hover.active, .non-country-list-container .non-country-list .list-item.active.active {
+          color: #fff; }
   .non-country-list-container .list-title {
     font-size: 1.25em;
     font-weight: 600;
