@@ -100,4 +100,16 @@ Util.save = function(data, filename){
 		e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
 		a.dispatchEvent(e)
 	};
+
+	// Creates a scale that maps a domain to the domain of the sine function
+	// from 0 to π
+	Util.sineScale = (domain) => {
+		const scaleTmp = d3.scaleLinear()
+			.domain([domain.min, domain.max])
+			.range([0, 3.1415]);
+		const scale = (val) => {
+			return Math.sin(scaleTmp(val));
+		};
+		return scale;
+	};
 })();

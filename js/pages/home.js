@@ -696,43 +696,93 @@
 		// list items so they flow around the elliptical viewport.
 		function setHorizOffsets ($list) {
 			const boxTop = $list.offset().top;
+			
+			function getMaxHorizOffset () {
+				return 120; // TODO dynamically, if it improves rendering.
+			}
+			
 			function getHorizOffsetScale () {
 				const domain = {
 					min: $list.first('span').position().top,
 					max: $list[0].getBoundingClientRect().height,
 				};
+				const sineScale = Util.sineScale(domain);
 
 				const range = {
-					min: 0,
-					max: 1, // base case: linear
+					min: 10,
+					max: getMaxHorizOffset(), // base case: linear
 				};
 
 
 				// scale for horizontal position mapping
 				// val: offset().top of 'span' minus boxTop
-				const horizOffsetScale1 = d3.scalePow()
-					.domain([domain.min, domain.max / 2])
-					.range([0, range.max])
-					.exponent(.5);
-				const horizOffsetScale2 = d3.scalePow()
-					.domain([domain.max / 2, domain.max])
-					.range([range.max, 0])
-					.exponent(2);
+
+				const horizOffsetScaleTmp = d3.scaleLinear()
+					.domain([0, 1])
+					.range([range.min, range.max]);
 
 				const horizOffsetScale = (val) => {
-					if (val > domain.max / 2) {
-						return horizOffsetScale2(val);
-					} else {
-						return horizOffsetScale1(val);
-					}
+					return horizOffsetScaleTmp(sineScale(val));
 				};
+
+				// const horizOffsetScale = (val) => {
+				// 	return (sineScale(val) * range.max)
+				// };
+
+				// const horizOffsetScale1 = d3.scalePow()
+				// 	.domain([domain.min, domain.max / 2])
+				// 	.range([0, range.max])
+				// 	.exponent(.5);
+				// const horizOffsetScale2 = d3.scalePow()
+				// 	.domain([domain.max / 2, domain.max])
+				// 	.range([range.max, 0])
+				// 	.exponent(2);
+
+				// const horizOffsetScale = (val) => {
+				// 	if (val >= domain.max / 2) {
+				// 		return horizOffsetScale2(val);
+				// 	} else {
+				// 		return horizOffsetScale1(val);
+				// 	}
+				// };
 
 				return horizOffsetScale;
 			}
 
-			function getMaxHorizOffset () {
-				return 100; // TODO
-			}
+			// function getHorizOffsetScale () {
+			// 	const domain = {
+			// 		min: $list.first('span').position().top,
+			// 		max: $list[0].getBoundingClientRect().height,
+			// 	};
+
+			// 	const range = {
+			// 		min: 10,
+			// 		max: getMaxHorizOffset(), // base case: linear
+			// 	};
+
+
+			// 	// scale for horizontal position mapping
+			// 	// val: offset().top of 'span' minus boxTop
+			// 	const horizOffsetScale1 = d3.scalePow()
+			// 		.domain([domain.min, domain.max / 2])
+			// 		.range([0, range.max])
+			// 		.exponent(.5);
+			// 	const horizOffsetScale2 = d3.scalePow()
+			// 		.domain([domain.max / 2, domain.max])
+			// 		.range([range.max, 0])
+			// 		.exponent(2);
+
+			// 	const horizOffsetScale = (val) => {
+			// 		if (val >= domain.max / 2) {
+			// 			return horizOffsetScale2(val);
+			// 		} else {
+			// 			return horizOffsetScale1(val);
+			// 		}
+			// 	};
+
+			// 	return horizOffsetScale;
+			// }
+
 
 
 			function getHorizOffset (span, scrollTop) {
@@ -740,8 +790,7 @@
 				// const val = span.offset().top - boxTop;
 				const scale = getHorizOffsetScale();
 				const maxOffset = getMaxHorizOffset();
-				return scale(val) * maxOffset;
-				// return '22px';
+				return scale(val);
 			}
 
 			$list
@@ -763,6 +812,7 @@
 		// so it's always next to the elliptical viewport's right edge.
 		function initRecipientListScaling() {
 			const $box = $('.non-country-list-container.right');
+			const $listTitle = $box.find('.list-title');
 			const $viewport = $('.viewport-edge');
 			
 			function onChange() {
@@ -770,7 +820,6 @@
 				// Scale factor = difference between original viewport height and current viewport height
 				const viewportHeight = $viewport[0].getBoundingClientRect().height;
 				const origViewportHeight = 640;
-				// const origViewportHeight = $viewport.height();
 				const heuristicScaleFactorCorrection = 1.3; // Dividing by this value gets the initial size right
 				const scaleFactor = (viewportHeight / origViewportHeight) / heuristicScaleFactorCorrection;
 				$box.css('transform',`scale(${scaleFactor})`);
@@ -779,11 +828,15 @@
 				// Set top position of box
 				const viewportTop = $viewport.offset().top;
 				const boxHeight = $box[0].getBoundingClientRect().height;
-				const yShift = (viewportHeight / 2) - (boxHeight / 2);
+				const listTitleHeight = $listTitle[0].getBoundingClientRect().height;
+				const heuristicTopPositionCorrection = -10 * scaleFactor / heuristicScaleFactorCorrection;
+				const yShift = ((viewportHeight / 2) - (boxHeight / 2)) + heuristicTopPositionCorrection;
+				// const yShift = ((viewportHeight / 2) - (boxHeight / 2));
 				const top = viewportTop + yShift;
 				$box.css('top', top + 'px');
 
 				// Set indentations of 'span' elements of list
+				setHorizOffsets($list)
 			}
 			const $list = $('.non-country-list.recipient-list');
 			onChange();

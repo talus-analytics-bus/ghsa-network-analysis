@@ -62,6 +62,7 @@
 
 /* --- Map Non-country Funder/Recipient Lists --- */
 .non-country-list-container {
+  z-index: -99;
   width: 320px;
   position: fixed;
   top: 0; // this is dynamically set
@@ -75,22 +76,39 @@
     overflow-x: hidden;
     line-height: 2.5;
     transform: scale(1);
-    &.recipient-list {
-      // max-width: 470px;
-      text-align:left;
-    }
 
-    span.list-item {
-      position: relative;
-    }
+    &::-webkit-scrollbar {
+     width: 0.75em;
+     height: 0.75em;
+   }
+   &::-webkit-scrollbar-track {
+    background: none;
+    border: 2px solid #474747;
+    border-radius: 3px;
   }
 
-  .list-title > span {
-    font-size: 1.25em;
-    font-weight: 600;
-  }
+  &::-webkit-scrollbar-thumb {
+   background-color: #5a5b5b;
+   border-radius: 3px;
+
+   &:hover {
+     background-color: #5a5b5b;
+   }
+ }
+
+ &.recipient-list {
+  text-align:left;
 }
 
-::-webkit-scrollbar-track {
-  background: blue; 
+span.list-item {
+  position: relative;
+}
+}
+
+.list-title {
+  font-size: 1.25em;
+  font-weight: 600;
+  position: relative;
+  top: -20px;
+}
 }

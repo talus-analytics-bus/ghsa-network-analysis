@@ -431,6 +431,7 @@ select.form-control {
 
 /* --- Map Non-country Funder/Recipient Lists --- */
 .non-country-list-container {
+  z-index: -99;
   width: 320px;
   position: fixed;
   top: 0;
@@ -444,16 +445,27 @@ select.form-control {
     overflow-x: hidden;
     line-height: 2.5;
     transform: scale(1); }
+    .non-country-list-container .non-country-list::-webkit-scrollbar {
+      width: 0.75em;
+      height: 0.75em; }
+    .non-country-list-container .non-country-list::-webkit-scrollbar-track {
+      background: none;
+      border: 2px solid #474747;
+      border-radius: 3px; }
+    .non-country-list-container .non-country-list::-webkit-scrollbar-thumb {
+      background-color: #5a5b5b;
+      border-radius: 3px; }
+      .non-country-list-container .non-country-list::-webkit-scrollbar-thumb:hover {
+        background-color: #5a5b5b; }
     .non-country-list-container .non-country-list.recipient-list {
       text-align: left; }
     .non-country-list-container .non-country-list span.list-item {
       position: relative; }
-  .non-country-list-container .list-title > span {
+  .non-country-list-container .list-title {
     font-size: 1.25em;
-    font-weight: 600; }
-
-::-webkit-scrollbar-track {
-  background: blue; }
+    font-weight: 600;
+    position: relative;
+    top: -20px; }
 
 .navbar {
   padding-left: 15px;
