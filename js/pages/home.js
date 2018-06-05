@@ -485,7 +485,13 @@
 			$('.info-analysis-button')
 			.off('click')
 			.on('click', () => {
-				hasher.setHash(`analysis/${country.ISO2}`);
+				const activeCountryData = activeCountry.datum();
+				if (activeCountryData.flow !== undefined) {
+					const flowParam = (activeCountryData.flow === 'funded') ? 'd' : 'r';
+					hasher.setHash(`analysis/${country.ISO2}/${flowParam}`);
+				} else {
+					hasher.setHash(`analysis/${country.ISO2}`);
+				}
 			});
 
 			// populate info total value
