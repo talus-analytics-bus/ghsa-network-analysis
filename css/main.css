@@ -473,6 +473,10 @@ select.form-control {
       line-height: 1.25;
       max-width: 180px;
       margin-bottom: 30px; }
+      .non-country-list-container .non-country-list .list-item:hover {
+        color: #bfd4e7;
+        cursor: pointer;
+        text-decoration: underline; }
   .non-country-list-container .list-title {
     font-size: 1.25em;
     font-weight: 600;
