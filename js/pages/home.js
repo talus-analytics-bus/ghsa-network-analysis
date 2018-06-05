@@ -553,16 +553,38 @@
 		function initSearch() {
 			App.initCountrySearchBar('.search-container', (result) => {
 				if (result.item !== undefined) result = result.item;
+				d3.selectAll('.country, .list-item').classed('active', false);
+				
 				// get country element
-				const country = d3.selectAll('.country')
-				.filter(c => result.ISO2 === c.properties.ISO2);
+				const nonCountry = result.country === false;
+				let match;
+				if (!nonCountry) {
+					match = d3.selectAll('.country')
+						.filter(c => result.ISO2 === c.properties.ISO2);
+				} else {
+					const matchTmp = d3.selectAll('.list-item')
+						.filter(c => result.ISO2 === c.entity_data.ISO2);
+					const entityData = matchTmp.datum().entity_data;
+					match = matchTmp;
+					match.datum = () => { return {
+						properties: entityData,
+						flow: 'funded',
+					}; };
+					// match.datum2 = () => { return matchTmp.datum().entity_data; };
+					console.log('match')
+					console.log(match)
+				}
 
 				// set country as active
-				activeCountry.classed('active', false);
-				activeCountry = country.classed('active', true);
+				activeCountry = match.classed('active', true);
 
 				// zoom in to country
-				map.zoomTo.call(activeCountry.node(), activeCountry.datum());
+				if (!nonCountry) {
+					map.zoomTo.call(activeCountry.node(), activeCountry.datum())
+				}
+				else {
+					scrollToListItem(activeCountry);
+				};
 				displayCountryInfo();
 			});
 		}
@@ -753,7 +775,6 @@
 
 			function getHorizOffset (span, scrollTop) {
 				const val = span.position().top;
-				// const val = span.offset().top - boxTop;
 				const scale = getHorizOffsetScale();
 				const maxOffset = getMaxHorizOffset();
 				return scale(val);
@@ -835,19 +856,19 @@
 			let nonCountryFunderData = App.nonCountries.map((val, key) => {
 				return {
 					donor_code: val.FIPS,
-					donor_data: val,
+					entity_data: val,
 					projects: fundingDataByDonorCode[val.FIPS],
 				};
 			}).filter(d => d.projects !== undefined);;
 
 			// sort A-Z by donor name
-			nonCountryFunderData = _.sortBy(nonCountryFunderData, (data) => { return data.donor_data.NAME.toLowerCase(); });
+			nonCountryFunderData = _.sortBy(nonCountryFunderData, (data) => { return data.entity_data.NAME.toLowerCase(); });
 
 			// populate the list with spans representing each entity
 			$list.selectAll('.list-item')
 				.data(nonCountryFunderData).enter().append('div')
 					.attr('class','list-item')
-					.text(d => d.donor_data.acronym || d.donor_data.NAME)
+					.text(d => d.entity_data.acronym || d.entity_data.NAME)
 					.on('click', function onClick(d) {
 						const curListItem = d3.select(this);
 						if (curListItem.classed('active')) {
@@ -861,7 +882,7 @@
 						curListItem.classed('active', true);
 
 						activeCountry = {
-							datum: () => { return {flow: 'funded', properties: App.nonCountries.find(dd => d.donor_data.FIPS === dd.FIPS) } }
+							datum: () => { return {flow: 'funded', properties: App.nonCountries.find(dd => d.entity_data.FIPS === dd.FIPS) } }
 						};
 
 						// display info box
@@ -886,19 +907,19 @@
 			let nonCountryRecipientData = App.nonCountries.map((val, key) => {
 				return {
 					recipient_code: val.FIPS,
-					recipient_data: val,
+					entity_data: val,
 					projects: fundingDataByRecipientCode[val.FIPS],
 				};
 			}).filter(d => d.projects !== undefined);
 
 			// sort A-Z by donor name
-			nonCountryRecipientData = _.sortBy(nonCountryRecipientData, (data) => { return data.recipient_data.NAME.toLowerCase(); });
+			nonCountryRecipientData = _.sortBy(nonCountryRecipientData, (data) => { return data.entity_data.NAME.toLowerCase(); });
 
 			// populate the list with spans representing each entity
 			$list.selectAll('.list-item')
 				.data(nonCountryRecipientData).enter().append('div')
 					.attr('class','list-item')
-					.text(d => d.recipient_data.acronym || d.recipient_data.NAME)
+					.text(d => d.entity_data.acronym || d.entity_data.NAME)
 					.on('click', function onClick(d) {
 						const curListItem = d3.select(this);
 						if (curListItem.classed('active')) {
@@ -912,7 +933,7 @@
 						curListItem.classed('active', true);
 
 						activeCountry = {
-							datum: () => { return {flow: 'received', properties: App.nonCountries.find(dd => d.recipient_data.FIPS === dd.FIPS) } }
+							datum: () => { return {flow: 'received', properties: App.nonCountries.find(dd => d.entity_data.FIPS === dd.FIPS) } }
 						};
 
 						// display info box
@@ -923,6 +944,41 @@
 
 
 
+		};
+
+		/**
+		 * Scrolls the list div to the item indicated in the argument (animated).
+		 * @param  {D3 selection} $item         The list item D3 selection to be scrolled to
+		 */
+		function scrollToListItem ($item) {
+			// get current list
+
+			$item = $($item.node());
+			const $list = $item.parent('.non-country-list');
+			$list.scrollTop(0);
+
+			// get original list top
+			const origListTop = $list.scrollTop();
+
+			// get list top if at scrollTop(0)
+			$list.scrollTop(0);
+			const baselineListTop = $list.position().top;
+
+			// go back to original list top
+			$list.scrollTop(origListTop);
+
+			// get target top
+			const itemTop = $item.position().top;
+
+			// get difference between target top and list top at scrollTop(0)
+			const diff = itemTop - $list.scrollTop();
+
+			// add this to current scrollTop and scroll to it
+			const scrollTopTarget = $list.scrollTop() + diff;
+			$list.scrollTop(scrollTopTarget);
+			// $list.animate({
+			//     scrollTop: scrollTopTarget,
+			// },3000);
 		};
 		
 		init();

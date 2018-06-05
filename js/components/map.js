@@ -21,6 +21,7 @@ const Map = {};
 
 		// define zoom
 		const zoom = d3.zoom()
+			// .translateExtent([0, 0], [20000, 20000])
 			.scaleExtent([1, 8])
 			.on('zoom', zoomed);
 
