@@ -32,6 +32,7 @@
 			initMapOptions();
 			initLegend();
 			initCountryInfoBox();
+			initFunderList('.non-country-list.funder-list');
 			initListScaling('.non-country-list-container.right');
 			initListScaling('.non-country-list-container.left');
 			updateAll();
@@ -708,7 +709,7 @@
 			
 			function getHorizOffsetScale () {
 				const domain = {
-					min: $list.first('span').position().top,
+					min: $list.first('div').position().top,
 					max: $list[0].getBoundingClientRect().height,
 				};
 				const sineScale = Util.sineScale(domain);
@@ -742,7 +743,7 @@
 				.scroll(function(){
 					const element = $(this);
 					const scrollTop = element.scrollTop();
-					const spans = element.find('span');
+					const spans = element.find('div');
 					spans.each(function(span){
 						const $span = $(this);
 						const horizOffset = getHorizOffset($span);
@@ -760,6 +761,7 @@
 			const $viewport = $('.viewport-edge');
 			const $list = $box.find('.non-country-list');
 			
+
 			function onChange() {
 				// Scale the size of the box
 				// Scale factor = difference between original viewport height and current viewport height
@@ -788,6 +790,52 @@
 			window.addEventListener("resize", onChange);
 		}
 
+		/**
+		 * Function to get data for funders to show in the Map page.
+		 * @return {array} Collection of non-country funder data.
+		 */
+		function getNonCountryFunderData () {
+
+		};
+
+
+		/**
+		 * Initializes the list of funders that appears on the left side of the Map.
+		 * @param  {string} selector      D3 selector string of div that
+		 * 								  contains the list of funders
+		 * 								  
+		 * @return {null} No return value
+		 */
+		function initFunderList (selector) {
+			const $list = d3.select(selector);
+
+			// get data for funders and group it by funder
+			fundingDataByDonorCode = _.groupBy(App.fundingData, 'donor_code');
+			nonCountryFunderData = App.nonCountries.map((val, key) => {
+				return {
+					donor_code: val.FIPS,
+					donor_data: val,
+					projects: fundingDataByDonorCode[val.FIPS],
+				};
+			});
+
+			// sort A-Z by donor name
+			nonCountryFunderData = _.sortBy(nonCountryFunderData, (data) => { return data.donor_data.NAME.toLowerCase(); });
+
+			// for tooltips, call getPaymentSum to get the value needed
+			// returns { totalCommitted, totalSpent }
+
+			// do it using donor_code testing against the FIPS in App.nonCountries
+
+			// populate the list with spans representing each entity
+			$list.selectAll('.list-item')
+				.data(nonCountryFunderData).enter().append('div')
+					.attr('class','list-item')
+					.text(d => d.donor_data.acronym || d.donor_data.NAME)
+					.insert('br');
+
+		};
+		
 		init();
 	};
 })();

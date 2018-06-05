@@ -467,8 +467,12 @@ select.form-control {
     .non-country-list-container .non-country-list.funder-list {
       text-align: right;
       direction: rtl; }
-    .non-country-list-container .non-country-list span.list-item {
-      position: relative; }
+    .non-country-list-container .non-country-list .list-item {
+      position: relative;
+      direction: ltr;
+      line-height: 1.25;
+      max-width: 180px;
+      margin-bottom: 30px; }
   .non-country-list-container .list-title {
     font-size: 1.25em;
     font-weight: 600;

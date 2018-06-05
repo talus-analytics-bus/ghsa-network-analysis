@@ -194,6 +194,9 @@ const App = {};
 				App.currencies = Object.assign({}, currencies);
 				App.currencyIso = 'USD';
 
+				// Create convenience variable for non-country funder/recipients
+				App.nonCountries = App.countries.filter(d => d.country === false && d.NAME !== undefined);
+
 				// call callback and finish progress bar
 				if (callback) callback();
 				NProgress.done();
@@ -313,6 +316,7 @@ const App = {};
 			  "FIPS": code,
 			  "ISO2": code,
 			  "NAME": name,
+			  "acronym": codeObj.acronym,
 			  "POP2005": 0,
 			  "regionName": "Other Funders / Recipients",
 			  "subRegionName": "Other Funders / Recipients",
