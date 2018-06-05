@@ -94,7 +94,6 @@
 		function resetMap() {
 			map.reset();
 			d3.selectAll('.country, .list-item').classed('active', false);
-			// activeCountry.classed('active', false);
 			activeCountry = d3.select(null);
 			$('.info-container').slideUp();
 		}
@@ -838,21 +837,12 @@
 			// sort A-Z by donor name
 			nonCountryFunderData = _.sortBy(nonCountryFunderData, (data) => { return data.donor_data.NAME.toLowerCase(); });
 
-			// for tooltips, call getPaymentSum to get the value needed
-			// returns { totalCommitted, totalSpent }
-
-			// do it using donor_code testing against the FIPS in App.nonCountries
-
 			// populate the list with spans representing each entity
 			$list.selectAll('.list-item')
 				.data(nonCountryFunderData).enter().append('div')
 					.attr('class','list-item')
 					.text(d => d.donor_data.acronym || d.donor_data.NAME)
 					.on('click', function onClick(d) {
-						// set country as active
-						// if (activeCountry.node() === this) return resetMap();
-						// activeCountry.classed('active', false);
-						// activeCountry = d3.select(this).classed('active', true);
 						const curListItem = d3.select(this);
 						if (curListItem.classed('active')) {
 							d3.selectAll('.list-item').classed('active',false);
@@ -867,39 +857,12 @@
 						activeCountry = {
 							datum: () => { return {flow: 'funded', properties: App.nonCountries.find(dd => d.donor_data.FIPS === dd.FIPS) } }
 						};
-						// // zoom in to country
-						// mapObj.zoomTo.call(this, d);
 
 						// display info box
 						displayCountryInfo();
 						return true;
 					})
 					.insert('br');
-
-			// // define country click behavior and attach tooltips
-			// $list.selectAll('.list-item')
-			// .on('click', function onClick(d) {
-			// 		// set country as active
-			// 		if (activeCountry.node() === this) return resetMap();
-			// 		activeCountry.classed('active', false);
-			// 		activeCountry = d3.select(this).classed('active', true);
-
-			// 		// zoom in to country
-			// 		mapObj.zoomTo.call(this, d);
-
-			// 		// display info box
-			// 		displayCountryInfo();
-			// 		return true;
-			// 	})
-			// .each(function addTooltip(d) {
-			// 	$(this).tooltipster({
-			// 		plugins: ['follower'],
-			// 		delay: 100,
-			// 		minWidth: 200,
-			// 		content: d.properties.NAME,
-			// 	});
-			// });
-
 		};
 
 		/**
@@ -924,16 +887,32 @@
 
 			// sort A-Z by donor name
 			nonCountryRecipientData = _.sortBy(nonCountryRecipientData, (data) => { return data.recipient_data.NAME.toLowerCase(); });
-			// for tooltips, call getPaymentSum to get the value needed
-			// returns { totalCommitted, totalSpent }
-
-			// do it using donor_code testing against the FIPS in App.nonCountries
 
 			// populate the list with spans representing each entity
 			$list.selectAll('.list-item')
 				.data(nonCountryRecipientData).enter().append('div')
 					.attr('class','list-item')
 					.text(d => d.recipient_data.acronym || d.recipient_data.NAME)
+					.on('click', function onClick(d) {
+						const curListItem = d3.select(this);
+						if (curListItem.classed('active')) {
+							d3.selectAll('.list-item').classed('active',false);
+							return resetMap();
+						} else if ($('.list-item.active').length === 0) {
+							map.reset();
+						}
+
+						d3.selectAll('.list-item').classed('active',false);
+						curListItem.classed('active', true);
+
+						activeCountry = {
+							datum: () => { return {flow: 'received', properties: App.nonCountries.find(dd => d.recipient_data.FIPS === dd.FIPS) } }
+						};
+
+						// display info box
+						displayCountryInfo();
+						return true;
+					})
 					.insert('br');
 
 
