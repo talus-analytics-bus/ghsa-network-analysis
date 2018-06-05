@@ -32,7 +32,8 @@
 			initMapOptions();
 			initLegend();
 			initCountryInfoBox();
-			initRecipientListScaling();
+			initListScaling('.non-country-list-container.right');
+			initListScaling('.non-country-list-container.left');
 			updateAll();
 		}
 
@@ -695,6 +696,10 @@
 		// Function to set the horizontal offsets of the Non-country Funder/Recipient
 		// list items so they flow around the elliptical viewport.
 		function setHorizOffsets ($list) {
+			let directionSign = 1;
+			if ($list.hasClass('funder-list')) {
+				directionSign = -1;
+			}
 			const boxTop = $list.offset().top;
 			
 			function getMaxHorizOffset () {
@@ -713,10 +718,6 @@
 					max: getMaxHorizOffset(), // base case: linear
 				};
 
-
-				// scale for horizontal position mapping
-				// val: offset().top of 'span' minus boxTop
-
 				const horizOffsetScaleTmp = d3.scaleLinear()
 					.domain([0, 1])
 					.range([range.min, range.max]);
@@ -725,65 +726,8 @@
 					return horizOffsetScaleTmp(sineScale(val));
 				};
 
-				// const horizOffsetScale = (val) => {
-				// 	return (sineScale(val) * range.max)
-				// };
-
-				// const horizOffsetScale1 = d3.scalePow()
-				// 	.domain([domain.min, domain.max / 2])
-				// 	.range([0, range.max])
-				// 	.exponent(.5);
-				// const horizOffsetScale2 = d3.scalePow()
-				// 	.domain([domain.max / 2, domain.max])
-				// 	.range([range.max, 0])
-				// 	.exponent(2);
-
-				// const horizOffsetScale = (val) => {
-				// 	if (val >= domain.max / 2) {
-				// 		return horizOffsetScale2(val);
-				// 	} else {
-				// 		return horizOffsetScale1(val);
-				// 	}
-				// };
-
 				return horizOffsetScale;
 			}
-
-			// function getHorizOffsetScale () {
-			// 	const domain = {
-			// 		min: $list.first('span').position().top,
-			// 		max: $list[0].getBoundingClientRect().height,
-			// 	};
-
-			// 	const range = {
-			// 		min: 10,
-			// 		max: getMaxHorizOffset(), // base case: linear
-			// 	};
-
-
-			// 	// scale for horizontal position mapping
-			// 	// val: offset().top of 'span' minus boxTop
-			// 	const horizOffsetScale1 = d3.scalePow()
-			// 		.domain([domain.min, domain.max / 2])
-			// 		.range([0, range.max])
-			// 		.exponent(.5);
-			// 	const horizOffsetScale2 = d3.scalePow()
-			// 		.domain([domain.max / 2, domain.max])
-			// 		.range([range.max, 0])
-			// 		.exponent(2);
-
-			// 	const horizOffsetScale = (val) => {
-			// 		if (val >= domain.max / 2) {
-			// 			return horizOffsetScale2(val);
-			// 		} else {
-			// 			return horizOffsetScale1(val);
-			// 		}
-			// 	};
-
-			// 	return horizOffsetScale;
-			// }
-
-
 
 			function getHorizOffset (span, scrollTop) {
 				const val = span.position().top;
@@ -802,7 +746,7 @@
 					spans.each(function(span){
 						const $span = $(this);
 						const horizOffset = getHorizOffset($span);
-						$span.css('left', horizOffset + 'px');
+						$span.css('left', (directionSign * horizOffset) + 'px');
 					})
 				});
 			$list.trigger('scroll');
@@ -810,10 +754,11 @@
 
 		// Make the list of non-country recipients scale and position
 		// so it's always next to the elliptical viewport's right edge.
-		function initRecipientListScaling() {
-			const $box = $('.non-country-list-container.right');
+		function initListScaling(selector) {
+			const $box = $(selector);
 			const $listTitle = $box.find('.list-title');
 			const $viewport = $('.viewport-edge');
+			const $list = $box.find('.non-country-list');
 			
 			function onChange() {
 				// Scale the size of the box
@@ -838,10 +783,9 @@
 				// Set indentations of 'span' elements of list
 				setHorizOffsets($list)
 			}
-			const $list = $('.non-country-list.recipient-list');
 			onChange();
 			setHorizOffsets($list);
-			window.onresize = onChange;
+			window.addEventListener("resize", onChange);
 		}
 
 		init();

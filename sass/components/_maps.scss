@@ -62,14 +62,21 @@
 
 /* --- Map Non-country Funder/Recipient Lists --- */
 .non-country-list-container {
+  color: #c4c6c6;
   z-index: -99;
   width: 320px;
   position: fixed;
   top: 0; // this is dynamically set
-  right: 20px;
-  transform-origin: right top;
-  -moz-transform-origin: right top;
-  color: #c4c6c6;
+  &.right {
+    right: 20px;
+    transform-origin: right top;
+    -moz-transform-origin: right top;
+  }
+  &.left {
+    left: 20px;
+    transform-origin: left top;
+    -moz-transform-origin: left top;
+  }
   .non-country-list {
     max-height: 560px;
     overflow-y: scroll;
@@ -98,6 +105,11 @@
 
  &.recipient-list {
   text-align:left;
+}
+
+&.funder-list {
+  text-align: right;
+  direction: rtl;
 }
 
 span.list-item {

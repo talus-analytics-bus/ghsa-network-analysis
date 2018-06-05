@@ -16,6 +16,12 @@
 	right: 20px;
 	z-index: 100;
 }
+.left-container {
+	position: absolute;
+	/* top: 15px; */
+	/* right: 0; */
+	z-index: 100;
+}
 .search-container {
 	position: relative;
 	margin-top: 10px;
@@ -29,9 +35,9 @@
 	}
 }
 .radio-option.multi-line * {
-		display: inline-block;
-		vertical-align: top;
-	}
+	display: inline-block;
+	vertical-align: top;
+}
 
 .map-options-container {
 	display: none;
@@ -111,7 +117,7 @@
 	}
 	.info-img.ghsa-info-img {
 		top: 28px;
-	    right: 140px;
+		right: 140px;
 	}
 	.or-text {
 		padding-left: 27px;
