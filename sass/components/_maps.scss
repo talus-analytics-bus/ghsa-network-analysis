@@ -29,13 +29,14 @@
 .legend-bar {
 }
 .legend-text {
-	text-anchor: middle;
+  text-anchor: middle;
 }
 .legend-title {
-	font-size: 1.1em;
-	text-anchor: middle;
+  font-size: 1.1em;
+  text-anchor: middle;
 }
 
+/* --- Map Viewport--- */
 .viewport-base,
 .viewport-cutout {
   fill: none;
@@ -54,7 +55,42 @@
 }
 
 .viewport-edge {
-    stroke: #cccccc;
-    fill: none;
-    stroke-width: .25px;
+  stroke: #cccccc;
+  fill: none;
+  stroke-width: .25px;
+}
+
+/* --- Map Non-country Funder/Recipient Lists --- */
+.non-country-list-container {
+  width: 320px;
+  position: fixed;
+  top: 0; // this is dynamically set
+  right: 20px;
+  transform-origin: right top;
+  -moz-transform-origin: right top;
+  color: #c4c6c6;
+  .non-country-list {
+    max-height: 560px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    line-height: 2.5;
+    transform: scale(1);
+    &.recipient-list {
+      // max-width: 470px;
+      text-align:left;
+    }
+
+    span.list-item {
+      position: relative;
+    }
+  }
+
+  .list-title > span {
+    font-size: 1.25em;
+    font-weight: 600;
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: blue; 
 }

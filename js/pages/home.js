@@ -32,6 +32,7 @@
 			initMapOptions();
 			initLegend();
 			initCountryInfoBox();
+			initRecipientListScaling();
 			updateAll();
 		}
 
@@ -688,6 +689,106 @@
 				'<a href="http://www.who.int/ihr/procedures/mission-reports/en/" target="_blank">' +
 				'World Health Organization Joint External Evaluation Report</a>, when available.',
 			});
+		}
+
+
+		// Function to set the horizontal offsets of the Non-country Funder/Recipient
+		// list items so they flow around the elliptical viewport.
+		function setHorizOffsets ($list) {
+			const boxTop = $list.offset().top;
+			function getHorizOffsetScale () {
+				const domain = {
+					min: $list.first('span').position().top,
+					max: $list[0].getBoundingClientRect().height,
+				};
+
+				const range = {
+					min: 0,
+					max: 1, // base case: linear
+				};
+
+
+				// scale for horizontal position mapping
+				// val: offset().top of 'span' minus boxTop
+				const horizOffsetScale1 = d3.scalePow()
+					.domain([domain.min, domain.max / 2])
+					.range([0, range.max])
+					.exponent(.5);
+				const horizOffsetScale2 = d3.scalePow()
+					.domain([domain.max / 2, domain.max])
+					.range([range.max, 0])
+					.exponent(2);
+
+				const horizOffsetScale = (val) => {
+					if (val > domain.max / 2) {
+						return horizOffsetScale2(val);
+					} else {
+						return horizOffsetScale1(val);
+					}
+				};
+
+				return horizOffsetScale;
+			}
+
+			function getMaxHorizOffset () {
+				return 100; // TODO
+			}
+
+
+			function getHorizOffset (span, scrollTop) {
+				const val = span.position().top;
+				// const val = span.offset().top - boxTop;
+				const scale = getHorizOffsetScale();
+				const maxOffset = getMaxHorizOffset();
+				return scale(val) * maxOffset;
+				// return '22px';
+			}
+
+			$list
+				.off('scroll')
+				.scroll(function(){
+					const element = $(this);
+					const scrollTop = element.scrollTop();
+					const spans = element.find('span');
+					spans.each(function(span){
+						const $span = $(this);
+						const horizOffset = getHorizOffset($span);
+						$span.css('left', horizOffset + 'px');
+					})
+				});
+			$list.trigger('scroll');
+		}
+
+		// Make the list of non-country recipients scale and position
+		// so it's always next to the elliptical viewport's right edge.
+		function initRecipientListScaling() {
+			const $box = $('.non-country-list-container.right');
+			const $viewport = $('.viewport-edge');
+			
+			function onChange() {
+				// Scale the size of the box
+				// Scale factor = difference between original viewport height and current viewport height
+				const viewportHeight = $viewport[0].getBoundingClientRect().height;
+				const origViewportHeight = 640;
+				// const origViewportHeight = $viewport.height();
+				const heuristicScaleFactorCorrection = 1.3; // Dividing by this value gets the initial size right
+				const scaleFactor = (viewportHeight / origViewportHeight) / heuristicScaleFactorCorrection;
+				$box.css('transform',`scale(${scaleFactor})`);
+				$box.css('-moz-transform',`scale(${scaleFactor})`);
+
+				// Set top position of box
+				const viewportTop = $viewport.offset().top;
+				const boxHeight = $box[0].getBoundingClientRect().height;
+				const yShift = (viewportHeight / 2) - (boxHeight / 2);
+				const top = viewportTop + yShift;
+				$box.css('top', top + 'px');
+
+				// Set indentations of 'span' elements of list
+			}
+			const $list = $('.non-country-list.recipient-list');
+			onChange();
+			setHorizOffsets($list);
+			window.onresize = onChange;
 		}
 
 		init();

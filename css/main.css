@@ -409,6 +409,7 @@ select.form-control {
   font-size: 1.1em;
   text-anchor: middle; }
 
+/* --- Map Viewport--- */
 .viewport-base,
 .viewport-cutout {
   fill: none;
@@ -427,6 +428,32 @@ select.form-control {
   stroke: #cccccc;
   fill: none;
   stroke-width: .25px; }
+
+/* --- Map Non-country Funder/Recipient Lists --- */
+.non-country-list-container {
+  width: 320px;
+  position: fixed;
+  top: 0;
+  right: 20px;
+  transform-origin: right top;
+  -moz-transform-origin: right top;
+  color: #c4c6c6; }
+  .non-country-list-container .non-country-list {
+    max-height: 560px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    line-height: 2.5;
+    transform: scale(1); }
+    .non-country-list-container .non-country-list.recipient-list {
+      text-align: left; }
+    .non-country-list-container .non-country-list span.list-item {
+      position: relative; }
+  .non-country-list-container .list-title > span {
+    font-size: 1.25em;
+    font-weight: 600; }
+
+::-webkit-scrollbar-track {
+  background: blue; }
 
 .navbar {
   padding-left: 15px;
