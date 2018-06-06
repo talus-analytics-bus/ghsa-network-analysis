@@ -447,7 +447,8 @@ select.form-control {
   .non-country-list-container .nicescroll-rails {
     background: none;
     border: 2px solid #474747;
-    border-radius: 3px; }
+    border-radius: 3px;
+    display: block !important; }
   .non-country-list-container .non-country-list {
     height: 560px;
     overflow-y: scroll;

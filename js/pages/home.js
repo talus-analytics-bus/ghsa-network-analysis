@@ -32,6 +32,9 @@
 			initMapOptions();
 			initLegend();
 			initCountryInfoBox();
+			if (App.usingFirefox) {
+				initFirefoxScrollBars();
+			}
 			initFunderList('.non-country-list.funder-list');
 			initRecipientList('.non-country-list.recipient-list');
 			initListScaling('.non-country-list-container.right');
@@ -754,6 +757,40 @@
 			});
 		}
 
+		/**
+		 * If browser is Firefox, use jQuery NiceScroll to style the scrollbars
+		 */
+		function initFirefoxScrollBars () {
+			$('.non-country-list.funder-list').niceScroll(
+				{
+					railalign: 'left',
+					// scrollspeed: 500,
+					autohidemode: false,
+					sensitiverail: true,
+					zindex: 99,
+					cursorcolor: "#5a5b5b", // change cursor color in hex
+				    cursorwidth: "0.75em", // cursor width in pixel (you can also write "5px")
+				    cursorborder: "none", // css definition for cursor border
+				    cursorborderradius: "3px", // border radius in pixel for cursor
+				    horizrailenabled: false,
+				}
+			);
+
+			$('.non-country-list.recipient-list').niceScroll(
+				{
+					railalign: 'right',
+					// scrollspeed: 500,
+					autohidemode: false,
+					sensitiverail: true,
+					zindex: 99,
+					cursorcolor: "#5a5b5b", // change cursor color in hex
+				    cursorwidth: "0.75em", // cursor width in pixel (you can also write "5px")
+				    cursorborder: "none", // css definition for cursor border
+				    cursorborderradius: "3px", // border radius in pixel for cursor
+				    horizrailenabled: false,
+				}
+			);
+		};
 
 		// Function to set the horizontal offsets of the Non-country Funder/Recipient
 		// list items so they flow around the elliptical viewport.
@@ -795,6 +832,7 @@
 				const val = span.position().top;
 				const scale = getHorizOffsetScale();
 				const maxOffset = getMaxHorizOffset();
+				if (App.usingFirefox) return 110;
 				return scale(val);
 			}
 

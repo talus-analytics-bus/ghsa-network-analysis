@@ -20,6 +20,7 @@ const App = {};
 
 		// Settings
 		App.showGhsaOnly = false;
+		App.usingFirefox = navigator.userAgent.search("Firefox") > -1;
 
 		// (purple, orange) color scheme
 		/* App.fundColor = '#283375';
