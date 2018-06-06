@@ -83,6 +83,8 @@
 				$(`.ghsa-toggle-options, .switch-type-button, .profile-type-container`)
 					.css('visibility','hidden');
 				$('.analysis-country-title').addClass('ghsa');
+			} else {
+				$('.second-country-table-section').remove();
 			}
 		}
 
@@ -248,7 +250,10 @@
 			} else {
 				drawTimeChart();
 				drawProgressCircles();
-				drawCountryTable();
+				drawCountryTable('.country-table-section', moneyType);
+				if (isGhsaPage) {
+					drawCountryTable('.second-country-table-section', (moneyType === 'd') ? 'r' : 'd');
+				}
 				drawCountryInKindTable();
 				drawCategoryChart();
 				// display content
@@ -566,15 +571,16 @@
 		 * Draws the "Top Recipients" or "Top Funders" table that appears on a
 		 * country analysis page.
 		 */
-		function drawCountryTable() {
-			if (moneyType === 'd') {
-				$('.circle-pack-title').text('Top Recipients');
+		function drawCountryTable(selector, moneyTypeForTable) {
+			const $tableContainer = $(selector);
+			if (moneyTypeForTable === 'd') {
+				$tableContainer.find('.section-title').text('Top Recipients');
 			} else {
-				$('.circle-pack-title').text('Top Funders');
+				$tableContainer.find('.section-title').text('Top Funders');
 			}
 
 			// get table data
-			const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_code';
+			const countryInd = (moneyTypeForTable === 'd') ? 'recipient_country' : 'donor_code';
 			const fundedData = [];
 			const fundedByCountry = {};
 			lookup[iso]
@@ -624,8 +630,8 @@
 
 			// draw table
 			const drawTable = (type) => {
-				$('.country-table-container').empty();
-				const table = d3.select('.country-table-container')
+				$tableContainer.find('.table-container').empty();
+				const table = d3.select(selector).select('.table-container')
 					.append('table')
 						.classed('country-table funds-table', true)
 						.classed('table', true)
@@ -633,7 +639,7 @@
 						.classed('table-hover', true);
 
 				const header = table.append('thead').append('tr');
-				const firstColLabel = (moneyType === 'd') ? 'Recipient' : 'Funder';
+				const firstColLabel = (moneyTypeForTable === 'd') ? 'Recipient' : 'Funder';
 				const lastColLabel = (type === 'total_spent') ? 'Total Disbursed' : 'Total Committed';
 
 				header.append('td').html(firstColLabel);
@@ -642,10 +648,7 @@
 				header.append('td').html('Prevent');
 				header.append('td').html('Detect');
 				header.append('td').html('Respond');
-
 				header.append('td').html('Other');
-                /*header.append('td').html('Dispersed');
-                header.append('td').html('Committed');*/
 
 				const body = table.append('tbody');
 
@@ -660,7 +663,7 @@
 					.enter().append('tr')
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {
-							if (moneyType === 'd') {
+							if (moneyTypeForTable === 'd') {
 								hasher.setHash(`analysis/${iso}/${d.iso}`);
 							} else {
 								hasher.setHash(`analysis/${d.iso}/${iso}`);
@@ -674,7 +677,7 @@
 					if (App.codeToNameMap.has(d.iso)) {
 						cName = App.codeToNameMap.get(d.iso);
 					}
-					const onClickStr = `event.stopPropagation();hasher.setHash('analysis/${d.iso}/${moneyType === 'd' ? 'r' : 'd'}')`;
+					const onClickStr = `event.stopPropagation();hasher.setHash('analysis/${d.iso}/${moneyTypeForTable === 'd' ? 'r' : 'd'}')`;
 					return `<div class="flag-container">${flagHtml}</div>` +
 						'<div class="name-container">' +
 						`<span onclick="${onClickStr}">${cName}</span>` +
@@ -687,22 +690,15 @@
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_detect));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_respond));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_other));
-                    /*rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.total_committed));
-                    rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.total_spent));*/
-
-
 				} else {
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_prevent));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_detect));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_respond));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_other));
-					/*rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.total_committed));
-                    rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.total_spent));*/
-
 				}
 
 				// initialize DataTables plugin
-				const infoDataTable = $('.country-table.funds-table').DataTable({
+				const infoDataTable = $tableContainer.find('.table').DataTable({
 					pageLength: 10,
 					scrollCollapse: false,
 					autoWidth: false,

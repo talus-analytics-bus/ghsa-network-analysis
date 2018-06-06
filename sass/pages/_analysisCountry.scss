@@ -388,7 +388,8 @@
     .circle-pack-title,
     .inkind-table-title,
     //.progress-circle-title,
-    .category-chart-title {
+    .category-chart-title,
+    .section-title {
       font-size: 1.5em;
       font-weight: 600;
       margin-top: 0px;
@@ -401,6 +402,10 @@
 
     .circle-pack-container,
     .inkind-table-section {
+
+      &:not(:last-child) {
+        border-bottom: $light-border;
+      }
 
       padding-bottom: 40px;
       padding-top: 20px;
