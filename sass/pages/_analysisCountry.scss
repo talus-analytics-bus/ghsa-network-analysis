@@ -6,6 +6,11 @@
 }
 
 .analysis-country-content {
+  .ghsa-toggle-options-container {
+    position: absolute;
+    top: 13px;
+    left: 30px;
+  }
   .ghsa-toggle-options {
     top: 0;
     margin: 10px 0 0 5px;
@@ -20,7 +25,8 @@
     cursor: pointer;
     margin: 2px auto;
     padding: 2px 0 0;
-    max-width: 500px;
+    width: 710px;
+    // max-width: 500px;
     font-size: 30px;
     line-height: 1.25;
   }
