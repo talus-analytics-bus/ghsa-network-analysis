@@ -215,7 +215,7 @@
 
 			// draw charts
 			if (hasNoData) {
-				$('.country-flow-summary, .progress-circle-section, .country-chart-container, .country-flow-content, .category-chart-section, .circle-pack-container').hide();
+				$('.country-flow-summary, .progress-circle-section, .country-chart-container, .country-flow-content, .category-chart-section, .circle-pack-container, .inkind-table-section').hide();
 				$('.country-flow-summary-empty').slideDown();
 				$('.submit-data-btn').click(() => hasher.setHash('submit'))
 			} else {
@@ -559,7 +559,7 @@
 				$('.country-table-container').empty();
 				const table = d3.select('.country-table-container')
 					.append('table')
-						.classed('country-table', true)
+						.classed('country-table funds-table', true)
 						.classed('table', true)
 						.classed('table-bordered', true)
 						.classed('table-hover', true);
@@ -634,7 +634,7 @@
 				}
 
 				// initialize DataTables plugin
-				const infoDataTable = $('.country-table').DataTable({
+				const infoDataTable = $('.country-table.funds-table').DataTable({
 					pageLength: 10,
 					scrollCollapse: false,
 					autoWidth: false,
