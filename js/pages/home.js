@@ -194,12 +194,10 @@
 				if (paymentsFunded) {
 					({ totalCommitted: fundedCommitted, totalSpent: fundedSpent, totalInkind: providedInkind } =
 						getPaymentSum(paymentsFunded, ccs));
-					// providedInkind = paymentsFunded.filter(d => d.assistance_type.toLowerCase() === "in-kind support").length;
 				}
 				if (paymentsReceived) {
 					({ totalCommitted: receivedCommitted, totalSpent: receivedSpent, totalInkind: receivedInkind } =
 						getPaymentSum(paymentsReceived, ccs));
-					// receivedInkind = paymentsReceived.filter(d => d.assistance_type.toLowerCase() === "in-kind support").length;
 				}
 
 				if (scoreObj) {
@@ -939,22 +937,18 @@
 			const $list = d3.select(selector).html('');
 
 			// get data for funders and group it by funder
-			const curFundingData = App.fundingData.filter(p => {
-
-				// Tagged with right ccs?
-				if (!App.passesCategoryFilter(p.core_capacities, ccs)) return false;
-				return true;
-
-			});
+			const curFundingData = App.fundingData;
 
 			const fundingDataByDonorCode = _.groupBy(curFundingData, 'donor_code');
 			let nonCountryFunderData = App.nonCountries.map((val, key) => {
 				return {
 					donor_code: val.FIPS,
 					entity_data: val,
-					projects: fundingDataByDonorCode[val.FIPS],
+					projects: (fundingDataByDonorCode[val.FIPS] !== undefined) ? getPaymentSum(fundingDataByDonorCode[val.FIPS], ccs) : [],
 				};
-			}).filter(d => d.projects !== undefined && d.projects.length > 0);
+			}).filter(d => {
+				return _.values(d.projects).some(dd => dd > 0);
+			});
 
 			// Add object representing GHSA
 			const ghsa = {
@@ -965,10 +959,11 @@
 				    "NAME": "Global Health Security Agenda",
 				    "country": false
 				  },
-				projects: curFundingData.filter(d => d.ghsa_funding === true), // TODO
+				projects: getPaymentSum(curFundingData.filter(d => d.ghsa_funding === true), ccs), // TODO
 			};
 
-			if (ghsa.projects.length > 0) {
+			const someGhsaProjects = _.values(ghsa.projects).some(d => d > 0);
+			if (someGhsaProjects) {
 				nonCountryFunderData = nonCountryFunderData.concat(ghsa);
 			}
 
@@ -1027,9 +1022,13 @@
 				return {
 					recipient_code: val.FIPS,
 					entity_data: val,
-					projects: fundingDataByRecipientCode[val.FIPS],
+					projects: (fundingDataByRecipientCode[val.FIPS] !== undefined) ? getPaymentSum(fundingDataByRecipientCode[val.FIPS], ccs) : [],
+					// projects: fundingDataByRecipientCode[val.FIPS],
 				};
-			}).filter(d => d.projects !== undefined && d.projects.length > 0);
+			}).filter(d => {
+				return _.values(d.projects).some(dd => dd > 0);
+			});
+			// }).filter(d => d.projects !== undefined && d.projects.length > 0);
 
 			// Add object representing GHSA
 			const ghsa = {
@@ -1040,10 +1039,13 @@
 				    "NAME": "Global Health Security Agenda",
 				    "country": false
 				  },
-				projects: curFundingData.filter(d => d.ghsa_funding === true), // TODO
+				projects: getPaymentSum(curFundingData.filter(d => d.ghsa_funding === true), ccs),
+				// projects: curFundingData.filter(d => d.ghsa_funding === true), // TODO
 			};
 
-			if (ghsa.projects.length > 0) {
+			// if (ghsa.projects.length > 0) {
+			const someGhsaProjects = _.values(ghsa.projects).some(d => d > 0);
+			if (someGhsaProjects) {
 				nonCountryRecipientData = nonCountryRecipientData.concat(ghsa);
 			}
 
