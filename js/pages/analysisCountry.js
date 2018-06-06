@@ -224,7 +224,7 @@
 			}
 
 			$('input[type=radio][value="total_spent"]').prop('checked', true);
-			$('.money-type-cap').text('Disbursed');
+			// $('.money-type-cap').text('Disbursed');
 
 			$('.toggle-disbursed').click(function() {
 				if ($(this).hasClass('active')) {
