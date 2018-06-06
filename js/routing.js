@@ -30,7 +30,11 @@ const Routing = {};
 			loadPage('analysis-country', App.initAnalysisCountry, iso, 'd');
 		});
 		crossroads.addRoute('/analysis/{iso}/r', (iso) => {
-			loadPage('analysis-country', App.initAnalysisCountry, iso, 'r');
+			if (iso !== 'ghsa') {
+				loadPage('analysis-country', App.initAnalysisCountry, iso, 'r');
+			} else {
+				hasher.setHash('analysis/ghsa/d');
+			}
 		});
 		crossroads.addRoute('/analysis/{iso}/{type}/table', (iso, type) => {
 			loadPage('analysis-table', App.initAnalysisTable, iso, type);

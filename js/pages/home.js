@@ -906,8 +906,7 @@
 					entity_data: val,
 					projects: fundingDataByDonorCode[val.FIPS],
 				};
-			}).filter(d => d.projects !== undefined);;
-
+			}).filter(d => d.projects !== undefined && d.projects.length > 0);
 
 			// Add object representing GHSA
 			const ghsa = {
@@ -971,7 +970,7 @@
 					entity_data: val,
 					projects: fundingDataByRecipientCode[val.FIPS],
 				};
-			}).filter(d => d.projects !== undefined);
+			}).filter(d => d.projects !== undefined && d.projects.length > 0);
 
 			// Add object representing GHSA
 			const ghsa = {

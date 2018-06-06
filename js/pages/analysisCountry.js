@@ -179,9 +179,15 @@
 			let hasNoData = false;
 			const totalFunded = App.getTotalFunded(iso);
 			const totalReceived = App.getTotalReceived(iso);
+
+			console.log('lookup');
+			console.log(lookup);
+			console.log('iso')
+			console.log(iso)
+
 			if (moneyType === 'd') {
-				// if (!totalFunded) hasNoData = true;
-				hasNoData = App.getTotalFunded(iso, {includeCommitments: true}) === 0;
+				hasNoData = lookup[iso] === undefined || lookup[iso].length === 0;
+				// hasNoData = App.getTotalFunded(iso, {includeCommitments: true}) === 0;
 
 				// fill out "switch profile" text and behavior
 				$('.toggle-funder-profile')
@@ -194,9 +200,8 @@
 
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
 			} else if (moneyType === 'r') {
-				// if (!totalReceived) hasNoData = true;
-				hasNoData = App.getTotalReceived(iso, {includeCommitments: true}) === 0;
-
+				hasNoData = lookup[iso] === undefined || lookup[iso].length === 0;
+				// hasNoData = App.getTotalReceived(iso, {includeCommitments: true}) === 0;
 
                 // fill out "switch profile" text and behavior
 				$('.toggle-recipient-profile')
@@ -539,7 +544,9 @@
 			const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_code';
 			const fundedData = [];
 			const fundedByCountry = {};
-			lookup[iso].forEach((p) => {
+			lookup[iso]
+			.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support')
+			.forEach((p) => {
 				const recIso = p[countryInd];
 				if (recIso !== 'Not reported') {
 					if (!fundedByCountry[recIso]) {
