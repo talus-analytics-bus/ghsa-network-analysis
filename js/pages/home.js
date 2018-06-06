@@ -192,14 +192,14 @@
 				let combo = null;
 
 				if (paymentsFunded) {
-					({ totalCommitted: fundedCommitted, totalSpent: fundedSpent } =
+					({ totalCommitted: fundedCommitted, totalSpent: fundedSpent, totalInkind: providedInkind } =
 						getPaymentSum(paymentsFunded, ccs));
-					providedInkind = paymentsFunded.filter(d => d.assistance_type.toLowerCase() === "in-kind support").length;
+					// providedInkind = paymentsFunded.filter(d => d.assistance_type.toLowerCase() === "in-kind support").length;
 				}
 				if (paymentsReceived) {
-					({ totalCommitted: receivedCommitted, totalSpent: receivedSpent } =
+					({ totalCommitted: receivedCommitted, totalSpent: receivedSpent, totalInkind: receivedInkind } =
 						getPaymentSum(paymentsReceived, ccs));
-					receivedInkind = paymentsReceived.filter(d => d.assistance_type.toLowerCase() === "in-kind support").length;
+					// receivedInkind = paymentsReceived.filter(d => d.assistance_type.toLowerCase() === "in-kind support").length;
 				}
 
 				if (scoreObj) {
@@ -233,6 +233,7 @@
 		function getPaymentSum(payments, ccs) {
 			let totalCommitted = 0;
 			let totalSpent = 0;
+			let totalInkind = 0;
 			for (let i = 0, n = payments.length; i < n; i++) {
 				const p = payments[i];
 
@@ -244,8 +245,16 @@
 					totalCommitted += p.committed_by_year[k] || 0;
 					totalSpent += p.spent_by_year[k] || 0;
 				}
+
+				// get inkind values for those that are inkind
+				if (p.assistance_type.toLowerCase() === 'in-kind support') {
+					const withinYears = p.years.some(year => {
+						return year <= endYear && year >= startYear;
+					});
+					totalInkind += withinYears ? 1 : 0;
+				}
 			}
-			return { totalCommitted, totalSpent };
+			return { totalCommitted, totalSpent, totalInkind };
 		}
 
 		/**
