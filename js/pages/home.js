@@ -542,7 +542,8 @@
 					const flowParam = (activeCountryData.flow === 'funded') ? 'd' : 'r';
 					hasher.setHash(`analysis/${country.ISO2}/${flowParam}`);
 				} else {
-					hasher.setHash(`analysis/${country.ISO2}`);
+					const flowParam = (flowToShow === 'funded') ? 'd' : 'r';
+					hasher.setHash(`analysis/${country.ISO2}/${flowParam}`);
 				}
 			});
 

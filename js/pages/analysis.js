@@ -154,6 +154,16 @@
 			});
 		}
 
+		/**
+		 * Returns true if project is not in-kind support, false otherwise
+		 * @param  {Object} p             A project
+		 * @return {Boolean} true if p is not in-kind, false otherwise
+		 */
+		function excludeInkindFilter (p) {
+			if (p.assistance_type.toLowerCase() === "in-kind support") return false;
+			return true;
+		};
+
 		function populateTables(donorSelector, recSelector) {
 			const numRows = 10;
 			const fundColor = App.fundColorPalette;
@@ -163,12 +173,15 @@
 			const countriesByFunding = [];
 			for (const iso in App.fundingLookup) {
 				if (iso !== 'Not reported') {
-					countriesByFunding.push({
+					const newObj = {
 						iso,
 						name: App.codeToNameMap.get(iso),
 						total_committed: d3.sum(App.fundingLookup[iso], d => d.total_committed),
 						total_spent: d3.sum(App.fundingLookup[iso], d => d.total_spent),
-					});
+					};
+					if (newObj.total_committed !== 0 || newObj.total_spent !== 0) {
+						countriesByFunding.push(newObj);
+					}
 				}
 			}
 			Util.sortByKey(countriesByFunding, 'total_spent', true);
@@ -177,12 +190,15 @@
 			const countriesByReceived = [];
 			for (const iso in App.recipientLookup) {
 				if (iso !== 'Not reported') {
-					countriesByReceived.push({
+					const newObj = {
 						iso,
 						name: App.codeToNameMap.get(iso),
 						total_committed: d3.sum(App.recipientLookup[iso], d => d.total_committed),
 						total_spent: d3.sum(App.recipientLookup[iso], d => d.total_spent),
-					});
+					};
+					if (newObj.total_committed !== 0 || newObj.total_spent !== 0) {
+						countriesByReceived.push(newObj);
+					}
 				}
 			}
 			Util.sortByKey(countriesByReceived, 'total_spent', true);
