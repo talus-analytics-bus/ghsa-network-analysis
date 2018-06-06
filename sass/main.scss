@@ -62,11 +62,16 @@ body { font-family: 'Open Sans', sans-serif; }
 	}
 }
 
-.ghsa-toggle-options {
+.ghsa-toggle-options,
+.jee-sort-options {
 	display: inline-block;
 	vertical-align: top;
 	margin: 10px 0 0 40px;
 	z-index: 9999;
+	&.inline {
+		display: inline-block;
+		margin-left: 40px;
+	}
 	.radio-option {
 		span, div {
 			position: relative;
@@ -83,16 +88,30 @@ body { font-family: 'Open Sans', sans-serif; }
 		left: 96px;
 	}
 }
+.ghsa-toggle-options {
+	.ind-type-filter.two-line {
+		position: relative;
+		top: -24px;
+		left: 96px;
+	}
+}
+.jee-sort-options {
+	.ind-type-filter.two-line {
+		position: relative;
+		top: -24px;
+		left: 55px;
+	}
+}
 .flag.globe {
 	border: none;
 }
 
 .no-data-message {
 	margin-left: 15px;
-    margin-top: 20px;
-    font-style: italic;
+	margin-top: 20px;
+	font-style: italic;
 
-    &.core-element {
-    	margin-left: 0;
-    }
+	&.core-element {
+		margin-left: 0;
+	}
 }

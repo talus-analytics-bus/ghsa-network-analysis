@@ -141,7 +141,11 @@
 			.text('Core Capacity');
 
 		chart.update = (rawData, newSelector = selected) => {
-			const data = getRunningValues(rawData, newSelector)
+			// determine whether this is a country with jee scores available
+			const showJee = param.showJee;
+			const scores = param.scores; // undefined if not available
+
+			let data = getRunningValues(rawData, newSelector)
 				.sort((a, b) => {
 					if (a[newSelector] < b[newSelector]) {
 						return 1;
@@ -149,7 +153,27 @@
 						return -1;
 					}
 				})
-				.filter(d => d[newSelector] !== 0);
+				.filter(d => showJee || d[newSelector] !== 0);
+
+			if (scores !== undefined) {
+				data.forEach(datum => {
+					datum.jeeIdx = App.capacities.find(capacity => capacity.id === datum.id).idx;
+
+					// get average score for this CC
+					const avgScore = d3.mean(_.pluck(scores.indScores[datum.id], 'score'));
+					datum.avgScore = Math.ceil(avgScore);
+				});
+			}
+
+			const sort = $('input[name="jee-sort"]:checked').attr('ind');
+			if (sort === 'score') {
+				data = _.sortBy(data, 'jeeIdx');
+			}
+
+			console.log('data');
+			console.log(data);
+			console.log('scores');
+			console.log(scores);
 
 			const newHeight = 30 * data.length;
 			d3.select('.category-chart')
@@ -164,26 +188,6 @@
 			colorScale.domain([0, maxChild]);
 			const bandwidth = y.bandwidth();
 
-			// legend labels
-			/*legendG.attr('transform', `translate(${width / 3}, ${newHeight + 30})`);
-			legendG.selectAll('text').remove();
-			legendG.append('text')
-				.attr('x', 290)
-				.attr('y', 35)
-				.style('text-anchor', 'end')
-				.text(App.formatMoney(maxChild));
-			legendG.append('text')
-				.attr('y', 35)
-				.attr('x', 10)
-				.style('text-anchor', 'start')
-				.text(App.formatMoney(0));
-			const legendTitle = legendG.append('text')
-				.attr('x', 150)
-				.attr('y', -5)
-				.style('text-anchor', 'middle')
-				.style('font-weight', 600)
-				.text('Funds');
-*/
 			// remove first
 			let barGroups = allBars.selectAll('.bar-group')
 				.remove().exit().data(data);
@@ -265,7 +269,7 @@
 				.attr('y', y.bandwidth() / 2)
 				.attr('dy', '.35em')
 				.text(d => {
-					if (d[newSelector] !== 0) {
+					if (showJee || d[newSelector] !== 0) {
 						return App.formatMoney(d[newSelector]);
 					}
 				})
@@ -279,7 +283,12 @@
 						$(this).tooltipster('destroy');
 					}
 					const capName = App.capacities.find(c => c.name === d).name;
-					$(this).tooltipster({ content: `<b>${capName}</b>` });
+					const scoreData = data.find(dd => dd.name === d);
+					if (scores !== undefined && showJee) {
+						$(this).tooltipster({ content: `<b>${capName}</b><br>Average score: ${scoreData.avgScore}` });
+					} else {
+						$(this).tooltipster({ content: `<b>${capName}</b>` });
+					}
 				});
 				// .text(function(d) {
 				// 	// const readableName = / - (.*)$/.exec(d)[1];

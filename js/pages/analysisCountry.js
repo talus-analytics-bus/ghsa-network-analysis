@@ -6,6 +6,11 @@
 		// Is this the GHSA page? It has several special features.
 		const isGhsaPage = iso === 'ghsa';
 
+		// Is this a page for a country with a JEE score set available?
+		const showJee = App.scoresByCountry[iso] !== undefined && moneyType === 'r';
+		console.log('showJee');
+		console.log(showJee);
+
 		// define "country" parameters for General Global Benefit recipient
 		const ggb = {
 		  "FIPS": "ggb",
@@ -103,12 +108,12 @@
 		function initGhsaToggle() {
 			// set GHSA radio button to checked if that is set
 			if (App.showGhsaOnly) {
-				$(`input[type=radio][name="ind-country"][ind="ghsa"]`).prop('checked',true);
+				$(`.ghsa-toggle-options input[type=radio][name="ind-country"][ind="ghsa"]`).prop('checked',true);
 				$('.ghsa-only-text').text('GHSA-specific ')
 			}
 
-			$('.analysis-country-content .ind-type-filter .radio-option').off('click');
-			$('.analysis-country-content .ind-type-filter .radio-option').click(function updateIndType() {
+			$('.analysis-country-content .ghsa-toggle-options .ind-type-filter .radio-option').off('click');
+			$('.analysis-country-content .ghsa-toggle-options .ind-type-filter .radio-option').click(function updateIndType() {
 				// Load correct funding data
 				indType = $(this).find('input').attr('ind');
 				App.showGhsaOnly = indType === 'ghsa';
@@ -825,6 +830,8 @@
 
 			const chart = App.buildCategoryChart('.category-chart-container', {
 				moneyType,
+				showJee,
+				scores: App.scoresByCountry[iso],
 			});
 
 			chart.update(catData, selected);
@@ -838,7 +845,6 @@
 				}
 				updateData();
 			});
-
 
             $('.toggle-progress-circle-chart-container').click(function () {
 
@@ -863,6 +869,22 @@
                 }
                 updateData();
             });
+
+            // put init jee chart stuff here
+            if (!showJee) {
+				$('.jee-sort-options').remove();
+			} else {
+				$('.analysis-country-content .jee-sort-options .ind-type-filter .radio-option').off('click');
+				$('.analysis-country-content .jee-sort-options .ind-type-filter .radio-option').click(function updateJeeSort() {
+	                updateData();
+				});
+
+				// init tooltip
+				$('.jee-info-img').tooltipster({
+					interactive: true,
+					content: `The average score for each core capacity reported in the country\'s most recent JEE Assessment is shown.`,
+				});
+			}
 
 
 			const updateData = () => {

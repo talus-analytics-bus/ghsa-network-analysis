@@ -52,29 +52,7 @@ const App = {};
 		App.currencyIso = 'USD';  // the default currency
 		App.fundingLookup = {};  // a lookup of money funded for each country
 		App.recipientLookup = {};  // a lookup of money received for each country
-		App.capacities = [
-			{ id: 'P.1', name: 'P.1 - National Legislation, Policy, and Financing' },
-			{ id: 'P.2', name: 'P.2 - IHR Coordination, Communicaton and Advocacy' },
-			{ id: 'P.3', name: 'P.3 - Antimicrobial Resistance (AMR)' },
-			{ id: 'P.4', name: 'P.4 - Zoonotic Disease' },
-			{ id: 'P.5', name: 'P.5 - Food Safety' },
-			{ id: 'P.6', name: 'P.6 - Biosafety and Biosecurity' },
-			{ id: 'P.7', name: 'P.7 - Immunization' },
-			{ id: 'D.1', name: 'D.1 - National Laboratory System' },
-			{ id: 'D.2', name: 'D.2 - Real Time Surveillance' },
-			{ id: 'D.3', name: 'D.3 - Reporting' },
-			{ id: 'D.4', name: 'D.4 - Workforce Development' },
-			{ id: 'R.1', name: 'R.1 - Preparedness' },
-			{ id: 'R.2', name: 'R.2 - Emergency Response Operations' },
-			{ id: 'R.3', name: 'R.3 - Linking Public Health and Security Authorities' },
-			{ id: 'R.4', name: 'R.4 - Medical Countermeasures and Personnel Deployment' },
-			{ id: 'R.5', name: 'R.5 - Risk Communication' },
-			{ id: 'PoE', name: 'PoE - Point of Entry (PoE)' },
-			{ id: 'CE', name: 'CE - Chemical Events' },
-			{ id: 'RE', name: 'RE - Radiation Emergencies' },
-			{ id: 'General IHR Implementation', name: 'General IHR Implementation' },
-		];
-
+		App.capacities = [{"id":"P.1","name":"P.1 - National Legislation, Policy, and Financing","idx":0},{"id":"P.2","name":"P.2 - IHR Coordination, Communicaton and Advocacy","idx":1},{"id":"P.3","name":"P.3 - Antimicrobial Resistance (AMR)","idx":2},{"id":"P.4","name":"P.4 - Zoonotic Disease","idx":3},{"id":"P.5","name":"P.5 - Food Safety","idx":4},{"id":"P.6","name":"P.6 - Biosafety and Biosecurity","idx":5},{"id":"P.7","name":"P.7 - Immunization","idx":6},{"id":"D.1","name":"D.1 - National Laboratory System","idx":7},{"id":"D.2","name":"D.2 - Real Time Surveillance","idx":8},{"id":"D.3","name":"D.3 - Reporting","idx":9},{"id":"D.4","name":"D.4 - Workforce Development","idx":10},{"id":"R.1","name":"R.1 - Preparedness","idx":11},{"id":"R.2","name":"R.2 - Emergency Response Operations","idx":12},{"id":"R.3","name":"R.3 - Linking Public Health and Security Authorities","idx":13},{"id":"R.4","name":"R.4 - Medical Countermeasures and Personnel Deployment","idx":14},{"id":"R.5","name":"R.5 - Risk Communication","idx":15},{"id":"PoE","name":"PoE - Point of Entry (PoE)","idx":16},{"id":"CE","name":"CE - Chemical Events","idx":17},{"id":"RE","name":"RE - Radiation Emergencies","idx":18},{"id":"General IHR Implementation","name":"General IHR Implementation","idx":19}];
 
 		// front-load all the data
 		NProgress.start();
@@ -161,7 +139,14 @@ const App = {};
 				jeeData.forEach((sRow) => {
 					const indId = sRow.indicator.split(' ')[0];
 					let capId = indId.split('.').slice(0, 2).join('.');
-					if (capId.split('.')[0] === 'PoE') capId = 'O.1';
+
+					if (capId.split('.')[0] === 'PoE') {
+						capId = 'PoE';
+					} else if (capId.split('.')[0] === 'RE') {
+						capId = "RE";
+					} else if (capId.split('.')[0] === 'CE') {
+						capId = "CE";
+					}
 
 					// check that capacity id is valid
 					if (!App.capacities.some(cc => cc.id === capId)) return;
