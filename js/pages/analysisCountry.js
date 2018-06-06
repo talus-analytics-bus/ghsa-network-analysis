@@ -182,7 +182,6 @@
 
 			if (moneyType === 'd') {
 				hasNoData = lookup[iso] === undefined || lookup[iso].length === 0;
-				// hasNoData = App.getTotalFunded(iso, {includeCommitments: true}) === 0;
 
 				// fill out "switch profile" text and behavior
 				$('.toggle-funder-profile')
@@ -196,7 +195,6 @@
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
 			} else if (moneyType === 'r') {
 				hasNoData = lookup[iso] === undefined || lookup[iso].length === 0;
-				// hasNoData = App.getTotalReceived(iso, {includeCommitments: true}) === 0;
 
                 // fill out "switch profile" text and behavior
 				$('.toggle-recipient-profile')
