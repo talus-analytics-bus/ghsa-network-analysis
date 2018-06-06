@@ -444,6 +444,10 @@ select.form-control {
     left: 20px;
     transform-origin: left top;
     -moz-transform-origin: left top; }
+  .non-country-list-container .nicescroll-rails {
+    background: none;
+    border: 2px solid #474747;
+    border-radius: 3px; }
   .non-country-list-container .non-country-list {
     height: 560px;
     overflow-y: scroll;
@@ -453,7 +457,7 @@ select.form-control {
     .non-country-list-container .non-country-list::-webkit-scrollbar {
       width: 0.75em;
       height: 0.75em; }
-    .non-country-list-container .non-country-list::-webkit-scrollbar-track {
+    .non-country-list-container .non-country-list::-webkit-scrollbar-track, .non-country-list-container .non-country-list .nicescroll-rails {
       background: none;
       border: 2px solid #474747;
       border-radius: 3px; }

@@ -77,6 +77,11 @@
     transform-origin: left top;
     -moz-transform-origin: left top;
   }
+  .nicescroll-rails {
+    background: none;
+    border: 2px solid #474747;
+    border-radius: 3px;
+  }
   .non-country-list {
     height: 560px;
     // max-height: 560px;
@@ -89,7 +94,7 @@
      width: 0.75em;
      height: 0.75em;
    }
-   &::-webkit-scrollbar-track {
+   &::-webkit-scrollbar-track, .nicescroll-rails {
     background: none;
     border: 2px solid #474747;
     border-radius: 3px;
