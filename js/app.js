@@ -82,7 +82,7 @@ const App = {};
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
 			.defer(d3.json, 'data/donor_codes.json')
-			.defer(d3.json, 'data/funding_data.json') // VERSION 14, created 4 May 2018
+			.defer(d3.json, 'data/funding_data.json') // VERSION 15, created 6 June 2018
 			.defer(d3.json, 'data/jee_score_data.json')
 			.defer(d3.json, 'data/currencies.json')
 			.await((error, worldData, unsdData, donorCodeData, fundingData, jeeData, currencies) => {
@@ -130,16 +130,23 @@ const App = {};
 					App.addOtherRecipients(d);
 				});
 
-				// save funding data
-				fundingData = fundingData.filter(d => {
+				// Set undefined assistance types to financial
+				fundingData.forEach(d => {
 					if (d.assistance_type === undefined) {
-						return true;
-					} else if (d.assistance_type === "In-kind support") {
-						return false;
-					} else {
-						return true;
+						d.assistance_type = 'Direct financial support'
 					}
 				});
+
+				// // save funding data
+				// fundingData = fundingData.filter(d => {
+				// 	if (d.assistance_type === undefined) {
+				// 		return true;
+				// 	} else if (d.assistance_type === "In-kind support") {
+				// 		return false;
+				// 	} else {
+				// 		return true;
+				// 	}
+				// });
 				App.fundingData = fundingData;
 				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
 				

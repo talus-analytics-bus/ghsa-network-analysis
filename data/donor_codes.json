@@ -1,14 +1,34 @@
 [
   {
-    "donor_name": "General Global Benefit",
-    "donor_sector": "General Global Benefit",
-    "donor_code": "General Global Benefit"
-  },
-    {
     "donor_name": "Global Health Security Agenda (GHSA)",
     "donor_sector": "Multilateral",
     "donor_code": "ghsa",
     "acronym": "Global Health Security Agenda (GHSA)"
+  },
+  {
+    "donor_name": "Southeast Asia",
+    "donor_sector": "Multilateral",
+    "donor_code": "southeastasia"
+  },
+  {
+    "donor_name": "GHSA Consortium",
+    "donor_sector": "Multilateral",
+    "donor_code": "ghsa-consortium"
+  },
+  {
+    "donor_name": "GHSA Private Sector Roundtable (PSRT)",
+    "donor_sector": "Public Private Partnership",
+    "donor_code": "ghsa-psrt"
+  },
+  {
+    "donor_name": "NextGen",
+    "donor_sector": "Public Private Partnership",
+    "donor_code": "nextgen"
+  },
+  {
+    "donor_name": "Indo-Pacific Region",
+    "donor_sector": "Multilateral",
+    "donor_code": "ipr"
   },
   {
     "donor_name": "Stichting fondsbeheer DGGF lokaal MKB",
@@ -45,7 +65,6 @@
   },
   {
     "donor_name": "Africa Centres for Disease Control and Prevention",
-    "acronym": "Africa CDC",
     "donor_sector": "Multilateral",
     "donor_code": "africacdc"
   },
