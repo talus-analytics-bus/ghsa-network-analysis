@@ -37,8 +37,8 @@
 			const name = App.codeToNameMap.get(iso);
 			const flagHtml = country ? App.getFlagHtml(iso) : '';
 			$('.analysis-country-title')
-				.html(`${flagHtml} ${name} ${flagHtml}`)
-				.on('click', () => hasher.setHash(`analysis/${iso}`));
+				.html(`${flagHtml} ${name} ${flagHtml}`);
+				// .on('click', () => hasher.setHash(`analysis/${iso}`));
 
 			const countryTitleDiv = d3.select('.analysis-country-title');
 			countryTitleDiv.append('br');
@@ -68,7 +68,6 @@
 			if (moneyType) initDonorOrRecipientProfile();
 			else initBasicProfile();
 
-
 			toggleGhsaContent(isGhsaPage);
 			initGhsaToggle();
 		}
@@ -80,9 +79,22 @@
 		 */
 		function toggleGhsaContent (isGhsaPage) {
 			if (isGhsaPage) {
-				$(`.ghsa-toggle-options, .switch-type-button, .profile-type-container`)
-					.css('visibility','hidden');
+				$(`.ghsa-toggle-options, .switch-type-button, .profile-type-container, .analysis-country-title > br`)
+					.remove();
+					// .css('visibility','hidden');
 				$('.analysis-country-title').addClass('ghsa');
+
+				d3.select('.analysis-country-title.ghsa').select('img').remove();
+				d3.select('.analysis-country-title.ghsa').append('img')
+					.attr('class', 'ghsa-info-img info-img')
+					.attr('src','img/info.png');
+
+				// init tooltip
+				$('.ghsa-info-img').tooltipster({
+					interactive: true,
+					content: App.ghsaInfoTooltipContent,
+				});
+
 			} else {
 				$('.second-country-table-section').remove();
 			}

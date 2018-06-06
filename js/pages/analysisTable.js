@@ -7,6 +7,7 @@
 	App.initAnalysisTable = (iso, moneyFlow) => {
 		const country = App.countries.find(c => c.ISO2 === iso);
 		const name = App.codeToNameMap.get(iso);
+		const isGhsaPage = iso === 'ghsa';
 
 		// find all payments funded or received by this country
 		App.loadFundingData({ showGhsaOnly: App.showGhsaOnly });
@@ -69,6 +70,14 @@
 				crossroads.parse(hasher.getHash());
 				// hasher.setHash(`analysis/${iso}/${moneyFlow}/table${App.showGhsaOnly ? '?ghsa_only=true' : '?ghsa_only=false'}`);
 			});
+
+			// if on the special GHSA page, don't show this toggle
+			if (isGhsaPage) {
+				$('.ghsa-toggle-options').remove();
+				d3.select('.analysis-country-title').append('img')
+					.attr('class', 'ghsa-info-img info-img')
+					.attr('src','img/info.png');
+			}
 
 			// init tooltip
 			$('.ghsa-info-img').tooltipster({

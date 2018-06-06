@@ -8,7 +8,7 @@
 		// define content in container
 		const content = d3.select('.analysis-pair-content');
 		const $content = $('.analysis-pair-content');
-
+		const ghsaIncluded = fundIso === 'ghsa' || recIso === 'ghsa';
 
 		App.loadFundingData({ showGhsaOnly: App.showGhsaOnly });
 
@@ -21,8 +21,13 @@
 		// get payments between the countries
 		let allPayments = [];
 		if (App.fundingLookup[fundIso]) {
-			allPayments = App.fundingLookup[fundIso].filter(p =>
-				p.recipient_country === recIso);
+			if (recIso === 'ghsa') {
+				allPayments = App.fundingLookup[fundIso].filter(p =>
+					p.ghsa_funding === true);
+			} else {
+				allPayments = App.fundingLookup[fundIso].filter(p =>
+					p.recipient_country === recIso);
+			}
 		}
 
 		function init() {
@@ -32,8 +37,8 @@
 			const recFlagHtml = recipientCountry ? App.getFlagHtml(recIso) : '';
 			const fundOnClick = `hasher.setHash('analysis/${fundIso}/d')`;
 			const recOnClick = `hasher.setHash('analysis/${recIso}/r')`;
-			const donorNameHtml = `<span onclick="${fundOnClick}">${donorName}</span>`;
-			const recipientNameHtml = `<span onclick="${recOnClick}">${recipientName}</span>`;
+			const donorNameHtml = `<span class="funder-name" onclick="${fundOnClick}">${donorName}</span>`;
+			const recipientNameHtml = `<span class="recipient-name" onclick="${recOnClick}">${recipientName}</span>`;
 			$content.find('.analysis-country-title').html(`${fundFlagHtml} ${donorNameHtml} ` +
 				`<div class="arrow-html">&rarr;</div> ${recipientNameHtml} ${recFlagHtml}`);
 
@@ -90,6 +95,16 @@
 				crossroads.parse(hasher.getHash());
 				// hasher.setHash(`analysis/${iso}/${moneyFlow}/table${App.showGhsaOnly ? '?ghsa_only=true' : '?ghsa_only=false'}`);
 			});
+
+			// if on the special GHSA page, don't show this toggle
+			if (ghsaIncluded) {
+				$('.ghsa-toggle-options').remove();
+				const ghsaNameSelector = recIso === 'ghsa' ? 'span.recipient-name' : 'span.funder-name';
+				d3.select(ghsaNameSelector).append('img')
+					.style('margin-left', '5px')
+					.attr('class', 'ghsa-info-img info-img')
+					.attr('src','img/info.png');
+			}
 
 			// init tooltip
 			$('.ghsa-info-img').tooltipster({

@@ -22,16 +22,19 @@
   }
   .analysis-country-title {
     text-align: center;
-    cursor: pointer;
     margin: 2px auto;
     padding: 2px 0 0;
     width: 710px;
     // max-width: 500px;
     font-size: 30px;
     line-height: 1.25;
-
-    &.ghsa {
-      margin-bottom: -40px;
+    cursor: pointer;
+    &.country-page {
+      cursor: default;
+    }
+    img.ghsa-info-img {
+      width: 18px;
+      height: 18px;
     }
   }
   .profile-type-container {

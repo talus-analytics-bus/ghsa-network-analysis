@@ -498,6 +498,15 @@
 
 			// populate info title
 			$('.info-title').text(country.NAME);
+			if (country.ISO2 === 'ghsa') {
+				d3.select('.info-title').append('img')
+					.attr('class', 'ghsa-info-img info-img')
+					.attr('src','img/info.png');
+				$('.info-title > img.ghsa-info-img').tooltipster({
+					interactive: true,
+					content: App.ghsaInfoTooltipContent,
+				});
+			}
 			$('.info-profile-type')
 			.css('display', (indType === 'money' || indType === 'ghsa' || country.country === false) ? 'block' : 'none')
 			.text(getInfoLabel(isGhsa, flowToShow));
