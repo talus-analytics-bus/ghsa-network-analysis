@@ -48,6 +48,7 @@
 			$('.money-type-noun').text(moneyType === 'd' ? 'funder' : 'recipient');
 			$('.money-type-noun-cap').text(moneyType === 'd' ? 'Funder' : 'Recipient');
 			$('.opp-money-type-noun').text(moneyType === 'd' ? 'recipient' : 'funder');
+			$('.opp-inkind-type-noun').text(moneyType === 'd' ? 'recipient' : 'provider');
 			$('.opp-money-type-verb').text(moneyType === 'd' ? 'received' : 'donated');
 
 			if (moneyType) initDonorOrRecipientProfile();
@@ -221,6 +222,7 @@
 				drawTimeChart();
 				drawProgressCircles();
 				drawCountryTable();
+				drawCountryInKindTable();
 				drawCategoryChart();
 				// display content
 				$('.country-flow-content').slideDown();
@@ -342,8 +344,161 @@
 
         }
 
-		//function radioClickHandler (spent, dispurrsed)
 
+        /**
+         * Draws the "In-kind Donations Received" or "In-kind Donations Made"
+         * table that appears on a country analysis page.
+         */
+        function drawCountryInKindTable() {
+
+        	// Set title of section based on whether funder or recipient profile is being viewed
+			$('.inkind-table-title').text((moneyType === 'd') ? 'In-kind Donations Made' : 'In-kind Donations Received');
+
+			// get in-kind support projects
+			const inkindProjects = lookup[iso].filter(d => d.assistance_type.toLowerCase() === 'in-kind support');
+
+			// get table data
+			const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_code';
+			let fundedData = [];
+			const fundedByCountry = {};
+			inkindProjects.forEach((p) => {
+				const recIso = p[countryInd];
+				if (recIso !== 'Not reported') {
+					if (!fundedByCountry[recIso]) {
+						fundedByCountry[recIso] = {
+							project_name: p.project_name,
+							iso: recIso,
+							entity_name: App.codeToNameMap.get(recIso) || recIso,
+							total_committed: 0,
+							total_spent: 0,
+							spent_on_prevent: 0,
+							spent_on_detect: 0,
+							spent_on_respond: 0,
+							spent_on_other: 0,
+							committed_on_prevent: 0,
+							committed_on_detect: 0,
+							committed_on_respond: 0,
+							committed_on_other: 0,
+						};
+					}
+					fundedByCountry[recIso].total_committed += p.total_committed;
+					fundedByCountry[recIso].total_spent += p.total_spent;
+					p.core_capacities.forEach(cc => {
+						const ccAbbrev = cc.split('.')[0];
+						if (ccAbbrev === 'P') {
+							fundedByCountry[recIso].spent_on_prevent += p.total_spent;
+							fundedByCountry[recIso].committed_on_prevent += p.total_spent;
+						} else if (ccAbbrev === 'D') {
+							fundedByCountry[recIso].spent_on_detect += p.total_spent;
+							fundedByCountry[recIso].committed_on_detect += p.total_spent;
+						} else if (ccAbbrev === 'R') {
+							fundedByCountry[recIso].spent_on_respond += p.total_spent;
+							fundedByCountry[recIso].committed_on_respond += p.total_spent;
+						} else {
+							fundedByCountry[recIso].spent_on_other += p.total_spent;
+							fundedByCountry[recIso].committed_on_other += p.total_spent;
+						}
+					})
+				}
+			});
+			for (const recIso in fundedByCountry) {
+				fundedData.push(fundedByCountry[recIso]);
+			}
+			// Util.sortByKey(fundedData, 'total_spent', true);
+			fundedData = _.sortBy(fundedData, d => {
+				return d.entity_name.toLowerCase();
+			});
+
+			// draw table
+			const drawTable = (type) => {
+				$('.inkind-table-container').empty();
+				const table = d3.select('.inkind-table-container')
+					.append('table')
+						.classed('inkind-table country-table', true)
+						.classed('table', true)
+						.classed('table-bordered', true)
+						.classed('table-hover', true);
+
+				const header = table.append('thead').append('tr');
+				const firstColLabel = (moneyType === 'd') ? 'Recipient' : 'Provider';
+
+				header.append('td').html(firstColLabel);
+				header.append('td').html('Description of donation');
+				const body = table.append('tbody');
+
+				const rows = body.selectAll('tr')
+					.data(fundedData)
+					.enter().append('tr')
+					.on('click', (d) => {
+						if (d.iso !== 'Not reported') {
+							if (moneyType === 'd') {
+								hasher.setHash(`analysis/${iso}/${d.iso}`);
+							} else {
+								hasher.setHash(`analysis/${d.iso}/${iso}`);
+							}
+						}
+					});
+				rows.append('td').html((d) => {
+					const recCountry = App.countries.find(c => c.ISO2 === d.iso);
+					const flagHtml = recCountry ? App.getFlagHtml(d.iso) : '';
+					let cName = d.iso;
+					if (App.codeToNameMap.has(d.iso)) {
+						cName = App.codeToNameMap.get(d.iso);
+					}
+					const onClickStr = `event.stopPropagation();hasher.setHash('analysis/${d.iso}/${moneyType === 'd' ? 'r' : 'd'}')`;
+					return `<div class="flag-container">${flagHtml}</div>` +
+						'<div class="name-container">' +
+						`<span onclick="${onClickStr}">${cName}</span>` +
+						'</div>';
+				});
+
+				rows.append('td').text(d => d.project_name);
+
+				// initialize DataTables plugin
+				const infoDataTable = $('.inkind-table').DataTable({
+					pageLength: 10,
+					scrollCollapse: false,
+					autoWidth: false,
+					ordering: false,
+					// ordering: true,
+					// order: [[0, 'asc']],
+					bLengthChange: false,
+				});
+			};
+
+			drawTable('total_spent');
+
+
+            $('.toggle-progress-circle-chart-container').click(function () {
+
+                selected = $('.toggle-progress-circle-chart-container input[name=fundtype]:checked').val();
+                // make sure that you check the other radio buttons as well
+                if (selected === 'total_spent') {
+                    $('#chart-spent').prop("checked", true);
+                } else  {
+                    $('#chart-committed').prop("checked", true);
+                }
+                drawTable(selected);
+
+            });
+
+            $('.toggle-disbursed-chart-container').click(function() {
+                selected = $('.toggle-disbursed-chart-container input[name=fundtype]:checked').val();
+                // make sure that you check the other radio buttons as well
+                if (selected === 'total_spent') {
+                    $('#progress-spent').prop("checked", true);
+                } else  {
+                    $('#progress-committed').prop("checked", true);
+                }
+                drawTable(selected);
+
+            });
+        };
+
+		/**
+		 * Draws the "Top Recipients" or "Top Funders" table that appears on a
+		 * country analysis page.
+		 */
 		function drawCountryTable() {
 			if (moneyType === 'd') {
 				$('.circle-pack-title').text('Top Recipients');

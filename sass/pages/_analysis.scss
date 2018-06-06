@@ -69,7 +69,7 @@
 	td:first-child { 
 		white-space: nowrap;
 	}
-	td:nth-child(n+2) {
+	td:nth-child(n+2) ~ &.inkind-table {
 		white-space: nowrap;
 		text-align: right;
 	}
@@ -83,6 +83,11 @@
 		vertical-align: top;
 		font-weight: 600;
 		cursor: pointer;
+	}
+	&.inkind-table {
+		.name-container {
+			width: auto;
+		}
 	}
 	.name-container span {
 		&:hover { text-decoration: underline; }

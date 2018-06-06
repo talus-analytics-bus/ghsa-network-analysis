@@ -295,6 +295,13 @@
     padding-bottom: 10px;
   }
 
+  .inkind-table-section {
+    border-bottom: $light-border;
+    .inkind-table-title {
+
+    }
+  }
+
   .category-chart-section {
     padding-bottom: 40px;
     padding-top: 20px;
@@ -365,6 +372,7 @@
       border-right: $light-border;
     }
     .circle-pack-title,
+    .inkind-table-title,
     //.progress-circle-title,
     .category-chart-title {
       font-size: 1.5em;
@@ -377,7 +385,8 @@
       background-color: #fbfbfb;
     }
 
-    .circle-pack-container {
+    .circle-pack-container,
+    .inkind-table-section {
 
       padding-bottom: 40px;
       padding-top: 20px;
