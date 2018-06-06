@@ -2313,18 +2313,19 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
 }
 
 /* line 47, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisTable.scss */
-.country-funds-content .funds-table .money-cell {
+.country-funds-content .funds-table .money-cell,
+.country-funds-content .funds-table .inkind-cell {
   width: 120px;
   text-align: right;
   white-space: nowrap;
 }
 
-/* line 53, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisTable.scss */
+/* line 54, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisTable.scss */
 .country-funds-content .funds-table tr {
   cursor: pointer;
 }
 
-/* line 56, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisTable.scss */
+/* line 57, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisTable.scss */
 .country-funds-content .funds-source-text {
   margin-top: 15px;
   font-size: 0.9em;

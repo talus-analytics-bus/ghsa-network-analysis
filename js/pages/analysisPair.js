@@ -130,6 +130,7 @@
 					},
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
+					{ name: 'In-kind Donations', value: 'total_inkind', type: 'number' },
 				];
 			} else if (currentInfoTab === 'inkind') {
 				headerData = [
@@ -152,10 +153,12 @@
 							totalByCc[cc] = {
 								total_committed: 0,
 								total_spent: 0,
+								total_inkind: 0,
 							};
 						}
 						totalByCc[cc].total_committed += p.total_committed;
 						totalByCc[cc].total_spent += p.total_spent;
+						totalByCc[cc].total_inkind += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
 					});
 				});
 				for (const cc in totalByCc) {
@@ -163,6 +166,7 @@
 						cc,
 						total_committed: totalByCc[cc].total_committed,
 						total_spent: totalByCc[cc].total_spent,
+						total_inkind: totalByCc[cc].total_inkind,
 					});
 				}
 			} else if (currentInfoTab === 'inkind') {
@@ -181,6 +185,7 @@
 			headers.enter().append('th')
 				.merge(headers)
 				.classed('money-cell', d => d.type === 'money')
+				.classed('inkind-cell', d => d.value === 'total_inkind')
 				.text(d => d.name);
 
 			const infoTbody = infoTable.select('tbody');
@@ -195,6 +200,7 @@
 			cells.enter().append('td')
 				.merge(cells)
 				.classed('money-cell', d => d.colData.type === 'money')
+				.classed('inkind-cell', d => d.colData.value === 'total_inkind')
 				.text((d) => {
 					let cellValue = '';
 					if (typeof d.colData.value === 'function') {
@@ -214,7 +220,7 @@
 				columnDefs = [{ type: 'money', targets: [3, 4], width: '120px' }];
 			} else if (currentInfoTab === 'cc') {
 				order = [2, 'desc'];
-				columnDefs = [{ type: 'money', targets: [1, 2], width: '120px' }];
+				columnDefs = [{ type: 'money', targets: [1, 2, 3], width: '120px' }];
 			} else if (currentInfoTab === 'inkind') {
 				order = [1, 'desc'];
 				columnDefs = [{ targets: [3], width: '450px' }];
