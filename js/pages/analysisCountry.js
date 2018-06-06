@@ -3,6 +3,9 @@
 
 		if (!moneyType) initBasicProfile();
 
+		// Is this the GHSA page? It has several special features.
+		const isGhsaPage = iso === 'ghsa';
+
 		// define "country" parameters for General Global Benefit recipient
 		const ggb = {
 		  "FIPS": "ggb",
@@ -65,7 +68,21 @@
 			if (moneyType) initDonorOrRecipientProfile();
 			else initBasicProfile();
 
+
+			toggleGhsaContent(isGhsaPage);
 			initGhsaToggle();
+		}
+
+		/**
+		 * If the page is 'GHSA', then hide several page elements that aren't rational for this view.
+		 * @param  {Boolean} isGhsaPage    Whether this page is the 'ghsa' page or not.
+		 * 								   A constant set on initiation.
+		 */
+		function toggleGhsaContent (isGhsaPage) {
+			if (isGhsaPage) {
+				$(`.ghsa-toggle-options, .switch-type-button, .profile-type-container`)
+					.css('visibility','hidden');
+			}
 		}
 
 		function initGhsaToggle() {
