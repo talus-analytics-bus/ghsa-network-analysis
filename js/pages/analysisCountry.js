@@ -82,6 +82,7 @@
 			if (isGhsaPage) {
 				$(`.ghsa-toggle-options, .switch-type-button, .profile-type-container`)
 					.css('visibility','hidden');
+				$('.analysis-country-title').addClass('ghsa');
 			}
 		}
 
