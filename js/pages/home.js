@@ -35,8 +35,9 @@
 			if (App.usingFirefox) {
 				initFirefoxScrollBars();
 			}
-			initFunderList('.non-country-list.funder-list');
-			initRecipientList('.non-country-list.recipient-list');
+			const ccs = $('.cc-select').val();
+			initFunderList('.non-country-list.funder-list', ccs);
+			initRecipientList('.non-country-list.recipient-list', ccs);
 			initListScaling('.non-country-list-container.right');
 			initListScaling('.non-country-list-container.left');
 			updateAll();
@@ -118,15 +119,19 @@
 				flowNoun = '';
 			}
 			let noun = '';
+			let br = '<br>';
 			if (mType === 'committed') {
 				noun = 'Committed';
-			} else {
+			} else if (mType === 'disbursed') {
 				if (mFlow === 'funded') noun = 'Disbursed';
 				else noun = 'Received';
+			} else if (mType === 'inkind') {
+				noun = '';
+				br = ' ';
 			}
 			return `Total <b>${noun}</b>` +
-			`<br>from ${startYear} to ${endYear - 1}` +
-			`<br>${flowNoun}`;
+			`${br}from ${startYear} to ${endYear - 1}` +
+			`${br}${flowNoun}`;
 		}
 
 		// gets the color scale used for the map
@@ -179,18 +184,22 @@
 				// only include country in data map if it has a score or rec/don funds
 				let fundedCommitted = 0;
 				let fundedSpent = 0;
+				let providedInkind = 0;
 				let receivedCommitted = 0;
 				let receivedSpent = 0;
+				let receivedInkind = 0;
 				let score = null;
 				let combo = null;
 
 				if (paymentsFunded) {
 					({ totalCommitted: fundedCommitted, totalSpent: fundedSpent } =
 						getPaymentSum(paymentsFunded, ccs));
+					providedInkind = paymentsFunded.filter(d => d.assistance_type.toLowerCase() === "in-kind support").length;
 				}
 				if (paymentsReceived) {
 					({ totalCommitted: receivedCommitted, totalSpent: receivedSpent } =
 						getPaymentSum(paymentsReceived, ccs));
+					receivedInkind = paymentsReceived.filter(d => d.assistance_type.toLowerCase() === "in-kind support").length;
 				}
 
 				if (scoreObj) {
@@ -206,12 +215,18 @@
 				currentNodeDataMap.set(c.ISO2, {
 					fundedCommitted,
 					fundedSpent,
+					providedInkind,
 					receivedCommitted,
 					receivedSpent,
+					receivedInkind,
 					score,
 					combo,
 				});
 			});
+			initFunderList('.non-country-list.funder-list', ccs);
+			initRecipientList('.non-country-list.recipient-list', ccs);
+			initListScaling('.non-country-list-container.right');
+			initListScaling('.non-country-list-container.left');
 		}
 
 		// gets the sum of payments for the years and capacities selected
@@ -527,6 +542,7 @@
 			// populate info total value
 			let totalCommitted = 0;
 			let totalSpent = 0;
+			let totalInkind = 0;
 			if (currentNodeDataMap.has(country.ISO2)) {
 				const valueObj = currentNodeDataMap.get(country.ISO2);
 				if (indType === 'money' || indType === 'ghsa') {
@@ -548,9 +564,11 @@
 				if (flowTmp === 'funded' || ((indType === 'money' || indType === 'ghsa' ) && flowToShow === 'funded')) {
 					totalCommitted += valueObj.fundedCommitted;
 					totalSpent += valueObj.fundedSpent;
+					totalInkind += valueObj.providedInkind;
 				} else {
 					totalCommitted += valueObj.receivedCommitted;
 					totalSpent += valueObj.receivedSpent;
+					totalInkind += valueObj.receivedInkind;
 				}
 			}
 			$('.info-committed-value').text(App.formatMoney(totalCommitted));
@@ -561,6 +579,10 @@
 			$('.info-committed-value-label').html(getMoneyTypeLabel(mFlow, 'committed', isGhsa));
 			$('.info-spent-value-label').html(getMoneyTypeLabel(mFlow, 'disbursed', isGhsa));
 
+			// get inkind projects
+			$('.info-inkind-value').text(Util.comma(totalInkind));
+			$('.info-inkind-unit').html(`&nbsp;in-kind donation project${(totalInkind > 1 || totalInkind === 0) ? 's' : ''}`);
+			$('.info-inkind-value-label').html(getMoneyTypeLabel(mFlow, 'inkind', isGhsa));
 			// display content
 			$('.info-container').slideDown();
 		}
@@ -904,11 +926,19 @@
 		 * 								  
 		 * @return {null} No return value
 		 */
-		function initFunderList (selector) {
-			const $list = d3.select(selector);
+		function initFunderList (selector, ccs) {
+			const $list = d3.select(selector).html('');
 
 			// get data for funders and group it by funder
-			const fundingDataByDonorCode = _.groupBy(App.fundingData, 'donor_code');
+			const curFundingData = App.fundingData.filter(p => {
+
+				// Tagged with right ccs?
+				if (!App.passesCategoryFilter(p.core_capacities, ccs)) return false;
+				return true;
+
+			});
+
+			const fundingDataByDonorCode = _.groupBy(curFundingData, 'donor_code');
 			let nonCountryFunderData = App.nonCountries.map((val, key) => {
 				return {
 					donor_code: val.FIPS,
@@ -926,9 +956,12 @@
 				    "NAME": "Global Health Security Agenda",
 				    "country": false
 				  },
-				projects: App.fundingData.filter(d => d.ghsa_funding === true), // TODO
+				projects: curFundingData.filter(d => d.ghsa_funding === true), // TODO
 			};
-			nonCountryFunderData = nonCountryFunderData.concat(ghsa);
+
+			if (ghsa.projects.length > 0) {
+				nonCountryFunderData = nonCountryFunderData.concat(ghsa);
+			}
 
 			// sort A-Z by donor name
 			nonCountryFunderData = _.sortBy(nonCountryFunderData, (data) => { return data.entity_data.NAME.toLowerCase(); });
@@ -968,11 +1001,19 @@
 		 * 								  
 		 * @return {null} No return value
 		 */
-		function initRecipientList (selector) {
-			const $list = d3.select(selector);
+		function initRecipientList (selector, ccs=[]) {
+			const $list = d3.select(selector).html('');
 
 			// get data for funders and group it by funder
-			const fundingDataByRecipientCode = _.groupBy(App.fundingData, 'recipient_country');
+			const curFundingData = App.fundingData.filter(p => {
+
+				// Tagged with right ccs?
+				if (!App.passesCategoryFilter(p.core_capacities, ccs)) return false;
+				return true;
+
+			});
+
+			const fundingDataByRecipientCode = _.groupBy(curFundingData, 'recipient_country');
 			let nonCountryRecipientData = App.nonCountries.map((val, key) => {
 				return {
 					recipient_code: val.FIPS,
@@ -990,9 +1031,12 @@
 				    "NAME": "Global Health Security Agenda",
 				    "country": false
 				  },
-				projects: App.fundingData.filter(d => d.ghsa_funding === true), // TODO
+				projects: curFundingData.filter(d => d.ghsa_funding === true), // TODO
 			};
-			nonCountryRecipientData = nonCountryRecipientData.concat(ghsa);
+
+			if (ghsa.projects.length > 0) {
+				nonCountryRecipientData = nonCountryRecipientData.concat(ghsa);
+			}
 
 			// sort A-Z by donor name
 			nonCountryRecipientData = _.sortBy(nonCountryRecipientData, (data) => { return data.entity_data.NAME.toLowerCase(); });
@@ -1023,8 +1067,6 @@
 						return true;
 					})
 					.insert('br');
-
-
 
 		};
 

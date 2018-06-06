@@ -26,6 +26,28 @@
 		position: relative;
 		left: -5px;
 	}
+
+	.info-inkind-details {
+		display: block;
+		.info-inkind-unit {
+			font-family: 'Raleway', sans-serif;
+			font-size: 1.25em;
+			/* margin-top: 20px; */
+			display: inline-block;
+			/* text-align: center; */
+		}
+
+		.info-inkind-value {
+			display: inline-block;
+		}
+
+		.info-inkind-value-label {
+			max-width: 100px;
+			margin: 10px auto 0 auto;
+		}
+	}
+
+
 	.info-close-button {
 		position: absolute;
 		top: 20px;
@@ -80,8 +102,8 @@
 		height: 16px;
 	}
 	//.source-text {
-	//	text-align: right;
-	//	margin-top: 20px;
-	//	font-size: 0.95em;
-	//}
-}
+		//	text-align: right;
+		//	margin-top: 20px;
+		//	font-size: 0.95em;
+		//}
+	}
