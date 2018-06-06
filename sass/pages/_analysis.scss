@@ -86,7 +86,8 @@
 	}
 	&.inkind-table {
 		.name-container {
-			width: auto;
+			// width: auto;
+			max-width: 75%;
 		}
 	}
 	.name-container span {

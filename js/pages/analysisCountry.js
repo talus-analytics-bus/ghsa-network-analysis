@@ -373,28 +373,39 @@
 
         /**
          * Draws the "In-kind Donations Received" or "In-kind Donations Made"
-         * table that appears on a country analysis page.
+         * table that appears on a country analysis page. When on the GHSA special
+         * page, this table contains both the Provider and Recipient columns.
+         * Otherwise, it contains only one or the other.
          */
         function drawCountryInKindTable() {
 
         	// Set title of section based on whether funder or recipient profile is being viewed
-			$('.inkind-table-title').text((moneyType === 'd') ? 'In-kind Donations Made' : 'In-kind Donations Received');
+        	if (!isGhsaPage) {
+				$('.inkind-table-title').text((moneyType === 'd') ? 'In-kind Donations Made' : 'In-kind Donations Received');
+        	} else {
+        		$('.inkind-table-title').text('In-kind Donations');
+        		$('.inkind-table-section .description').text('The table below displays GHSA in-kind donations in alphabetical order by provider. Click on a row to view details.');
+        	}
 
 			// get in-kind support projects
 			const inkindProjects = lookup[iso].filter(d => d.assistance_type.toLowerCase() === 'in-kind support');
 
 			// get table data
 			const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_code';
+			const countryIndOther = (moneyType === 'd') ? 'donor_code' : 'recipient_country';
 			let fundedData = [];
 			const fundedByCountry = {};
 			inkindProjects.forEach((p) => {
 				const recIso = p[countryInd];
+				const isoOther = p[countryIndOther];
 				if (recIso !== 'Not reported') {
 					if (!fundedByCountry[recIso]) {
 						fundedByCountry[recIso] = {
 							project_name: p.project_name,
 							iso: recIso,
+							iso_other: isoOther,
 							entity_name: App.codeToNameMap.get(recIso) || recIso,
+							entity_name_other: App.codeToNameMap.get(isoOther) || isoOther,
 							total_committed: 0,
 							total_spent: 0,
 							spent_on_prevent: 0,
@@ -430,9 +441,9 @@
 			for (const recIso in fundedByCountry) {
 				fundedData.push(fundedByCountry[recIso]);
 			}
-			// Util.sortByKey(fundedData, 'total_spent', true);
+			const nameKey = isGhsaPage ? 'entity_name_other' : 'entity_name';
 			fundedData = _.sortBy(fundedData, d => {
-				return d.entity_name.toLowerCase();
+				return d[nameKey].toLowerCase();
 			});
 
 			// draw table
@@ -446,9 +457,16 @@
 						.classed('table-hover', true);
 
 				const header = table.append('thead').append('tr');
-				const firstColLabel = (moneyType === 'd') ? 'Recipient' : 'Provider';
 
-				header.append('td').html(firstColLabel);
+				if (!isGhsaPage) {
+					const firstColLabel = (moneyType === 'd') ? 'Recipient' : 'Provider';
+					header.append('td').html(firstColLabel);
+				} else {
+					header.append('td').html('Provider');
+					header.append('td').html('Recipient')
+						.style('padding-left','63px');
+							
+				}
 				header.append('td').html('Purpose of donation');
 				const body = table.append('tbody');
 
@@ -465,6 +483,24 @@
 							}
 						}
 					});
+
+				// On GHSA special page: Include both the donor and recipient.
+				if (isGhsaPage) {
+					rows.append('td').html((d) => {
+						const recCountry = App.countries.find(c => c.ISO2 === d.iso_other);
+						const flagHtml = recCountry ? App.getFlagHtml(d.iso_other) : '';
+						let cName = d.iso_other;
+						if (App.codeToNameMap.has(d.iso_other)) {
+							cName = App.codeToNameMap.get(d.iso_other);
+						}
+						const onClickStr = `event.stopPropagation();hasher.setHash('analysis/${d.iso_other}/${moneyType === 'd' ? 'r' : 'd'}')`;
+						return `<div class="flag-container">${flagHtml}</div>` +
+							'<div class="name-container">' +
+							`<span onclick="${onClickStr}">${cName}</span>` +
+							'</div>';
+					});
+				}
+
 				rows.append('td').html((d) => {
 					const recCountry = App.countries.find(c => c.ISO2 === d.iso);
 					const flagHtml = recCountry ? App.getFlagHtml(d.iso) : '';
@@ -477,7 +513,10 @@
 						'<div class="name-container">' +
 						`<span onclick="${onClickStr}">${cName}</span>` +
 						'</div>';
-				});
+				})
+				.classed('ghsa-recipient-cell', isGhsaPage);
+
+
 
 				rows.append('td').text(d => d.project_name);
 
@@ -485,7 +524,7 @@
 				const infoDataTable = $('.inkind-table').DataTable({
 					pageLength: 10,
 					scrollCollapse: false,
-					autoWidth: false,
+					autoWidth: true,
 					ordering: false,
 					// ordering: true,
 					// order: [[0, 'asc']],
