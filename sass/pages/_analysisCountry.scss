@@ -21,14 +21,17 @@
     margin: 2px 0 0;
     padding: 2px 0 0;
     font-size: 30px;
+    line-height: 1.25;
   }
   .profile-type-container {
-    position: absolute;
-    top: 66px;
-    left: 0;
-    width: 100%;
+    // position: absolute;
+    // top: 66px;
+    // left: 0;
+    // width: 100%;
+    font-size: 14px;
     font-weight: 600;
     text-align: center;
+    line-height: 2;
   }
   .profile-type-text {
     display: inline-block;

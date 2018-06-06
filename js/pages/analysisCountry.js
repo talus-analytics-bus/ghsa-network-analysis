@@ -37,6 +37,16 @@
 				.html(`${flagHtml} ${name} ${flagHtml}`)
 				.on('click', () => hasher.setHash(`analysis/${iso}`));
 
+			const countryTitleDiv = d3.select('.analysis-country-title');
+			countryTitleDiv.append('br');
+			countryTitleDiv.append('div')
+				.attr('class','profile-type-container')
+				.append('div')
+					.attr('class','profile-type-text')
+					.append('span')
+						.attr('class','money-type-noun-cap-profile');
+						
+
 			$('.return-button').on('click', () => hasher.setHash('/'));
 
 			// fill out generic text
@@ -47,6 +57,7 @@
 			$('.money-type-cap').text(moneyType === 'd' ? 'Disbursed' : 'Received');
 			$('.money-type-noun').text(moneyType === 'd' ? 'funder' : 'recipient');
 			$('.money-type-noun-cap').text(moneyType === 'd' ? 'Funder' : 'Recipient');
+			$('.money-type-noun-cap-profile').text(moneyType === 'd' ? 'Funder Profile' : 'Recipient Profile');
 			$('.opp-money-type-noun').text(moneyType === 'd' ? 'recipient' : 'funder');
 			$('.opp-inkind-type-noun').text(moneyType === 'd' ? 'recipient' : 'provider');
 			$('.opp-money-type-verb').text(moneyType === 'd' ? 'received' : 'donated');
