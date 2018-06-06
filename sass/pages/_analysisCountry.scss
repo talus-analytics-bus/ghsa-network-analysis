@@ -18,8 +18,9 @@
   .analysis-country-title {
     text-align: center;
     cursor: pointer;
-    margin: 2px 0 0;
+    margin: 2px auto;
     padding: 2px 0 0;
+    max-width: 500px;
     font-size: 30px;
     line-height: 1.25;
   }

@@ -4,8 +4,10 @@
 	text-align: center;
 
 	.analysis-country-title {
-		margin: 0 250px;
+		/* margin: 0 250px; */
 		line-height: 1.5;
+		margin: 0 auto;
+		max-width: 620px;
 	}
 	.analysis-country-title span {
 		cursor: pointer;
