@@ -143,7 +143,7 @@
 			// define row data
 			let paymentTableData = [];
 			if (currentInfoTab === 'all') {
-				paymentTableData = allPayments.slice(0);
+				paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support');;
 			} else if (currentInfoTab === 'cc') {
 				const totalByCc = {};
 				allPayments.forEach((p) => {
