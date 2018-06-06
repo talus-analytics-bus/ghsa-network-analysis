@@ -180,11 +180,6 @@
 			const totalFunded = App.getTotalFunded(iso);
 			const totalReceived = App.getTotalReceived(iso);
 
-			console.log('lookup');
-			console.log(lookup);
-			console.log('iso')
-			console.log(iso)
-
 			if (moneyType === 'd') {
 				hasNoData = lookup[iso] === undefined || lookup[iso].length === 0;
 				// hasNoData = App.getTotalFunded(iso, {includeCommitments: true}) === 0;
