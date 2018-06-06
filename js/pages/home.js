@@ -851,15 +851,6 @@
 		}
 
 		/**
-		 * Function to get data for funders to show in the Map page.
-		 * @return {array} Collection of non-country funder data.
-		 */
-		function getNonCountryFunderData () {
-
-		};
-
-
-		/**
 		 * Initializes the list of funders that appears on the left side of the Map.
 		 * @param  {string} selector      D3 selector string of div that
 		 * 								  contains the list of funders
