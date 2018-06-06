@@ -145,15 +145,22 @@
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
-			}
+			} else if (currentInfoTab === 'inkind') {
+				headerData = [
+					{ name: 'Provider', value: 'donor_name' },
+					{ name: 'Recipient', value: 'recipient_name' },
+					{ name: 'Name', value: 'project_name' },
+					{ name: 'Description', value: 'project_description' },
+				];
+			} 
 
 			// define row data
 			let paymentTableData = [];
 			if (currentInfoTab === 'all') {
-				paymentTableData = allPayments.slice(0);
+				paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support');
 			} else if (currentInfoTab === 'country') {
 				const totalByCountry = {};
-				allPayments.forEach((p) => {
+				allPayments.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support').forEach((p) => {
 					const dc = p.donor_code;
 					let rc = p.recipient_country;
 					if (rc === 'Not reported') rc = p.recipient_name;
@@ -241,7 +248,9 @@
 						total_spent: totalByCc[cc].total_spent,
 					});
 				}
-			}
+			} else if (currentInfoTab === 'inkind') {
+				paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');
+			} 
 
 
 			// clear DataTables plugin from table
@@ -302,7 +311,10 @@
 			} else if (currentInfoTab === 'ce' || currentInfoTab === 'cc') {
 				order = [2, 'desc'];
 				columnDefs = [{ type: 'money', targets: [1, 2], width: '120px' }];
-			}
+			} else if (currentInfoTab === 'inkind') {
+				order = [1, 'desc'];
+				columnDefs = [{ targets: [3], width: '450px' }];
+			} 
 
 			// re-initialize DataTables plugin
 			infoDataTable = $('.funds-table').DataTable({
