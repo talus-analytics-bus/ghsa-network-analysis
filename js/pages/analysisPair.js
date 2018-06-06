@@ -59,6 +59,15 @@
 			});
 
 			// fill table content
+
+			// if the info tab was set in a global variable,
+			// use that tab and clear the global variable
+			if (App.infoTab !== undefined) {
+				currentInfoTab = App.infoTab;
+				App.infoTab = undefined;
+			} else {
+				currentInfoTab = 'all';
+			}
 			updateInfoTab();
 			updateInfoTable();
 			initGhsaToggle();
@@ -99,6 +108,7 @@
 
 		// update the table content depending on tab chosen
 		function updateInfoTable() {
+
 			// define column data
 			let headerData = [];
 			if (currentInfoTab === 'all') {
@@ -121,7 +131,14 @@
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
-			}
+			} else if (currentInfoTab === 'inkind') {
+				headerData = [
+					{ name: 'Provider', value: 'donor_name' },
+					{ name: 'Recipient', value: 'recipient_name' },
+					{ name: 'Name', value: 'project_name' },
+					{ name: 'Description', value: 'project_description' },
+				];
+			} 
 
 			// define row data
 			let paymentTableData = [];
@@ -148,7 +165,9 @@
 						total_spent: totalByCc[cc].total_spent,
 					});
 				}
-			}
+			} else if (currentInfoTab === 'inkind') {
+				paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');
+			} 
 
 			// clear DataTables plugin from table
 			if (infoTableHasBeenInit) infoDataTable.destroy();
@@ -196,7 +215,10 @@
 			} else if (currentInfoTab === 'cc') {
 				order = [2, 'desc'];
 				columnDefs = [{ type: 'money', targets: [1, 2], width: '120px' }];
-			}
+			} else if (currentInfoTab === 'inkind') {
+				order = [1, 'desc'];
+				columnDefs = [{ targets: [3], width: '450px' }];
+			} 
 
 			// re-initialize DataTables plugin
 			infoDataTable = $content.find('.funds-table').DataTable({

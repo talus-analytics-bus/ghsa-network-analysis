@@ -423,7 +423,7 @@
 				const firstColLabel = (moneyType === 'd') ? 'Recipient' : 'Provider';
 
 				header.append('td').html(firstColLabel);
-				header.append('td').html('Description of donation');
+				header.append('td').html('Purpose of donation');
 				const body = table.append('tbody');
 
 				const rows = body.selectAll('tr')
@@ -431,6 +431,7 @@
 					.enter().append('tr')
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {
+							App.infoTab = 'inkind';
 							if (moneyType === 'd') {
 								hasher.setHash(`analysis/${iso}/${d.iso}`);
 							} else {
