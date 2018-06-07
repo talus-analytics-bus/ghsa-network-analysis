@@ -637,11 +637,11 @@
                         <div class="submit-data-btn btn btn-default">Submit Data</div>
                     </div>
                     <div class="progress-circle-section">
+                        <h3 class="progress-circle-title">
+                            Funding by Core Element
+                        </h3>
                         <div class="progress-circle-text">
-                            <div class="progress-circle-title">
-                                Funding by Core Element
-                            </div>
-                            <div class="progress-circle-description description">
+                            <div class="progress-circle-description description ce-data-area">
                                 Percentages shown for each core element.
                             </div>
                             <div class="">
@@ -693,7 +693,7 @@
                                     <span class="core-capacity-text"><img src="img/info.png" style="height: 1em;"/></span>. Only funded core capacities are shown. Hover over a bar to see additional funding details.
                                 </div>
                             </div>
-                                <div class="toggle-disbursed-chart-container">
+                                <div class="toggle-disbursed-chart-container category-data-area">
                                     <form>
                                         <label class="radio-inline">
                                             <input id="chart-spent" type="radio" name="fundtype" value="total_spent">Disbursed Funds
@@ -733,53 +733,68 @@
                     </div>
                     <div class="inkind-table-section">
                         <h3 class="inkind-table-title">In-kind Donations Made</h3>
-                        <div class="circle-pack-description description">
-                            The table below displays in-kind donation <span class="opp-inkind-type-noun"></span>s in alphabetical order. Click on a row to view details.
+                        <div class="no-data-description">
+                            No in-kind donations to show
                         </div>
-                        <div class="inkind-table-container">
-                            <table class="inkind-table country-table table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                        <div class="data-area">
+                            <div class="circle-pack-description description">
+                                The table below displays in-kind donation <span class="opp-inkind-type-noun"></span>s in alphabetical order. Click on a row to view details.
+                            </div>
+                            <div class="inkind-table-container">
+                                <table class="inkind-table country-table table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="circle-pack-container country-table-section">
                         <h3 class="country-table-title section-title"></h3>
-                        <div class="country-table-description description">
-                            The table below displays <span class="opp-money-type-noun"></span>s in order of amount of funds received. Click on a row to view details.
+                        <div class="no-data-description">
+                            No funding data to show
                         </div>
-                        <div class="table-container country-table-container first-country-table-container">
-                            <table class="country-table first-country-table table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                        <div class="data-area">
+                            <div class="country-table-description description">
+                                The table below displays <span class="opp-money-type-noun"></span>s in order of amount of funds received. Click on a row to view details.
+                            </div>
+                            <div class="table-container country-table-container first-country-table-container">
+                                <table class="country-table first-country-table table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="circle-pack-container second-country-table-section">
                         <h3 class="second-country-table-title section-title"></h3>
-                        <div class="second-country-table-title description">
-                            The table below displays funders in order of amount of funds received. Click on a row to view details.
+                        <div class="no-data-description">
+                            No funding data to show
                         </div>
-                        <div class="table-container second-country-table-container">
-                            <table class="country-table second-country-table table table-bordered table-hover">
-                                <thead>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+                        <div class="data-area">
+                            <div class="second-country-table-title description">
+                                The table below displays funders in order of amount of funds received. Click on a row to view details.
+                            </div>
+                            <div class="table-container second-country-table-container">
+                                <table class="country-table second-country-table table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <!--<div class="country-flow-summary-empty">

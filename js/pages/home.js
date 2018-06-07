@@ -18,8 +18,8 @@
 		'#8c96c6', '#8c6bb1', '#88419d', '#810f7c', '#4d004b'];
 		const orangesReverse = ['#fee391', '#fec44f', '#fe9929',
 		'#ec7014', '#cc4c02', '#993404', '#662506'].reverse();
-		const jeeColors = ['#c91414', '#ede929', '#ede929', '#ede929',
-		'#ede929', '#0b6422', '#0b6422', '#0b6422'];
+
+		const jeeColors = App.jeeColors;
 
 
 		// function for initializing the page

@@ -8,8 +8,6 @@
 
 		// Is this a page for a country with a JEE score set available?
 		const showJee = App.scoresByCountry[iso] !== undefined && moneyType === 'r';
-		console.log('showJee');
-		console.log(showJee);
 
 		// define "country" parameters for General Global Benefit recipient
 		const ggb = {
@@ -272,7 +270,14 @@
 					drawCountryTable('.second-country-table-section', (moneyType === 'd') ? 'r' : 'd');
 				}
 				drawCountryInKindTable();
-				drawCategoryChart();
+				const categoryChart = drawCategoryChart();
+
+
+				categoryChart.selectAll('.y.axis .tick text').each(function addJeeIcons(d) {
+					const g = d3.select(this.parentNode);
+					const node = g.select('text');
+				});
+
 				// display content
 				$('.country-flow-content').slideDown();
 			}
@@ -582,6 +587,12 @@
                 drawTable(selected);
 
             });
+
+            // If there was no data in the table, say so
+            if (fundedData.length === 0) {
+            	$('.inkind-table-section .data-area').hide();
+            	$('.inkind-table-section .no-data-description').show();
+            }
         };
 
 		/**
@@ -751,6 +762,12 @@
                 drawTable(selected);
 
             });
+
+            // If there was no data in the table, say so
+            if (fundedData.length === 0) {
+            	$tableContainer.find('.data-area').hide();
+            	$tableContainer.find('.no-data-description').show();
+            }
 		}
 
 		function drawCategoryChart() {
@@ -882,7 +899,7 @@
 				// init tooltip
 				$('.jee-info-img').tooltipster({
 					interactive: true,
-					content: `The average score for each core capacity reported in the country\'s most recent JEE Assessment is shown.`,
+					content: `The colored circles represent the average score of the indicators in each core capacity (e.g., P.1) published in the country\'s most recent JEE Assessment.`,
 				});
 			}
 
@@ -903,6 +920,7 @@
 					$('.money-type').text('committed');
 				}
 			}
+			return chart;
 		}
 
         function drawTimeChart() {

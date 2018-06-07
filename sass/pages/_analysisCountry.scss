@@ -205,7 +205,8 @@
     }
 
     .progress-circle-description {
-      margin-top: 15px;
+      margin-top: 0;
+      // margin-top: 15px;
       padding-bottom: 10px;
     }
 
@@ -317,6 +318,9 @@
     .inkind-table-title {
 
     }
+    .no-data-description {
+      display: none;
+    }
   }
 
   .category-chart-section {
@@ -333,7 +337,7 @@
 
 
     //margin-bottom: 20px;
-    min-height: 180px;
+    // min-height: 180px;
 
     //.source-text {
       //  text-align: right;

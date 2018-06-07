@@ -17,15 +17,16 @@
 
 
 	//.source-text {
-	//	font-size: 0.9em;
-	//	position: absolute;
-	//	bottom: 0;
-	//	right: 0;
-	//}
-}
-
-.category-chart-section {
-	.no-data-message {
-		margin-bottom: -10px;
+		//	font-size: 0.9em;
+		//	position: absolute;
+		//	bottom: 0;
+		//	right: 0;
+		//}
 	}
-}
+
+	.category-chart-section {
+		.no-data-message {
+			margin-bottom: -10px;
+			margin-top: 10px;
+		}
+	}

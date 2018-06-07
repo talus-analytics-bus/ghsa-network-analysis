@@ -29,7 +29,7 @@
 		const selected = param.selected || 'total_spent';
 
 		// start building the chart
-		const margin = { top: 50, right: 20, bottom: 20, left: 250 };
+		const margin = { top: 50, right: 20, bottom: 35, left: 250 };
 		const width = 800;
 		const height = 500;
 
@@ -167,13 +167,20 @@
 
 			const sort = $('input[name="jee-sort"]:checked').attr('ind');
 			if (sort === 'score') {
-				data = _.sortBy(data, 'jeeIdx');
+				data = _.sortBy(_.sortBy(data, 'jeeIdx'), d => -1*d.avgScore);
 			}
 
-			console.log('data');
-			console.log(data);
-			console.log('scores');
-			console.log(scores);
+
+			// var maxLabel = d3.max(data, function(d) { return yAxis.tickFormat()(d.name); }),
+			//     maxWidth;
+			data.forEach(datum => {
+				datum.tickText = yAxis.tickFormat()(datum.name);
+			})
+			chart.selectAll('.fake-text').data(data).enter().append("text").text(d => d.tickText)
+				.attr('class','tick')
+				.style('font-size','12px')
+			   .each(function(d) { d.tickTextWidth = this.getBBox().width; })
+			   .remove();
 
 			const newHeight = 30 * data.length;
 			d3.select('.category-chart')
@@ -279,40 +286,59 @@
 
 			// attach tooltips to y-axis labels
 			chart.selectAll('.y.axis .tick text').each(function attachTooltip(d) {
-					if ($(this).hasClass('tooltipstered')) {
-						$(this).tooltipster('destroy');
-					}
-					const capName = App.capacities.find(c => c.name === d).name;
+				if ($(this).hasClass('tooltipstered')) {
+					$(this).tooltipster('destroy');
+				}
+				const capName = App.capacities.find(c => c.name === d).name;
+				const scoreData = data.find(dd => dd.name === d);
+				if (scores !== undefined && showJee) {
+					$(this).tooltipster({ content: `<b>${capName}</b><br>Average score: ${scoreData.avgScore}` });
+				} else {
+					$(this).tooltipster({ content: `<b>${capName}</b>` });
+				}
+			});
+
+			// Add JEE score icon
+			const jeeColorScale = d3.scaleThreshold()
+				.domain([1.5, 2, 2.5, 3, 3.5, 4, 4.5])
+				.range(App.jeeColors);
+
+			if (showJee) {
+				chart.selectAll('.y.axis .tick text').each(function addJeeIcons(d) {
 					const scoreData = data.find(dd => dd.name === d);
-					if (scores !== undefined && showJee) {
-						$(this).tooltipster({ content: `<b>${capName}</b><br>Average score: ${scoreData.avgScore}` });
-					} else {
-						$(this).tooltipster({ content: `<b>${capName}</b>` });
-					}
+					const score = scoreData.avgScore;
+					const g = d3.select(this.parentNode);
+					const xOffset = -1 * (scoreData.tickTextWidth + 7) - 5;
+					g.append('circle')
+						.attr('class','score-circle')
+						.style('fill', scoreData.avgScore ? jeeColorScale(score) : 'gray')
+						.attr('r','4')
+						.attr('cx', xOffset)
+						.attr('cy', 0);
 				});
-				// .text(function(d) {
-				// 	// const readableName = / - (.*)$/.exec(d)[1];
-				// 	const readableName = d;
-				// 	const shortName = getShortName(readableName);
-				// 	return shortName;
-				// });
+			}
+				
 
 			// if no data, hide chart and show message
 			if (d3.selectAll('.bar-group').nodes().length === 0) {
 				$('.no-data-message').text('No funds were assigned a core capacity');
 				$('.no-data-message.core-element').text('No funds were assigned a core element');
-				$('.category-chart-container')
+				$('.progress-circle-text')
+					.css('float','none');
+				$('.category-chart-container, .progress-circle-container')
 					.css('display', 'none')
-					.css('height','0px');
-				$('div.circle-chart-content')
-					.css('visibility','hidden');
+				// 	.css('height','0px');
+				// $('div.circle-chart-content')
+				// 	.css('display', 'none')
 			} else {
 				$('.no-data-message').text('');
-				$('.category-chart-container')
+				$('.category-chart-container, .progress-circle-container')
 					.css('display', 'block')
-					.css('height','');
-				$('div.circle-chart-content')
-					.css('visibility','visible');
+				$('.progress-circle-text')
+					.css('float','left');
+				// 	.css('height','');
+				// $('div.circle-chart-content')
+				// 	.css('display', 'inline-block')
 			}
 
 		};
