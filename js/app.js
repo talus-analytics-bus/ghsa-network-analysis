@@ -62,10 +62,11 @@ const App = {};
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
 			.defer(d3.json, 'data/donor_codes.json')
-			.defer(d3.json, 'data/funding_data.json') // VERSION 15, created 6 June 2018
+			.defer(d3.json, 'data/funding_data.json') // VERSION 16a, created 7 June 2018
 			.defer(d3.json, 'data/jee_score_data.json')
 			.defer(d3.json, 'data/currencies.json')
-			.await((error, worldData, unsdData, donorCodeData, fundingData, jeeData, currencies) => {
+			.defer(d3.json, 'data/who-iati-v15.json') // WHO projects from funding data v15
+			.await((error, worldData, unsdData, donorCodeData, fundingData, jeeData, currencies, whoIatiData) => {
 				if (error) throw error;
 
 				/* -------- Populate global variables -------- */
@@ -110,6 +111,10 @@ const App = {};
 					App.addOtherRecipients(d);
 				});
 
+				// Append WHO IATI data from v15 and IATI data from v16
+				// because WHO data are no longer accessible on D-Portal or IATI
+				fundingData = fundingData.concat(whoIatiData);
+				
 				// Set undefined assistance types to financial
 				fundingData.forEach(d => {
 					if (d.assistance_type === undefined) {
