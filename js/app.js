@@ -120,7 +120,15 @@ const App = {};
 					if (d.assistance_type === undefined) {
 						d.assistance_type = 'Direct financial support'
 					}
+
+					// Correction to core capacities
+					const idx = d.core_capacities.indexOf('General GHSA assistance');
+					if (idx > -1) {
+						d.core_capacities[idx] = 'General IHR Implementation';
+					}
 				});
+
+				// 
 
 				// // save funding data
 				// fundingData = fundingData.filter(d => {
