@@ -25,9 +25,13 @@
 	/* right: 0; */
 	z-index: 100;
 }
+.map-and-search-container {
+	transform-origin: top right;
+}
 .search-container {
 	position: relative;
 	margin-top: 10px;
+	transform-origin: top right;
 
 	input {
 		position: relative;
@@ -51,6 +55,7 @@
 	// background-color: rgba(240,240,240,0.8);
 	z-index: 10;
 	transition: background-color 1s;
+	transform-origin: top right;
 
 	&:hover {
 		background-color: rgba(240,240,240,0.925);
@@ -129,6 +134,7 @@
 	}
 }
 .legend-container {
+	transform-origin: bottom;
 	display: none;
 	position: absolute;
 	bottom: 0;
