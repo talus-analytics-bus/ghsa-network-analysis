@@ -217,6 +217,10 @@ const App = {};
 				// Create convenience variable for non-country funder/recipients
 				App.nonCountries = App.countries.filter(d => d.country === false && d.NAME !== undefined);
 
+				// Save list of funder and recipient codes
+				App.funderCodes = _.unique(_.pluck(App.fundingData, 'donor_code'))
+				App.recipientCodes = _.unique(_.pluck(App.fundingData, 'recipient_country'))
+
 				// call callback and finish progress bar
 				if (callback) callback();
 				NProgress.done();

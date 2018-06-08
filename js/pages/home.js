@@ -945,14 +945,13 @@
 			const curFundingData = App.fundingData;
 
 			const fundingDataByDonorCode = _.groupBy(curFundingData, 'donor_code');
-			const funderCodes = _.unique(_.pluck(App.fundingData, 'donor_code'))
 			let nonCountryFunderData = App.nonCountries.map((val, key) => {
 				return {
 					donor_code: val.FIPS,
 					entity_data: val,
 					projects: (fundingDataByDonorCode[val.FIPS] !== undefined) ? getPaymentSum(fundingDataByDonorCode[val.FIPS], ccs) : [],
 				};
-			}).filter(d => funderCodes.indexOf(d.donor_code) > -1);
+			}).filter(d => App.funderCodes.indexOf(d.donor_code) > -1);
 			nonCountryFunderData.forEach(d => {
 					d.inactive = !_.values(d.projects).some(dd => dd > 0);
 			});
@@ -1023,7 +1022,6 @@
 			});
 
 			const fundingDataByRecipientCode = _.groupBy(curFundingData, 'recipient_country');
-			const recipientCodes = _.unique(_.pluck(App.fundingData, 'recipient_country'))
 			let nonCountryRecipientData = App.nonCountries.map((val, key) => {
 				return {
 					recipient_code: val.FIPS,
@@ -1031,7 +1029,7 @@
 					projects: (fundingDataByRecipientCode[val.FIPS] !== undefined) ? getPaymentSum(fundingDataByRecipientCode[val.FIPS], ccs) : [],
 					// projects: fundingDataByRecipientCode[val.FIPS],
 				};
-			}).filter(d => recipientCodes.indexOf(d.recipient_code) > -1);
+			}).filter(d => App.recipientCodes.indexOf(d.recipient_code) > -1);
 			nonCountryRecipientData.forEach(d => {
 					d.inactive = !_.values(d.projects).some(dd => dd > 0);
 			});
