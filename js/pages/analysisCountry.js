@@ -400,7 +400,7 @@
 
 
         /**
-         * Draws the "In-kind Donations Received" or "In-kind Donations Made"
+         * Draws the "In-kind Contributions Received" or "In-kind Contributions Made"
          * table that appears on a country analysis page. When on the GHSA special
          * page, this table contains both the Provider and Recipient columns.
          * Otherwise, it contains only one or the other.
@@ -409,9 +409,9 @@
 
         	// Set title of section based on whether funder or recipient profile is being viewed
         	if (!isGhsaPage) {
-				$('.inkind-table-title').text((moneyType === 'd') ? 'In-kind Donations Made' : 'In-kind Donations Received');
+				$('.inkind-table-title').text((moneyType === 'd') ? 'In-kind Contributions Made' : 'In-kind Contributions Received');
         	} else {
-        		$('.inkind-table-title').text('In-kind Donations');
+        		$('.inkind-table-title').text('In-kind Contributions');
         		$('.inkind-table-section .description').text('The table below displays GHSA in-kind donations in alphabetical order by provider. Click on a row to view details.');
         	}
 

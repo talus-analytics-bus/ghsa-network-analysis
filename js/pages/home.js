@@ -589,7 +589,7 @@
 
 			// get inkind projects
 			$('.info-inkind-value').text(Util.comma(totalInkind));
-			$('.info-inkind-unit').html(`&nbsp;in-kind donation project${(totalInkind > 1 || totalInkind === 0) ? 's' : ''}`);
+			$('.info-inkind-unit').html(`&nbsp;in-kind contribution${(totalInkind > 1 || totalInkind === 0) ? 's' : ''}`);
 			$('.info-inkind-value-label').html(getMoneyTypeLabel(mFlow, 'inkind', isGhsa));
 			// display content
 			$('.info-container').slideDown();
@@ -630,9 +630,6 @@
 						properties: entityData,
 						flow: 'funded',
 					}; };
-					// match.datum2 = () => { return matchTmp.datum().entity_data; };
-					console.log('match')
-					console.log(match)
 				}
 
 				// set country as active
@@ -877,7 +874,7 @@
 
 			$list
 				.off('scroll')
-				.scroll(function(){
+				.scroll(function(e){
 					const element = $(this);
 					const scrollTop = element.scrollTop();
 					const spans = element.find('div');
@@ -941,15 +938,15 @@
 			const curFundingData = App.fundingData;
 
 			const fundingDataByDonorCode = _.groupBy(curFundingData, 'donor_code');
+			const funderCodes = _.unique(_.pluck(App.fundingData, 'donor_code'))
 			let nonCountryFunderData = App.nonCountries.map((val, key) => {
 				return {
 					donor_code: val.FIPS,
 					entity_data: val,
 					projects: (fundingDataByDonorCode[val.FIPS] !== undefined) ? getPaymentSum(fundingDataByDonorCode[val.FIPS], ccs) : [],
 				};
-			});
+			}).filter(d => funderCodes.indexOf(d.donor_code) > -1);
 			nonCountryFunderData.forEach(d => {
-					console.log(d);
 					d.inactive = !_.values(d.projects).some(dd => dd > 0);
 			});
 
@@ -964,13 +961,8 @@
 				  },
 				projects: getPaymentSum(curFundingData.filter(d => d.ghsa_funding === true), ccs), // TODO
 			};
-
-			console.log('nonCountryFunderData');
-			console.log(nonCountryFunderData);
-			const someGhsaProjects = _.values(ghsa.projects).some(d => d > 0);
-			if (someGhsaProjects) {
-				nonCountryFunderData = nonCountryFunderData.concat(ghsa);
-			}
+			ghsa.inactive = !_.values(ghsa.projects).some(d => d > 0);
+			nonCountryFunderData = nonCountryFunderData.concat(ghsa);
 
 			// sort A-Z by donor name
 			nonCountryFunderData = _.sortBy(nonCountryFunderData, (data) => { return data.entity_data.NAME.toLowerCase(); });
@@ -1024,6 +1016,7 @@
 			});
 
 			const fundingDataByRecipientCode = _.groupBy(curFundingData, 'recipient_country');
+			const recipientCodes = _.unique(_.pluck(App.fundingData, 'recipient_country'))
 			let nonCountryRecipientData = App.nonCountries.map((val, key) => {
 				return {
 					recipient_code: val.FIPS,
@@ -1031,11 +1024,10 @@
 					projects: (fundingDataByRecipientCode[val.FIPS] !== undefined) ? getPaymentSum(fundingDataByRecipientCode[val.FIPS], ccs) : [],
 					// projects: fundingDataByRecipientCode[val.FIPS],
 				};
-			}).filter(d => {
-				return _.values(d.projects).some(dd => dd > 0);
+			}).filter(d => recipientCodes.indexOf(d.recipient_code) > -1);
+			nonCountryRecipientData.forEach(d => {
+					d.inactive = !_.values(d.projects).some(dd => dd > 0);
 			});
-			// }).filter(d => d.projects !== undefined && d.projects.length > 0);
-
 			// Add object representing GHSA
 			const ghsa = {
 				recipient_code: 'ghsa',
@@ -1046,14 +1038,9 @@
 				    "country": false
 				  },
 				projects: getPaymentSum(curFundingData.filter(d => d.ghsa_funding === true), ccs),
-				// projects: curFundingData.filter(d => d.ghsa_funding === true), // TODO
 			};
-
-			// if (ghsa.projects.length > 0) {
-			const someGhsaProjects = _.values(ghsa.projects).some(d => d > 0);
-			if (someGhsaProjects) {
-				nonCountryRecipientData = nonCountryRecipientData.concat(ghsa);
-			}
+			ghsa.inactive = !_.values(ghsa.projects).some(d => d > 0);
+			nonCountryRecipientData = nonCountryRecipientData.concat(ghsa);
 
 			// sort A-Z by donor name
 			nonCountryRecipientData = _.sortBy(nonCountryRecipientData, (data) => { return data.entity_data.NAME.toLowerCase(); });
@@ -1062,6 +1049,7 @@
 			$list.selectAll('.list-item')
 				.data(nonCountryRecipientData).enter().append('div')
 					.attr('class','list-item')
+					.classed('inactive', d => d.inactive)
 					.text(d => d.entity_data.acronym || d.entity_data.NAME)
 					.on('click', function onClick(d) {
 						const curListItem = d3.select(this);

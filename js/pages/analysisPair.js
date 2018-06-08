@@ -145,7 +145,7 @@
 					},
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
-					{ name: 'In-kind Donations', value: 'total_inkind', type: 'number' },
+					{ name: 'In-kind Contributions', value: 'total_inkind', type: 'number' },
 				];
 			} else if (currentInfoTab === 'inkind') {
 				headerData = [
