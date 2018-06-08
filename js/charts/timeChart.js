@@ -23,9 +23,11 @@
         .range([0, width]);
         const maxValue = d3.max(data, d => d3.max([d.total_spent, d.total_committed]));
 
+        // define height of zero bar
+        const minHeight = 10;
         const y = d3.scaleLinear()
         .domain([0, 1.2 * maxValue])
-        .range([height, 0])
+        .range([height-minHeight, 0])
         .nice();
 
         const xAxis = d3.axisBottom()
