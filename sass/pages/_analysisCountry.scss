@@ -212,7 +212,7 @@
 
 
     .progress-circle-container {
-      margin-left: 336px;
+      margin-left: 276px;
     }
 
     .progress-circle-title {
@@ -231,7 +231,8 @@
 
     .circle-chart-content {
       display: inline-block;
-      margin: 0 20px;
+      margin: 0;
+      // margin: 0 20px;
       max-width: 160px;
       text-align: center;
       vertical-align: top;
@@ -266,6 +267,7 @@
       margin-top: 5px;
       font-size: 1.1em;
       font-weight: 600;
+      min-width: 160px;
     }
     .circle-chart-sublabel {
       font-size: 0.95em;

@@ -292,7 +292,7 @@
                 'so these figures do not take into account all known funding initiatives.',
             });
 
-            const ccs = ['P', 'D', 'R', 'O'];
+            const ccs = ['P', 'D', 'R', 'O', 'General IHR Implementation'];
             const fundsByCc = {};
             ccs.forEach((cc) => {
                 fundsByCc[cc] = {
@@ -306,17 +306,31 @@
             let totalCommitted = 0;
             lookup[iso].forEach((p) => {
                 ccs.forEach((cc) => {
-                    //console.log(p.core_capacities);
-                    if (p.core_capacities.some(pcc => cc === pcc.charAt(0))) {
-                        const committed = p.total_committed;
-                        let spent = p.total_spent;
+                    if (cc === 'General IHR Implementation') {
+                    	// General IHR Implementation
+                    	if (p.core_capacities.some(pcc => pcc === cc)) {
+	                        const committed = p.total_committed;
+	                        const spent = p.total_spent;
 
-                        // if (spent > committed) spent = committed;
-                        fundsByCc[cc].total_committed += committed;
-                        fundsByCc[cc].total_spent += spent;
+	                        // if (spent > committed) spent = committed;
+	                        fundsByCc[cc].total_committed += committed;
+	                        fundsByCc[cc].total_spent += spent;
 
-                        totalSpent += spent;
-                        totalCommitted += committed;
+	                        totalSpent += spent;
+	                        totalCommitted += committed;
+	                    }
+                    } else {
+	                    if (p.core_capacities.some(pcc => cc === pcc.charAt(0))) {
+	                        const committed = p.total_committed;
+	                        const spent = p.total_spent;
+
+	                        // if (spent > committed) spent = committed;
+	                        fundsByCc[cc].total_committed += committed;
+	                        fundsByCc[cc].total_spent += spent;
+
+	                        totalSpent += spent;
+	                        totalCommitted += committed;
+	                    }
                     }
                 });
             });
@@ -327,18 +341,14 @@
                 d3.select('.detect-circle-chart').select('svg').remove();// remove the existing SVGs
                 d3.select('.respond-circle-chart').select('svg').remove();// remove the existing SVGs
                 d3.select('.other-circle-chart').select('svg').remove();// remove the existing SVGs
+                d3.select('.general-circle-chart').select('svg').remove();// remove the existing SVGs
 
                 // need to pass in the type to flex based upon spent / committed
                 App.drawProgressCircles('.prevent-circle-chart', fundsByCc.P, totalSpent, totalCommitted, type, color);
                 App.drawProgressCircles('.detect-circle-chart', fundsByCc.D, totalSpent, totalCommitted, type, color);
                 App.drawProgressCircles('.respond-circle-chart', fundsByCc.R, totalSpent, totalCommitted, type, color);
                 App.drawProgressCircles('.other-circle-chart', fundsByCc.O, totalSpent, totalCommitted, type, color);
-
-                //fillValueText('.prevent-value', 'P', totalSpent, totalCommitted, type);
-                //fillValueText('.detect-value', 'D', totalSpent, totalCommitted, type);
-                //fillValueText('.respond-value', 'R', totalSpent, totalCommitted, type);
-                //fillValueText('.respond-value', 'R', totalSpent, totalCommitted, type);
-
+                App.drawProgressCircles('.general-circle-chart', fundsByCc['General IHR Implementation'], totalSpent, totalCommitted, type, color);
             };
 
             const percFormat = d3.format('.0%');
