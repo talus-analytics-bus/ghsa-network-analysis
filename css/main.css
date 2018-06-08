@@ -2005,9 +2005,10 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
 .circle-pack-container .description,
 .inkind-table-section .description {
   margin-top: 0px;
+  max-width: unset;
 }
 
-/* line 436, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisCountry.scss */
+/* line 437, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisCountry.scss */
 .ghsa-recipient-cell {
   white-space: nowrap;
 }

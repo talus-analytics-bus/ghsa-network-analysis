@@ -59,7 +59,8 @@
 			$('.country-name').text(name);
 			$('.start-year').text(App.dataStartYear);
 			$('.end-year').text(App.dataEndYear);
-			$('.money-type').text(moneyType === 'd' ? 'disbursed' : 'received');
+			$('.money-type').text('disbursed');
+			// $('.money-type').text(moneyType === 'd' ? 'disbursed' : 'committed');
 			$('.money-type-cap').text(moneyType === 'd' ? 'Disbursed' : 'Received');
 			$('.money-type-noun').text(moneyType === 'd' ? 'funder' : 'recipient');
 			$('.money-type-noun-cap').text(moneyType === 'd' ? 'Funder' : 'Recipient');
@@ -360,7 +361,7 @@
                         const pValue = fundsByCc[ind].total_spent / totalSpent;
                         $(valueSelector).text(percFormat(pValue));
                     } else {
-                        $(valueSelector).parent().text('No funds committed for this core element');
+                        $(valueSelector).parent().text('No funds disbursed for this core element');
                     }
 
                 }else {
@@ -399,7 +400,7 @@
 				$('.inkind-table-title').text((moneyType === 'd') ? 'In-kind Contributions Made' : 'In-kind Contributions Received');
         	} else {
         		$('.inkind-table-title').text('In-kind Contributions');
-        		$('.inkind-table-section .description').text('The table below displays GHSA in-kind donations in alphabetical order by provider. Click on a row to view details.');
+        		$('.inkind-table-section .description').text('The table below displays GHSA in-kind contributions in alphabetical order by provider. Click on a row to view details.');
         	}
 
 			// get in-kind support projects
@@ -835,10 +836,11 @@
 					chart.update(catData, fundTypeChoice);
 				}
 				if (fundTypeChoice === 'total_spent') {
+					$('.money-type').text('disbursed');
 					if (moneyType === 'r') {
-						$('.money-type').text('recieved');
+						// $('.money-type').text('recieved');
 					} else {
-						$('.money-type').text('disbursed');
+						// $('.money-type').text('disbursed');
 					}
 				} else {
 					$('.money-type').text('committed');

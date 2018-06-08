@@ -285,8 +285,10 @@
 
 			// if no data, hide chart and show message
 			if (d3.selectAll('.bar-group').nodes().length === 0) {
-				$('.no-data-message').text('No funds were assigned a core capacity');
-				$('.no-data-message.core-element').text('No funds were assigned a core element');
+				const fundType = $('input[name="fundtype"]:checked').val();
+				const fundNoun = (fundType === 'total_spent') ? 'disbursed' : 'committed';
+				$('.no-data-message').text(`No ${fundNoun} funds were assigned a core capacity`);
+				$('.no-data-message.core-element').text(`No ${fundNoun} funds were assigned a core element`);
 				$('.progress-circle-text')
 					.css('float','none');
 				$('.category-chart-container, .progress-circle-container')
