@@ -367,35 +367,12 @@
 
             renderProgressCircles('total_spent');
 
-
-
-            // change the circles based upon the user selection (spend / committed)
-
-            $('.toggle-progress-circle-chart-container').click(function () {
-
-                selected = $('.toggle-progress-circle-chart-container input[name=fundtype]:checked').val();
-                // make sure that you check the other radio buttons as well
-                if (selected === 'total_spent') {
-                    $('#chart-spent').prop("checked", true);
-                } else  {
-                    $('#chart-committed').prop("checked", true);
-                }
-                renderProgressCircles(selected);
-
-            });
-
-
-            $('.toggle-disbursed-chart-container').click(function (){
-                selected = $('.toggle-disbursed-chart-container input[name=fundtype]:checked').val();
-                // make sure that you check the other radio buttons as well
-                if (selected === 'total_spent') {
-                    $('#progress-spent').prop("checked", true);
-                } else  {
-                    $('#progress-committed').prop("checked", true);
-                }
-                renderProgressCircles(selected);
-            } );
-
+            $('input[name=fundtype]').change(function(){
+				// Get selection and set all radio buttons to that
+				const fundTypeChoice = $(this).val();
+				$(`input[name=fundtype][value=${fundTypeChoice}]`).prop('checked', true);
+				renderProgressCircles(fundTypeChoice);
+			});
         }
 
 
@@ -562,32 +539,6 @@
 
 			drawTable('total_spent');
 
-
-            $('.toggle-progress-circle-chart-container').click(function () {
-
-                selected = $('.toggle-progress-circle-chart-container input[name=fundtype]:checked').val();
-                // make sure that you check the other radio buttons as well
-                if (selected === 'total_spent') {
-                    $('#chart-spent').prop("checked", true);
-                } else  {
-                    $('#chart-committed').prop("checked", true);
-                }
-                drawTable(selected);
-
-            });
-
-            $('.toggle-disbursed-chart-container').click(function() {
-                selected = $('.toggle-disbursed-chart-container input[name=fundtype]:checked').val();
-                // make sure that you check the other radio buttons as well
-                if (selected === 'total_spent') {
-                    $('#progress-spent').prop("checked", true);
-                } else  {
-                    $('#progress-committed').prop("checked", true);
-                }
-                drawTable(selected);
-
-            });
-
             // If there was no data in the table, say so
             if (fundedData.length === 0) {
             	$('.inkind-table-section .data-area').hide();
@@ -637,16 +588,16 @@
 						const ccAbbrev = cc.split('.')[0];
 						if (ccAbbrev === 'P') {
 							fundedByCountry[recIso].spent_on_prevent += p.total_spent;
-							fundedByCountry[recIso].committed_on_prevent += p.total_spent;
+							fundedByCountry[recIso].committed_on_prevent += p.total_committed;
 						} else if (ccAbbrev === 'D') {
 							fundedByCountry[recIso].spent_on_detect += p.total_spent;
-							fundedByCountry[recIso].committed_on_detect += p.total_spent;
+							fundedByCountry[recIso].committed_on_detect += p.total_committed;
 						} else if (ccAbbrev === 'R') {
 							fundedByCountry[recIso].spent_on_respond += p.total_spent;
-							fundedByCountry[recIso].committed_on_respond += p.total_spent;
+							fundedByCountry[recIso].committed_on_respond += p.total_committed;
 						} else {
 							fundedByCountry[recIso].spent_on_other += p.total_spent;
-							fundedByCountry[recIso].committed_on_other += p.total_spent;
+							fundedByCountry[recIso].committed_on_other += p.total_committed;
 						}
 					})
 				}
@@ -737,31 +688,12 @@
 
 			drawTable('total_spent');
 
-
-            $('.toggle-progress-circle-chart-container').click(function () {
-
-                selected = $('.toggle-progress-circle-chart-container input[name=fundtype]:checked').val();
-                // make sure that you check the other radio buttons as well
-                if (selected === 'total_spent') {
-                    $('#chart-spent').prop("checked", true);
-                } else  {
-                    $('#chart-committed').prop("checked", true);
-                }
-                drawTable(selected);
-
-            });
-
-            $('.toggle-disbursed-chart-container').click(function() {
-                selected = $('.toggle-disbursed-chart-container input[name=fundtype]:checked').val();
-                // make sure that you check the other radio buttons as well
-                if (selected === 'total_spent') {
-                    $('#progress-spent').prop("checked", true);
-                } else  {
-                    $('#progress-committed').prop("checked", true);
-                }
-                drawTable(selected);
-
-            });
+           $('input[name=fundtype]').change(function(){
+				// Get selection and set all radio buttons to that
+				const fundTypeChoice = $(this).val();
+				$(`input[name=fundtype][value=${fundTypeChoice}]`).prop('checked', true);
+				drawTable(fundTypeChoice);
+			});
 
             // If there was no data in the table, say so
             if (fundedData.length === 0) {
@@ -792,33 +724,33 @@
 				});
 			});
 			App.capacities.forEach((cap) => {
-				if (cap.id !== 'General IHR Implementation') {
-					if (fundsByCat[cap.id]) {
-						const countries = [];
-						let totalCommitted = 0;
-						let totalSpent = 0;
-						for (const recIso in fundsByCat[cap.id]) {
-							countries.push(fundsByCat[cap.id][recIso]);
-							totalCommitted += fundsByCat[cap.id][recIso].total_committed;
-							totalSpent += fundsByCat[cap.id][recIso].total_spent;
-						}
-						catData.push({
-							id: cap.id,
-							name: cap.name,
-							children: countries,
-							total_committed: totalCommitted,
-							total_spent: totalSpent,
-						});
-					} else {
-						catData.push({
-							id: cap.id,
-							name: cap.name,
-							children: [],
-							total_committed: 0,
-							total_spent: 0,
-						});
+				// if (cap.id !== 'General IHR Implementation') {
+				if (fundsByCat[cap.id]) {
+					const countries = [];
+					let totalCommitted = 0;
+					let totalSpent = 0;
+					for (const recIso in fundsByCat[cap.id]) {
+						countries.push(fundsByCat[cap.id][recIso]);
+						totalCommitted += fundsByCat[cap.id][recIso].total_committed;
+						totalSpent += fundsByCat[cap.id][recIso].total_spent;
 					}
+					catData.push({
+						id: cap.id,
+						name: cap.name,
+						children: countries,
+						total_committed: totalCommitted,
+						total_spent: totalSpent,
+					});
+				} else {
+					catData.push({
+						id: cap.id,
+						name: cap.name,
+						children: [],
+						total_committed: 0,
+						total_spent: 0,
+					});
 				}
+				// }
 			});
 			Util.sortByKey(catData, 'total_spent', true);
 
@@ -853,39 +785,12 @@
 
 			chart.update(catData, selected);
 
-			$('input[type=checkbox][value=showsmall]').on('change', function() {
-				const isChecked = $(this).prop('checked');
-				if (isChecked) {
-					filterData = 'small';
-				} else {
-					filterData = 'big';
-				}
-				updateData();
+			$('input[name=fundtype]').change(function(){
+				// Get selection and set all radio buttons to that
+				const fundTypeChoice = $(this).val();
+				$(`input[name=fundtype][value=${fundTypeChoice}]`).prop('checked', true);
+				updateData(fundTypeChoice);
 			});
-
-            $('.toggle-progress-circle-chart-container').click(function () {
-
-                selected = $('.toggle-progress-circle-chart-container input[name=fundtype]:checked').val();
-                // make sure that you check the other radio buttons as well
-                if (selected === 'total_spent') {
-                    $('#chart-spent').prop("checked", true);
-                } else  {
-                    $('#chart-committed').prop("checked", true);
-                }
-                updateData();
-
-            });
-
-            $('.toggle-disbursed-chart-container').click(function() {
-                selected = $('.toggle-disbursed-chart-container input[name=fundtype]:checked').val();
-                // make sure that you check the other radio buttons as well
-                if (selected === 'total_spent') {
-                    $('#progress-spent').prop("checked", true);
-                } else  {
-                    $('#progress-committed').prop("checked", true);
-                }
-                updateData();
-            });
 
             // put init jee chart stuff here
             if (!showJee) {
@@ -904,13 +809,13 @@
 			}
 
 
-			const updateData = () => {
+			const updateData = (fundTypeChoice) => {
 				if (filterData === 'small') {
-					chart.update(smallData, selected);
+					chart.update(smallData, fundTypeChoice);
 				} else {
-					chart.update(catData, selected);
+					chart.update(catData, fundTypeChoice);
 				}
-				if (selected === 'total_spent') {
+				if (fundTypeChoice === 'total_spent') {
 					if (moneyType === 'r') {
 						$('.money-type').text('recieved');
 					} else {

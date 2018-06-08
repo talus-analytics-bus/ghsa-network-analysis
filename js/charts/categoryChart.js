@@ -40,19 +40,11 @@
 			.append('g')
 				.attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-		// const data = getRunningValues(rawData, selected);
-		//
-		// const maxValue = d3.max(data, d => d[selected]);
 		const x = d3.scaleLinear()
 			.range([0, width]);
 		const y = d3.scaleBand()
 			.padding(0.25);
-		/*const colorScale = d3.scaleLinear()
-			.domain([0, 1])
-			.range([
-				colors[2],
-				colors[0],
-			]);*/
+
         const colorScale = d3.scaleOrdinal()
         .range(colors);
 
@@ -82,39 +74,8 @@
 			.call(yAxis)
 			.style('font-size', '0.4em');
 
-		/*const legendG = chart.append('g')
-			.attr('class', 'legend-group')
-			.attr('transform', `translate(${width / 3}, ${height + 30})`);
-		const defs = chart.append('defs');
-
-		const gradient = defs.append('linearGradient')
-			.attr('id', 'legend-gradient')
-			.attr('y1', '0%')
-			.attr('y2', '0%')
-			.attr('x1', '0%')
-			.attr('x2', '100%');
-
-		gradient.append('stop')
-			.attr('class', 'gradient-start')
-			.attr('offset', '0%')
-			.attr('stop-color', colors[2])
-			.attr('stop-opacity', 1);
-
-		gradient.append('stop')
-			.attr('class', 'gradient-stop')
-			.attr('offset', '100%')
-			.attr('stop-color', colors[0])
-			.attr('stop-opacity', 1);
-
-		legendG.append('rect')
-			.attr('height', 20)
-			.attr('width', 300)
-			.style('fill', 'url(#legend-gradient');*/
-
 		// add axes labels
-		//let xAxisLabel = 'Total Funds Disbursed by Core Capacity';
-        let xAxisLabel = ''; // per Ellie, no xAxisLabel
-		//if (param.moneyType === 'r') xAxisLabel = 'Total Funds Received by Core Capacity';
+        let xAxisLabel = '';
 		chart.append('text')
 			.attr('class', 'axis-label')
 			.attr('x', width / 2)
@@ -144,6 +105,9 @@
 			// determine whether this is a country with jee scores available
 			const showJee = param.showJee;
 			const scores = param.scores; // undefined if not available
+
+			console.log('rawData');
+			console.log(rawData);
 
 			let data = getRunningValues(rawData, newSelector)
 				.sort((a, b) => {
@@ -291,7 +255,7 @@
 				}
 				const capName = App.capacities.find(c => c.name === d).name;
 				const scoreData = data.find(dd => dd.name === d);
-				if (scores !== undefined && showJee) {
+				if (scores !== undefined && showJee && capName !== "General IHR Implementation") {
 					$(this).tooltipster({ content: `<b>${capName}</b><br>Average score: ${scoreData.avgScore}` });
 				} else {
 					$(this).tooltipster({ content: `<b>${capName}</b>` });
