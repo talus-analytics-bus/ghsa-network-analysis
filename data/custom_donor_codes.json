@@ -1,0 +1,118 @@
+[
+  {
+    "donor_name": "Global Fund",
+    "donor_sector": "Multilateral",
+    "donor_code": "gffatm"
+  },
+  {
+    "donor_name": "Louvain Coopération",
+    "donor_code": "be-bce_kbo-0422717486",
+    "donor_sector": "National NGO"
+  },
+  {
+    "donor_name": "Rode Kruis-Vlaanderen Internationaal",
+    "donor_code": "be-bce_kbo-461634084",
+    "donor_sector": "National NGO"
+  },
+  {
+    "donor_name": "The Power of Nutrition",
+    "donor_code": "gb-chc-1160373",
+    "donor_sector": "Foundation"
+  },
+  {
+    "donor_name": "EMMS International",
+    "donor_code": "gb-sc-sc032327",
+    "donor_sector": "International NGO"
+  },
+  {
+    "donor_name": "International Treatment Preparedness Coalition (ITPC)",
+    "donor_code": "xi-iati-bwco20151011",
+    "donor_sector": "International NGO"
+  },
+  {
+    "donor_name": "Slovakia",
+    "donor_code": "sk",
+    "donor_sector": "Government"
+  },
+  {
+    "donor_name": "International NGO",
+    "donor_sector": "International NGO",
+    "donor_code": "int-ngo"
+  },
+  {
+    "donor_name": "International NGO",
+    "donor_sector": "International NGO",
+    "donor_code": "ingo"
+  },
+  {
+    "donor_name": "BRAC UK",
+    "donor_sector": "International NGO",
+    "donor_code": "gb-coh-1115482"
+  },
+  {
+    "donor_name": "Global Health Security Agenda (GHSA) Projects",
+    "donor_sector": "Multilateral",
+    "donor_code": "ghsa",
+    "acronym": "Global Health Security Agenda (GHSA)"
+  },
+  {
+    "donor_name": "Southeast Asia",
+    "donor_sector": "Multilateral",
+    "donor_code": "southeastasia"
+  },
+  {
+    "donor_name": "Global Health Security Agenda (GHSA) Consortium",
+    "donor_sector": "Multilateral",
+    "donor_code": "ghsa-consortium"
+  },
+  {
+    "donor_name": "Global Health Security Agenda (GHSA) Private Sector Roundtable (PSRT)",
+    "donor_sector": "Public Private Partnership",
+    "donor_code": "ghsa-psrt"
+  },
+  {
+    "donor_name": "NextGen",
+    "donor_sector": "Public Private Partnership",
+    "donor_code": "nextgen"
+  },
+  {
+    "donor_name": "Indo-Pacific Region",
+    "donor_sector": "Multilateral",
+    "donor_code": "ipr"
+  },
+  {
+    "donor_name": "Stichting fondsbeheer DGGF lokaal MKB",
+    "donor_sector": "International NGO",
+    "donor_code": "dggf",
+    "funder_ref": "NL-KVK-61172863"
+  },
+  {
+    "donor_name": "Red Cross",
+    "donor_sector": "International NGO",
+    "donor_code": "arc"
+  },
+  {
+    "donor_name": "World Organisation for Animal Health",
+    "donor_sector": "International NGO",
+    "donor_code": "oie"
+  },  {
+    "donor_name": "Mano River Union",
+    "donor_sector": "Multilateral",
+    "donor_code": "mru"
+  },
+  {
+    "donor_name": "UN Food and Agriculture Organization (FAO)",
+    "donor_sector": "Multilateral",
+    "donor_code": "fao"
+  },
+  {
+    "donor_name": "World Health Organization",
+    "donor_sector": "Multilateral",
+    "donor_code": "who"
+  },
+  {
+    "donor_name": "General Global Benefit",
+    "donor_sector": "Country",
+    "donor_code": "General Global Benefit"
+  }
+]

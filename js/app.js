@@ -412,6 +412,49 @@ const App = {};
     App.ghsaInfoTooltipContent = 'The Global Health Security Agenda (GHSA) is a partnership of nations, international organizations, and non-governmental stakeholders to help build countries’ capacity to help create a world safe and secure from infectious disease threats. Only resources that have specifically been identified as being committed or disbursed under the GHSA are identified as GHSA financial resources in the GHS Tracking Dashboard.';
     // App.ghsaInfoTooltipContent = 'The Global Health Security Agenda (GHSA) is a partnership of over 64 nations, international organizations, and non-governmental stakeholders to help build countries’ capacity to help create a world safe and secure from infectious disease threats and elevate global health security as a national and global priority. Only resources that have specifically been identified as being committed or disbursed under the GHSA are identified as GHSA financial resources in the GHS Tracking Dashboard';
 
+	/* ------------------ Data Functions ------------------- */
+	/**
+	 * Maps the funder references of all projects to the correct entities,
+	 * and updates the funder data fields to be correct.
+	 * @param  {Collection} projects All the funding data.
+	 */
+	App.correctDonors = (projects) => {
+		// Load updated donor codes
+		d3.queue(1)
+			.defer(d3.json, 'data/new_donor_codes.json')
+			.defer(d3.json, 'data/custom_donor_codes.json')
+			.await((error, donorCodeListTmp, customDonorCodeList) => {
+				const donorCodeList = donorCodeListTmp.concat(customDonorCodeList);
+				console.log('donorCodeList');
+				console.log(donorCodeList);
+
+				// For each project, get the donor code data
+				projects.forEach(project => {
+					if (project.funder_ref === null || project.funder_ref === undefined) return;
+
+					project.funder_ref = project.funder_ref.toLowerCase();
+
+					const donorCode = donorCodeList.find(donorCode => donorCode.donor_code === project.funder_ref);
+					if (donorCode === undefined) {
+						console.log('No match for: ' + project.funder_ref);
+						return;
+					}
+
+					// Update donor name, sector, and code accordingly
+					project.donor_name = donorCode.donor_name;
+					project.donor_sector = donorCode.donor_sector;
+					project.donor_code = donorCode.donor_country || donorCode.donor_code;
+					
+				});
+				
+			});
+		// Save it out
+		console.log('projects');
+		console.log(projects);
+		Util.save(projects);
+	};
+    
+
 	/* ------------------ Format Functions ------------------- */
 	App.siFormat = (num) => {
 		if (!num) return '0';

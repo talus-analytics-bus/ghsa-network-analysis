@@ -1,4 +1,761 @@
 [
+    {
+        "donor_name": "United Nations Population Fund",
+        "donor_code": "unfpa",
+        "donor_sector": "Multilateral"
+    },
+    {
+        "donor_name": "United Nations Office for Project Services (UNOPS)",
+        "donor_code": "41aaa",
+        "donor_sector": "Multilateral"
+    },
+    {
+        "donor_name": "INTERNATIONAL DISABILITY ALLIANCE",
+        "donor_code": "ida",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "African Development Bank",
+        "donor_code": "afdb",
+        "donor_sector": "Multilateral"
+    },
+    {
+        "donor_name": "Asian Development Bank",
+        "donor_code": "asdb-special-funds",
+        "donor_sector": "Multilateral"
+    },
+    {
+        "donor_name": "Australia",
+        "donor_code": "au",
+        "donor_country": "AU",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Bangladesh Nari Progati Sangha",
+        "donor_code": "bd-nab-0271",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Belgium",
+        "donor_country": "BE",
+        "donor_code": "be",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Damiaanactie / Action Damien",
+        "donor_code": "be-bce_kbo-0406694670",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Institute of Tropical Medicine",
+        "donor_code": "be-bce_kbo-0410057701",
+        "donor_sector": "Other Public Sector"
+    },
+    {
+        "donor_name": "ULB-Coopération",
+        "donor_code": "be-bce_kbo-0415627875",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Association pour la Promotion de l'Education et de la Formation à l'Etranger ",
+        "donor_code": "be-bce_kbo-0415880570",
+        "donor_sector": "Other Public Sector"
+    },
+    {
+        "donor_name": "Tearfund VZW (TFBE)",
+        "donor_code": "be-bce_kbo-0419872616",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Plan International Belgium",
+        "donor_code": "be-bce_kbo-0425420917",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Handicap International Belgique",
+        "donor_code": "be-bce_kbo-0432235661",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Memisa",
+        "donor_code": "be-bce_kbo-0435563751",
+        "donor_sector": "Academic, Training and Research"
+    },
+    {
+        "donor_name": "Médecins Sans Vacances",
+        "donor_code": "be-bce_kbo-0448723978",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Light For The World Belgium",
+        "donor_code": "be-bce_kbo-0460240749",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Croix-Rouge de Belgique Communauté francophone - Activités internationales ASBL",
+        "donor_code": "be-bce_kbo-0462132150",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Chaîne de l'Espoir Belgique / Keten van Hoop België / Chain of Hope Belgium",
+        "donor_code": "be-bce_kbo-0463455904",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Canada",
+        "donor_code": "ca",
+        "donor_country": "CA",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Fundación Oriéntame",
+        "donor_code": "co-rue-860049972",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Bill & Melinda Gates Foundation",
+        "donor_code": "bmgf",
+        "donor_sector": "Foundation"
+    },
+    {
+        "donor_name": "Germany",
+        "donor_code": "de",
+        "donor_country": "DE",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Denmark - Ministry of Foreign Affairs",
+        "donor_code": "xm-dac-3-1",
+        "donor_country": "DK",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Spain",
+        "donor_code": "es",
+        "donor_country": "ES",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Amref Health Africa in Ethiopia",
+        "donor_code": "et-mfa-0001989741",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Finland",
+        "donor_code": "fi",
+        "donor_country": "FI",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "France",
+        "donor_code": "fr",
+        "donor_country": "FR",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Handicap International",
+        "donor_code": "fr-pdr-w691075333",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "United Kingdom",
+        "donor_code": "gb",
+        "donor_country": "GB",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Hospice Africa Ltd",
+        "donor_code": "gb-chc-1024903",
+        "donor_sector": "Academic, Training and Research"
+    },
+    {
+        "donor_name": "Mifumi UK",
+        "donor_code": "gb-chc-1038785",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "International HIV/AIDS Alliance",
+        "donor_code": "gb-chc-1038860",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Disability and Development Partners",
+        "donor_code": "gb-chc-1046001",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Action Against Hunger UK",
+        "donor_code": "gb-chc-1047501",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "The Leprosy Mission England and Wales",
+        "donor_code": "gb-chc-1050327",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Orbis Charitable Trust",
+        "donor_code": "gb-chc-1061352",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "International Rescue Committee UK",
+        "donor_code": "gb-chc-1065972",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "International Service",
+        "donor_code": "gb-chc-1069182",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "TB Alert",
+        "donor_code": "gb-chc-1071886",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Indigo Trust",
+        "donor_code": "gb-chc-1075920",
+        "donor_sector": "Foundation"
+    },
+    {
+        "donor_name": "Sense International",
+        "donor_code": "gb-chc-1076497",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "BasicNeeds",
+        "donor_code": "gb-chc-1079599",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "World Child Cancer UK",
+        "donor_code": "gb-chc-1084729",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Women and Children First (UK)",
+        "donor_code": "gb-chc-1085096",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "One to One Children's Fund",
+        "donor_code": "gb-chc-1086159",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Project Harar",
+        "donor_code": "gb-chc-1094272",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Malaria Consortium",
+        "donor_code": "gb-chc-1099776",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "LAMB Health Care Foundation",
+        "donor_code": "gb-chc-1101217",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Y Care International",
+        "donor_code": "gb-chc-1109789",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "PHASE Worldwide",
+        "donor_code": "gb-chc-1112734",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "BRAC UK",
+        "donor_code": "gb-chc-1115482",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Haiti Hospital Appeal",
+        "donor_code": "gb-chc-1117528",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "interburns",
+        "donor_code": "gb-chc-1122299",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Welbodi Partnership",
+        "donor_code": "gb-chc-1125217",
+        "donor_sector": "Academic, Training and Research"
+    },
+    {
+        "donor_name": "Cyan International",
+        "donor_code": "gb-chc-1129603",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "AfriKids",
+        "donor_code": "gb-chc-1141028",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "ColaLife",
+        "donor_code": "gb-chc-1142516",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Carers Worldwide",
+        "donor_code": "gb-chc-1150214",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Abaseen Foundation UK",
+        "donor_code": "gb-chc-1157009",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Health Poverty Action",
+        "donor_code": "gb-chc-1837621",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Sightsavers",
+        "donor_code": "gb-chc-207544",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Lepra",
+        "donor_code": "gb-chc-213251",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "International Planned Parenthood Federation",
+        "donor_code": "gb-chc-229476",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "United Purpose",
+        "donor_code": "gb-chc-272465",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Catholic Agency For Overseas Development (CAFOD)",
+        "donor_code": "gb-chc-285776",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Feed the Minds",
+        "donor_code": "gb-chc-291333",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Charity Projects Ltd (Comic Relief)",
+        "donor_code": "gb-chc-326568",
+        "donor_sector": "Foundation"
+    },
+    {
+        "donor_name": "Islamic Relief Worldwide",
+        "donor_code": "gb-chc-328158",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Food for the Hungry UK",
+        "donor_code": "gb-chc-328273",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Palladium International Ltd (UK)",
+        "donor_code": "gb-coh-2394229",
+        "donor_sector": "Private Sector"
+    },
+    {
+        "donor_name": "Crown Agents Limited",
+        "donor_code": "gb-coh-03259922",
+        "donor_sector": "Private Sector"
+    },
+    {
+        "donor_name": "CDC Group plc",
+        "donor_code": "gb-coh-03877777",
+        "donor_sector": "Other Public Sector"
+    },
+    {
+        "donor_name": "act4africa",
+        "donor_code": "gb-coh-04276635",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Plan International UK",
+        "donor_code": "gb-coh-1364201",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Options Consultancy Services",
+        "donor_code": "gb-coh-2695347",
+        "donor_sector": "Private Sector"
+    },
+    {
+        "donor_name": "HealthProm",
+        "donor_code": "gb-coh-4887855",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Simprints",
+        "donor_code": "gb-coh-8835431",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "UK - Ministry of Defence",
+        "donor_code": "gb-gov-8",
+        "donor_country": "GB",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Inter-American Development Bank",
+        "donor_code": "xi-iati-iadb",
+        "donor_sector": "Multilateral"
+    },
+    {
+        "donor_name": "Self Help Africa",
+        "donor_code": "ie-chy-6663",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Republic of Korea",
+        "donor_code": "kr-gov-021",
+        "donor_country": "KR",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Amref Health Africa Malawi",
+        "donor_code": "mw-nbm-r1527",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Palliative Care Support Trust",
+        "donor_code": "mw-rg-2977",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Netherlands",
+        "donor_code": "nl",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Heifer Nederland",
+        "donor_code": "nl-kvk-20093733",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Oxfam Novib",
+        "donor_code": "nl-kvk-27108436",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "ActionAid International",
+        "donor_code": "nl-kvk-27264198",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Netherlands Enterprise Agency",
+        "donor_code": "nl-kvk-27378529",
+        "donor_country": "NL",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "CHOICE for Youth and Sexuality",
+        "donor_code": "nl-kvk-32108345",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Royal Tropical Institute",
+        "donor_code": "nl-kvk-33185213",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "AFEW International ",
+        "donor_code": "nl-kvk-34148682",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "dance4life",
+        "donor_code": "nl-kvk-34197379",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Simavi",
+        "donor_code": "nl-kvk-40594571",
+        "donor_sector": "Foundation"
+    },
+    {
+        "donor_name": "Stichting Woord en Daad",
+        "donor_code": "nl-kvk-41118168",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Terre des Hommes Netherlands",
+        "donor_code": "nl-kvk-41149287",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Amref Flying Doctors",
+        "donor_code": "nl-kvk-41150298",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "Cordaid",
+        "donor_code": "nl-kvk-41160054",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Rutgers",
+        "donor_code": "nl-kvk-41193594",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Plan Nederland",
+        "donor_code": "nl-kvk-41198890",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Save the Children Netherlands",
+        "donor_code": "nl-kvk-41201463",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Stichting Health Action International",
+        "donor_code": "nl-kvk-41207580",
+        "donor_sector": "Foundation"
+    },
+    {
+        "donor_name": "Aids Fonds - STOP AIDS NOW! - Soa Aids Nederland",
+        "donor_code": "nl-kvk-41207989",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Mainline",
+        "donor_code": "nl-kvk-41209946",
+        "donor_sector": "Foundation"
+    },
+    {
+        "donor_name": "War Child Holland",
+        "donor_code": "nl-kvk-41215393",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "The Access to Nutrition Foundation",
+        "donor_code": "nl-kvk-58279199",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Stichting fondsbeheer DGGF lokaal MKB",
+        "donor_code": "nl-kvk-61172863",
+        "donor_sector": "Foundation"
+    },
+    {
+        "donor_name": "Norad - Norwegian Agency for Development Cooperation",
+        "donor_code": "no-brc-971277882",
+        "donor_country": "NO",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "New Zealand",
+        "donor_country": "NZ",
+        "donor_code": "nz",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Women's Global Network on Reproductive Rights",
+        "donor_code": "ph-sec-fn200806591",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Sweden",
+        "donor_code": "se",
+        "donor_country": "SE",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Diakonia Sweden",
+        "donor_code": "se-on-802017-3517",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Protecting Families Against HIV/AIDS",
+        "donor_code": "ug-ngb-63360",
+        "donor_sector": "National NGO"
+    },
+    {
+        "donor_name": "African Population and Health Research Center ",
+        "donor_code": "us-ein-06-1608361",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "The International Rescue Committee",
+        "donor_code": "us-ein-13-5660870",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Orbis International",
+        "donor_code": "us-ein-237297651",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Ipas",
+        "donor_code": "us-ein-56-1071085",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "World Vision International",
+        "donor_code": "us-ein-95-3202116",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "United States Agency for International Development (USAID)",
+        "donor_code": "us-gov-1",
+        "donor_country": "US",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "United States",
+        "donor_country": "US",
+        "donor_code": "us",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Plan International USA",
+        "donor_code": "us-irs-13-5661832",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "European Bank for Reconstruction and Development",
+        "donor_code": "xi-iati-ebrd",
+        "donor_sector": "Multilateral"
+    },
+    {
+        "donor_name": "European Union",
+        "donor_code": "eu",
+        "donor_sector": "Multilateral"
+    },
+    {
+        "donor_name": "Ireland",
+        "donor_code": "ie",
+        "donor_country": "IE",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "United Nations Joint Programme on HIV and AIDS Secretariat (UNAIDS)",
+        "donor_code": "xm-dac-41110",
+        "donor_sector": "Multilateral"
+    },
+    {
+        "donor_name": "United Nations Development Programme (UNDP)",
+        "donor_code": "undp",
+        "donor_sector": "Multilateral"
+    },
+    {
+        "donor_name": "United Nations World Food Programme (WFP)",
+        "donor_code": "xm-dac-41140",
+        "donor_sector": "Multilateral"
+    },
+    {
+        "donor_name": "Food and Agriculture Organization of the United Nations (FAO)",
+        "donor_code": "xm-dac-41301",
+        "donor_sector": "Multilateral"
+    },
+    {
+        "donor_name": "International Labour Organization (ILO)",
+        "donor_code": "xm-dac-41302",
+        "donor_sector": "Multilateral"
+    },
+    {
+        "donor_name": "International Development Law Organization (IDLO)",
+        "donor_code": "xm-dac-47059",
+        "donor_sector": "Multilateral"
+    },
+    {
+        "donor_name": "AICS - Agenzia Italiana per la Cooperazione allo Sviluppo / Italian Agency for Cooperation and Development",
+        "donor_code": "xm-dac-6-4",
+        "donor_country": "IT",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Slovak Republic",
+        "donor_code": "xm-dac-69-02",
+        "donor_country": "SK",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Slovak Republic",
+        "donor_code": "xm-dac-69-18",
+        "donor_country": "SK",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Japan",
+        "donor_code": "jp",
+        "donor_country": "JP",
+        "donor_sector": "Government"
+    },
+    {
+        "donor_name": "Orbis Africa",
+        "donor_code": "za-pbo-930040668",
+        "donor_sector": "International NGO"
+    },
+    {
+        "donor_name": "Family Aids Caring Trust",
+        "donor_code": "zw-pvo-wo1789",
+        "donor_sector": "National NGO"
+    },
+    {
+    "donor_name": "Global Fund",
+    "donor_sector": "Multilateral",
+    "donor_code": "gffatm"
+  },
+  {
+    "donor_name": "Louvain Coopération",
+    "donor_code": "be-bce_kbo-0422717486",
+    "donor_sector": "National NGO"
+  },
+  {
+    "donor_name": "Rode Kruis-Vlaanderen Internationaal",
+    "donor_code": "be-bce_kbo-461634084",
+    "donor_sector": "National NGO"
+  },
+  {
+    "donor_name": "The Power of Nutrition",
+    "donor_code": "gb-chc-1160373",
+    "donor_sector": "Foundation"
+  },
+  {
+    "donor_name": "EMMS International",
+    "donor_code": "gb-sc-sc032327",
+    "donor_sector": "International NGO"
+  },
+  {
+    "donor_name": "International Treatment Preparedness Coalition (ITPC)",
+    "donor_code": "xi-iati-bwco20151011",
+    "donor_sector": "International NGO"
+  },
+  {
+    "donor_name": "Slovakia",
+    "donor_code": "sk",
+    "donor_sector": "Government"
+  },
+  {
+    "donor_name": "International NGO",
+    "donor_sector": "International NGO",
+    "donor_code": "int-ngo"
+  },
+  {
+    "donor_name": "International NGO",
+    "donor_sector": "International NGO",
+    "donor_code": "ingo"
+  },
+  {
+    "donor_name": "BRAC UK",
+    "donor_sector": "International NGO",
+    "donor_code": "gb-coh-1115482"
+  },
   {
     "donor_name": "Global Health Security Agenda (GHSA) Projects",
     "donor_sector": "Multilateral",
@@ -45,169 +802,10 @@
     "donor_name": "World Organisation for Animal Health",
     "donor_sector": "International NGO",
     "donor_code": "oie"
-  },
-  {
-    "donor_name": "Cordaid",
-    "donor_sector": "International NGO",
-    "donor_code": "cordaid",
-    "funder_ref": "NL-KVK-41160054"
-  },  
-  {
+  },  {
     "donor_name": "Mano River Union",
     "donor_sector": "Multilateral",
     "donor_code": "mru"
-  },
-  {
-    "donor_name": "AICS - Agenzia Italiana per la Cooperazione allo Sviluppo / Italian Agency for Cooperation and Development",
-    "donor_sector": "Government",
-    "donor_code": "IT",
-    "funder_ref": "XM-DAC-6-4"
-  },
-  {
-    "donor_name": "Africa Centres for Disease Control and Prevention",
-    "donor_sector": "Multilateral",
-    "donor_code": "africacdc"
-  },
-  {
-    "donor_name": "Norad - Norwegian Agency for Development Cooperation",
-    "donor_sector": "Government",
-    "donor_code": "NO",
-    "funder_ref": "NO-BRC-971277882"
-  },
-  {
-    "donor_name": "International Criminal Police Organization",
-    "donor_sector": "Multilateral",
-    "donor_code": "interpol"
-  },
-  {
-    "donor_name": "International Atomic Energy Agency",
-    "donor_sector": "Multilateral",
-    "donor_code": "iaea"
-  },
-  {
-    "donor_name": "World Health Organization",
-    "donor_sector": "Multilateral",
-    "donor_code": "who"
-  },
-  {
-    "donor_name": "GAVI Alliance",
-    "donor_sector": "Public Private Partnership",
-    "donor_code": "gavi"
-  },
-  {
-    "donor_name": "United Nations Population Fund",
-    "donor_sector": "Multilateral",
-    "donor_code": "unpf"
-  },
-  {
-    "donor_name": "Bill & Melinda Gates Foundation",
-    "donor_sector": "Foundation",
-    "donor_code": "bmgf"
-  },
-  {
-    "donor_name": "European Union",
-    "donor_sector": "Multilateral",
-    "donor_code": "eu"
-  },
-  {
-    "donor_name": "United Nations Children's Fund (UNICEF)",
-    "donor_sector": "Multilateral",
-    "donor_code": "unicef"
-  },
-  {
-    "donor_name": "United States Agency for International Development (USAID)",
-    "donor_sector": "Government",
-    "donor_code": "US"
-  },
-  {
-    "donor_name": "United States",
-    "donor_sector": "Government",
-    "donor_code": "US"
-  },
-  {
-    "donor_name": "Canada",
-    "donor_sector": "Government",
-    "donor_code": "CA"
-  },
-  {
-    "donor_name": "Spain",
-    "donor_sector": "Government",
-    "donor_code": "ES"
-  },
-  {
-    "donor_name": "United Kingdom",
-    "donor_sector": "Government",
-    "donor_code": "GB"
-  },
-  {
-    "donor_name": "Sweden",
-    "donor_sector": "Government",
-    "donor_code": "SE"
-  },
-  {
-    "donor_name": "Ireland",
-    "donor_sector": "Government",
-    "donor_code": "IE"
-  },
-  {
-    "donor_name": "Republic of Korea",
-    "donor_sector": "Government",
-    "donor_code": "KR"
-  },
-  {
-    "donor_name": "Denmark",
-    "donor_sector": "Government",
-    "donor_code": "DK"
-  },
-  {
-    "donor_name": "Australia",
-    "donor_sector": "Government",
-    "donor_code": "AU"
-  },
-  {
-    "donor_name": "France",
-    "donor_sector": "Government",
-    "donor_code": "FR"
-  },
-  {
-    "donor_name": "Belgium",
-    "donor_sector": "Government",
-    "donor_code": "BE"
-  },
-  {
-    "donor_name": "Germany",
-    "donor_sector": "Government",
-    "donor_code": "DE"
-  },
-  {
-    "donor_name": "Netherlands Enterprise Agency",
-    "donor_sector": "Government",
-    "donor_code": "NL"
-  },
-  {
-    "donor_name": "Slovak Agency for Internal Development Cooperation",
-    "donor_sector": "Government",
-    "donor_code": "SK"
-  },
-  {
-    "donor_name": "Netherlands",
-    "donor_sector": "Government",
-    "donor_code": "NL"
-  },
-  {
-    "donor_name": "New Zealand",
-    "donor_sector": "Government",
-    "donor_code": "NZ"
-  },
-  {
-    "donor_name": "UK - Ministry of Defence",
-    "donor_sector": "Government",
-    "donor_code": "GB"
-  },
-  {
-    "donor_name": "International Disability Alliance",
-    "donor_sector": "International NGO",
-    "donor_code": "ida"
   },
   {
     "donor_name": "UN Food and Agriculture Organization (FAO)",
@@ -215,381 +813,18 @@
     "donor_code": "fao"
   },
   {
-    "donor_name": "Aids Fonds - STOP AIDS NOW! - Soa Aids Nederland",
-    "donor_sector": "International NGO",
-    "donor_code": "nl-kvk-41207989"
-  },
-  {
-    "donor_name": "Oxfam Novib",
-    "donor_sector": "International NGO",
-    "donor_code": "onl"
-  },
-  {
-    "donor_name": "United Nations Office for Project Services (UNOPS)",
+    "donor_name": "World Health Organization",
     "donor_sector": "Multilateral",
-    "donor_code": "unops"
+    "donor_code": "who"
   },
   {
-    "donor_name": "Catholic Agency For Overseas Development (CAFOD)",
-    "donor_sector": "International NGO",
-    "donor_code": "cafod"
-  },
-  {
-    "donor_name": "International HIV/AIDS Alliance",
-    "donor_sector": "International NGO",
-    "donor_code": "ihaa"
-  },
-  {
-    "donor_name": "Plan Nederland",
-    "donor_sector": "International NGO",
-    "donor_code": "plannlno"
-  },
-  {
-    "donor_name": "United Nations Development Programme (UNDP)",
-    "donor_sector": "Multilateral",
-    "donor_code": "undp"
-  },
-  {
-    "donor_name": "Stichting Woord en Daad",
-    "donor_sector": "International NGO",
-    "donor_code": "w-d"
-  },
-  {
-    "donor_name": "Inter-American Development Bank",
-    "donor_sector": "Multilateral",
-    "donor_code": "iadb"
-  },
-  {
-    "donor_name": "United Nations World Food Programme (WFP)",
-    "donor_sector": "Multilateral",
-    "donor_code": "wfp"
-  },
-  {
-    "donor_name": "Malaria Consortium",
-    "donor_sector": "International NGO",
-    "donor_code": "malariaconsortium"
-  },
-  {
-    "donor_name": "African Development Bank",
-    "donor_sector": "Multilateral",
-    "donor_code": "afdb"
-  },
-  {
-    "donor_name": "Asian Development Bank",
-    "donor_sector": "Multilateral",
-    "donor_code": "asdb"
-  },
-  {
-    "donor_name": "Royal Tropical Institute",
-    "donor_sector": "International NGO",
-    "donor_code": "kit"
-  },
-  {
-    "donor_name": "Rutgers",
-    "donor_sector": "International NGO",
-    "donor_code": "rutgers"
-  },
-  {
-    "donor_name": "CHOICE for Youth and Sexuality",
-    "donor_sector": "International NGO",
-    "donor_code": "cfyas"
-  },
-  {
-    "donor_name": "Amref Flying Doctors",
-    "donor_sector": "National NGO",
-    "donor_code": "amrefnl"
-  },
-  {
-    "donor_name": "Sightsavers",
-    "donor_sector": "International NGO",
-    "donor_code": "ss-org"
-  },
-  {
-    "donor_name": "International NGO",
-    "donor_sector": "International NGO",
-    "donor_code": "int-ngo"
-  },
-  {
-    "donor_name": "Stichting Health Action International",
-    "donor_sector": "Foundation",
-    "donor_code": "hai"
-  },
-  {
-    "donor_name": "International Treatment Preparedness Coalition (ITPC)",
-    "donor_sector": "International NGO",
-    "donor_code": "itpc"
-  },
-  {
-    "donor_name": "Lepra",
-    "donor_sector": "International NGO",
-    "donor_code": "lepra"
-  },
-  {
-    "donor_name": "AFEW International ",
-    "donor_sector": "International NGO",
-    "donor_code": "afewinternational"
-  },
-  {
-    "donor_name": "Global Fund",
-    "donor_sector": "Multilateral",
-    "donor_code": "globalfund"
-  },
-  {
-    "donor_name": "Indigo Trust",
-    "donor_sector": "Foundation",
-    "donor_code": "indtrust"
-  },
-  {
-    "donor_name": "PHASE Worldwide",
-    "donor_sector": "International NGO",
-    "donor_code": "phase_worldwide"
-  },
-  {
-    "donor_name": "Sense International",
-    "donor_sector": "International NGO",
-    "donor_code": "sense_international"
-  },
-  {
-    "donor_name": "Cyan International",
-    "donor_sector": "International NGO",
-    "donor_code": "cyan"
-  },
-  {
-    "donor_name": "interburns",
-    "donor_sector": "International NGO",
-    "donor_code": "interburns"
-  },
-  {
-    "donor_name": "Action Against Hunger",
-    "donor_sector": "International NGO",
-    "donor_code": "acf"
-  },
-  {
-    "donor_name": "Terre des Hommes Netherlands",
-    "donor_sector": "International NGO",
-    "donor_code": "tdh_nl"
-  },
-  {
-    "donor_name": "EMMS International",
-    "donor_sector": "International NGO",
-    "donor_code": "emms"
-  },
-  {
-    "donor_name": "The Joint United Nations Programme on HIV and AIDS (UNAIDS) Secretariat",
-    "donor_sector": "Multilateral",
-    "donor_code": "unaids"
-  },
-  {
-    "donor_name": "Options Consultancy Services",
-    "donor_sector": "Private Sector",
-    "donor_code": "options"
-  },
-  {
-    "donor_name": "Palladium International Ltd (UK)",
-    "donor_sector": "Private Sector",
-    "donor_code": "palladium"
-  },
-  {
-    "donor_name": "Welbodi Partnership",
-    "donor_sector": "Academic, Training and Research",
-    "donor_code": "welbodipartnership"
-  },
-  {
-    "donor_name": "Hospice Africa Ltd",
-    "donor_sector": "Academic, Training and Research",
-    "donor_code": "hauk"
-  },
-  {
-    "donor_name": "Mainline",
-    "donor_sector": "Foundation",
-    "donor_code": "mainline"
-  },
-  {
-    "donor_name": "Women and Children First (UK)",
-    "donor_sector": "International NGO",
-    "donor_code": "wcf"
-  },
-  {
-    "donor_name": "Orbis Charitable Trust",
-    "donor_sector": "International NGO",
-    "donor_code": "orbis_uk"
-  },
-  {
-    "donor_name": "Haiti Hospital Appeal",
-    "donor_sector": "International NGO",
-    "donor_code": "hha"
-  },
-  {
-    "donor_name": "act4africa",
-    "donor_sector": "International NGO",
-    "donor_code": "act4africa"
-  },
-  {
-    "donor_name": "BasicNeeds",
-    "donor_sector": "International NGO",
-    "donor_code": "basicneeds"
-  },
-  {
-    "donor_name": "Carers Worldwide",
-    "donor_sector": "International NGO",
-    "donor_code": "cww"
-  },
-  {
-    "donor_name": "Signal",
-    "donor_sector": "International NGO",
-    "donor_code": "signal"
-  },
-  {
-    "donor_name": "TB Alert",
-    "donor_sector": "International NGO",
-    "donor_code": "tbalert"
-  },
-  {
-    "donor_name": "International Rescue Committee UK",
-    "donor_sector": "International NGO",
-    "donor_code": "irc_uk"
-  },
-  {
-    "donor_name": "The Leprosy Mission England and Wales",
-    "donor_sector": "International NGO",
-    "donor_code": "tlmew"
-  },
-  {
-    "donor_name": "World Vision International",
-    "donor_sector": "International NGO",
-    "donor_code": "wvi"
-  },
-  {
-    "donor_name": "European Bank for Reconstruction and Development",
-    "donor_sector": "Multilateral",
-    "donor_code": "ebrd"
+    "donor_name": "General Global Benefit",
+    "donor_sector": "Country",
+    "donor_code": "General Global Benefit"
   },
   {
     "donor_name": "World Bank",
     "donor_sector": "Multilateral",
     "donor_code": "wb"
-  },
-  {
-    "donor_name": "International Development Law Organization",
-    "donor_sector": "Multilateral",
-    "donor_code": "idlo"
-  },
-  {
-    "donor_name": "Crown Agents Limited",
-    "donor_sector": "Private Sector",
-    "donor_code": "cal"
-  },
-  {
-    "donor_name": "LAMB Health Care Foundation",
-    "donor_code": "lhcf"
-  },
-  {
-    "donor_name": "CDC Group plc",
-    "donor_code": "cdc"
-  },
-  {
-    "donor_name": "World Child Cancer UK",
-    "donor_code": "wccuk"
-  },
-  {},
-  {
-    "donor_name": "Mifumi UK",
-    "donor_code": "mifumi_uk"
-  },
-  {
-    "donor_name": "Y Care International",
-    "donor_code": "ycare"
-  },
-  {
-    "donor_name": "One to One Children's Fund",
-    "donor_code": "onetoonecf"
-  },
-  {
-    "donor_name": "Food for the Hungry UK",
-    "donor_code": "fh"
-  },
-  {
-    "donor_name": "Family Aids Caring Trust",
-    "donor_code": "fact"
-  },
-  {
-    "donor_name": "Project Harar",
-    "donor_code": "phe"
-  },
-  {
-    "donor_name": "Plan International UK",
-    "donor_code": "plan_uk"
-  },
-  {
-    "donor_name": "Plan International USA",
-    "donor_code": "plan_usa"
-  },
-  {
-    "donor_name": "Protecting Families Against HIV/AIDS",
-    "donor_code": "prefa_1"
-  },
-  {
-    "donor_name": "Save the Children Netherlands",
-    "donor_code": "scnl"
-  },
-  {
-    "donor_name": "Feed the Minds",
-    "donor_code": "ftm-291333"
-  },
-  {
-    "donor_name": "Heifer Nederland",
-    "donor_code": "heifernederland"
-  },
-  {
-    "donor_name": "HealthProm",
-    "donor_code": "hp_12"
-  },
-  {
-    "donor_name": "Health Poverty Action",
-    "donor_code": "hpa"
-  },
-  {
-    "donor_name": "Amref Health Africa in Ethiopia",
-    "donor_code": "amrefeth"
-  },
-  {
-    "donor_name": "BRAC International",
-    "donor_code": "bracintl"
-  },
-  {
-    "donor_name": "ColaLife",
-    "donor_code": "colalife"
-  },
-  {
-    "donor_name": "United Purpose",
-    "donor_code": "cu"
-  },
-  {
-    "donor_name": "dance4life",
-    "donor_code": "dance4life"
-  },
-  {
-    "donor_name": "ActionAid International",
-    "donor_code": "aai"
-  },
-  {
-    "donor_name": "Disability and Development Partners",
-    "donor_code": "ddp"
-  },
-  {
-    "donor_name": "Simavi",
-    "donor_code": "simavi"
-  },
-  {
-    "donor_name": "Simprints",
-    "donor_code": "simprints"
-  },
-  {
-    "donor_name": "International Planned Parenthood Federation",
-    "donor_code": "ippf"
-  },
-  {
-    "donor_name": "Islamic Relief Worldwide",
-    "donor_code": "irw"
   }
 ]
