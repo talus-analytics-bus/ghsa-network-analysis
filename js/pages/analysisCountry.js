@@ -482,7 +482,7 @@
 						.style('padding-left','63px');
 							
 				}
-				header.append('td').html('Purpose of donation');
+				header.append('td').html('Purpose of contribution');
 				const body = table.append('tbody');
 
 				const rows = body.selectAll('tr')
@@ -586,16 +586,19 @@
 							spent_on_detect: 0,
 							spent_on_respond: 0,
 							spent_on_other: 0,
+							spent_on_general: 0,
 							committed_on_prevent: 0,
 							committed_on_detect: 0,
 							committed_on_respond: 0,
 							committed_on_other: 0,
+							committed_on_general: 0,
 						};
 					}
 					fundedByCountry[recIso].total_committed += p.total_committed;
 					fundedByCountry[recIso].total_spent += p.total_spent;
 					p.core_capacities.forEach(cc => {
 						const ccAbbrev = cc.split('.')[0];
+						console.log(ccAbbrev)
 						if (ccAbbrev === 'P') {
 							fundedByCountry[recIso].spent_on_prevent += p.total_spent;
 							fundedByCountry[recIso].committed_on_prevent += p.total_committed;
@@ -605,6 +608,9 @@
 						} else if (ccAbbrev === 'R') {
 							fundedByCountry[recIso].spent_on_respond += p.total_spent;
 							fundedByCountry[recIso].committed_on_respond += p.total_committed;
+						} else if (ccAbbrev === 'General IHR Implementation') {
+							fundedByCountry[recIso].spent_on_general += p.total_spent;
+							fundedByCountry[recIso].committed_on_general += p.total_committed;
 						} else {
 							fundedByCountry[recIso].spent_on_other += p.total_spent;
 							fundedByCountry[recIso].committed_on_other += p.total_committed;
@@ -638,6 +644,7 @@
 				header.append('td').html('Detect');
 				header.append('td').html('Respond');
 				header.append('td').html('Other');
+				header.append('td').html('General IHR');
 
 				const body = table.append('tbody');
 
@@ -679,11 +686,13 @@
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_detect));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_respond));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_other));
+					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_general));
 				} else {
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_prevent));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_detect));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_respond));
 					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_other));
+					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_general));
 				}
 
 				// initialize DataTables plugin
