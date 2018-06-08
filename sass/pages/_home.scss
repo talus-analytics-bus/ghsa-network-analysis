@@ -9,6 +9,9 @@
 	width: 100%;
 	max-height: calc(100vh - 51px);
 	overflow-y: hidden;
+	svg {
+		min-width: 1200px;
+	}
 }
 .right-container {
 	position: absolute;
