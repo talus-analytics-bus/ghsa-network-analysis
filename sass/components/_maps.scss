@@ -126,6 +126,11 @@
   max-width: 180px;
   margin-bottom: 30px;
 
+  &.inactive {
+      font-style: italic;
+      color: #676767 !important;
+    }
+
   &:hover, &.active {
     color: #bfd4e7;
     // font-weight: bold;

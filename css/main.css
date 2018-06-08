@@ -717,18 +717,24 @@ select.form-control {
 }
 
 /* line 129, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
+.non-country-list-container .non-country-list .list-item.inactive {
+  font-style: italic;
+  color: #676767 !important;
+}
+
+/* line 134, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
 .non-country-list-container .non-country-list .list-item:hover, .non-country-list-container .non-country-list .list-item.active {
   color: #bfd4e7;
   cursor: pointer;
   text-decoration: underline;
 }
 
-/* line 135, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
+/* line 140, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
 .non-country-list-container .non-country-list .list-item:hover.active, .non-country-list-container .non-country-list .list-item.active.active {
   color: #fff;
 }
 
-/* line 142, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
+/* line 147, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
 .non-country-list-container .list-title {
   font-size: 1.25em;
   font-weight: 600;

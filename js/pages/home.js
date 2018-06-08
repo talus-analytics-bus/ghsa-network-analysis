@@ -947,8 +947,10 @@
 					entity_data: val,
 					projects: (fundingDataByDonorCode[val.FIPS] !== undefined) ? getPaymentSum(fundingDataByDonorCode[val.FIPS], ccs) : [],
 				};
-			}).filter(d => {
-				return _.values(d.projects).some(dd => dd > 0);
+			});
+			nonCountryFunderData.forEach(d => {
+					console.log(d);
+					d.inactive = !_.values(d.projects).some(dd => dd > 0);
 			});
 
 			// Add object representing GHSA
@@ -963,6 +965,8 @@
 				projects: getPaymentSum(curFundingData.filter(d => d.ghsa_funding === true), ccs), // TODO
 			};
 
+			console.log('nonCountryFunderData');
+			console.log(nonCountryFunderData);
 			const someGhsaProjects = _.values(ghsa.projects).some(d => d > 0);
 			if (someGhsaProjects) {
 				nonCountryFunderData = nonCountryFunderData.concat(ghsa);
@@ -975,6 +979,7 @@
 			$list.selectAll('.list-item')
 				.data(nonCountryFunderData).enter().append('div')
 					.attr('class','list-item')
+					.classed('inactive', d => d.inactive)
 					.text(d => d.entity_data.acronym || d.entity_data.NAME)
 					.on('click', function onClick(d) {
 						const curListItem = d3.select(this);
