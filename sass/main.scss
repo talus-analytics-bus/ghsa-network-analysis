@@ -81,6 +81,7 @@ body { font-family: 'Open Sans', sans-serif; }
 	.info-img.ghsa-info-img {
 		top: 1px;
 	}
+	
 	.info-img.jee-info-img {
 		top: 0;
 	}
@@ -91,6 +92,11 @@ body { font-family: 'Open Sans', sans-serif; }
 		left: 96px;
 	}
 }
+.info-img.core-capacity-text {
+	margin-left: 5px;
+		height: 18px;
+		width: 18px;
+	}
 .ghsa-toggle-options {
 	.ind-type-filter.two-line {
 		position: relative;

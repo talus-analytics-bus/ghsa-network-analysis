@@ -255,7 +255,10 @@
 			});
 
 			$('.core-capacity-text').tooltipster({
-				content: 'Each core element is associated with one or more core capacities, indicated by prefix.',
+				interactive: true,
+				html: true,
+				content: 'Core capacities were tagged based on names and descriptions of commitments and disbursements. Additional information on how core capacities were tagged can be found on the <a href="#glossary" onlick="function(){hasher.setHash(`#glossary`)}">data definitions</a> page.',
+				// content: 'Each core element is associated with one or more core capacities, indicated by prefix.',
 			});
 
 			// draw charts
