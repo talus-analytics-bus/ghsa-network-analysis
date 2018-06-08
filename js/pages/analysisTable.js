@@ -136,6 +136,7 @@
 							if (d.ce === 'D') return 'Detect';
 							if (d.ce === 'R') return 'Respond';
 							if (d.ce === 'O') return 'Other';
+							if (d.ce === 'General IHR Implementation') return 'General IHR Implementation';
 							return 'None';
 						},
 					},
@@ -197,7 +198,7 @@
 				}
 			} else if (currentInfoTab === 'ce') {
 				const totalByCe = {};
-				const coreElements = ['P', 'D', 'R', 'O'];
+				const coreElements = ['P', 'D', 'R', 'O', 'General IHR Implementation'];
 				coreElements.concat('None').forEach((ce) => {
 					totalByCe[ce] = {
 						total_committed: 0,
@@ -212,6 +213,8 @@
 							if (ce === 'O') {
 								const firstThree = cc.slice(0, 3);
 								return firstThree === 'PoE' || firstThree === 'CE' || firstThree === 'RE';
+							} else if (ce === 'General IHR Implementation') {
+								return cc === 'General IHR Implementation';
 							}
 							return cc.slice(0, 2) === `${ce}.`;
 						});
@@ -309,6 +312,8 @@
 				.text((d) => {
 					let cellValue = '';
 					if (typeof d.colData.value === 'function') {
+						console.log('d.rowData');
+						console.log(d.rowData);
 						cellValue = d.colData.value(d.rowData);
 					} else {
 						cellValue = d.rowData[d.colData.value];
