@@ -2434,11 +2434,6 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   overflow-y: hidden;
 }
 
-/* line 12, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
-.map-container svg {
-  min-width: 1200px;
-}
-
 /* line 16, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .right-container {
   position: absolute;
