@@ -53,6 +53,10 @@ body { font-family: 'Open Sans', sans-serif; }
 	width: 13px;
 	height: 13px;
 	margin-left: 3px;
+
+	&.lower {
+		top: 3px;
+	}
 }
 
 .radio-option {
@@ -94,9 +98,13 @@ body { font-family: 'Open Sans', sans-serif; }
 }
 .info-img.core-capacity-text {
 	margin-left: 5px;
-		height: 18px;
-		width: 18px;
+	height: 18px;
+	width: 18px;
+	&.small {
+		height: 13px;
+		width: 13px;
 	}
+}
 .ghsa-toggle-options {
 	.ind-type-filter.two-line {
 		position: relative;
@@ -128,6 +136,6 @@ body { font-family: 'Open Sans', sans-serif; }
 .no-data-description {
 	font-style: italic;
 	display: none;
-			margin-bottom: -10px;
+	margin-bottom: -10px;
 
 }

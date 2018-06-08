@@ -55,7 +55,7 @@ const App = {};
 		App.fundingLookup = {};  // a lookup of money funded for each country
 		App.recipientLookup = {};  // a lookup of money received for each country
 		App.capacities = [{"id":"P.1","name":"P.1 - National Legislation, Policy, and Financing","idx":0},{"id":"P.2","name":"P.2 - IHR Coordination, Communicaton and Advocacy","idx":1},{"id":"P.3","name":"P.3 - Antimicrobial Resistance (AMR)","idx":2},{"id":"P.4","name":"P.4 - Zoonotic Disease","idx":3},{"id":"P.5","name":"P.5 - Food Safety","idx":4},{"id":"P.6","name":"P.6 - Biosafety and Biosecurity","idx":5},{"id":"P.7","name":"P.7 - Immunization","idx":6},{"id":"D.1","name":"D.1 - National Laboratory System","idx":7},{"id":"D.2","name":"D.2 - Real Time Surveillance","idx":8},{"id":"D.3","name":"D.3 - Reporting","idx":9},{"id":"D.4","name":"D.4 - Workforce Development","idx":10},{"id":"R.1","name":"R.1 - Preparedness","idx":11},{"id":"R.2","name":"R.2 - Emergency Response Operations","idx":12},{"id":"R.3","name":"R.3 - Linking Public Health and Security Authorities","idx":13},{"id":"R.4","name":"R.4 - Medical Countermeasures and Personnel Deployment","idx":14},{"id":"R.5","name":"R.5 - Risk Communication","idx":15},{"id":"PoE","name":"PoE - Point of Entry (PoE)","idx":16},{"id":"CE","name":"CE - Chemical Events","idx":17},{"id":"RE","name":"RE - Radiation Emergencies","idx":18},{"id":"General IHR Implementation","name":"General IHR Implementation","idx":19}];
-
+		App.coreCapacitiesText = 'Core capacities were tagged based on names and descriptions of commitments and disbursements. Additional information on how core capacities were tagged can be found on the <a href="#glossary" onlick="function(){hasher.setHash(`#glossary`)}">data definitions</a> page.';
 		// front-load all the data
 		NProgress.start();
 		d3.queue()
@@ -121,11 +121,23 @@ const App = {};
 						d.assistance_type = 'Direct financial support'
 					}
 
-					// Correction to core capacities
-					const idx = d.core_capacities.indexOf('General GHSA assistance');
-					if (idx > -1) {
-						d.core_capacities[idx] = 'General IHR Implementation';
-					}
+					d.core_capacities.forEach(cc => {
+						if (cc === 'General GHSA assistance') {
+							idx = d.core_capacities.indexOf(cc);
+							d.core_capacities[idx] = 'General IHR Implementation';
+						} else if (cc === 'O.1') {
+							idx = d.core_capacities.indexOf(cc);
+							d.core_capacities[idx] = 'PoE';
+						
+						} else if (cc === 'O.2') {
+							idx = d.core_capacities.indexOf(cc);
+							d.core_capacities[idx] = 'CE';
+						
+						} else if (cc === 'O.3') {
+							idx = d.core_capacities.indexOf(cc);
+							d.core_capacities[idx] = 'RE';
+						}
+					});
 				});
 
 				// 

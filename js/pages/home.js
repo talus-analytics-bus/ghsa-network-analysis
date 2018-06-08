@@ -41,6 +41,13 @@
 			initListScaling('.non-country-list-container.right');
 			initListScaling('.non-country-list-container.left');
 			updateAll();
+
+			$('.core-capacity-text').tooltipster({
+				interactive: true,
+				html: true,
+				content: App.coreCapacitiesText,
+				// content: 'Each core element is associated with one or more core capacities, indicated by prefix.',
+			});
 		}
 
 

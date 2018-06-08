@@ -11,6 +11,9 @@ select.form-control {
 .dropdown-label {
 	margin-bottom: 3px;
 	font-weight: 600;
+	&.inline {
+		display: inline-block;
+	}
 }
 .dropdown-label-inline {
 	display: inline-block;

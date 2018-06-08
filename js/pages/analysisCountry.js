@@ -257,7 +257,7 @@
 			$('.core-capacity-text').tooltipster({
 				interactive: true,
 				html: true,
-				content: 'Core capacities were tagged based on names and descriptions of commitments and disbursements. Additional information on how core capacities were tagged can be found on the <a href="#glossary" onlick="function(){hasher.setHash(`#glossary`)}">data definitions</a> page.',
+				content: App.coreCapacitiesText,
 				// content: 'Each core element is associated with one or more core capacities, indicated by prefix.',
 			});
 
@@ -324,7 +324,20 @@
 	                        totalCommitted += committed;
 	                    }
                     } else {
-	                    if (p.core_capacities.some(pcc => cc === pcc.charAt(0))) {
+                    	if (cc === 'O' && p.core_capacities.some(pcc => {
+                    		return pcc === 'PoE' || pcc === 'RE' || pcc === 'CE';
+                    	})) {
+                    		const committed = p.total_committed;
+	                        const spent = p.total_spent;
+
+	                        // if (spent > committed) spent = committed;
+	                        fundsByCc.O.total_committed += committed;
+	                        fundsByCc.O.total_spent += spent;
+
+	                        totalSpent += spent;
+	                        totalCommitted += committed;
+                    	}
+	                    if (p.core_capacities.some(pcc => cc !== 'O' && cc === pcc.charAt(0))) {
 	                        const committed = p.total_committed;
 	                        const spent = p.total_spent;
 
@@ -602,7 +615,6 @@
 					fundedByCountry[recIso].total_spent += p.total_spent;
 					p.core_capacities.forEach(cc => {
 						const ccAbbrev = cc.split('.')[0];
-						console.log(ccAbbrev)
 						if (ccAbbrev === 'P') {
 							fundedByCountry[recIso].spent_on_prevent += p.total_spent;
 							fundedByCountry[recIso].committed_on_prevent += p.total_committed;
