@@ -3,6 +3,7 @@ const Util = {};
 (() => {
 	Util.comma = d3.format(',.0f');  // rounds number and adds comma
 	Util.percentize = d3.format('%');  // divides by 100 and adds a percentage symbol
+	Util.formatAverageJeeScore = d3.format('.2'); // e.g., '2.3'
 
 	// converts a number in string format into a float
 	Util.strToFloat = (str) => {

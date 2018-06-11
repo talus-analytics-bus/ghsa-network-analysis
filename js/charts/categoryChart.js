@@ -122,7 +122,8 @@
 
 					// get average score for this CC
 					const avgScore = d3.mean(_.pluck(scores.indScores[datum.id], 'score'));
-					datum.avgScore = Math.ceil(avgScore);
+					datum.avgScore = avgScore;
+					// datum.avgScore = Math.ceil(avgScore);
 				});
 			}
 
@@ -253,7 +254,7 @@
 				const capName = App.capacities.find(c => c.name === d).name;
 				const scoreData = data.find(dd => dd.name === d);
 				if (scores !== undefined && showJee && capName !== "General IHR Implementation") {
-					$(this).tooltipster({ content: `<b>${capName}</b><br>Average score: ${scoreData.avgScore}` });
+					$(this).tooltipster({ content: `<b>${capName}</b><br>Average score: ${Util.formatAverageJeeScore(scoreData.avgScore)}` });
 				} else {
 					$(this).tooltipster({ content: `<b>${capName}</b>` });
 				}
