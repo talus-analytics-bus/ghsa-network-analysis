@@ -123,7 +123,7 @@
 					// get average score for this CC
 					const avgScore = d3.mean(_.pluck(scores.indScores[datum.id], 'score'));
 					datum.avgScore = avgScore;
-					// datum.avgScore = Math.ceil(avgScore);
+					datum.avgScoreRounded = Math.round(avgScore);
 				});
 			}
 
@@ -252,7 +252,8 @@
 				const capName = App.capacities.find(c => c.name === d).name;
 				const scoreData = data.find(dd => dd.name === d);
 				if (scores !== undefined && showJee && capName !== "General IHR Implementation") {
-					$(this).tooltipster({ content: `<b>${capName}</b><br>Average score: ${Util.formatAverageJeeScore(scoreData.avgScore)}` });
+					$(this).tooltipster({ content: `<b>${capName}</b><br>Average score: ${Util.comma(scoreData.avgScoreRounded)}` });
+					// $(this).tooltipster({ content: `<b>${capName}</b><br>Average score: ${Util.formatAverageJeeScore(scoreData.avgScore)}` });
 				} else if (capName === "General IHR Implementation") {
 					$(this).tooltipster({ content: `<b>${capName}</b><br><div class="margin-top-10">${App.generalIhrText}</div>` });
 				} else {
@@ -273,7 +274,8 @@
 						App.jeeColors[6],
 						]
 					);
-
+			console.log('jeeColorScale');
+			console.log(jeeColorScale);
 			if (showJee) {
 				chart.selectAll('.y.axis .tick text').each(function addJeeIcons(d) {
 					const scoreData = data.find(dd => dd.name === d);
@@ -282,7 +284,8 @@
 					const xOffset = -1 * (scoreData.tickTextWidth + 7) - 5;
 					g.append('circle')
 						.attr('class','score-circle')
-						.style('fill', scoreData.avgScore ? jeeColorScale(score) : 'gray')
+						.style('fill', scoreData.avgScoreRounded ? jeeColorScale(score) : 'gray')
+						// .style('fill', scoreData.avgScore ? jeeColorScale(score) : 'gray')
 						.attr('r','4')
 						.attr('cx', xOffset)
 						.attr('cy', 0);

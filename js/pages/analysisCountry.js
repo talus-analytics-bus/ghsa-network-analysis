@@ -95,17 +95,17 @@
 			// Data for legend box content
 			const row1 = [
 				{
-					title: `3.5 and over`,
+					title: `4 and above`,
 					color: App.jeeColors[5],
 				},
 				{
-					title: `1.5 and below`,
+					title: `Below 2`,
 					color: App.jeeColors[0],
 				}
 			];
 			const row2 = [
 				{
-					title: `Above 1.5 and below 3.5`,
+					title: `2 and above, below 4`,
 					color: d3.color(App.jeeColors[1]).darker(.5),
 				},
 				{
