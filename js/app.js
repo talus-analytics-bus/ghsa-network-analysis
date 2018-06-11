@@ -64,7 +64,7 @@ const App = {};
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
 			.defer(d3.json, 'data/donor_codes.json')
-			.defer(d3.json, 'data/funding_data.json') // VERSION 16a, created 7 June 2018
+			.defer(d3.json, 'data/funding_data.json') // VERSION 17, created 11 June 2018
 			.defer(d3.json, 'data/jee_score_data.json')
 			.defer(d3.json, 'data/currencies.json')
 			.defer(d3.json, 'data/who-iati-v15.json') // WHO projects from funding data v15

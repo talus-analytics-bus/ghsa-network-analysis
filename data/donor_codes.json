@@ -10,11 +10,6 @@
         "donor_sector": "Multilateral"
     },
     {
-        "donor_name": "INTERNATIONAL DISABILITY ALLIANCE",
-        "donor_code": "ida",
-        "donor_sector": "International NGO"
-    },
-    {
         "donor_name": "African Development Bank",
         "donor_code": "afdb",
         "donor_sector": "Multilateral"
