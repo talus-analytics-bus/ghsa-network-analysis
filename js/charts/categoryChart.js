@@ -106,9 +106,6 @@
 			const showJee = param.showJee;
 			const scores = param.scores; // undefined if not available
 
-			console.log('rawData');
-			console.log(rawData);
-
 			let data = getRunningValues(rawData, newSelector)
 				.sort((a, b) => {
 					if (a[newSelector] < b[newSelector]) {
@@ -265,7 +262,16 @@
 			// Add JEE score icon
 			const jeeColorScale = d3.scaleThreshold()
 				.domain([1.5, 2, 2.5, 3, 3.5, 4, 4.5])
-				.range(App.jeeColors);
+				.range([
+						App.jeeColors[0],
+						d3.color(App.jeeColors[1]).darker(0.5),
+						d3.color(App.jeeColors[2]).darker(0.5),
+						d3.color(App.jeeColors[3]).darker(0.5),
+						d3.color(App.jeeColors[4]).darker(0.5),
+						App.jeeColors[5],
+						App.jeeColors[6],
+						]
+					);
 
 			if (showJee) {
 				chart.selectAll('.y.axis .tick text').each(function addJeeIcons(d) {

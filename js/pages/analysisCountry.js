@@ -77,6 +77,67 @@
 		}
 
 		/**
+		 * If the page shown is a recipient country with published JEE scores, they will be visible in
+		 * the core capacity bar chart, and need a legend to define them.
+		 * TODO Are the breakpoints used for the JEE scores colors rational?
+		 */
+		function addJeeScoreLegendBox(){
+			// Show the legend box (hidden by default)
+			const $legendBox = d3.select('.legend-box.category-chart-legend-box');
+			$legendBox.style('display','block');
+
+			// Data for legend box content
+			const row1 = [
+				{
+					title: `4 or higher`,
+					color: App.jeeColors[5],
+				},
+				{
+					title: `2 or lower`,
+					color: App.jeeColors[0],
+				}
+			];
+			const row2 = [
+				{
+					title: `2 to 4`,
+					color: d3.color(App.jeeColors[1]).darker(.5),
+				},
+				{
+					title: `No score`,
+					color: 'gray',
+				}
+			];
+			const legendEntries = [row1, row2];
+
+			// Add the content of the legend box
+			legendEntries.forEach(row => {
+				// Add a row to the legend box
+				const $row = $legendBox.select('.legend-content')
+					.append('div')
+						.attr('class','legend-col');
+				row.forEach(entry => {
+					// add an entry to the row
+					const $entry = $row.append('div')
+						.datum(entry)
+						.attr('class','legend-entry');
+					// add a circle to the entry
+					const circleYShift = 1;
+					$entry.append('svg')
+						.attr('width', 10)
+						.attr('height', 10)
+						.append('circle')
+							.style('fill', d => d.color)
+							.attr('r',3)
+							.attr('cx',5)
+							.attr('cy',5 + circleYShift);
+					// add a label to entry
+					$entry.append('span')
+						.text(d => d.title);
+				});
+			});
+		}
+
+		/**
 		 * If the page is 'GHSA', then hide several page elements that aren't rational for this view.
 		 * @param  {Boolean} isGhsaPage    Whether this page is the 'ghsa' page or not.
 		 * 								   A constant set on initiation.
@@ -841,6 +902,9 @@
 					interactive: true,
 					content: `The colored circles represent the average score of the indicators in each core capacity (e.g., P.1) published in the country\'s most recent JEE Assessment.`,
 				});
+
+				// if showing JEE scores, build the legend for them
+				addJeeScoreLegendBox();
 			}
 
 

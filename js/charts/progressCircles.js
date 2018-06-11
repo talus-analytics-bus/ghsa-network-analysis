@@ -9,9 +9,6 @@
         let numerator = 0;
 
 
-        console.log('data');
-        console.log(data);
-
         // Change the percSpent to the ratio of spent vs total spent
         if (type === 'total_spent') {
             numerator = data.total_spent;

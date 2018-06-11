@@ -437,3 +437,23 @@
     .ghsa-recipient-cell {
       white-space: nowrap;
     }
+    .legend-box.category-chart-legend-box {
+      display: none; // hidden by default
+      padding: 5px;
+      margin-top: -20px;
+      border: 1px solid #ccc;
+      width: fit-content;
+      font-size: 12px;
+      .legend-header {
+        font-weight: 600;
+      }
+      .legend-col {
+        display: inline-block;
+        &:not(:first-child) {
+          margin-left: 10px;
+        }
+        .legend-entry {
+          font-size: 0.9em;
+        }
+      }
+    }
