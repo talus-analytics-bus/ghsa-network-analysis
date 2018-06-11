@@ -247,14 +247,14 @@
 				.attr('x', d => x(d[newSelector]) + 5);
 
 			// attach tooltips to y-axis labels
+			$('.category-chart .y.axis .tick text.tooltipstered').tooltipster('destroy');
 			chart.selectAll('.y.axis .tick text').each(function attachTooltip(d) {
-				if ($(this).hasClass('tooltipstered')) {
-					$(this).tooltipster('destroy');
-				}
 				const capName = App.capacities.find(c => c.name === d).name;
 				const scoreData = data.find(dd => dd.name === d);
 				if (scores !== undefined && showJee && capName !== "General IHR Implementation") {
 					$(this).tooltipster({ content: `<b>${capName}</b><br>Average score: ${Util.formatAverageJeeScore(scoreData.avgScore)}` });
+				} else if (capName === "General IHR Implementation") {
+					$(this).tooltipster({ content: `<b>${capName}</b><br><div class="margin-top-10">${App.generalIhrText}</div>` });
 				} else {
 					$(this).tooltipster({ content: `<b>${capName}</b>` });
 				}

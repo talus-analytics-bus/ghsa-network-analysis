@@ -74,6 +74,12 @@
 
 			toggleGhsaContent(isGhsaPage);
 			initGhsaToggle();
+
+			// Tooltip for General IHR Implementation
+			$('.general-ihr-info-img').tooltipster({
+				interactive: true,
+				content: App.generalIhrText,
+			});
 		}
 
 		/**
@@ -721,7 +727,7 @@
 				header.append('td').html('Detect');
 				header.append('td').html('Respond');
 				header.append('td').html('Other');
-				header.append('td').html('General IHR');
+				header.append('td').html('General IHR <img class="general-ihr-info-img info-img" src="img/info.png" />');
 
 				const body = table.append('tbody');
 
@@ -779,6 +785,12 @@
 					autoWidth: false,
 					ordering: false,
 					bLengthChange: false,
+				});
+
+				// Tooltip for General IHR Implementation
+				$tableContainer.find('.general-ihr-info-img').tooltipster({
+					interactive: true,
+					content: App.generalIhrText,
 				});
 			};
 
