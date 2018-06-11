@@ -21,12 +21,12 @@
 
 		// define content in container
 		function init() {
-            App.setSources();
+			App.setSources();
 			// fill title
 			const flagHtml = country ? App.getFlagHtml(iso) : '';
 			$('.analysis-country-title')
-				.html(`${flagHtml} ${name} ${flagHtml}`)
-				.on('click', () => hasher.setHash(`analysis/${iso}`));
+			.html(`${flagHtml} ${name} ${flagHtml}`)
+			.on('click', () => hasher.setHash(`analysis/${iso}`));
 
 			// fill in other text
 			$('.money-type-noun').text(moneyFlow === 'd' ? 'Funder' : 'Recipient');
@@ -75,8 +75,8 @@
 			if (isGhsaPage) {
 				$('.ghsa-toggle-options').remove();
 				d3.select('.analysis-country-title').append('img')
-					.attr('class', 'ghsa-info-img info-img')
-					.attr('src','img/info.png');
+				.attr('class', 'ghsa-info-img info-img')
+				.attr('src','img/info.png');
 			}
 
 			// init tooltip
@@ -99,8 +99,8 @@
 		function updateInfoTab() {
 			// make correct tab active
 			$(`.funds-tab-container .btn[tab="${currentInfoTab}"]`)
-				.addClass('active')
-				.siblings().removeClass('active');
+			.addClass('active')
+			.siblings().removeClass('active');
 		}
 
 		// update the table content depending on tab chosen
@@ -109,60 +109,61 @@
 			let headerData = [];
 			if (currentInfoTab === 'all') {
 				headerData = [
-					{ name: 'Funder', value: 'donor_name' },
-					{ name: 'Recipient', value: 'recipient_name' },
-					{ name: 'Project Name', value: 'project_name' },
-					{ name: 'Committed', value: 'total_committed', type: 'money' },
-					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
+				{ name: 'Funder', value: 'donor_name' },
+				{ name: 'Recipient', value: 'recipient_name' },
+				{ name: 'Project Name', value: 'project_name' },
+				{ name: 'Committed', value: 'total_committed', type: 'money' },
+				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
 			} else if (currentInfoTab === 'country') {
 				headerData = [
-					{ name: 'Funder', value: d => App.codeToNameMap.get(d.donor_code) },
-					{ name: 'Recipient', value: (d) => {
-						if (App.codeToNameMap.has(d.recipient_country)) {
-							return App.codeToNameMap.get(d.recipient_country);
-						}
-						return d.recipient_country;
-					} },
-					{ name: 'Committed', value: 'total_committed', type: 'money' },
-					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
+				{ name: 'Funder', value: d => App.codeToNameMap.get(d.donor_code) },
+				{ name: 'Recipient', value: (d) => {
+					if (App.codeToNameMap.has(d.recipient_country)) {
+						return App.codeToNameMap.get(d.recipient_country);
+					}
+					return d.recipient_country;
+				} },
+				{ name: 'Committed', value: 'total_committed', type: 'money' },
+				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
 			} else if (currentInfoTab === 'ce') {
 				headerData = [
-					{
-						name: 'Core Element',
-						value: (d) => {
-							if (d.ce === 'P') return 'Prevent';
-							if (d.ce === 'D') return 'Detect';
-							if (d.ce === 'R') return 'Respond';
-							if (d.ce === 'O') return 'Other';
-							if (d.ce === 'General IHR Implementation') return 'General IHR Implementation';
-							return 'None';
-						},
+				{
+					name: 'Core Element',
+					value: (d) => {
+						if (d.ce === 'P') return 'Prevent';
+						if (d.ce === 'D') return 'Detect';
+						if (d.ce === 'R') return 'Respond';
+						if (d.ce === 'O') return 'Other';
+						if (d.ce === 'General IHR Implementation') return 'General IHR Implementation <img class="general-ihr-info-img info-img" src="img/info.png" />';
+						return 'None';
 					},
-					{ name: 'Committed', value: 'total_committed', type: 'money' },
-					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
-					{ name: 'In-kind Contributions', value: 'total_inkind', type: 'number' },
+				},
+				{ name: 'Committed', value: 'total_committed', type: 'money' },
+				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
+				{ name: 'In-kind Contributions', value: 'total_inkind', type: 'number' },
 				];
 			} else if (currentInfoTab === 'cc') {
 				headerData = [
-					{
-						name: 'Core Capacity',
-						value: (d) => {
-							const cap = App.capacities.find(cc => cc.id === d.cc);
-							return cap ? cap.name : d.cc;
-						},
+				{
+					name: 'Core Capacity',
+					value: (d) => {
+						const cap = App.capacities.find(cc => cc.id === d.cc);
+						if (cap && cap.name === 'General IHR Implementation') return cap.name + ' <img class="general-ihr-info-img info-img" src="img/info.png" />';
+						return cap ? cap.name : d.cc;
 					},
-					{ name: 'Committed', value: 'total_committed', type: 'money' },
-					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
-					{ name: 'In-kind Contributions', value: 'total_inkind', type: 'number' },
+				},
+				{ name: 'Committed', value: 'total_committed', type: 'money' },
+				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
+				{ name: 'In-kind Contributions', value: 'total_inkind', type: 'number' },
 				];
 			} else if (currentInfoTab === 'inkind') {
 				headerData = [
-					{ name: 'Provider', value: 'donor_name' },
-					{ name: 'Recipient', value: 'recipient_name' },
-					{ name: 'Name', value: 'project_name' },
-					{ name: 'Description', value: 'project_description' },
+				{ name: 'Provider', value: 'donor_name' },
+				{ name: 'Recipient', value: 'recipient_name' },
+				{ name: 'Name', value: 'project_name' },
+				{ name: 'Description', value: 'project_description' },
 				];
 			} 
 
@@ -282,17 +283,17 @@
 			const infoTable = d3.select('.funds-table');
 			const infoThead = infoTable.select('thead tr');
 			const headers = infoThead.selectAll('th')
-				.data(headerData);
+			.data(headerData);
 			headers.exit().remove();
 			headers.enter().append('th')
-				.merge(headers)
-				.classed('money-cell', d => d.type === 'money')
-				.classed('inkind-cell', d => d.value === 'total_inkind')
-				.text(d => d.name);
+			.merge(headers)
+			.classed('money-cell', d => d.type === 'money')
+			.classed('inkind-cell', d => d.value === 'total_inkind')
+			.text(d => d.name);
 
 			const infoTbody = infoTable.select('tbody');
 			const rows = infoTbody.selectAll('tr')
-				.data(paymentTableData);
+			.data(paymentTableData);
 			rows.exit().remove();
 			const newRows = rows.enter().append('tr');
 			newRows.merge(rows).on('click', (p) => {
@@ -303,38 +304,36 @@
 			});
 
 			const cells = newRows.merge(rows).selectAll('td')
-				.data(d => headerData.map(c => ({ rowData: d, colData: c })));
+			.data(d => headerData.map(c => ({ rowData: d, colData: c })));
 			cells.exit().remove();
 			cells.enter().append('td')
-				.merge(cells)
-				.classed('money-cell', d => d.colData.type === 'money')
-				.classed('inkind-cell', d => d.colData.value === 'total_inkind')
-				.text((d) => {
-					let cellValue = '';
-					if (typeof d.colData.value === 'function') {
-						console.log('d.rowData');
-						console.log(d.rowData);
-						cellValue = d.colData.value(d.rowData);
-					} else {
-						cellValue = d.rowData[d.colData.value];
-					}
-					if (d.colData.type === 'money') return App.formatMoneyFull(cellValue);
-					return cellValue;
-				});
+			.merge(cells)
+			.classed('money-cell', d => d.colData.type === 'money')
+			.classed('inkind-cell', d => d.colData.value === 'total_inkind')
+			.html((d) => {
+				let cellValue = '';
+				if (typeof d.colData.value === 'function') {
+					cellValue = d.colData.value(d.rowData);
+				} else {
+					cellValue = d.rowData[d.colData.value];
+				}
+				if (d.colData.type === 'money') return App.formatMoneyFull(cellValue);
+				return cellValue;
+			});
 
 			// define DataTables plugin parameters
 			let order = [4, 'desc'];
 			let columnDefs = [];
 			if (currentInfoTab === 'all') {
 				columnDefs = [
-					{ targets: [0, 1], width: '140px' },
-					{ type: 'money', targets: [3, 4], width: '110px' },
+				{ targets: [0, 1], width: '140px' },
+				{ type: 'money', targets: [3, 4], width: '110px' },
 				];
 			} else if (currentInfoTab === 'country') {
 				order = [3, 'desc'];
 				columnDefs = [
-					{ targets: [0, 1], width: '150px' },
-					{ type: 'money', targets: [2, 3], width: '120px' },
+				{ targets: [0, 1], width: '150px' },
+				{ type: 'money', targets: [2, 3], width: '120px' },
 				];
 			} else if (currentInfoTab === 'ce' || currentInfoTab === 'cc') {
 				order = [2, 'desc'];
@@ -352,6 +351,12 @@
 				columnDefs,
 			});
 			infoTableHasBeenInit = true;
+			
+			// Tooltip for General IHR Implementation
+			$('.funds-table').find('.general-ihr-info-img').tooltipster({
+				interactive: true,
+				content: App.generalIhrText,
+			});
 		}
 
 		init();
