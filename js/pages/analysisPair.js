@@ -140,7 +140,8 @@
 						name: 'Core Capacity',
 						value: (d) => {
 							const cap = App.capacities.find(cc => cc.id === d.cc);
-							return cap ? cap.name : '';
+							if (cap && cap.name === 'General IHR Implementation') return cap.name + ' <img class="general-ihr-info-img info-img" src="img/info.png" />';
+							return cap ? cap.name : d.cc;
 						},
 					},
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
@@ -216,7 +217,7 @@
 				.merge(cells)
 				.classed('money-cell', d => d.colData.type === 'money')
 				.classed('inkind-cell', d => d.colData.value === 'total_inkind')
-				.text((d) => {
+				.html((d) => {
 					let cellValue = '';
 					if (typeof d.colData.value === 'function') {
 						cellValue = d.colData.value(d.rowData);
@@ -249,6 +250,12 @@
 				columnDefs,
 			});
 			infoTableHasBeenInit = true;
+
+			// Tooltip for General IHR Implementation
+				$content.find('.funds-table').find('.general-ihr-info-img').tooltipster({
+					interactive: true,
+					content: App.generalIhrText,
+				});
 		}
 
 		init();
