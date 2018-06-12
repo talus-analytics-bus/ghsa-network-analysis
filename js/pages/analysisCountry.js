@@ -912,7 +912,7 @@
 				// init tooltip
 				$('.jee-info-img').tooltipster({
 					interactive: true,
-					content: `The colored circles represent the average score of the indicators in each core capacity (e.g., P.1) published in the country\'s most recent JEE Assessment.`,
+					content: `The colored circles represent the average rounded score of the indicators in each core capacity (e.g., P.1) published in the country\'s most recent JEE Assessment.`,
 				});
 
 				// if showing JEE scores, build the legend for them
