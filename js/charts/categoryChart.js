@@ -274,19 +274,17 @@
 						App.jeeColors[6],
 						]
 					);
-			console.log('jeeColorScale');
-			console.log(jeeColorScale);
 			if (showJee) {
 				chart.selectAll('.y.axis .tick text').each(function addJeeIcons(d) {
 					const scoreData = data.find(dd => dd.name === d);
 					const score = scoreData.avgScore;
 					const g = d3.select(this.parentNode);
-					const xOffset = -1 * (scoreData.tickTextWidth + 7) - 5;
+					const xOffset = -1 * (scoreData.tickTextWidth + 7) - 5 - 5;
 					g.append('circle')
 						.attr('class','score-circle')
 						.style('fill', scoreData.avgScoreRounded ? jeeColorScale(score) : 'gray')
 						// .style('fill', scoreData.avgScore ? jeeColorScale(score) : 'gray')
-						.attr('r','4')
+						.attr('r','6')
 						.attr('cx', xOffset)
 						.attr('cy', 0);
 				});
