@@ -6,11 +6,15 @@
 		const currentNodeDataMap = d3.map();  // maps country iso to the value on map
 		let startYear = App.dataStartYear;  // the start year of the time range shown
 		let endYear = App.dataEndYear + 1;  // the end year of the time range shown
+		params.ghsaOnly = true;
 
 		// state variables for current map indicator
+		// let indType = 'other';  // either 'money' or 'score'
 		let indType = 'money';  // either 'money' or 'score'
+		// let moneyFlow = 'funded';  // either 'funded' or 'received'
 		let moneyFlow = 'received';  // either 'funded' or 'received'
 		let moneyType = 'disbursed';  // either 'committed' or 'disbursed'
+		// let moneyType = 'committed';  // either 'committed' or 'disbursed'
 		let scoreType = 'score';  // either 'score' or 'combined'
 
 		// colors
@@ -24,6 +28,18 @@
 		  "#810f7c",
 		  "#4d004b",
 		  d3.color("#4d004b").darker(0.5),
+		];
+
+		// source: http://colorbrewer2.org/#type=sequential&scheme=Greens&n=8
+		const greens = [
+		  // "#f7fcf5",
+		  // "#e5f5e0",
+		  "#c7e9c0",
+		  "#a1d99b",
+		  "#74c476",
+		  "#41ab5d",
+		  "#238b45",
+		  "#005a32"
 		];
 
 		// const purplesOrig = [
@@ -135,6 +151,9 @@
 				if (scoreType === 'combined') return 'combo';
 				return 'score';
 			}
+			if (indType === 'other') {
+				return moneyFlow === 'funded' ? 'providedInkind' : 'receivedInkind';
+			}
 			if (moneyFlow === 'funded') {
 				return moneyType === 'committed' ? 'fundedCommitted' : 'fundedSpent';
 			}
@@ -162,23 +181,41 @@
 			`${br}${flowNoun}`;
 		}
 
+		/**
+		 * Returns the color series that should be used in the scaleQuantile range
+		 * based on what metric was currently selected.
+		 * @param  {string} indType The indicator type, either money, other, or score
+		 * @return {array}         Array of HEX strings representing a color series.
+		 */
+		function getRangeColors(indType) {
+			if (indType === 'other') return greens;
+			else if (indType === 'money' || indType === 'ghsa') return purples;
+			else return orangesReverse;
+		}
+
 		// gets the color scale used for the map
 		function getColorScale() {
 			if (indType === 'score' && scoreType === 'score') {
 				// return App.getScoreColor;
 				return d3.scaleThreshold()
-				.domain([1.5, 2, 2.5, 3, 3.5, 4, 4.5])
-				.range(jeeColors);
+					.domain([1.5, 2, 2.5, 3, 3.5, 4, 4.5])
+					.range(jeeColors);
+			} else if (indType === 'other') {
+				return d3.scaleThreshold()
+					.domain([5,10,15,20,25,30])
+					// .domain([10,20,30,40,50,60])
+					.range(greens);
 			}
 
 			const valueAttrName = getValueAttrName();
+			const rangeColors = getRangeColors(indType)
 			const domain = currentNodeDataMap.values()
 			.map(d => d[valueAttrName])
 			.filter(d => d);
 			if (domain.length === 1) domain.push(0);
 			return d3.scaleQuantile()
 			.domain(domain)
-			.range(indType === 'money' || indType === 'ghsa' ? purples : orangesReverse);
+			.range(rangeColors);
 		}
 
 		// update everything if any parameters change
@@ -395,10 +432,23 @@
 			.each(function addTooltip() { $(this).tooltipster(); });
 		}
 
+		/**
+		 * Returns the thresholds that should be used to label the legend categories
+		 * for the map metric.
+		 * @param  {string} indType The indicator type, either money, other, or score
+		 * @param  {func} colorScale The D3 color scale for the metric
+		 * @return {array}         The labels for the legend categories (numeric)
+		 */
+		function getLegendThresholds(indType, colorScale) {
+			if (indType === 'score' || indType === 'other') return colorScale.domain();
+			else return colorScale.quantiles();
+		}
+
 		// update the map legend
 		function updateLegend(colorScale) {
 			const valueAttrName = getValueAttrName();
 			const isJeeScore = (indType === 'score' && scoreType === 'score');
+			const isOther = indType === 'other';
 
 			const barHeight = 16;
 			let barWidth = 70;
@@ -408,8 +458,7 @@
 			if (isJeeScore) barWidth = 50;
 
 			const colors = colorScale.range();
-			const thresholds = indType === 'score' ?
-			colorScale.domain() : colorScale.quantiles();
+			const thresholds = getLegendThresholds(indType, colorScale);
 			const maxValue = d3.max(currentNodeDataMap.values()
 				.map(d => d[valueAttrName]));
 
@@ -461,6 +510,8 @@
 			.attr('y2', barHeight + 4)
 			.style('display', isJeeScore ? 'inline' : 'none');
 
+			console.log('indType');
+			console.log(indType);
 			if (isJeeScore) {
 				legendText
 				.style('text-anchor', 'middle')
@@ -480,6 +531,17 @@
 				legendStartLabel
 				.style('text-anchor', 'start')
 				.text('Needs Unmet');
+			} else if (indType === 'other') {
+				legendText
+				.style('display', 'inline')
+				.style('text-anchor', 'middle')
+				.text((d, i) => {
+					// if (i === thresholds.length) return Util.comma(maxValue);
+					return Util.comma(thresholds[i]);
+				});
+				legendStartLabel
+				.style('text-anchor', 'start')
+				.text(0);
 			} else {
 				legendText
 				.style('display', 'inline')
@@ -1017,11 +1079,22 @@
 			nonCountryFunderData = _.sortBy(nonCountryFunderData, (data) => { return data.entity_data.NAME.toLowerCase(); });
 
 			// populate the list with spans representing each entity
-			$list.selectAll('.list-item')
+			const listItems = 
+			$list.selectAll('.list-item-container')
 				.data(nonCountryFunderData).enter().append('div')
+					.attr('class','list-item-container');
+			// listItems
+			// 	.append('svg')
+			// 		.attr('width', 10)
+			// 		.attr('height', 10)
+			// 		.append('circle')
+			// 			.attr('r', 6)
+			// 			.style('fill','purple');
+			const divs = listItems
+				.append('div')
 					.attr('class','list-item')
 					// .classed('inactive', d => d.inactive)
-					.text(d => d.entity_data.acronym || d.entity_data.NAME)
+					
 					.on('click', function onClick(d) {
 						const curListItem = d3.select(this);
 						if (curListItem.classed('active')) {
@@ -1041,8 +1114,20 @@
 						// display info box
 						displayCountryInfo();
 						return true;
-					})
-					.insert('br');
+					});
+			// const circles = divs
+			// 		.append('svg')
+			// 			.attr('width', 25)
+			// 			.attr('height', 25)
+			// 			.append('circle')
+			// 				.attr('cx', 5)
+			// 				.attr('cy', 17)
+			// 				.attr('r', 6)
+			// 				.style('fill','purple');
+			const labels = divs				
+					.append('span')
+						.text(d => d.entity_data.acronym || d.entity_data.NAME)
+					.insert('br', ':first-child');
 		};
 
 		/**
