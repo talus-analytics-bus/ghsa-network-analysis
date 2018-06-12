@@ -14,8 +14,29 @@
 		let scoreType = 'score';  // either 'score' or 'combined'
 
 		// colors
-		const purples = ['#e0ecf4', '#bfd3e6', '#9ebcda',
-		'#8c96c6', '#8c6bb1', '#88419d', '#810f7c', '#4d004b'];
+		const purples = [
+		  // "#e0ecf4",
+		  "#bfd3e6",
+		  "#9ebcda",
+		  "#8c96c6",
+		  "#8c6bb1",
+		  "#88419d",
+		  "#810f7c",
+		  "#4d004b",
+		  d3.color("#4d004b").darker(0.5),
+		];
+
+		// const purplesOrig = [
+		//   "#e0ecf4",
+		//   "#bfd3e6",
+		//   "#9ebcda",
+		//   "#8c96c6",
+		//   "#8c6bb1",
+		//   "#88419d",
+		//   "#810f7c",
+		//   "#4d004b"
+		// ];
+
 		const orangesReverse = ['#fee391', '#fec44f', '#fe9929',
 		'#ec7014', '#cc4c02', '#993404', '#662506'].reverse();
 
@@ -144,6 +165,7 @@
 		// gets the color scale used for the map
 		function getColorScale() {
 			if (indType === 'score' && scoreType === 'score') {
+				// return App.getScoreColor;
 				return d3.scaleThreshold()
 				.domain([1.5, 2, 2.5, 3, 3.5, 4, 4.5])
 				.range(jeeColors);
