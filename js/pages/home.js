@@ -965,7 +965,10 @@
 					entity_data: val,
 					projects: (fundingDataByDonorCode[val.FIPS] !== undefined) ? getPaymentSum(fundingDataByDonorCode[val.FIPS], ccs) : [],
 				};
-			}).filter(d => App.funderCodes.indexOf(d.donor_code) > -1);
+			}).filter(d => {
+				return _.values(d.projects).some(dd => dd > 0);
+			});
+			// }).filter(d => App.funderCodes.indexOf(d.donor_code) > -1);
 			nonCountryFunderData.forEach(d => {
 					d.inactive = !_.values(d.projects).some(dd => dd > 0);
 			});
@@ -981,8 +984,12 @@
 				  },
 				projects: getPaymentSum(curFundingData.filter(d => d.ghsa_funding === true), ccs), // TODO
 			};
+			// const someGhsaProjects = _.values(ghsa.projects).some(d => d > 0);
+			// if (someGhsaProjects) {
+			// 	nonCountryFunderData = nonCountryFunderData.concat(ghsa);
+			// }
 			ghsa.inactive = !_.values(ghsa.projects).some(d => d > 0);
-			nonCountryFunderData = nonCountryFunderData.concat(ghsa);
+			// nonCountryFunderData = nonCountryFunderData.concat(ghsa);
 
 			// sort A-Z by donor name
 			nonCountryFunderData = _.sortBy(nonCountryFunderData, (data) => { return data.entity_data.NAME.toLowerCase(); });
@@ -991,7 +998,7 @@
 			$list.selectAll('.list-item')
 				.data(nonCountryFunderData).enter().append('div')
 					.attr('class','list-item')
-					.classed('inactive', d => d.inactive)
+					// .classed('inactive', d => d.inactive)
 					.text(d => d.entity_data.acronym || d.entity_data.NAME)
 					.on('click', function onClick(d) {
 						const curListItem = d3.select(this);
@@ -1043,10 +1050,13 @@
 					projects: (fundingDataByRecipientCode[val.FIPS] !== undefined) ? getPaymentSum(fundingDataByRecipientCode[val.FIPS], ccs) : [],
 					// projects: fundingDataByRecipientCode[val.FIPS],
 				};
-			}).filter(d => App.recipientCodes.indexOf(d.recipient_code) > -1);
-			nonCountryRecipientData.forEach(d => {
-					d.inactive = !_.values(d.projects).some(dd => dd > 0);
+			}).filter(d => {
+				return _.values(d.projects).some(dd => dd > 0);
 			});
+			// .filter(d => App.recipientCodes.indexOf(d.recipient_code) > -1);
+			// nonCountryRecipientData.forEach(d => {
+			// 		d.inactive = !_.values(d.projects).some(dd => dd > 0);
+			// });
 			// Add object representing GHSA
 			const ghsa = {
 				recipient_code: 'ghsa',
@@ -1058,8 +1068,12 @@
 				  },
 				projects: getPaymentSum(curFundingData.filter(d => d.ghsa_funding === true), ccs),
 			};
-			ghsa.inactive = !_.values(ghsa.projects).some(d => d > 0);
-			nonCountryRecipientData = nonCountryRecipientData.concat(ghsa);
+			// const someGhsaProjects = _.values(ghsa.projects).some(d => d > 0);
+			// if (someGhsaProjects) {
+			// 	nonCountryFunderData = nonCountryFunderData.concat(ghsa);
+			// }
+			// ghsa.inactive = !_.values(ghsa.projects).some(d => d > 0);
+			// nonCountryRecipientData = nonCountryRecipientData.concat(ghsa);
 
 			// sort A-Z by donor name
 			nonCountryRecipientData = _.sortBy(nonCountryRecipientData, (data) => { return data.entity_data.NAME.toLowerCase(); });
@@ -1068,7 +1082,7 @@
 			$list.selectAll('.list-item')
 				.data(nonCountryRecipientData).enter().append('div')
 					.attr('class','list-item')
-					.classed('inactive', d => d.inactive)
+					// .classed('inactive', d => d.inactive)
 					.text(d => d.entity_data.acronym || d.entity_data.NAME)
 					.on('click', function onClick(d) {
 						const curListItem = d3.select(this);
