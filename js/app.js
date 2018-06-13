@@ -359,28 +359,29 @@ const App = {};
 	 */
 	App.getOtherSupportProjects = (projects, type, code) => {
 		// funder
-		if (type === 'd') {
-			const groupsPartOf = App.getEntityGroups(code);
-			const filterIsCode = (project) => { 
-				const isSoloProject = project.donor_code === code;
-				const isGroupProject = groupsPartOf.indexOf(project.donor_code) > -1;
-				return isSoloProject || isGroupProject;
-			};
+		const typeIsFunded = type === 'd';
+		const codeField = typeIsFunded ? 'donor_code' : 'recipient_country';
+		const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
+		const groupsPartOf = App.getEntityGroups(code);
+		const filterIsCode = (project) => { 
+			const isSoloProject = project[codeField] === code;
+			const isGroupProject = groupsPartOf.indexOf(project[codeField]) > -1;
+			return isSoloProject || isGroupProject;
+		};
 
-			const filterIsOther = (project) => {
-				const projectAssistanceType = project.assistance_type.toLowerCase();
-				const isOther = projectAssistanceType === "in-kind support" || projectAssistanceType === "other support";
-				const isUnspecAmount = project.donor_amount_unspec === true || project.donor_code !== code;
-				return isOther || isUnspecAmount;
-			};
+		const filterIsOther = (project) => {
+			const projectAssistanceType = project.assistance_type.toLowerCase();
+			const isOther = projectAssistanceType === "in-kind support" || projectAssistanceType === "other support";
+			const isUnspecAmount = project[unspecAmountField] === true || project[codeField] !== code;
+			return isOther || isUnspecAmount;
+		};
 
-			const filterCountOnce = (allProjects) => {
-				const groupedById = _.groupBy(allProjects, 'project_id');
-				return _.values(groupedById).map(d => d[0]);
-			};
+		const filterCountOnce = (allProjects) => {
+			const groupedById = _.groupBy(allProjects, 'project_id');
+			return _.values(groupedById).map(d => d[0]);
+		};
 
-			return filterCountOnce(projects.filter(filterIsOther).filter(filterIsCode));
-		}
+		return filterCountOnce(projects.filter(filterIsOther).filter(filterIsCode));
 	};
 
 	App.addOtherRecipients = (codeObj) => {

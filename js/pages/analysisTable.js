@@ -61,7 +61,6 @@
 
 			$('.analysis-table .ind-type-filter .radio-option').off('click');
 			$('.analysis-table .ind-type-filter .radio-option').click(function updateIndType() {
-				console.log('toggle switch')
 				// Load correct funding data
 				indType = $(this).find('input').attr('ind');
 				App.showGhsaOnly = indType === 'ghsa';
@@ -160,11 +159,17 @@
 				];
 			} else if (currentInfoTab === 'inkind') {
 				headerData = [
-				{ name: 'Provider', value: 'donor_name' },
-				{ name: 'Recipient', value: 'recipient_name' },
-				{ name: 'Name', value: 'project_name' },
-				{ name: 'Description', value: 'project_description' },
+				{ name: 'Provider', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
+				{ name: 'Recipient', value: 'recipient_name', value2: 'recipient_name_orig', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; }  },
+				{ name: 'Support Type', value: 'assistance_type' },
+				{ name: 'Description', value: 'project_name' },
 				];
+				// headerData = [
+				// { name: 'Provider', value: 'donor_name', value2: 'donor_name_orig' },
+				// { name: 'Recipient', value: 'recipient_name', value2: 'recipient_name_orig' },
+				// { name: 'Name', value: 'project_name' },
+				// { name: 'Description', value: 'project_description' },
+				// ];
 			} 
 
 			// define row data
@@ -275,6 +280,7 @@
 				paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');
 				console.log('allPayments');
 				console.log(allPayments);
+				paymentTableData = App.getOtherSupportProjects(App.fundingData, moneyFlow, iso);
 			} 
 
 
@@ -314,7 +320,9 @@
 			.classed('inkind-cell', d => d.colData.value === 'total_other')
 			.html((d) => {
 				let cellValue = '';
-				if (typeof d.colData.value === 'function') {
+				if (d.colData.valueFunc) {
+					cellValue = d.colData.valueFunc(d.rowData);
+				} else if (typeof d.colData.value === 'function') {
 					cellValue = d.colData.value(d.rowData);
 				} else {
 					cellValue = d.rowData[d.colData.value];
