@@ -334,8 +334,9 @@ const App = {};
 	 * @return {array}      Array of strings of entity codes of groups the entity belongs to
 	 */
 	App.getEntityGroups = (code) => {
-		if (code === 'FR') return ['eu']; // TODO
-		return []; // TODO
+		const matches = _.pluck(App.geographicGroupings.filter(d => d.iso2 === code), 'group_code');
+		// if (code === 'FR') return ['eu']; // TODO
+		return matches || []; // TODO
 	};
 
 	/**
