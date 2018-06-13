@@ -2691,6 +2691,12 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   height: 14px;
 }
 
+/* line 176, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+.country.hatch {
+  mask: url(#mask-stripe);
+  fill: blue;
+}
+
 /* line 2, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_settings.scss */
 .settings-page-container select {
   margin-top: 3px;

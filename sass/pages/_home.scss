@@ -172,3 +172,8 @@
 		height: 14px;
 	}
 }
+
+.country.hatch {
+	mask: url(#mask-stripe);
+	fill: blue;
+}

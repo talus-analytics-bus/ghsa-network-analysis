@@ -33,7 +33,7 @@
 		// Countries are this color if they've funded/received money
 		// but only as part of a group and we don't know how much they gave/got
 		// because of that.
-		const unspecifiedGray = '#656590';
+		const unspecifiedGray = '#515151';
 
 		// source: http://colorbrewer2.org/#type=sequential&scheme=Greens&n=8
 		const greens = [
@@ -100,6 +100,14 @@
 		function buildMap() {
 			// add map to map container
 			const mapObj = Map.createWorldMap('.map-container', App.geoData);
+
+			const maskHtml = `<pattern id="pattern-stripe" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                        <rect width="3" height="4" transform="translate(0,0)" fill="white"></rect>
+                    </pattern>
+                    <mask id="mask-stripe">
+                        <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
+                    </mask>`;
+            mapObj.element.append('defs').html(maskHtml);
 
 			// clicking overlay resets map
 			mapObj.element.select('.overlay').on('click', resetMap);
@@ -378,7 +386,7 @@
 			// color countries and update tooltip content
 			map.element.selectAll('.country').transition()
 			.duration(500)
-			.style('fill', (d) => {
+			.style('fill', function (d) {
 				const isoCode = d.properties.ISO2;
 				if (currentNodeDataMap.has(isoCode)) {
 					d.value = currentNodeDataMap.get(isoCode)[valueAttrName];
@@ -392,8 +400,9 @@
 						if (unmappableFinancials.length > 0) {
 							const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
 							if (someMoney) {
-								return 'url(#diagonal-stripe-1)';
-								// return unspecifiedGray;
+								// return 'url(#diagonal-stripe-1)';
+								d3.select(this).classed('hatch', true);
+								return unspecifiedGray;
 							}
 						}
 						d.color = '#ccc';
