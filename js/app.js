@@ -404,11 +404,18 @@ const App = {};
 		};
 
 		const filterHasAmount = (project) => {
-			return project[unspecAmountField] !== true;
+			return project[unspecAmountField] !== true && project.assistance_type.toLowerCase() !== 'in-kind support' && project.assistance_type.toLowerCase() !== 'other support' ;
 		};
 
-		return projects.filter(filterIsCode).filter(filterHasAmount);		
+		const filterCountOnce = (allProjects) => {
+			const groupedById = _.groupBy(allProjects, 'project_id');
+			return _.values(groupedById).map(d => d[0]);
+		};
+
+		return filterCountOnce(projects.filter(filterIsCode).filter(filterHasAmount));		
 	};
+
+	// App.getConfirmedAmountFunds = () => {};
 
 	App.addOtherRecipients = (codeObj) => {
 		// if not a country

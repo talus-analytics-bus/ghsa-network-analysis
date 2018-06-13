@@ -109,7 +109,7 @@
 			if (currentInfoTab === 'all') {
 				headerData = [
 				{ name: 'Funder', value: 'donor_name' },
-				{ name: 'Recipient', value: 'recipient_name' },
+				{ name: 'Recipient', value: 'recipient_name', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; } },
 				{ name: 'Project Name', value: 'project_name' },
 				{ name: 'Committed', value: 'total_committed', type: 'money' },
 				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
@@ -175,7 +175,7 @@
 			// define row data
 			let paymentTableData = [];
 			if (currentInfoTab === 'all') {
-				paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support');
+				paymentTableData = App.getFinancialProjectsWithAmounts(App.fundingData, moneyFlow, iso);
 			} else if (currentInfoTab === 'country') {
 				const totalByCountry = {};
 				allPayments.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support').forEach((p) => {
@@ -277,9 +277,7 @@
 					});
 				}
 			} else if (currentInfoTab === 'inkind') {
-				paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');
-				console.log('allPayments');
-				console.log(allPayments);
+				// paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');
 				paymentTableData = App.getOtherSupportProjects(App.fundingData, moneyFlow, iso);
 			} 
 

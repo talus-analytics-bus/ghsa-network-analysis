@@ -1886,11 +1886,6 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   padding-bottom: 10px;
 }
 
-/* line 318, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisCountry.scss */
-.inkind-table-section {
-  border-bottom: 1px solid #ccc;
-}
-
 /* line 323, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisCountry.scss */
 .inkind-table-section .no-data-description {
   display: none;
