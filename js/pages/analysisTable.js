@@ -38,8 +38,9 @@
 			$('.end-year').text(App.dataEndYear);
 
 			// fill summary text
-			const totalCommitted = d3.sum(allPayments, d => d.total_committed);
-			const totalSpent = d3.sum(allPayments, d => d.total_spent);
+			const financialPayments = App.getFinancialProjectsWithAmounts(allPayments, moneyFlow, iso)
+			const totalCommitted = d3.sum(financialPayments, d => d.total_committed);
+			const totalSpent = d3.sum(financialPayments, d => d.total_spent);
 			$('.committed-value').text(App.formatMoney(totalCommitted));
 			$('.spent-value').text(App.formatMoney(totalSpent));
 
