@@ -337,6 +337,52 @@ const App = {};
 		});
 	};
 
+	/**
+	 * For the entity represented by the code, return the
+	 * codes of any groups it belongs to
+	 * @param  {string} code 'donor_code' or 'recipient_country'
+	 * @return {array}      Array of strings of entity codes of groups the entity belongs to
+	 */
+	App.getEntityGroups = (code) => {
+		if (code === 'FR') return ['eu']; // TODO
+		return []; // TODO
+	};
+
+	/**
+	 * Given a set of projects, the type (funder/recipient), and the
+	 * code of the funder/recipient, returns anything that would be 
+	 * classified as "Other Support", one object per "table row".
+	 * @param  {array} projects Array of projects (objects)
+	 * @param  {string} type     'd' or 'r'
+	 * @param  {string} code     The 'donor_code' or 'recipient_country' to lookup
+	 * @return {array}          Array of projects categorized as Other Support
+	 */
+	App.getOtherSupportProjects = (projects, type, code) => {
+		// funder
+		if (type === 'd') {
+			const groupsPartOf = App.getEntityGroups(code);
+			const filterIsCode = (project) => { 
+				const isSoloProject = project.donor_code === code;
+				const isGroupProject = groupsPartOf.indexOf(project.donor_code) > -1;
+				return isSoloProject || isGroupProject;
+			};
+
+			const filterIsOther = (project) => {
+				const projectAssistanceType = project.assistance_type.toLowerCase();
+				const isOther = projectAssistanceType === "in-kind support" || projectAssistanceType === "other support";
+				const isUnspecAmount = project.donor_amount_unspec === true || project.donor_code !== code;
+				return isOther || isUnspecAmount;
+			};
+
+			const filterCountOnce = (allProjects) => {
+				const groupedById = _.groupBy(allProjects, 'project_id');
+				return _.values(groupedById).map(d => d[0]);
+			};
+
+			return filterCountOnce(projects.filter(filterIsOther).filter(filterIsCode));
+		}
+	};
+
 	App.addOtherRecipients = (codeObj) => {
 		// if not a country
 		if (codeObj.donor_sector === "Government") return;

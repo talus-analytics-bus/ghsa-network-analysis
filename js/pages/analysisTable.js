@@ -142,7 +142,7 @@
 				},
 				{ name: 'Committed', value: 'total_committed', type: 'money' },
 				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
-				{ name: 'In-kind Contributions', value: 'total_inkind', type: 'number' },
+				{ name: 'Other Support (Number of Projects)', value: 'total_other', type: 'number' },
 				];
 			} else if (currentInfoTab === 'cc') {
 				headerData = [
@@ -156,7 +156,7 @@
 				},
 				{ name: 'Committed', value: 'total_committed', type: 'money' },
 				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
-				{ name: 'In-kind Contributions', value: 'total_inkind', type: 'number' },
+				{ name: 'Other Support (Number of Projects)', value: 'total_other', type: 'number' },
 				];
 			} else if (currentInfoTab === 'inkind') {
 				headerData = [
@@ -204,7 +204,7 @@
 					totalByCe[ce] = {
 						total_committed: 0,
 						total_spent: 0,
-						total_inkind: 0,
+						total_other: 0,
 					};
 				});
 				allPayments.forEach((p) => {
@@ -223,13 +223,13 @@
 							hasACe = true;
 							totalByCe[ce].total_committed += p.total_committed;
 							totalByCe[ce].total_spent += p.total_spent;
-							totalByCe[ce].total_inkind += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
+							totalByCe[ce].total_other += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
 						}
 					});
 					if (!hasACe) {
 						totalByCe.None.total_committed += p.total_committed;
 						totalByCe.None.total_spent += p.total_spent;
-						totalByCe.None.total_inkind += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
+						totalByCe.None.total_other += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
 					}
 				});
 				for (const ce in totalByCe) {
@@ -237,7 +237,7 @@
 						ce,
 						total_committed: totalByCe[ce].total_committed,
 						total_spent: totalByCe[ce].total_spent,
-						total_inkind: totalByCe[ce].total_inkind,
+						total_other: totalByCe[ce].total_other,
 					});
 				}
 			} else if (currentInfoTab === 'cc') {
@@ -246,7 +246,7 @@
 					totalByCc[cc.id] = {
 						total_committed: 0,
 						total_spent: 0,
-						total_inkind: 0,
+						total_other: 0,
 					};
 				});
 				allPayments.forEach((p) => {
@@ -254,13 +254,13 @@
 						if (totalByCc[cc]) {
 							totalByCc[cc].total_committed += p.total_committed;
 							totalByCc[cc].total_spent += p.total_spent;
-							totalByCc[cc].total_inkind += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
+							totalByCc[cc].total_other += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
 						}
 					});
 					if (!p.core_capacities.length) {
 						totalByCc.None.total_committed += p.total_committed;
 						totalByCc.None.total_spent += p.total_spent;
-						totalByCc.None.total_inkind += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
+						totalByCc.None.total_other += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
 					}
 				});
 				for (const cc in totalByCc) {
@@ -268,11 +268,13 @@
 						cc,
 						total_committed: totalByCc[cc].total_committed,
 						total_spent: totalByCc[cc].total_spent,
-						total_inkind: totalByCc[cc].total_inkind,
+						total_other: totalByCc[cc].total_other,
 					});
 				}
 			} else if (currentInfoTab === 'inkind') {
 				paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');
+				console.log('allPayments');
+				console.log(allPayments);
 			} 
 
 
@@ -288,7 +290,7 @@
 			headers.enter().append('th')
 			.merge(headers)
 			.classed('money-cell', d => d.type === 'money')
-			.classed('inkind-cell', d => d.value === 'total_inkind')
+			.classed('inkind-cell', d => d.value === 'total_other')
 			.text(d => d.name);
 
 			const infoTbody = infoTable.select('tbody');
@@ -309,7 +311,7 @@
 			cells.enter().append('td')
 			.merge(cells)
 			.classed('money-cell', d => d.colData.type === 'money')
-			.classed('inkind-cell', d => d.colData.value === 'total_inkind')
+			.classed('inkind-cell', d => d.colData.value === 'total_other')
 			.html((d) => {
 				let cellValue = '';
 				if (typeof d.colData.value === 'function') {
