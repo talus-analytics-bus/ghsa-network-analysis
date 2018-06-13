@@ -340,7 +340,7 @@
 				}
 
 				// get inkind values for those that are inkind
-				if (p.assistance_type.toLowerCase() === 'in-kind support') {
+				if (p.assistance_type.toLowerCase() === 'in-kind support' || p.assistance_type.toLowerCase() === 'other support') {
 					const withinYears = p.years.some(year => {
 						return year <= endYear && year >= startYear;
 					});

@@ -153,7 +153,7 @@
 				headerData = [
 					{ name: 'Provider', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
 					{ name: 'Recipient', value: 'recipient_name', value2: 'recipient_name_orig', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; }  },
-					{ name: 'Support Type', value: 'assistance_type',
+					{ name: 'Support Type', value: 'assistance_type'},
 					{ name: 'Description', value: 'project_name' },
 				];
 			} 

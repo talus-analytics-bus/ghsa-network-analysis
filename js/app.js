@@ -143,25 +143,10 @@ const App = {};
 					});
 				});
 
-				// 
 
-				// // save funding data
-				// fundingData = fundingData.filter(d => {
-				// 	if (d.assistance_type === undefined) {
-				// 		return true;
-				// 	} else if (d.assistance_type === "In-kind support") {
-				// 		return false;
-				// 	} else {
-				// 		return true;
-				// 	}
-				// });
 				App.fundingData = fundingData;
 				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
 				
-				// // save funding data
-				// App.fundingData = fundingData.filter(d => d.ghsa_funding);
-				// App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d)).filter(d => d.ghsa_funding);
-
 				// Prepare funding lookup tables, etc.
 				App.loadFundingData({showGhsaOnly: false});
 

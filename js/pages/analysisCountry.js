@@ -488,7 +488,7 @@
         	}
 
 			// get in-kind support projects
-			const inkindProjects = lookup[iso].filter(d => d.assistance_type.toLowerCase() === 'in-kind support');
+			const inkindProjects = lookup[iso].filter(d => d.assistance_type.toLowerCase() === 'in-kind support' || d.assistance_type.toLowerCase() === 'other support');
 
 			// get table data
 			const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_code';
