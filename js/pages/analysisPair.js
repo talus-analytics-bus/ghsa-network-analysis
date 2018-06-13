@@ -47,8 +47,9 @@
 			$('.end-year').text(App.dataEndYear);
 
 			// fill summary text
-			const totalCommitted = d3.sum(allPayments, d => d.total_committed);
-			const totalSpent = d3.sum(allPayments, d => d.total_spent);
+			const financialPayments = App.getFinancialProjectsWithAmounts(allPayments, 'r', recIso)
+			const totalCommitted = d3.sum(financialPayments, d => d.total_committed);
+			const totalSpent = d3.sum(financialPayments, d => d.total_spent);
 			$('.committed-value').text(App.formatMoney(totalCommitted));
 			$('.spent-value').text(App.formatMoney(totalSpent));
 
@@ -129,7 +130,7 @@
 			if (currentInfoTab === 'all') {
 				headerData = [
 					{ name: 'Funder', value: 'donor_name' },
-					{ name: 'Recipient', value: 'recipient_name' },
+					{ name: 'Recipient', value: 'recipient_name', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; } },
 					{ name: 'Name', value: 'project_name' },
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
 					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
@@ -150,17 +151,18 @@
 				];
 			} else if (currentInfoTab === 'inkind') {
 				headerData = [
-					{ name: 'Provider', value: 'donor_name' },
-					{ name: 'Recipient', value: 'recipient_name' },
-					{ name: 'Name', value: 'project_name' },
-					{ name: 'Description', value: 'project_description' },
+					{ name: 'Provider', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
+					{ name: 'Recipient', value: 'recipient_name', value2: 'recipient_name_orig', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; }  },
+					{ name: 'Support Type', value: 'assistance_type' },
+					{ name: 'Description', value: 'project_name' },
 				];
 			} 
 
 			// define row data
 			let paymentTableData = [];
 			if (currentInfoTab === 'all') {
-				paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support');
+				// paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support');
+				paymentTableData = App.getFinancialProjectsWithAmounts(allPayments, 'r', recIso);
 			} else if (currentInfoTab === 'cc') {
 				const totalByCc = {};
 				allPayments.forEach((p) => {
@@ -186,7 +188,8 @@
 					});
 				}
 			} else if (currentInfoTab === 'inkind') {
-				paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');
+				// paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');
+				paymentTableData = App.getOtherSupportProjects(allPayments, 'r', recIso);
 			} 
 
 			// clear DataTables plugin from table
@@ -219,7 +222,9 @@
 				.classed('inkind-cell', d => d.colData.value === 'total_inkind')
 				.html((d) => {
 					let cellValue = '';
-					if (typeof d.colData.value === 'function') {
+					if (d.colData.valueFunc) {
+						cellValue = d.colData.valueFunc(d.rowData);
+					} else if (typeof d.colData.value === 'function') {
 						cellValue = d.colData.value(d.rowData);
 					} else {
 						cellValue = d.rowData[d.colData.value];
