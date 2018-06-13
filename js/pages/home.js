@@ -233,6 +233,27 @@
 			}
 		}
 
+
+		function getUnspecAmountCounts(iso2) {
+			const funderIsMulti = true; // TODO by checking if it's EU-like
+			const recipientIsMulti = true; // TODO by checking if it's Southeast Asia-like
+			const unspecAmounts = {
+				received: {
+					committed: 0,
+					spent: 0,
+				},
+				funded: {
+					committed: 0,
+					spent: 0,
+				},
+			};
+
+			// if (funderIsMulti) {
+				
+			// }
+			return {}; // TODO
+		}
+
 		// updates the country to value data map based on user settings
 		function updateDataMaps() {
 			// get filter values
@@ -256,6 +277,14 @@
 				let receivedInkind = 0;
 				let score = null;
 				let combo = null;
+				let receivedUnspecAmount = 0;
+				let fundedUnspecAmount = 0;
+
+				// Tabulate projects with DFS that had unspecified amount because
+				// they were funded or received by a "region" (e.g., EU or Southeast Asia)
+				// Get full list of projects for this funder/recipient
+				// const allProjects = [].concat(paymentsFunded).concat(paymentsReceived).filter(d => d);
+				const unspecAmounts = getUnspecAmountCounts(c.ISO2);
 
 				if (paymentsFunded) {
 					({ totalCommitted: fundedCommitted, totalSpent: fundedSpent, totalInkind: providedInkind } =
@@ -642,6 +671,7 @@
 			let totalCommitted = 0;
 			let totalSpent = 0;
 			let totalInkind = 0;
+			let totalUnspecAmount = 0;
 			if (currentNodeDataMap.has(country.ISO2)) {
 				const valueObj = currentNodeDataMap.get(country.ISO2);
 				if (indType === 'money' || indType === 'ghsa') {
