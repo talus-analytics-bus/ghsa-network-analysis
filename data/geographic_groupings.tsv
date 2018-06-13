@@ -1,0 +1,457 @@
+group	country	iso2	references
+G-7	Canada	CA	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
+G-7	United States	US	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
+G-7	Italy	IT	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
+G-7	Germany	DE	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
+G-7	France	FR	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
+G-7	Japan	JP	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
+G-7	United Kingdom	GB	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
+European Union	Austria	AT	https://www.gov.uk/eu-eea
+European Union	Belgium	BE	https://www.gov.uk/eu-eea
+European Union	Bulgaria	BG	https://www.gov.uk/eu-eea
+European Union	Croatia	HR	https://www.gov.uk/eu-eea
+European Union	Cyprus	CY	https://www.gov.uk/eu-eea
+European Union	Czech Republic	CZ	https://www.gov.uk/eu-eea
+European Union	Denmark	DK	https://www.gov.uk/eu-eea
+European Union	Estonia	EE	https://www.gov.uk/eu-eea
+European Union	Finland	FI	https://www.gov.uk/eu-eea
+European Union	France	FR	https://www.gov.uk/eu-eea
+European Union	Germany	DE	https://www.gov.uk/eu-eea
+European Union	Greece	GR	https://www.gov.uk/eu-eea
+European Union	Hungary	HU	https://www.gov.uk/eu-eea
+European Union	Ireland	IE	https://www.gov.uk/eu-eea
+European Union	Italy	IT	https://www.gov.uk/eu-eea
+European Union	Latvia	LV	https://www.gov.uk/eu-eea
+European Union	Lithuania	LT	https://www.gov.uk/eu-eea
+European Union	Luxembourg	LU	https://www.gov.uk/eu-eea
+European Union	Malta	MT	https://www.gov.uk/eu-eea
+European Union	Netherlands	NL	https://www.gov.uk/eu-eea
+European Union	Poland	PL	https://www.gov.uk/eu-eea
+European Union	Portugal	PT	https://www.gov.uk/eu-eea
+European Union	Romania	RO	https://www.gov.uk/eu-eea
+European Union	Slovakia	SK	https://www.gov.uk/eu-eea
+European Union	Slovenia	SI	https://www.gov.uk/eu-eea
+European Union	Spain	ES	https://www.gov.uk/eu-eea
+European Union	Sweden	SE	https://www.gov.uk/eu-eea
+European Union	United Kingdom	GB	https://www.gov.uk/eu-eea
+Indo-Pacific Region	Afghanistan	AF	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Bangladesh	BD	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Bhutan	BT	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Cambodia	KH	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Fiji	FJ	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	India	IN	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Indonesia	ID	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Iran (Islamic Republic of)	IR	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Iraq	IQ	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Kenya	KE	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Lao People's Democratic Republic	LA	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Malaysia	MY	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Maldives	MV	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Mongolia	MN	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Mozambique	MZ	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Nepal	NP	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Pakistan	PK	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Papua New Guinea	PG	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Philippines	PH	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Solomon Islands	SB	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Somalia	SO	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	South Africa	ZA	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Sri Lanka	LK	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Tanzania	TZ	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Thailand	TH	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Timor-Leste	TL	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Vietnam	VN	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Yemen	YE	https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Indo-Pacific Region	Zanzibar		https://www.theglobalfund.org/media/1032/publication_indopacificregionalimpact_report_en.pdf?u=636486807190000000
+Southeast Asia	Brunei	BN	https://www.niu.edu/cseas/resources/countries.shtml
+Southeast Asia	Burma (Myanmar)	MM	https://www.niu.edu/cseas/resources/countries.shtml
+Southeast Asia	Cambodia	KH	https://www.niu.edu/cseas/resources/countries.shtml
+Southeast Asia	Timor-Leste	TL	https://www.niu.edu/cseas/resources/countries.shtml
+Southeast Asia	Indonesia	ID	https://www.niu.edu/cseas/resources/countries.shtml
+Southeast Asia	Laos	LA	https://www.niu.edu/cseas/resources/countries.shtml
+Southeast Asia	Malaysia	MY	https://www.niu.edu/cseas/resources/countries.shtml
+Southeast Asia	Philippines	PH	https://www.niu.edu/cseas/resources/countries.shtml
+Southeast Asia	Singapore	SG	https://www.niu.edu/cseas/resources/countries.shtml
+Southeast Asia	Thailand	TH	https://www.niu.edu/cseas/resources/countries.shtml
+Southeast Asia	Vietnam	VN	https://www.niu.edu/cseas/resources/countries.shtml
+Mano River Union	Cote d'Ivoire	CI	http://www.afro.who.int/news/mano-river-union-countries-committed-eradicate-neglected-tropical-diseases
+Mano River Union	Guinea	GN	http://www.afro.who.int/news/mano-river-union-countries-committed-eradicate-neglected-tropical-diseases
+Mano River Union	Liberia	LR	http://www.afro.who.int/news/mano-river-union-countries-committed-eradicate-neglected-tropical-diseases
+Mano River Union	Sierra Leone	SL	http://www.afro.who.int/news/mano-river-union-countries-committed-eradicate-neglected-tropical-diseases
+East Africa	Burundi	BI	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Comoros	KM	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Djibouti	DJ	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Eritrea	ER	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Ethiopia	ET	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Kenya	KE	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Madagascar	MG	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Malawi	MW	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Mauritius	MU	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Mayotte	YT	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Mozambique	MZ	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Reunion		https://unstats.un.org/unsd/methodology/m49/
+East Africa	Rwanda	RW	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Seychelles	SC	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Somalia	SO	https://unstats.un.org/unsd/methodology/m49/
+East Africa	South Sudan	SS	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Uganda	UG	https://unstats.un.org/unsd/methodology/m49/
+East Africa	United Republic of Tanzania	TZ	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Zambia	ZM	https://unstats.un.org/unsd/methodology/m49/
+East Africa	Zimbabwe	ZW	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Benin	BJ	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Burkina Faso	BF	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Cape Verde	CV	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Cote D'Ivoire	CI	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Gambia	GM	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Guinea-Bissau	GW	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Liberia	LR	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Mali	ML	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Mauritania	MR	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Niger	NE	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Nigeria	NG	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Saint Helena	SH	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Senegal	SN	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Sierra Leone	SL	https://unstats.un.org/unsd/methodology/m49/
+West Africa	Togo	TG	https://unstats.un.org/unsd/methodology/m49/
+North Africa	Algeria	DZ	https://unstats.un.org/unsd/methodology/m49/
+North Africa	Egypt	EG	https://unstats.un.org/unsd/methodology/m49/
+North Africa	Libya	LY	https://unstats.un.org/unsd/methodology/m49/
+North Africa	Morocco	MA	https://unstats.un.org/unsd/methodology/m49/
+North Africa	Sudan	SD	https://unstats.un.org/unsd/methodology/m49/
+North Africa	Tunisia	TN	https://unstats.un.org/unsd/methodology/m49/
+North Africa	Western Sahara	EH	https://unstats.un.org/unsd/methodology/m49/
+Middle Africa	Angola	AO	https://unstats.un.org/unsd/methodology/m49/
+Middle Africa	Cameroon	CM	https://unstats.un.org/unsd/methodology/m49/
+Middle Africa	Central African Republic	CF	https://unstats.un.org/unsd/methodology/m49/
+Middle Africa	Chad	TD	https://unstats.un.org/unsd/methodology/m49/
+Middle Africa	Congo	CD	https://unstats.un.org/unsd/methodology/m49/
+Middle Africa	Democratic Republic of the Congo	CG	https://unstats.un.org/unsd/methodology/m49/
+Middle Africa	Equatorial Guinea	GQ	https://unstats.un.org/unsd/methodology/m49/
+Middle Africa	Gabon	GA	https://unstats.un.org/unsd/methodology/m49/
+Middle Africa	Sao Tome and Principe	ST	https://unstats.un.org/unsd/methodology/m49/
+Southern Africa	Botswana	BW	https://unstats.un.org/unsd/methodology/m49/
+Southern Africa	Lesotho	LS	https://unstats.un.org/unsd/methodology/m49/
+Southern Africa	Namibia	NA	https://unstats.un.org/unsd/methodology/m49/
+Southern Africa	South Africa	ZA	https://unstats.un.org/unsd/methodology/m49/
+Africa	Algeria	DZ	https://unstats.un.org/unsd/methodology/m49/
+Africa	Egypt	EG	https://unstats.un.org/unsd/methodology/m49/
+Africa	Libya	LY	https://unstats.un.org/unsd/methodology/m49/
+Africa	Morocco	MA	https://unstats.un.org/unsd/methodology/m49/
+Africa	Sudan	SD	https://unstats.un.org/unsd/methodology/m49/
+Africa	Tunisia	TN	https://unstats.un.org/unsd/methodology/m49/
+Africa	Western Sahara	EH	https://unstats.un.org/unsd/methodology/m49/
+Africa	British Indian Ocean Territory	IO	https://unstats.un.org/unsd/methodology/m49/
+Africa	Burundi	BI	https://unstats.un.org/unsd/methodology/m49/
+Africa	Comoros	KM	https://unstats.un.org/unsd/methodology/m49/
+Africa	Djibouti	DJ	https://unstats.un.org/unsd/methodology/m49/
+Africa	Eritrea	ER	https://unstats.un.org/unsd/methodology/m49/
+Africa	Ethiopia	ET	https://unstats.un.org/unsd/methodology/m49/
+Africa	French Southern and Antarctic Lands	TF	https://unstats.un.org/unsd/methodology/m49/
+Africa	Kenya	KE	https://unstats.un.org/unsd/methodology/m49/
+Africa	Madagascar	MG	https://unstats.un.org/unsd/methodology/m49/
+Africa	Malawi	MW	https://unstats.un.org/unsd/methodology/m49/
+Africa	Mauritius	MU	https://unstats.un.org/unsd/methodology/m49/
+Africa	Mayotte	YT	https://unstats.un.org/unsd/methodology/m49/
+Africa	Mozambique	MZ	https://unstats.un.org/unsd/methodology/m49/
+Africa	Reunion		https://unstats.un.org/unsd/methodology/m49/
+Africa	Rwanda	RW	https://unstats.un.org/unsd/methodology/m49/
+Africa	Seychelles	SC	https://unstats.un.org/unsd/methodology/m49/
+Africa	Somalia	SO	https://unstats.un.org/unsd/methodology/m49/
+Africa	South Sudan	SS	https://unstats.un.org/unsd/methodology/m49/
+Africa	Uganda	UG	https://unstats.un.org/unsd/methodology/m49/
+Africa	United Republic of Tanzania		https://unstats.un.org/unsd/methodology/m49/
+Africa	Zambia	ZM	https://unstats.un.org/unsd/methodology/m49/
+Africa	Zimbabwe	ZW	https://unstats.un.org/unsd/methodology/m49/
+Africa	Angola	AO	https://unstats.un.org/unsd/methodology/m49/
+Africa	Cameroon	CM	https://unstats.un.org/unsd/methodology/m49/
+Africa	Central African Republic	CF	https://unstats.un.org/unsd/methodology/m49/
+Africa	Chad	TD	https://unstats.un.org/unsd/methodology/m49/
+Africa	Congo		https://unstats.un.org/unsd/methodology/m49/
+Africa	Democratic Republic of the Congo		https://unstats.un.org/unsd/methodology/m49/
+Africa	Equatorial Guinea	GQ	https://unstats.un.org/unsd/methodology/m49/
+Africa	Gabon	GA	https://unstats.un.org/unsd/methodology/m49/
+Africa	Sao Tome and Principe	ST	https://unstats.un.org/unsd/methodology/m49/
+Africa	Botswana	BW	https://unstats.un.org/unsd/methodology/m49/
+Africa	Eswatini		https://unstats.un.org/unsd/methodology/m49/
+Africa	Lesotho	LS	https://unstats.un.org/unsd/methodology/m49/
+Africa	Namibia		https://unstats.un.org/unsd/methodology/m49/
+Africa	South Africa	ZA	https://unstats.un.org/unsd/methodology/m49/
+Africa	Benin	BJ	https://unstats.un.org/unsd/methodology/m49/
+Africa	Burkina Faso	BF	https://unstats.un.org/unsd/methodology/m49/
+Africa	Cabo Verde		https://unstats.un.org/unsd/methodology/m49/
+Africa	Cote D'Ivoire		https://unstats.un.org/unsd/methodology/m49/
+Africa	Gambia	GM	https://unstats.un.org/unsd/methodology/m49/
+Africa	Ghana	GH	https://unstats.un.org/unsd/methodology/m49/
+Africa	Guinea	GN	https://unstats.un.org/unsd/methodology/m49/
+Africa	Guinea-Bissau	GW	https://unstats.un.org/unsd/methodology/m49/
+Africa	Liberia	LR	https://unstats.un.org/unsd/methodology/m49/
+Africa	Mali	ML	https://unstats.un.org/unsd/methodology/m49/
+Africa	Mauritania	MR	https://unstats.un.org/unsd/methodology/m49/
+Africa	Niger	NE	https://unstats.un.org/unsd/methodology/m49/
+Africa	Nigeria	NG	https://unstats.un.org/unsd/methodology/m49/
+Africa	Saint Helena		https://unstats.un.org/unsd/methodology/m49/
+Africa	Senegal	SN	https://unstats.un.org/unsd/methodology/m49/
+Africa	Sierra Leone	SL	https://unstats.un.org/unsd/methodology/m49/
+Africa	Togo	TG	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	British Indian Ocean Territory	IO	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Burundi	BI	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Comoros	KM	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Djibouti	DJ	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Eritrea	ER	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Ethiopia	ET	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	French Southern and Antarctic Lands	TF	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Kenya	KE	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Madagascar	MG	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Malawi	MW	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Mauritius	MU	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Mayotte	YT	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Mozambique	MZ	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Reunion		https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Rwanda	RW	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Seychelles	SC	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Somalia	SO	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	South Sudan	SS	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Uganda	UG	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	United Republic of Tanzania	TZ	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Zambia	ZM	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Zimbabwe	ZW	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Angola	AO	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Cameroon	CM	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Central African Republic	CF	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Chad	TD	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Congo	CD	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Democratic Republic of the Congo	CG	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Equatorial Guinea	GQ	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Gabon	GA	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Sao Tome and Principe	ST	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Botswana	BW	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Eswatini		https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Lesotho	LS	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Namibia		https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	South Africa	ZA	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Benin	BJ	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Burkina Faso	BF	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Cabo Verde		https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Cote D'Ivoire		https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Gambia	GM	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Ghana	GH	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Guinea	GN	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Guinea-Bissau	GW	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Liberia	LR	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Mali	ML	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Mauritania	MR	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Niger	NE	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Nigeria	NG	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Saint Helena		https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Senegal	SN	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Sierra Leone	SL	https://unstats.un.org/unsd/methodology/m49/
+Sub-Saharan Africa	Togo	TG	https://unstats.un.org/unsd/methodology/m49/
+Europe	Belarus	BY	https://unstats.un.org/unsd/methodology/m49/
+Europe	Bulgaria	BG	https://unstats.un.org/unsd/methodology/m49/
+Europe	Czech Republic		https://unstats.un.org/unsd/methodology/m49/
+Europe	Hungary	HU	https://unstats.un.org/unsd/methodology/m49/
+Europe	Poland	PL	https://unstats.un.org/unsd/methodology/m49/
+Europe	Republic of Moldova		https://unstats.un.org/unsd/methodology/m49/
+Europe	Romania	RO	https://unstats.un.org/unsd/methodology/m49/
+Europe	Russia		https://unstats.un.org/unsd/methodology/m49/
+Europe	Slovakia	SK	https://unstats.un.org/unsd/methodology/m49/
+Europe	Ukraine	UA	https://unstats.un.org/unsd/methodology/m49/
+Europe	Guernsey	GG	https://unstats.un.org/unsd/methodology/m49/
+Europe	Jersey	JE	https://unstats.un.org/unsd/methodology/m49/
+Europe	Denmark	DK	https://unstats.un.org/unsd/methodology/m49/
+Europe	Estonia	EE	https://unstats.un.org/unsd/methodology/m49/
+Europe	Faroe Islands	FO	https://unstats.un.org/unsd/methodology/m49/
+Europe	Finland	FI	https://unstats.un.org/unsd/methodology/m49/
+Europe	Iceland	IS	https://unstats.un.org/unsd/methodology/m49/
+Europe	Ireland	IE	https://unstats.un.org/unsd/methodology/m49/
+Europe	Isle of Man	IM	https://unstats.un.org/unsd/methodology/m49/
+Europe	Latvia	LV	https://unstats.un.org/unsd/methodology/m49/
+Europe	Lithuania	LT	https://unstats.un.org/unsd/methodology/m49/
+Europe	Norway	NO	https://unstats.un.org/unsd/methodology/m49/
+Europe	Svalbard		https://unstats.un.org/unsd/methodology/m49/
+Europe	Sweden	SE	https://unstats.un.org/unsd/methodology/m49/
+Europe	United Kingdom	GB	https://unstats.un.org/unsd/methodology/m49/
+Europe	Albania	AL	https://unstats.un.org/unsd/methodology/m49/
+Europe	Andorra	AD	https://unstats.un.org/unsd/methodology/m49/
+Europe	Bosnia and Herzegovina		https://unstats.un.org/unsd/methodology/m49/
+Europe	Croatia	HR	https://unstats.un.org/unsd/methodology/m49/
+Europe	Gibraltar	GI	https://unstats.un.org/unsd/methodology/m49/
+Europe	Greece	GR	https://unstats.un.org/unsd/methodology/m49/
+Europe	Italy	IT	https://unstats.un.org/unsd/methodology/m49/
+Europe	Malta	MT	https://unstats.un.org/unsd/methodology/m49/
+Europe	Montenegro	ME	https://unstats.un.org/unsd/methodology/m49/
+Europe	Portugal	PT	https://unstats.un.org/unsd/methodology/m49/
+Europe	San Marino	SM	https://unstats.un.org/unsd/methodology/m49/
+Europe	Serbia	RS	https://unstats.un.org/unsd/methodology/m49/
+Europe	Slovenia	SI	https://unstats.un.org/unsd/methodology/m49/
+Europe	Spain	ES	https://unstats.un.org/unsd/methodology/m49/
+Europe	The former Yugoslav Republic of Macedonia		https://unstats.un.org/unsd/methodology/m49/
+Europe	Austria	AT	https://unstats.un.org/unsd/methodology/m49/
+Europe	Belgium	BE	https://unstats.un.org/unsd/methodology/m49/
+Europe	France	FR	https://unstats.un.org/unsd/methodology/m49/
+Europe	Germany	DE	https://unstats.un.org/unsd/methodology/m49/
+Europe	Liechtenstein	LI	https://unstats.un.org/unsd/methodology/m49/
+Europe	Luxembourg	LU	https://unstats.un.org/unsd/methodology/m49/
+Europe	Monaco	MC	https://unstats.un.org/unsd/methodology/m49/
+Europe	Netherlands	NL	https://unstats.un.org/unsd/methodology/m49/
+Europe	Switzerland	CH	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Belize	BZ	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Costa Rica	CR	https://unstats.un.org/unsd/methodology/m49/
+Latin America	El Salvador	SV	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Guatemala	GT	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Honduras	HN	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Mexico	MX	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Nicaragua	NI	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Panama	PA	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Argentina	AR	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Bolivia		https://unstats.un.org/unsd/methodology/m49/
+Latin America	Bouvet Island	BV	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Brazil	BR	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Chile	CL	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Colombia	CO	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Ecuador	EC	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Falkland Islands (Malvinas)		https://unstats.un.org/unsd/methodology/m49/
+Latin America	French Guiana	GF	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Guyana	GY	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Paraguay	PY	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Peru	PE	https://unstats.un.org/unsd/methodology/m49/
+Latin America	South Georgia South Sandwich Islands		https://unstats.un.org/unsd/methodology/m49/
+Latin America	Suriname	SR	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Uruguay	UY	https://unstats.un.org/unsd/methodology/m49/
+Latin America	Venezuela		https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Anguilla	AI	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Antigua and Barbuda		https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Aruba	AW	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Bahamas	BS	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Barbados	BB	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Bonaire, Sint Eustatius and Saba		https://unstats.un.org/unsd/methodology/m49/
+Caribbean	British Virgin Islands	VG	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Cayman Islands	KY	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Cuba	CU	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Dominica	DM	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Dominican Republic	DO	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Grenada	GD	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Guadeloupe	GP	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Haiti	HT	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Jamaica	JM	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Martinique	MQ	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Montserrat	MS	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Puerto Rico	PR	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Saint Barthelemy		https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Saint Kitts and Nevis		https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Saint Lucia		https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Saint Martin		https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Saint Vincent and the Grenadines		https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Sint Maarten (Dutch part)		https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Trinidad and Tobago		https://unstats.un.org/unsd/methodology/m49/
+Caribbean	Turks and Caicos Islands		https://unstats.un.org/unsd/methodology/m49/
+Caribbean	United States Virgin Islands		https://unstats.un.org/unsd/methodology/m49/
+Middle East	Algeria	DZ	https://www.state.gov/p/nea/index.htm
+Middle East	Bahrain	BH	https://www.state.gov/p/nea/index.htm
+Middle East	Egypt	EG	https://www.state.gov/p/nea/index.htm
+Middle East	Iran	IR	https://www.state.gov/p/nea/index.htm
+Middle East	Iraq	IQ	https://www.state.gov/p/nea/index.htm
+Middle East	Israel	IL	https://www.state.gov/p/nea/index.htm
+Middle East	Jordan	JO	https://www.state.gov/p/nea/index.htm
+Middle East	Kuwait	KW	https://www.state.gov/p/nea/index.htm
+Middle East	Lebanon	LB	https://www.state.gov/p/nea/index.htm
+Middle East	Libya	LY	https://www.state.gov/p/nea/index.htm
+Middle East	Morocco	MA	https://www.state.gov/p/nea/index.htm
+Middle East	Oman	OM	https://www.state.gov/p/nea/index.htm
+Middle East	Palestine	PS	https://www.state.gov/p/nea/index.htm
+Middle East	Qatar	QA	https://www.state.gov/p/nea/index.htm
+Middle East	Saudi Arabia	SA	https://www.state.gov/p/nea/index.htm
+Middle East	Syrian Arab Republic	SY	https://www.state.gov/p/nea/index.htm
+Middle East	Tunisia	TN	https://www.state.gov/p/nea/index.htm
+Middle East	United Arab Emirates	AE	https://www.state.gov/p/nea/index.htm
+Middle East	Yemen	YE	https://www.state.gov/p/nea/index.htm
+ASEAN	Brunei	BN	http://asean.org/asean/asean-member-states/
+ASEAN	Cambodia	KH	http://asean.org/asean/asean-member-states/
+ASEAN	Indonesia	ID	http://asean.org/asean/asean-member-states/
+ASEAN	Laos	LA	http://asean.org/asean/asean-member-states/
+ASEAN	Malaysia	MY	http://asean.org/asean/asean-member-states/
+ASEAN	Myanmar		http://asean.org/asean/asean-member-states/
+ASEAN	Philippines	PH	http://asean.org/asean/asean-member-states/
+ASEAN	Singapore	SG	http://asean.org/asean/asean-member-states/
+ASEAN	Thailand	TH	http://asean.org/asean/asean-member-states/
+ASEAN	Vietnam	VN	http://asean.org/asean/asean-member-states/
+MENA	Algeria	DZ	http://www.worldbank.org/en/region/mena
+MENA	Bahrain	BH	http://www.worldbank.org/en/region/mena
+MENA	Djibouti	DJ	http://www.worldbank.org/en/region/mena
+MENA	Egypt	EG	http://www.worldbank.org/en/region/mena
+MENA	Iran	IR	http://www.worldbank.org/en/region/mena
+MENA	Iraq	IQ	http://www.worldbank.org/en/region/mena
+MENA	Jordan	JO	http://www.worldbank.org/en/region/mena
+MENA	Kuwait	KW	http://www.worldbank.org/en/region/mena
+MENA	Lebanon	LB	http://www.worldbank.org/en/region/mena
+MENA	Libya	LY	http://www.worldbank.org/en/region/mena
+MENA	Morocco	MA	http://www.worldbank.org/en/region/mena
+MENA	Oman	OM	http://www.worldbank.org/en/region/mena
+MENA	Qatar	QA	http://www.worldbank.org/en/region/mena
+MENA	Saudi Arabia	SA	http://www.worldbank.org/en/region/mena
+MENA	Syria	SY	http://www.worldbank.org/en/region/mena
+MENA	Tunisia	TN	http://www.worldbank.org/en/region/mena
+MENA	United Arab Emirates	AE	http://www.worldbank.org/en/region/mena
+MENA	West Bank and Gaza		http://www.worldbank.org/en/region/mena
+MENA	Yemen	YE	http://www.worldbank.org/en/region/mena
+ECOWAS	Benin	BJ	http://www.ecowas.int/member-states/
+ECOWAS	Burkina Faso	BF	http://www.ecowas.int/member-states/
+ECOWAS	Cabo Verde		http://www.ecowas.int/member-states/
+ECOWAS	Cote D'Ivoire		http://www.ecowas.int/member-states/
+ECOWAS	Gambia	GM	http://www.ecowas.int/member-states/
+ECOWAS	Ghana	GH	http://www.ecowas.int/member-states/
+ECOWAS	Guinea	GN	http://www.ecowas.int/member-states/
+ECOWAS	Guinea-Bissau	GW	http://www.ecowas.int/member-states/
+ECOWAS	Liberia	LR	http://www.ecowas.int/member-states/
+ECOWAS	Mali	ML	http://www.ecowas.int/member-states/
+ECOWAS	Niger	NE	http://www.ecowas.int/member-states/
+ECOWAS	Nigeria	NG	http://www.ecowas.int/member-states/
+ECOWAS	Senegal	SN	http://www.ecowas.int/member-states/
+ECOWAS	Sierra Leone	SL	http://www.ecowas.int/member-states/
+ECOWAS	Togo	TG	http://www.ecowas.int/member-states/
+Asia-Pacific	Australia	AU	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Bangladesh	BD	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Bhutan	BT	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Brunei	BN	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Myanmar		https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Cambodia	KH	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Canada	CA	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	China	CN	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Chile	CL	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Cook Islands	CK	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Fiji	FJ	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	French Polynesia	PF	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	India	IN	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Indonesia	ID	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Japan	JP	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Kiribati	KI	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Laos	LA	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Malaysia	MY	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Maldives	MV	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Marshall Islands	MH	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Micronesia, Federated States of		https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Mongolia	MN	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Nauru	NR	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Nepal	NP	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	New Zealand	NZ	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	New Caledonia	NC	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Niue	NU	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	North Korea	KP	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Pakistan	PK	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Palau	PW	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Papua New Guinea	PG	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Peru	PE	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Philippines	PH	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Russian Federation		https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Samoa	WS	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Singapore	SG	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Soloman Islands		https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Korea, Republic of	KR	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Sri Lanka	LK	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Thailand	TH	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Timor-Leste	TL	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Tonga	TO	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Tuvalu	TV	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Vanuatu	VU	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	Vietnam	VN	https://apcss.org/about-2/ap-countries/
+Asia-Pacific	United States of America		https://apcss.org/about-2/ap-countries/

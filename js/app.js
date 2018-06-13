@@ -69,11 +69,13 @@ const App = {};
 			.defer(d3.json, 'data/jee_score_data.json')
 			.defer(d3.json, 'data/currencies.json')
 			.defer(d3.json, 'data/who-iati-v15.json') // WHO projects from funding data v15
-			.await((error, worldData, unsdData, donorCodeData, fundingData, jeeData, currencies, whoIatiData) => {
+			.defer(d3.tsv, 'data/geographic_groupings.tsv')
+			.await((error, worldData, unsdData, donorCodeData, fundingData, jeeData, currencies, whoIatiData, geographicGroupings) => {
 				if (error) throw error;
 
 				/* -------- Populate global variables -------- */
 				// save geo data; save list of countries in namespace
+				App.geographicGroupings = geographicGroupings;
 				App.geoData = worldData;
 				App.countries = worldData.objects.countries.geometries
 					.map(c => c.properties);
