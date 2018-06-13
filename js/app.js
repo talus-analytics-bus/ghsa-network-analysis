@@ -266,17 +266,19 @@ const App = {};
 	// returns the total amount of money donated by a given country
 	App.getTotalFunded = (iso, params = {}) => {
 		if (!App.fundingLookup[iso]) return 0;
+		const fundsToAdd = App.getFinancialProjectsWithAmounts(App.fundingLookup[iso], 'd', iso);
 		if (params.includeCommitments === true) {
-			return d3.sum(App.fundingLookup[iso], d => d.total_spent + d.total_committed);
+			return d3.sum(fundsToAdd, d => d.total_spent + d.total_committed);
 		}
 		else {
-			return d3.sum(App.fundingLookup[iso], d => d.total_spent);
+			return d3.sum(fundsToAdd, d => d.total_spent);
 		}
 	};
 
 	// returns the total amount of money received by a given country
 	App.getTotalReceived = (iso, params = {}) => {
 		if (!App.recipientLookup[iso]) return 0;
+		const fundsToAdd = App.getFinancialProjectsWithAmounts(App.recipientLookup[iso], 'r', iso);
 		if (params.includeCommitments === true) {
 			return d3.sum(App.recipientLookup[iso], d => d.total_spent + d.total_committed);
 		}
@@ -358,7 +360,6 @@ const App = {};
 	 * @return {array}          Array of projects categorized as Other Support
 	 */
 	App.getOtherSupportProjects = (projects, type, code) => {
-		// funder
 		const typeIsFunded = type === 'd';
 		const codeField = typeIsFunded ? 'donor_code' : 'recipient_country';
 		const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
@@ -382,6 +383,31 @@ const App = {};
 		};
 
 		return filterCountOnce(projects.filter(filterIsOther).filter(filterIsCode));
+	};
+
+	/**
+	 * Given the set of projects, returns only those that contain financial assistance
+	 * amounts that are attributable to the entity (either funded or received).
+	 * @param  {array} projects The projects
+	 * @param  {string} type     'd' or 'r'
+	 * @param  {string} code     Entity code
+	 * @return {array}          Projects that contain financial assistance with attributable
+	 * amounts
+	 */
+	App.getFinancialProjectsWithAmounts = (projects, type, code) => {
+		const typeIsFunded = type === 'd';
+		const codeField = typeIsFunded ? 'donor_code' : 'recipient_country';
+		const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
+
+		const filterIsCode = (project) => { 
+			return isSoloProject = project[codeField] === code;
+		};
+
+		const filterHasAmount = (project) => {
+			return project[unspecAmountField] !== true;
+		};
+
+		return projects.filter(filterIsCode).filter(filterHasAmount);		
 	};
 
 	App.addOtherRecipients = (codeObj) => {

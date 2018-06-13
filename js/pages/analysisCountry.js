@@ -82,6 +82,8 @@
 			});
 		}
 
+		
+
 		/**
 		 * If the page shown is a recipient country with published JEE scores, they will be visible in
 		 * the core capacity bar chart, and need a legend to define them.
