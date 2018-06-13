@@ -13,8 +13,8 @@
 		let indType = 'money';  // either 'money' or 'score'
 		// let moneyFlow = 'funded';  // either 'funded' or 'received'
 		let moneyFlow = 'received';  // either 'funded' or 'received'
-		let moneyType = 'disbursed';  // either 'committed' or 'disbursed'
-		// let moneyType = 'committed';  // either 'committed' or 'disbursed'
+		// let moneyType = 'disbursed';  // either 'committed' or 'disbursed'
+		let moneyType = 'committed';  // either 'committed' or 'disbursed'
 		let scoreType = 'score';  // either 'score' or 'combined'
 
 		// colors
@@ -29,6 +29,11 @@
 		  "#4d004b",
 		  d3.color("#4d004b").darker(0.5),
 		];
+
+		// Countries are this color if they've funded/received money
+		// but only as part of a group and we don't know how much they gave/got
+		// because of that.
+		const unspecifiedGray = '#656590';
 
 		// source: http://colorbrewer2.org/#type=sequential&scheme=Greens&n=8
 		const greens = [
@@ -377,11 +382,27 @@
 				const isoCode = d.properties.ISO2;
 				if (currentNodeDataMap.has(isoCode)) {
 					d.value = currentNodeDataMap.get(isoCode)[valueAttrName];
-					d.color = d.value ? colorScale(d.value) : '#ccc';
+					if (d.value && d.value !== 0) {
+						d.color = d.value ? colorScale(d.value) : '#ccc';
+					} else {
+						// check whether to make it dark gray
+						const flow = valueAttrName.includes('received') ? 'r' : 'd';
+						const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
+						const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
+						if (unmappableFinancials.length > 0) {
+							const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
+							if (someMoney) {
+								return 'url(#diagonal-stripe-1)';
+								// return unspecifiedGray;
+							}
+						}
+						d.color = '#ccc';
+					}
 				} else {
 					d.value = null;
 					d.color = '#ccc';
 				}
+
 				return d.color;
 			})
 			.each(function updateTooltip(d) {

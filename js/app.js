@@ -76,6 +76,7 @@ const App = {};
 				/* -------- Populate global variables -------- */
 				// save geo data; save list of countries in namespace
 				App.geographicGroupings = geographicGroupings;
+				App.geographicGroupCodes = _.unique(_.pluck(App.geographicGroupings, 'group_code'));
 				App.geoData = worldData;
 				App.countries = worldData.objects.countries.geometries
 					.map(c => c.properties);
@@ -335,8 +336,7 @@ const App = {};
 	 */
 	App.getEntityGroups = (code) => {
 		const matches = _.pluck(App.geographicGroupings.filter(d => d.iso2 === code), 'group_code');
-		// if (code === 'FR') return ['eu']; // TODO
-		return matches || []; // TODO
+		return matches || [];
 	};
 
 	/**
@@ -404,7 +404,51 @@ const App = {};
 		return filterCountOnce(projects.filter(filterIsCode).filter(filterHasAmount));		
 	};
 
-	// App.getConfirmedAmountFunds = () => {};
+	/**
+	 * Given the set of projects, returns only those that contain financial assistance
+	 * amounts that are NOT attributable to the entity (either funded or received).
+	 * This set of projects is used to determine whether to color a country/entity gray
+	 * on the Map -- they are dark gray if there are only projects with unspecified
+	 * financials and "Financial Resources" has been selected.
+	 * @param  {array} projects The projects
+	 * @param  {string} type     'd' or 'r'
+	 * @param  {string} code     Entity code
+	 * @return {array}          Projects that contain financial assistance WITHOUT attributable
+	 * amounts
+	 */
+	App.getFinancialProjectsWithUnmappableAmounts = (projects, type, code) => {
+		const typeIsFunded = type === 'd';
+		const codeField = typeIsFunded ? 'donor_code': 'recipient_country';
+		const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
+
+		// Timor-Leste is part of IPR
+		const groupsPartOf = App.getEntityGroups(code);
+
+		// Get financial support that is disbursed to groups TL is part of.
+		const filterAmountUnmappable = (project) => {
+			// Is financial
+			const isFinancial = project.assistance_type.toLowerCase().includes('financial');
+
+			// Is for a group Timor-Leste belongs to.
+			const isUnmappable = groupsPartOf.indexOf(project[codeField]) > -1;
+			return isFinancial && isUnmappable;
+			// return !(project[unspecAmountField] !== true && project.assistance_type.toLowerCase() !== 'in-kind support' && project.assistance_type.toLowerCase() !== 'other support');
+		};
+
+		// const filterIsCode = (project) => { 
+		// 	return project[codeField] === code;
+		// };
+
+
+		const filterCountOnce = (allProjects) => {
+			const groupedById = _.groupBy(allProjects, 'project_id');
+			return _.values(groupedById).map(d => d[0]);
+		};
+
+		return filterCountOnce(projects.filter(filterAmountUnmappable));		
+		// return filterCountOnce(projects.filter(filterIsCode).filter(filterAmountUnmappable));		
+	};
+
 
 	App.addOtherRecipients = (codeObj) => {
 		// if not a country
