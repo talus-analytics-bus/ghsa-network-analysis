@@ -58,7 +58,8 @@
 	transform-origin: top right;
 
 	&:hover {
-		background-color: rgba(240,240,240,0.925);
+			background-color: rgba(240,240,240,1.0);
+		// background-color: rgba(240,240,240,0.925);
 	}
 
 
@@ -69,12 +70,13 @@
 		justify-content: space-between;
 		font-weight: 600;
 		padding: 10px 20px;
-		background-color: rgba(240,240,240,0.5);
+			background-color: rgba(240,240,240,1.0);
+		// background-color: rgba(240,240,240,0.5);
 		cursor: pointer;
 
 		img { top: 4px; }
 		&:hover {
-			background-color: rgba(240,240,240,0.8);
+			background-color: rgba(240,240,240,1.0);
 		}
 	}
 	.map-options-content {
@@ -159,7 +161,7 @@
 		}
 	}
 	.legend-content {
-		display: none;
+		// display: none;
 	}
 	.legend-box {
 		display: inline-block;
@@ -187,9 +189,13 @@
 			top: 0px;
 		}
 	}
+	.ghsa-only-checkbox {
+		margin-right: 5px;
+	}
 }
 .viewport-ellipse {
 	&.outer {
-		fill: #ffffff;
+		fill: #3e3e3e;
+		// fill: #ffffff;
 	}
 }

@@ -1352,11 +1352,11 @@
 						.attr('class','list-item no-data')
 						.text(`No ${moneyFlow === 'funded' ? 'funders' : 'recipients'} to show. Change Options above to view data.`);
 			}
-			// if (indType === 'score' || indType === 'combo') {
-			// 	$('.non-country-list-container').fadeOut();
-			// } else {
-			// 	$('.non-country-list-container').fadeIn();
-			// }
+			if (indType === 'score' || indType === 'combo') {
+				$('.non-country-list-container').css('opacity',0);
+			} else {
+				$('.non-country-list-container').css('opacity',1);
+			}
 		};
 
 		/**

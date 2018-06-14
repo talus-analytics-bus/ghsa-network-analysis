@@ -62,7 +62,7 @@
 
 /* --- Map Non-country Funder/Recipient Lists --- */
 .non-country-list-container {
-  // color: #c4c6c6;
+  color: #c4c6c6;
   z-index: -99;
   width: 320px;
   position: fixed;
@@ -174,8 +174,8 @@
     left: -170px !important;
   }
   position: relative;
-  svg circle {
-    stroke: black;
-    stroke-width: 1;
-  }
+  // svg circle {
+  //   stroke: black;
+  //   stroke-width: 1;
+  // }
 }
