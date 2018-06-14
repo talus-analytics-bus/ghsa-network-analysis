@@ -144,13 +144,13 @@
 
   &:hover, &.active {
     // &:hover~&.no-data, &.active {
-      color: #bfd4e7;
+      // color: #bfd4e7;
       // font-weight: bold;
       cursor: pointer;
       text-decoration: underline;
 
       &.active {
-       color: #fff
+       // color: #fff
      }
    }
  }

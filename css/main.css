@@ -741,14 +741,8 @@ select.form-control {
 
 /* line 145, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
 .non-country-list-container .non-country-list .list-item:hover, .non-country-list-container .non-country-list .list-item.active {
-  color: #bfd4e7;
   cursor: pointer;
   text-decoration: underline;
-}
-
-/* line 152, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
-.non-country-list-container .non-country-list .list-item:hover.active, .non-country-list-container .non-country-list .list-item.active.active {
-  color: #fff;
 }
 
 /* line 159, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
