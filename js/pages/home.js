@@ -1040,7 +1040,8 @@
 				const val = span.position().top;
 				const scale = getHorizOffsetScale();
 				const maxOffset = getMaxHorizOffset();
-				if (App.usingFirefox || true) return 110;
+				if (App.usingFirefox || true) return 130;
+				// if (App.usingFirefox || true) return 110;
 				return scale(val);
 			}
 
@@ -1110,6 +1111,20 @@
 			window.addEventListener("resize", onChange);
 		}
 
+		function setDotPosition (circleNode) {
+			const lineHeight = 17;
+			const parentHeight = circleNode.parentNode.parentNode.parentNode.offsetHeight;
+			const factor = (parentHeight / lineHeight) - 1;
+
+			function getTop (factor) {
+				if (factor === 1) return '-15px';
+				if (factor === 2) return '-24px';
+				if (factor === 3) return '-33px';
+				else return '-42px';
+			}
+			$(circleNode.parentNode.parentNode).css('top', getTop(factor));
+		}
+
 		/**
 		 * Initializes the list of funders that appears on the left side of the Map.
 		 * @param  {string} selector      D3 selector string of div that
@@ -1142,7 +1157,7 @@
 				'International NGO',
 				'Multilateral',
 				'National NGO',
-				'Public Private Partnership',
+				// 'Public Private Partnership',
 			];
 
 			// keep only the data that match the needed sector
@@ -1168,14 +1183,17 @@
 			const sortField = isFinancial ? financialField : 'totalInkind'; // TODO committed or disbursed IKS
 
 			orgs = _.sortBy(orgs, d => d.curPayments[sortField]).reverse();
-
+			// orgs = orgs.filter(d => d.curPayments[financialField] > 0);
 			
 			// populate the list with spans representing each entity
+			const colorScale = getColorScale();
+
 			if (orgs.length > 0) {
 				$list.selectAll('.list-item')
 					.data(orgs).enter().append('div')
 						.attr('class','list-item')
 						.text(d => d.donor_name)
+						// .style('color',function(d) { return colorScale(d.curPayments[sortField])})
 						.on('click', function onClick(d) {
 							const curListItem = d3.select(this);
 							if (curListItem.classed('active')) {
@@ -1196,7 +1214,18 @@
 							displayCountryInfo();
 							return true;
 						})
-						.insert('br');
+						.insert('div')
+							.attr('class','circle-container left')
+							.append('svg')
+							.attr('width','12')
+							.attr('height','12')
+							.append('circle')
+								.attr('r',6)
+								.attr('cx', 6)
+								.attr('cy', 6)
+								.style('fill', d => colorScale(d.curPayments[sortField]))
+								.each(function(){setDotPosition(this)});
+						// .insert('br');
 			} else {
 				$list.append('div')
 						.attr('class','list-item no-data')
@@ -1263,7 +1292,8 @@
 			const sortField = isFinancial ? financialField : 'totalInkind'; // TODO committed or disbursed IKS
 
 			orgs = _.sortBy(orgs, d => d.curPayments[sortField]).reverse();
-
+			// orgs = orgs.filter(d => d.curPayments[financialField] > 0);
+			const colorScale = getColorScale();
 			
 			// populate the list with spans representing each entity
 			if (orgs.length > 0) {
@@ -1271,6 +1301,7 @@
 					.data(orgs).enter().append('div')
 						.attr('class','list-item')
 						.text(d => d.donor_name)
+						// .style('color',function(d) { return colorScale(d.curPayments[sortField])})
 						.on('click', function onClick(d) {
 							const curListItem = d3.select(this);
 							if (curListItem.classed('active')) {
@@ -1291,7 +1322,18 @@
 							displayCountryInfo();
 							return true;
 						})
-						.insert('br');
+						.insert('div')
+							.attr('class','circle-container right')
+							.append('svg')
+							.attr('width','12')
+							.attr('height','12')
+							.append('circle')
+								.attr('r',6)
+								.attr('cx', 6)
+								.attr('cy', 6)
+								.style('fill', d => colorScale(d.curPayments[sortField]))
+								.each(function(){setDotPosition(this)});
+						// .insert('br');
 			} else {
 				$list.append('div')
 						.attr('class','list-item no-data')
