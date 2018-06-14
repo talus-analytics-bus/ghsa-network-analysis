@@ -1223,7 +1223,10 @@
 								.attr('r',6)
 								.attr('cx', 6)
 								.attr('cy', 6)
-								.style('fill', d => colorScale(d.curPayments[sortField]))
+								.style('fill', d => {
+									if (d.curPayments[sortField] === 0) return 'rgb(204, 204, 204)';
+									return colorScale(d.curPayments[sortField])
+								})
 								.each(function(){setDotPosition(this)});
 						// .insert('br');
 			} else {
@@ -1331,7 +1334,10 @@
 								.attr('r',6)
 								.attr('cx', 6)
 								.attr('cy', 6)
-								.style('fill', d => colorScale(d.curPayments[sortField]))
+								.style('fill', d => {
+									if (d.curPayments[sortField] === 0) return 'rgb(204, 204, 204)';
+									return colorScale(d.curPayments[sortField])
+								})
 								.each(function(){setDotPosition(this)});
 						// .insert('br');
 			} else {
