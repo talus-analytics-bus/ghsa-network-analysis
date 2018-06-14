@@ -79,7 +79,7 @@
 				initFirefoxScrollBars();
 			}
 			const ccs = $('.cc-select').val();
-			initTopLeftList('.non-country-list.funder-list', ccs);
+			initLeftList('.non-country-list.funder-list', ccs);
 			initRightList('.non-country-list.recipient-list', ccs);
 			initListScaling('.non-country-list-container.right');
 			initListScaling('.non-country-list-container.left');
@@ -330,7 +330,7 @@
 					combo,
 				});
 			});
-			initTopLeftList('.non-country-list.funder-list', ccs);
+			initLeftList('.non-country-list.funder-list', ccs);
 			initRightList('.non-country-list.recipient-list', ccs);
 			initListScaling('.non-country-list-container.right');
 			initListScaling('.non-country-list-container.left');
@@ -1088,7 +1088,7 @@
 				// $searchContainer.css('transform',`scale(${scaleFactor})`);
 
 				// Set top position of box
-				const viewportTop = $viewport.offset().top;
+				const viewportTop = $viewport.offset().top + 20;
 				const boxHeight = $box[0].getBoundingClientRect().height;
 				const listTitleHeight = $listTitle[0].getBoundingClientRect().height;
 				const heuristicTopPositionCorrection = -10 * scaleFactor / heuristicScaleFactorCorrection;
@@ -1117,98 +1117,92 @@
 		 * 								  
 		 * @return {null} No return value
 		 */
-		function initTopLeftList (selector, ccs) {
+		function initLeftList (selector, ccs=[]) {
 			const $list = d3.select(selector).html('');
+			const label = "Non-government Organization<br>";
+			d3.select('.list-title.left').html(label + (moneyFlow === 'funded' ? 'Funders' : 'Recipients') );
 
 			// get data for funders and group it by funder
-			const curFundingData = App.fundingData;
+			const curFundingData = App.fundingData.filter(p => {
 
-			const fundingDataByDonorCode = _.groupBy(curFundingData, 'donor_code');
-			let nonCountryFunderData = App.nonCountries.map((val, key) => {
-				return {
-					donor_code: val.FIPS,
-					entity_data: val,
-					projects: (fundingDataByDonorCode[val.FIPS] !== undefined) ? getPaymentSum(fundingDataByDonorCode[val.FIPS], ccs) : [],
-				};
-			}).filter(d => {
-				return _.values(d.projects).some(dd => dd > 0);
-			});
-			// }).filter(d => App.funderCodes.indexOf(d.donor_code) > -1);
-			nonCountryFunderData.forEach(d => {
-					d.inactive = !_.values(d.projects).some(dd => dd > 0);
+				// Tagged with right ccs?
+				if (!App.passesCategoryFilter(p.core_capacities, ccs)) return false;
+				return true;
+
 			});
 
-			// Add object representing GHSA
-			const ghsa = {
-				recipient_code: 'ghsa',
-				entity_data: {
-				    "FIPS": "ghsa",
-				    "ISO2": "ghsa",
-				    "NAME": "Global Health Security Agenda",
-				    "country": false
-				  },
-				projects: getPaymentSum(curFundingData.filter(d => d.ghsa_funding === true), ccs), // TODO
-			};
-			// const someGhsaProjects = _.values(ghsa.projects).some(d => d > 0);
-			// if (someGhsaProjects) {
-			// 	nonCountryFunderData = nonCountryFunderData.concat(ghsa);
-			// }
-			ghsa.inactive = !_.values(ghsa.projects).some(d => d > 0);
-			// nonCountryFunderData = nonCountryFunderData.concat(ghsa);
+			// checking funder or recipient?
+			const sectorField = moneyFlow === 'funded' ? 'donor_code' : 'recipient_country';
 
-			// sort A-Z by donor name
-			nonCountryFunderData = _.sortBy(nonCountryFunderData, (data) => { return data.entity_data.NAME.toLowerCase(); });
+			// get funding data grouped by sector
+			const dataBySector = _.groupBy(curFundingData, sectorField);
 
+			// get codes of orgs needed by the sectors needed
+			const sectors = [
+				'International NGO',
+				'Multilateral',
+				'National NGO',
+				'Public Private Partnership',
+			];
+
+			// keep only the data that match the needed sector
+			let orgs = App.codes.filter(org => {
+				return sectors.indexOf(org.donor_sector) > -1;
+			});
+			 
+			// keep only F/R with non-zero funds of the type being checked (r or d, com or dis, IKS or DFS)
+			const lookup = moneyFlow === 'funded' ? App.fundingLookup : App.recipientLookup;
+			orgs = orgs.filter(org => {
+				const code = org.donor_code;
+				const projects = lookup[code];
+				if (projects === undefined || projects.length === 0) return false;
+				org.curPayments = getPaymentSum(projects, ccs); // TODO don't check ccs twice
+				const values = _.values(org.curPayments);
+				if (values.some(d => d > 0)) return true;
+				else return false;
+			});
+
+			// sort them by amount of funds
+			const isFinancial = indType !== 'inkind';
+			const financialField = moneyType === 'committed' ? 'totalCommitted' : 'totalSpent';
+			const sortField = isFinancial ? financialField : 'totalInkind'; // TODO committed or disbursed IKS
+
+			orgs = _.sortBy(orgs, d => d.curPayments[sortField]).reverse();
+
+			
 			// populate the list with spans representing each entity
-			const listItems = 
-			$list.selectAll('.list-item-container')
-				.data(nonCountryFunderData).enter().append('div')
-					.attr('class','list-item-container');
-			// listItems
-			// 	.append('svg')
-			// 		.attr('width', 10)
-			// 		.attr('height', 10)
-			// 		.append('circle')
-			// 			.attr('r', 6)
-			// 			.style('fill','purple');
-			const divs = listItems
-				.append('div')
-					.attr('class','list-item')
-					// .classed('inactive', d => d.inactive)
-					
-					.on('click', function onClick(d) {
-						const curListItem = d3.select(this);
-						if (curListItem.classed('active')) {
+			if (orgs.length > 0) {
+				$list.selectAll('.list-item')
+					.data(orgs).enter().append('div')
+						.attr('class','list-item')
+						.text(d => d.donor_name)
+						.on('click', function onClick(d) {
+							const curListItem = d3.select(this);
+							if (curListItem.classed('active')) {
+								d3.selectAll('.list-item').classed('active',false);
+								return resetMap();
+							} else if ($('.list-item.active').length === 0) {
+								map.reset();
+							}
+
 							d3.selectAll('.list-item').classed('active',false);
-							return resetMap();
-						} else if ($('.list-item.active').length === 0) {
-							map.reset();
-						}
+							curListItem.classed('active', true);
 
-						d3.selectAll('.list-item').classed('active',false);
-						curListItem.classed('active', true);
+							activeCountry = {
+								datum: () => { return {flow: moneyFlow, properties: App.nonCountries.find(dd => d.donor_code === dd.FIPS) } }
+							};
 
-						activeCountry = {
-							datum: () => { return {flow: 'funded', properties: App.nonCountries.find(dd => d.entity_data.FIPS === dd.FIPS) } }
-						};
+							// display info box
+							displayCountryInfo();
+							return true;
+						})
+						.insert('br');
+			} else {
+				$list.append('div')
+						.attr('class','list-item no-data')
+						.text(`No ${moneyFlow === 'funded' ? 'funders' : 'recipients'} to show. Change Options above to view data.`);
+			}
 
-						// display info box
-						displayCountryInfo();
-						return true;
-					});
-			// const circles = divs
-			// 		.append('svg')
-			// 			.attr('width', 25)
-			// 			.attr('height', 25)
-			// 			.append('circle')
-			// 				.attr('cx', 5)
-			// 				.attr('cy', 17)
-			// 				.attr('r', 6)
-			// 				.style('fill','purple');
-			const labels = divs				
-					.append('span')
-						.text(d => d.entity_data.acronym || d.entity_data.NAME)
-					.insert('br', ':first-child');
 		};
 
 		/**

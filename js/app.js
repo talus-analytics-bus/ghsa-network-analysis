@@ -147,6 +147,8 @@ const App = {};
 					});
 				});
 
+				// hide unops data until we can fix it
+				fundingData = fundingData.filter(d => d.donor_code !== '41aaa');
 
 				App.fundingData = fundingData;
 				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
