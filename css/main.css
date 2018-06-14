@@ -640,7 +640,6 @@ select.form-control {
 /* --- Map Non-country Funder/Recipient Lists --- */
 /* line 64, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
 .non-country-list-container {
-  color: #c4c6c6;
   z-index: -99;
   width: 320px;
   position: fixed;
@@ -774,6 +773,12 @@ select.form-control {
 /* line 173, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
 .circle-container.right {
   left: -170px !important;
+}
+
+/* line 177, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
+.circle-container svg circle {
+  stroke: black;
+  stroke-width: 1;
 }
 
 /* line 1, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
@@ -2727,6 +2732,11 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
 /* line 186, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container.ghsa-toggle-container .map-options-title .ghsa-info-img {
   top: 0px;
+}
+
+/* line 192, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+.viewport-ellipse.outer {
+  fill: #ffffff;
 }
 
 /* line 2, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_settings.scss */

@@ -97,7 +97,7 @@ const Map = {};
 
 		// add viewport cutout ellipse
 		svg.append('rect')
-			.attr('class', 'viewport-ellipse')
+			.attr('class', 'viewport-ellipse outer')
 			.attr('width', width)
 			.attr('height', height)
 			.attr('fill','#222222')
