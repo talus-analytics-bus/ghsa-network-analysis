@@ -2080,6 +2080,11 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   font-style: italic;
 }
 
+/* line 465, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisCountry.scss */
+.no-data-message.funds .btn {
+  font-style: normal;
+}
+
 /* line 2, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisGlobal.scss */
 .analysis-global-content .analysis-global-tab-container {
   margin-top: 20px;

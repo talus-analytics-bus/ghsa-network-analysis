@@ -67,8 +67,6 @@ const Routing = {};
 
 	function loadPage(pageName, func, ...data) {
 		let navName = pageName.split('-')[0];
-		console.log('navName');
-		console.log(navName);
 		if (pageName === "landing") navName = "";
 		// set nav
 		$('a.active').removeClass('active');
