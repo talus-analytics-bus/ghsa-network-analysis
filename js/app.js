@@ -431,7 +431,13 @@ const App = {};
 			if (dataToCheck[group] !== undefined)
 			data = data.concat(dataToCheck[group]);
 		});
-		projects = data;
+		const ccs = $('.cc-select').val();
+		projects = data.filter(p => {
+			// Tagged with right ccs?
+			if (!App.passesCategoryFilter(p.core_capacities, ccs)) return false;
+			return true;
+
+		});
 
 		// Get financial support that is disbursed to groups TL is part of.
 		const filterAmountUnmappable = (project) => {
