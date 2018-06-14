@@ -72,6 +72,7 @@
 			// build map and initialize search
 			map = buildMap();
 			initMapOptions();
+			initGhsaToggle();
 			initLegend();
 			initCountryInfoBox();
 			if (App.usingFirefox) {
@@ -233,6 +234,7 @@
 
 		// update everything if any parameters change
 		function updateAll() {
+			console.log('updateAll()')
 			// update funding data
 			App.loadFundingData({showGhsaOnly: App.showGhsaOnly});
 
@@ -387,6 +389,8 @@
 			map.element.selectAll('.country').transition()
 			.duration(500)
 			.style('fill', function (d) {
+				const country = d3.select(this);
+				country.classed('hatch',false);
 				const isoCode = d.properties.ISO2;
 				if (currentNodeDataMap.has(isoCode)) {
 					d.value = currentNodeDataMap.get(isoCode)[valueAttrName];
@@ -401,7 +405,7 @@
 							const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
 							if (someMoney) {
 								// return 'url(#diagonal-stripe-1)';
-								d3.select(this).classed('hatch', true);
+								country.classed('hatch', true);
 								return unspecifiedGray;
 							}
 						}
@@ -746,6 +750,25 @@
 			$('.info-container').slideDown();
 		}
 
+		function initGhsaToggle() {
+			// set GHSA radio button to checked if that is set
+			const selector = 'input.ghsa-only-checkbox[type=checkbox]';
+			if (App.showGhsaOnly) {
+				// $('input[type=radio][name="ind"][ind="ghsa"]').prop('checked',true);
+				$(selector).prop('checked',true);
+			}
+
+			$(selector).off('change');
+			$(selector).change(() => {
+				if ($(selector).prop('checked')) {
+					App.showGhsaOnly = true;
+				} else {
+					App.showGhsaOnly = false;
+				}
+				updateFilters();
+			});
+		}
+
 		// initalizes components in the map options, incl. search and display toggle
 		function initMapOptions() {
 			// define display toggle behavior
@@ -820,11 +843,6 @@
 		function initFilters() {
 			// populate dropdowns
 			App.populateCcDropdown('.cc-select', { dropRight: true });
-
-			// set GHSA radio button to checked if that is set
-			if (App.showGhsaOnly) {
-				$('input[type=radio][name="ind"][ind="ghsa"]').prop('checked',true);
-			}
 
 			// update indicator type ('money' or 'score') on change
 			$('.ind-type-filter .radio-option').click(function updateIndType() {
