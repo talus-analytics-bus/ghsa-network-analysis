@@ -1183,7 +1183,10 @@
 			const sortField = isFinancial ? financialField : 'totalInkind'; // TODO committed or disbursed IKS
 
 			orgs = _.sortBy(orgs, d => d.curPayments[sortField]).reverse();
-			// orgs = orgs.filter(d => d.curPayments[financialField] > 0);
+			// If IKS, filter out orgs that don't provide it
+			if (!isFinancial) {
+				orgs = orgs.filter(d => d.curPayments[sortField] > 0);
+			}
 			
 			// populate the list with spans representing each entity
 			const colorScale = getColorScale();
@@ -1245,6 +1248,7 @@
 		 * @return {null} No return value
 		 */
 		function initRightList (selector, ccs=[]) {
+			
 			const $list = d3.select(selector).html('');
 			const label = "Foundations, Philanthropies, and Private Sector";
 			d3.select('.list-title.right').text(label + (moneyFlow === 'funded' ? ' Funders' : ' Recipients') );
@@ -1295,7 +1299,10 @@
 			const sortField = isFinancial ? financialField : 'totalInkind'; // TODO committed or disbursed IKS
 
 			orgs = _.sortBy(orgs, d => d.curPayments[sortField]).reverse();
-			// orgs = orgs.filter(d => d.curPayments[financialField] > 0);
+			// If IKS, filter out orgs that don't provide it
+			if (!isFinancial) {
+				orgs = orgs.filter(d => d.curPayments[sortField] > 0);
+			}
 			const colorScale = getColorScale();
 			
 			// populate the list with spans representing each entity
@@ -1345,7 +1352,11 @@
 						.attr('class','list-item no-data')
 						.text(`No ${moneyFlow === 'funded' ? 'funders' : 'recipients'} to show. Change Options above to view data.`);
 			}
-
+			// if (indType === 'score' || indType === 'combo') {
+			// 	$('.non-country-list-container').fadeOut();
+			// } else {
+			// 	$('.non-country-list-container').fadeIn();
+			// }
 		};
 
 		/**

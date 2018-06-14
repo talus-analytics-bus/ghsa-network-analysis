@@ -1090,7 +1090,14 @@ b {
   max-width: 700px;
 }
 
-/* line 12, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_text.scss */
+/* line 11, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_text.scss */
+.description.network {
+  margin-top: 20px;
+  margin-left: -50px;
+  max-width: 960px;
+}
+
+/* line 17, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_text.scss */
 .instructions {
   font-style: italic;
   max-width: 700px;
