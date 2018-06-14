@@ -728,7 +728,8 @@
 
 
 			// GHSA special code:
-			if (isGhsaPage) {
+			if (true) {
+			// if (isGhsaPage) {
 				// keep only first project in each array
 				const projectsToIterateOn = projectArrays.map(d => d[0]);
 
@@ -757,13 +758,18 @@
 							committed_on_respond: 0,
 							committed_on_other: 0,
 							committed_on_general: 0,
-							all_unspec_amounts: false, // will always show full proj value for GHSA page
+							all_unspec_amounts: !isGhsaPage, // will always show full proj value for GHSA page
 						};
 					}
 
 					// Increment counts
 					tableRowsByCodeOrName[codeOrName].total_committed += p.total_committed;
 					tableRowsByCodeOrName[codeOrName].total_spent += p.total_spent;
+					if (p[codeFieldOther] === iso && iso !== 'ghsa') {
+						console.log('p!!!');
+						console.log(p);
+						tableRowsByCodeOrName[codeOrName].all_unspec_amounts = false
+					};
 					p.core_capacities.forEach(cc => {
 						const ccAbbrev = cc.split('.')[0];
 						if (ccAbbrev === 'P') {
