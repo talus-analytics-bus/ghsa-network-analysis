@@ -266,9 +266,21 @@
 			let hasNoData = false;
 			const totalFunded = App.getTotalFunded(iso);
 			const totalReceived = App.getTotalReceived(iso);
+			const projectsIncludingGroups = App.getProjectsIncludingGroups(App.fundingData, moneyType, iso);
+			// console.log('App.fundingData')
+			// console.log(App.fundingData)
+			// console.log("App.recipientLookup['ipr']")
+			// console.log(App.recipientLookup['ipr'])
+			// console.log('iso')
+			// console.log(iso)
+			// console.log('App.getEntityGroups(iso)');
+			// console.log(App.getEntityGroups(iso));
+			// console.log('projectsIncludingGroups')
+			// console.log(projectsIncludingGroups)
+			lookup[iso] = projectsIncludingGroups; // TODO check if this breaks things
 
 			if (moneyType === 'd') {
-				hasNoData = lookup[iso] === undefined || lookup[iso].length === 0;
+				hasNoData = projectsIncludingGroups === undefined || projectsIncludingGroups.length === 0;
 
 				// fill out "switch profile" text and behavior
 				$('.toggle-funder-profile')
@@ -281,7 +293,7 @@
 
 				$('.country-summary-value').text(App.formatMoney(totalFunded));
 			} else if (moneyType === 'r') {
-				hasNoData = lookup[iso] === undefined || lookup[iso].length === 0;
+				hasNoData = projectsIncludingGroups === undefined || projectsIncludingGroups.length === 0;
 
                 // fill out "switch profile" text and behavior
 				$('.toggle-recipient-profile')
@@ -294,6 +306,12 @@
 
 				$('.country-summary-value').text(App.formatMoney(totalReceived));
 			}
+
+			const codeField = moneyType === 'r' ? 'recipient_country' : 'donor_code';
+			const projectsJustForCountry = projectsIncludingGroups.filter(d => d[codeField] === iso);
+			const zeroCommittments = (projectsJustForCountry !== undefined) ? (d3.sum(projectsJustForCountry, d => d.total_committed) === 0) : true;
+			const zeroDisbursements = (projectsJustForCountry !== undefined) ? (d3.sum(projectsJustForCountry, d => d.total_spent) === 0) : true;
+			const hasNoFinancialData = zeroCommittments && zeroDisbursements;
 
 			$('input[type=radio][value="total_spent"]').prop('checked', true);
 			// $('.money-type-cap').text('Disbursed');
@@ -330,7 +348,32 @@
 			});
 
 			// draw charts
-			if (hasNoData) {
+			if (hasNoFinancialData) {
+				// TODO
+				console.log('NO FINANCIAL DATA')
+				$('.progress-circle-section, .category-chart-section, .country-flow-summary .data-area').remove();
+				$('.no-data-message.funds').show();
+				// drawTimeChart();
+				// drawProgressCircles();
+				drawCountryTable('.country-table-section', moneyType);
+				if (isGhsaPage) {
+					drawCountryTable('.second-country-table-section', (moneyType === 'd') ? 'r' : 'd');
+				}
+				drawCountryInKindTable();
+				const categoryChart = drawCategoryChart();
+
+
+				categoryChart.selectAll('.y.axis .tick text').each(function addJeeIcons(d) {
+					const g = d3.select(this.parentNode);
+					const node = g.select('text');
+				});
+
+				// display content
+				$('.country-flow-content').slideDown();
+
+				console.log('lookup[iso]')
+				console.log(lookup[iso])
+			} else if (hasNoData) {
 				$('.country-flow-summary, .progress-circle-section, .country-chart-container, .country-flow-content, .category-chart-section, .circle-pack-container, .inkind-table-section').hide();
 				$('.country-flow-summary-empty').slideDown();
 				$('.submit-data-btn').click(() => hasher.setHash('submit'))
@@ -508,6 +551,7 @@
 							entity_name_other: App.codeToNameMap.get(isoOther) || isoOther,
 							total_committed: 0,
 							total_spent: 0,
+							unspec_amount: false,
 							spent_on_prevent: 0,
 							spent_on_detect: 0,
 							spent_on_respond: 0,
@@ -520,6 +564,9 @@
 					}
 					fundedByCountry[recIso].total_committed += p.total_committed;
 					fundedByCountry[recIso].total_spent += p.total_spent;
+					if (p[countryInd] !== recIso) {
+						fundedByCountry[recIso].unspec_amount = true;
+					}
 					p.core_capacities.forEach(cc => {
 						const ccAbbrev = cc.split('.')[0];
 						if (ccAbbrev === 'P') {
@@ -538,6 +585,7 @@
 					})
 				}
 			});
+
 			for (const recIso in fundedByCountry) {
 				fundedData.push(fundedByCountry[recIso]);
 			}
@@ -546,6 +594,7 @@
 				return d[nameKey].toLowerCase();
 			});
 
+			
 			// draw table
 			const drawTable = (type) => {
 				$('.inkind-table-container').empty();
@@ -655,10 +704,11 @@
 
 			// get table data
 			const countryInd = (moneyTypeForTable === 'd') ? 'recipient_country' : 'donor_code';
+			const countryIndOther = (moneyTypeForTable === 'd') ? 'donor_code' : 'recipient_country';
 			const fundedData = [];
 			const fundedByCountry = {};
 			lookup[iso]
-			.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support')
+			.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support' && payment.assistance_type.toLowerCase() !== 'other support')
 			.forEach((p) => {
 				const recIso = p[countryInd];
 				if (recIso !== 'Not reported') {
@@ -677,10 +727,12 @@
 							committed_on_respond: 0,
 							committed_on_other: 0,
 							committed_on_general: 0,
+							all_unspec_amounts: true,
 						};
 					}
 					fundedByCountry[recIso].total_committed += p.total_committed;
 					fundedByCountry[recIso].total_spent += p.total_spent;
+					if (p[countryIndOther] === iso) fundedByCountry[recIso].all_unspec_amounts = false;
 					p.core_capacities.forEach(cc => {
 						const ccAbbrev = cc.split('.')[0];
 						if (ccAbbrev === 'P') {
@@ -702,6 +754,8 @@
 					})
 				}
 			});
+
+			// If the only payments are for "group" F/R then mark value as unspecified
 			for (const recIso in fundedByCountry) {
 				fundedData.push(fundedByCountry[recIso]);
 			}
@@ -764,19 +818,27 @@
 						'</div>';
 				});
 
-				rows.append('td').text(d => App.formatMoney(d[type]));
+				function getCellText (d, val) {
+					if (d.all_unspec_amounts) return '--';
+					return App.formatMoney(val)
+				};
+
+				rows.append('td').text(d => {
+					if (d.all_unspec_amounts) return 'Specific amount unknown';
+					return App.formatMoney(d[type])
+				});
 				if (type === 'total_spent') {
-					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_prevent));
-					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_detect));
-					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_respond));
-					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_other));
-					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.spent_on_general));
+					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.spent_on_prevent));
+					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.spent_on_detect));
+					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.spent_on_respond));
+					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.spent_on_other));
+					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.spent_on_general));
 				} else {
-					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_prevent));
-					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_detect));
-					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_respond));
-					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_other));
-					rows.append('td').attr('class', 'slightly-dark').text(d => App.formatMoney(d.committed_on_general));
+					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.committed_on_prevent));
+					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.committed_on_detect));
+					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.committed_on_respond));
+					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.committed_on_other));
+					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.committed_on_general));
 				}
 
 				// initialize DataTables plugin

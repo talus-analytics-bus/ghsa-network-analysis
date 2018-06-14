@@ -408,6 +408,51 @@ const App = {};
 	};
 
 	/**
+	 * Return projects that match the entity's code or any
+	 * group the entity is part of.
+	 * @param  {array} projects Array of projects
+	 * @param  {string} type     d or r
+	 * @param  {string} code     Entity code
+	 * @return {array}          Array of matching projects
+	 */
+	App.getProjectsIncludingGroups = (projects, type, code) => {
+		const typeIsFunded = type === 'd';
+		const codeField = typeIsFunded ? 'donor_code': 'recipient_country';
+		const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
+
+		const dataToCheck = typeIsFunded ? App.fundingLookup : App.recipientLookup;
+
+		// Timor-Leste is part of IPR
+		const groupsPartOf = App.getEntityGroups(code);
+		groupsPartOf.push(code);
+
+		let data = [];
+		groupsPartOf.forEach(group => {
+			console.log('group')
+			console.log(group)
+			if (dataToCheck[group] !== undefined)
+			data = data.concat(dataToCheck[group]);
+		});
+		console.log('dataToCheck');
+		console.log(dataToCheck);
+		// const ccs = $('.cc-select').val();
+		// projects = data.filter(p => {
+		// 	// Tagged with right ccs?
+		// 	if (!App.passesCategoryFilter(p.core_capacities, ccs)) return false;
+		// 	return true;
+
+		// });
+
+		const filterCountOnce = (allProjects) => {
+			const groupedById = _.groupBy(allProjects, 'project_id');
+			return _.values(groupedById).map(d => d[0]);
+		};
+
+		return filterCountOnce(data);	
+	};
+
+
+	/**
 	 * Given the set of projects, returns only those that contain financial assistance
 	 * amounts that are NOT attributable to the entity (either funded or received).
 	 * This set of projects is used to determine whether to color a country/entity gray

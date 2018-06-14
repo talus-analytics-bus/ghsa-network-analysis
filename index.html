@@ -577,18 +577,23 @@
                         <div class="funds-dispursed-title">
                             <br> Total Funds <span class="money-type-cap">Disbursed</span> from <span class="start-year">2014</span> to <span class="end-year">2017</span>
                         </div>
-                        <div class="country-summary-text">
-                            <div class="country-summary-value"></div>
-                            <div class="show-table-btn btn btn-default">Show All Funds</div>
+                        <div class="no-data-message funds">
+                            No funding with specific amounts to show. Additional data in tables below.
                         </div>
-                        <div>
-                            <div class="time-chart-container">
-                                <div class="time-chart-graphic"> </div>
+                        <div class="data-area">
+                            <div class="country-summary-text">
+                                <div class="country-summary-value"></div>
+                                <div class="show-table-btn btn btn-default">Show All Funds</div>
                             </div>
-                        </div>
-                        <div class="source-text bump-right">
-                            <b>Source:</b> IATI registry via
-                            <a href="http://d-portal.org" target="_blank">d-portal</a>, 2014-2017.
+                            <div>
+                                <div class="time-chart-container">
+                                    <div class="time-chart-graphic"> </div>
+                                </div>
+                            </div>
+                            <div class="source-text bump-right">
+                                <b>Source:</b> IATI registry via
+                                <a href="http://d-portal.org" target="_blank">d-portal</a>, 2014-2017.
+                            </div>
                         </div>
                     </div>
                     <div class="country-flow-summary-empty">
@@ -693,7 +698,7 @@
                         </div>
                         <div class="">
                             <div class="row">
-                                <div class="no-data-message"></div>
+                                <div class="no-data-message core-capacity"></div>
                                 <div class="category-chart-container">
                                 </div>
                             </div>
@@ -782,6 +787,17 @@
                         <div class="data-area">
                             <div class="circle-pack-description description">
                                 The table below displays in-kind contribution <span class="opp-inkind-type-noun"></span>s in alphabetical order. Click on a row to view details.
+                            </div>
+                            <div class="toggle-disbursed-chart-container category-data-area">
+                                <form class="fund-toggle">
+                                    <label class="radio-inline">
+                                        <input id="chart-spent" type="radio" name="fundtype" value="total_spent">Disbursed Contributions
+                                    </label>
+                                    <br>
+                                    <label class="radio-inline">
+                                        <input id="chart-committed" type="radio" name="fundtype" value="total_committed">Committed Contributions
+                                    </label>
+                                </form>
                             </div>
                             <div class="inkind-table-container">
                                 <table class="inkind-table country-table table table-bordered table-hover">

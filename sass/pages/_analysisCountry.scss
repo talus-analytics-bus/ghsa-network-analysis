@@ -457,3 +457,9 @@
         }
       }
     }
+
+    .no-data-message.funds {
+      margin-left: 0;
+      display: none;
+      font-style: italic;
+    }
