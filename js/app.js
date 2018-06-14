@@ -221,7 +221,7 @@ const App = {};
 			});
 
 		// links
-		$('.navbar-brand span').click(() => hasher.setHash(''));
+		$('.navbar-brand span').click(() => hasher.setHash('landing'));
 	};
 
 

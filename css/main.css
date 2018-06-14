@@ -2943,4 +2943,9 @@ body {
   margin-bottom: -10px;
 }
 
+/* line 143, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/main.scss */
+a.active {
+  font-weight: 600;
+}
+
 /*# sourceMappingURL=../css/main.map */

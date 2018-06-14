@@ -43,12 +43,13 @@
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a page="">Map</a></li>
-                    <li><a page="analysis">Analysis</a></li>
-                    <li><a page="analysis/ghsa/d">GHSA</a></li>
-                    <li><a page="submit">Submit Data</a></li>
-                    <li><a page="settings">Set Currency</a></li>
                     <li><a page="about">About</a></li>
+                    <li><a page="">Home</a></li>
+                    <li><a page="map">Map</a></li>
+                    <li><a page="analysis">Network</a></li>
+                    <!-- <li><a page="analysis/ghsa/d">GHSA</a></li> -->
+                    <li><a page="submit">Submit Data</a></li>
+                    <li><a page="settings">Settings</a></li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -57,7 +58,7 @@
     </nav>
     <div id="page-content"></div>
     <!-- ----------- TEMPLATES ------------- -->
-    <script id="home-template" type="text/x-handlebars-template">
+    <script id="map-template" type="text/x-handlebars-template">
         <div class="home-container">
             <div class="map-container"></div>
             <div class="right-container">
@@ -247,24 +248,118 @@
             </div>
         </div>
     </script>
-    <script id="analysis-template" type="text/x-handlebars-template">
+    <script id="landing-template" type="text/x-handlebars-template">
         <div class="analysis-container container">
             <div class="analysis-global-content analysis-content">
-                <h3>Analysis</h3>
-                <div class="instructions">
-                    View network analysis of the flow of funds globally, or explore funding by funder or recipient.
-                </div>
-                <div class="analysis-global-tab-container">
-                    <div class="btn-group">
-                        <div class="tab btn btn-default" tab="network">Global Network</div>
-                        <div class="tab btn btn-default" tab="country">Funding by Funder or Recipient</div>
-                    </div>
-                </div>
+                <h3>International Funding by Funder/Recipient</h3>
+{{!--                 <div class="instructions">
+                    Explore funding by funder or recipient.
+                </div> --}}
                 <div class="global-tab-content-container tab-content-container">
                     <div class="global-tab-content tab-content" tab="network">
                         <div class="center">
                             <div class="title-container">
                                 <h3>International Funding Network</h3>
+                                <div class="description">
+                                    The figure below illustrates the flow of funds from funder to recipient. Countries and non-country funders are grouped along the outside of the circle, and lines through the center of the circle correspond to the the transfer of funds from funder to recipient. Thicker lines represent larger amounts of funding commitments or disbursals. Hover over any line to see additional details on the funding amount or funders and recipients involved.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="global-tab-content tab-content" tab="country">
+                        <div class="description-container">
+                            <div class="description-content">
+                                {{!-- <h3>International Funding by Funder/Recipient</h3> --}}
+                                <div class="description">
+                                    The tables below identify the funders that have committed the most funds, and the recipients that have recieved the most funds. Click on any entry in the tables for additional detail on that funder or recipient's activities. For information on a funder or recipient not included on this list, search for that country or organization below.
+                                </div>
+                                <div class="table-country-search">
+                                    <div class="search-container">
+                                        <div class="form-group has-feedback">
+                                            <input type="text" class="country-search-input form-control" placeholder="search for a country or organization...">
+                                            <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                                        </div>
+                                        <div class="live-search-results-container">
+                                            <div class="live-search-no-results-text">No results found</div>
+                                            <div class="live-search-results-contents"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ghsa-toggle-options">
+                                    <div class="dropdown-label">Click to show:</div>
+                                    <div class="ind-type-filter">
+                                        <div class="radio-option">
+                                            <input type="radio" name="ind-country-global" ind="money" checked/>
+                                            <span>All Funding</span>
+                                        </div>
+                                        <div class="radio-option">
+                                            <input type="radio" name="ind-country-global" ind="ghsa" />
+                                            <span>GHSA Funding Only</span>
+                                            <img class="ghsa-info-img info-img" src="img/info.png" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-content row">
+                            <div class="col-sm-6">
+                                <h3 class="fund-table-title">Top Funders</h3>
+                                <table class="donor-table country-table table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <td>Funder</td>
+                                            <td>Committed</td>
+                                            <td>Disbursed</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-6">
+                                <h3 class="fund-table-title">Top Recipients</h3>
+                                <table class="recipient-table country-table table table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <td>Recipient</td>
+                                            <td>Committed</td>
+                                            <td>Disbursed</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="source-text-row row">
+                            <div class="col-sm-12">
+                                <div class="source-text fund-table-source-text">
+                                    <b>Source:</b> International Aid Transparency Initiative (IATI) registry via
+                                    <a href="http://d-portal.org" target="_blank">d-portal</a>, 2014-2017.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </script>
+    <script id="analysis-template" type="text/x-handlebars-template">
+        <div class="analysis-container container">
+            <div class="analysis-global-content analysis-content">
+                <h3>International Funding Network</h3>
+{{!--                 <div class="instructions">
+                    View network analysis of the flow of funds globally, or explore funding by funder or recipient.
+                </div> --}}
+{{!--                 <div class="analysis-global-tab-container">
+                    <div class="btn-group">
+                        <div class="tab btn btn-default" tab="network">Global Network</div>
+                        <div class="tab btn btn-default" tab="country">Funding by Funder or Recipient</div>
+                    </div>
+                </div> --}}
+                <div class="global-tab-content-container tab-content-container">
+                    <div class="global-tab-content tab-content" tab="network">
+                        <div class="center">
+                            <div class="title-container">
+                                {{!-- <h3>International Funding Network</h3> --}}
                                 <div class="description">
                                     The figure below illustrates the flow of funds from funder to recipient. Countries and non-country funders are grouped along the outside of the circle, and lines through the center of the circle correspond to the the transfer of funds from funder to recipient. Thicker lines represent larger amounts of funding commitments or disbursals. Hover over any line to see additional details on the funding amount or funders and recipients involved.
                                 </div>
@@ -1044,6 +1139,7 @@
     <script src="js/components/map.js"></script>
     <script src="js/components/search.js"></script>
     <script src="js/components/slider.js"></script>
+    <script src="js/pages/landing.js"></script>
     <script src="js/pages/analysis.js"></script>
     <script src="js/pages/analysisCountry.js"></script>
     <script src="js/pages/analysisPair.js"></script>

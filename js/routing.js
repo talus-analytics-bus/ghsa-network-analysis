@@ -14,8 +14,11 @@ const Routing = {};
 	Routing.initializeRoutes = () => {
 
 		// setup crossroads for routing
+		crossroads.addRoute('/map', () => {
+			loadPage('map', App.initHome);
+		});
 		crossroads.addRoute('/', () => {
-			loadPage('home', App.initHome);
+			loadPage('landing', App.initLanding, 'country');
 		});
 		crossroads.addRoute('/analysis', () => {
 			loadPage('analysis', App.initAnalysis, 'network');
@@ -63,6 +66,15 @@ const Routing = {};
 	};
 
 	function loadPage(pageName, func, ...data) {
+		let navName = pageName.split('-')[0];
+		console.log('navName');
+		console.log(navName);
+		if (pageName === "landing") navName = "";
+		// set nav
+		$('a.active').removeClass('active');
+		$(`a[page="${navName}"]`).addClass('active');
+
+		// load page
 		loadTemplate(pageName);
 		if (func) func(...data);
 		window.scrollTo(0, 0);
