@@ -78,6 +78,7 @@ const App = {};
 				App.geographicGroupings = geographicGroupings;
 				App.geographicGroupCodes = _.unique(_.pluck(App.geographicGroupings, 'group_code'));
 				App.geoData = worldData;
+				App.codes = donorCodeData;
 				App.countries = worldData.objects.countries.geometries
 					.map(c => c.properties);
 

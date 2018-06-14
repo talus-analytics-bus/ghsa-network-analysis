@@ -126,12 +126,23 @@
   max-width: 180px;
   margin-bottom: 30px;
 
+  &.no-data {
+    font-style: italic;
+    max-width: 270px;
+    &:hover {
+      color: #c4c6c6;
+      cursor: default;
+      text-decoration: none;
+    }
+  }
+
   &.inactive {
       font-style: italic;
       color: #676767 !important;
     }
 
   &:hover, &.active {
+  // &:hover~&.no-data, &.active {
     color: #bfd4e7;
     // font-weight: bold;
     cursor: pointer;
