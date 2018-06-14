@@ -421,8 +421,17 @@ const App = {};
 		const codeField = typeIsFunded ? 'donor_code': 'recipient_country';
 		const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
 
+		const dataToCheck = typeIsFunded ? App.fundingLookup : App.recipientLookup;
+
 		// Timor-Leste is part of IPR
 		const groupsPartOf = App.getEntityGroups(code);
+
+		let data = [];
+		groupsPartOf.forEach(group => {
+			if (dataToCheck[group] !== undefined)
+			data = data.concat(dataToCheck[group]);
+		});
+		projects = data;
 
 		// Get financial support that is disbursed to groups TL is part of.
 		const filterAmountUnmappable = (project) => {
@@ -430,15 +439,8 @@ const App = {};
 			const isFinancial = project.assistance_type.toLowerCase().includes('financial');
 
 			// Is for a group Timor-Leste belongs to.
-			const isUnmappable = groupsPartOf.indexOf(project[codeField]) > -1;
-			return isFinancial && isUnmappable;
-			// return !(project[unspecAmountField] !== true && project.assistance_type.toLowerCase() !== 'in-kind support' && project.assistance_type.toLowerCase() !== 'other support');
+			return isFinancial;
 		};
-
-		// const filterIsCode = (project) => { 
-		// 	return project[codeField] === code;
-		// };
-
 
 		const filterCountOnce = (allProjects) => {
 			const groupedById = _.groupBy(allProjects, 'project_id');
@@ -446,7 +448,6 @@ const App = {};
 		};
 
 		return filterCountOnce(projects.filter(filterAmountUnmappable));		
-		// return filterCountOnce(projects.filter(filterIsCode).filter(filterAmountUnmappable));		
 	};
 
 

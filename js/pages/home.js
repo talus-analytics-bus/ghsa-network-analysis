@@ -9,7 +9,7 @@
 		params.ghsaOnly = true;
 
 		// state variables for current map indicator
-		// let indType = 'other';  // either 'money' or 'score'
+		// let indType = 'inkind';  // either 'money' or 'score'
 		let indType = 'money';  // either 'money' or 'score'
 		// let moneyFlow = 'funded';  // either 'funded' or 'received'
 		let moneyFlow = 'received';  // either 'funded' or 'received'
@@ -165,7 +165,7 @@
 				if (scoreType === 'combined') return 'combo';
 				return 'score';
 			}
-			if (indType === 'other') {
+			if (indType === 'inkind') {
 				return moneyFlow === 'funded' ? 'providedInkind' : 'receivedInkind';
 			}
 			if (moneyFlow === 'funded') {
@@ -202,7 +202,7 @@
 		 * @return {array}         Array of HEX strings representing a color series.
 		 */
 		function getRangeColors(indType) {
-			if (indType === 'other') return greens;
+			if (indType === 'inkind') return greens;
 			else if (indType === 'money' || indType === 'ghsa') return purples;
 			else return orangesReverse;
 		}
@@ -214,7 +214,7 @@
 				return d3.scaleThreshold()
 					.domain([1.5, 2, 2.5, 3, 3.5, 4, 4.5])
 					.range(jeeColors);
-			} else if (indType === 'other') {
+			} else if (indType === 'inkind') {
 				return d3.scaleThreshold()
 					.domain([5,10,15,20,25,30])
 					// .domain([10,20,30,40,50,60])
@@ -234,7 +234,6 @@
 
 		// update everything if any parameters change
 		function updateAll() {
-			console.log('updateAll()')
 			// update funding data
 			App.loadFundingData({showGhsaOnly: App.showGhsaOnly});
 
@@ -400,6 +399,7 @@
 						// check whether to make it dark gray
 						const flow = valueAttrName.includes('received') ? 'r' : 'd';
 						const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
+						// const unmappableFinancials = [];
 						const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
 						if (unmappableFinancials.length > 0) {
 							const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
@@ -503,7 +503,7 @@
 		 * @return {array}         The labels for the legend categories (numeric)
 		 */
 		function getLegendThresholds(indType, colorScale) {
-			if (indType === 'score' || indType === 'other') return colorScale.domain();
+			if (indType === 'score' || indType === 'inkind') return colorScale.domain();
 			else return colorScale.quantiles();
 		}
 
@@ -511,7 +511,7 @@
 		function updateLegend(colorScale) {
 			const valueAttrName = getValueAttrName();
 			const isJeeScore = (indType === 'score' && scoreType === 'score');
-			const isOther = indType === 'other';
+			const isOther = indType === 'inkind';
 
 			const barHeight = 16;
 			let barWidth = 70;
@@ -573,8 +573,6 @@
 			.attr('y2', barHeight + 4)
 			.style('display', isJeeScore ? 'inline' : 'none');
 
-			console.log('indType');
-			console.log(indType);
 			if (isJeeScore) {
 				legendText
 				.style('text-anchor', 'middle')
@@ -594,7 +592,7 @@
 				legendStartLabel
 				.style('text-anchor', 'start')
 				.text('Needs Unmet');
-			} else if (indType === 'other') {
+			} else if (indType === 'inkind') {
 				legendText
 				.style('display', 'inline')
 				.style('text-anchor', 'middle')
@@ -918,8 +916,13 @@
 				$this.prop('checked', $this.attr('ind') === indType);
 			});
 
+			// console.log('indType');
+			// console.log(indType);
+			// console.log('moneyFlow');
+			// console.log(moneyFlow);
+
 			// update which radio buttons are checked based on state variables
-			if (indType === 'money' || indType === 'ghsa') {
+			if (indType === 'money' || indType === 'ghsa' || indType === 'inkind') {
 				// uncheck score buttons
 				$('.jee-score-filter input').prop('checked', false);
 
