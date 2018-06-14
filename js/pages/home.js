@@ -770,7 +770,7 @@
 		// initalizes components in the map options, incl. search and display toggle
 		function initMapOptions() {
 			// define display toggle behavior
-			$('.map-options-title').click(function toggleContent() {
+			$('.map-options-title.main-options-title').click(function toggleContent() {
 				$(this).find('.collapse-arrow').toggleClass('rotated');
 				$('.map-options-content').slideToggle();
 			});

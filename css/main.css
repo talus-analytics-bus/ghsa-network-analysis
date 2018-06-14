@@ -2696,6 +2696,11 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   fill: blue;
 }
 
+/* line 186, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+.map-options-container.ghsa-toggle-container .map-options-title .ghsa-info-img {
+  top: 0px;
+}
+
 /* line 2, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_settings.scss */
 .settings-page-container select {
   margin-top: 3px;

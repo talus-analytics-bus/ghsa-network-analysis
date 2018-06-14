@@ -62,9 +62,19 @@
             <div class="map-container"></div>
             <div class="right-container">
                 <div class="map-and-search-container">
-                    <div class="map-options-container">
+                    <div class="map-options-container ghsa-toggle-container">
                         <div class="map-options-title">
-                            Map Options
+                            <div class="top-state-toggle-container top-state-toggle-switch toggle-container">
+                                <label>
+                                    <input class="form-check-input ghsa-only-checkbox" type="checkbox" value="" id="ghsa-only-checkbox"> Show GHSA Projects Only
+                                    <img class="ghsa-info-img info-img" src="img/info.png" />
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="map-options-container">
+                        <div class="map-options-title main-options-title">
+                            Options
                             <img class="collapse-arrow" src="img/chevron_down.png" />
                         </div>
                         <div class="map-options-content">
@@ -76,7 +86,8 @@
                                             <input type="radio" name="ind" ind="money" checked/>
                                             <span>All Financial Resources</span>
                                         </div>
-{{!--                                         <div class="radio-option multi-line">
+                                        {{!--
+                                        <div class="radio-option multi-line">
                                             <input type="radio" name="ind" ind="ghsa" />
                                             <div>GHSA Financial Resources
                                                 <br>Only</div>
@@ -150,13 +161,6 @@
                                 </div>
                             </div>
                             <div class="filter-section">
-                                <div class="top-state-toggle-container top-state-toggle-switch toggle-container">
-                                    <label>
-                                        <input class="form-check-input ghsa-only-checkbox" type="checkbox" value="" id="ghsa-only-checkbox"> Show GHSA Financial Resources
-                                        <br>Only
-                                        <img class="ghsa-info-img info-img" src="img/info.png" />
-                                    </label>
-                                </div>
                                 <div class="filter-box">
                                     <div class="dropdown-label inline">Core Capacity</div><img class="info-img core-capacity-text small" src="img/info.png" />
                                     <select class="cc-select form-control" multiple="multiple"></select>

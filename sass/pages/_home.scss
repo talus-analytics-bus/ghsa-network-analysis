@@ -180,3 +180,11 @@
 	mask: url(#mask-stripe);
 	fill: blue;
 }
+
+.map-options-container.ghsa-toggle-container {
+	.map-options-title {
+		.ghsa-info-img {
+			top: 0px;
+		}
+	}
+}
