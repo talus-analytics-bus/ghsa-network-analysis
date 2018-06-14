@@ -338,7 +338,7 @@
 			});
 
 			// draw charts
-			if (hasNoFinancialData) {
+			if (!hasNoData && hasNoFinancialData) {
 				// TODO
 				console.log('NO FINANCIAL DATA')
 				$('.progress-circle-section, .category-chart-section, .country-flow-summary .data-area').remove();
