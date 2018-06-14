@@ -395,20 +395,20 @@
 					d.value = currentNodeDataMap.get(isoCode)[valueAttrName];
 					if (d.value && d.value !== 0) {
 						d.color = d.value ? colorScale(d.value) : '#ccc';
-					} else {
+					} else if (indType !== 'score' && indType !== 'combo') {
 						// check whether to make it dark gray
 						const flow = valueAttrName.includes('received') ? 'r' : 'd';
 						const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
-						// const unmappableFinancials = [];
 						const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
 						if (unmappableFinancials.length > 0) {
 							const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
 							if (someMoney) {
-								// return 'url(#diagonal-stripe-1)';
 								country.classed('hatch', true);
 								return unspecifiedGray;
 							}
 						}
+						d.color = '#ccc';
+					} else {
 						d.color = '#ccc';
 					}
 				} else {
@@ -916,8 +916,8 @@
 				$this.prop('checked', $this.attr('ind') === indType);
 			});
 
-			// console.log('indType');
-			// console.log(indType);
+			console.log('indType');
+			console.log(indType);
 			// console.log('moneyFlow');
 			// console.log(moneyFlow);
 
