@@ -64,7 +64,7 @@ const App = {};
 		d3.queue()
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
-			.defer(d3.csv, 'data/donor_codes.csv')
+			.defer(d3.csv, 'data/donor_codes_live.csv')
 			// .defer(d3.json, 'data/donor_codes.json')
 			.defer(d3.json, 'data/funding_data.json') // VERSION 17, created 11 June 2018, with old WHO data
 			.defer(d3.json, 'data/jee_score_data.json')

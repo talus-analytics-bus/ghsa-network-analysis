@@ -98,7 +98,7 @@
 
 			$('.undetermined-info-img').tooltipster({
 				interactive: true,
-				content: 'Undetermined funding amounts or in-kind support project counts may occur if the most specific funder or recipient named in a project is a general region or other group of countries.',
+				content: 'Unreported funding amounts or in-kind support project counts may occur if the most specific funder or recipient named in a project is a general region or other group of countries.',
 			});
 			$('.inkind-support-info-img').tooltipster({
 				interactive: true,
@@ -482,7 +482,7 @@
 
 					let format = (indType === 'inkind') ? (val) => { return Util.comma(val) + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`; } : App.formatMoney;
 					if (d.undetermined === true) {	
-						format = (indType === 'inkind') ? (val) => { return 'Undetermined' + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`; } : () => { return 'Undetermined';};
+						format = (indType === 'inkind') ? (val) => { return 'Not Reported' + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`; } : () => { return 'Not Reported';};
 					}
 					
 
@@ -749,7 +749,7 @@
 					.attr('transform', `translate(${barWidth*hatchSpacing + (barWidth * (colors.length - 1))}, 0)`);
 				undetermined.select('text')
 					.attr('x', barWidth / 2)
-					.text('Undetermined');
+					.text('Not Reported');
 				const rectMask = undetermined.select('rect')
 					.attr('class','mask-bar');
 				const clone = Util.clone_d3_selection(rectMask, 1)
