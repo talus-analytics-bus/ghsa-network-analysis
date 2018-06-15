@@ -1,8 +1,19 @@
+// .alt-btn {
+// 	padding: 5px 15px;
+// 	@include border-radius(7.5px);
+// }
+// .alt-btn-large {
+// 	padding: 10px 25px;
+// 	@include border-radius(7.5px);
+// }
+
 .alt-btn {
-	padding: 5px 15px;
-	@include border-radius(7.5px);
+	background: rgb(5, 48, 97);
+	border: none;
 }
-.alt-btn-large {
-	padding: 10px 25px;
-	@include border-radius(7.5px);
+
+.btn-view-ghsa {
+	top: -2px;
+    position: relative;
+    left: 15px;
 }

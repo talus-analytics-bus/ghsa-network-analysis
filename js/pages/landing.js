@@ -23,6 +23,9 @@
 				populateTables('.donor-table', '.recipient-table');
 			}
 			initGhsaToggle(tab);
+			$('.btn-view-ghsa').click(function(){
+				hasher.setHash('analysis/ghsa/d');
+			});
 		}
 
 		function initGhsaToggle(tab = 'network') {

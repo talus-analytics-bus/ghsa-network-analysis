@@ -72,6 +72,10 @@ body { font-family: 'Open Sans', sans-serif; }
 	vertical-align: top;
 	margin: 10px 0 0 40px;
 	z-index: 9999;
+	&.landing-page-options {
+		margin-left: 0;
+		z-index: -9999;
+	}
 	&.inline {
 		display: inline-block;
 		margin-left: 40px;
