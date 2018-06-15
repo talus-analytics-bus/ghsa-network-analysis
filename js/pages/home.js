@@ -32,7 +32,7 @@
 		  "#88419d",
 		  "#810f7c",
 		  "#4d004b",
-		  d3.color("#4d004b").darker(0.5),
+		  // "#4d004b",
 		];
 
 		// Countries are this color if they've funded/received money
