@@ -142,7 +142,7 @@
 				},
 				{ name: 'Committed', value: 'total_committed', type: 'money' },
 				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
-				{ name: 'Other Support (Number of Projects)', value: 'total_other', type: 'number' },
+				{ name: 'In-kind Contributions', value: 'total_other', type: 'number' },
 				];
 			} else if (currentInfoTab === 'cc') {
 				headerData = [
@@ -156,7 +156,7 @@
 				},
 				{ name: 'Committed', value: 'total_committed', type: 'money' },
 				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
-				{ name: 'Other Support (Number of Projects)', value: 'total_other', type: 'number' },
+				{ name: 'In-kind Contributions', value: 'total_other', type: 'number' },
 				];
 			} else if (currentInfoTab === 'inkind') {
 				headerData = [

@@ -1638,6 +1638,7 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   margin-bottom: 20px;
 }
 
+/* line 85, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisCountry.scss */
 .country-summary-value {
   margin-top: 10px;
   font-family: 'Raleway', sans-serif;

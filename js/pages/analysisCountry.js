@@ -575,11 +575,40 @@
 			for (const recIso in fundedByCountry) {
 				fundedData.push(fundedByCountry[recIso]);
 			}
+
+			// Do IKS data
+			inkindProjects.forEach((p) => {
+				const iso = p[countryInd]; // entity to be listed in table
+				const isoOther = p[countryIndOther];
+				const curData = {
+					project_name: p.project_name,
+					commitment_disbursements: p.commitment_disbursements,
+					iso: iso,
+					iso_other: isoOther,
+					entity_name: App.codeToNameMap.get(iso) || iso,
+					entity_name_other: App.codeToNameMap.get(isoOther) || isoOther,
+					total_committed: 0,
+					total_spent: 0,
+					spent_on_prevent: 0,
+					spent_on_detect: 0,
+					spent_on_respond: 0,
+					spent_on_other: 0,
+					committed_on_prevent: 0,
+					committed_on_detect: 0,
+					committed_on_respond: 0,
+					committed_on_other: 0,
+				};
+				fundedData.push(curData);
+			});
+
 			const nameKey = isGhsaPage ? 'entity_name_other' : 'entity_name';
 			fundedData = _.sortBy(fundedData, d => {
 				return d[nameKey].toLowerCase();
 			});
 
+			// remove duplicates
+			fundedData = Util.uniqueCollection(fundedData, 'project_name');
+			
 			// draw table
 			const drawTable = (type) => {
 				const typeFilter = type === "total_spent" ? 'disbursement' : 'commitment';
