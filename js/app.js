@@ -365,7 +365,7 @@ const App = {};
 	 * @param  {string} code     The 'donor_code' or 'recipient_country' to lookup
 	 * @return {array}          Array of projects categorized as Other Support
 	 */
-	App.getInkindSupportProjects = (projects, type, code) => {
+	App.getInkindSupportProjects = (projects, type, code, params = {}) => {
 		const typeIsFunded = type === 'd';
 		const codeField = typeIsFunded ? 'donor_code' : 'recipient_country';
 		const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';

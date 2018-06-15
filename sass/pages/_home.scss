@@ -178,9 +178,9 @@
 	}
 }
 
-.country.hatch, .legend-bar.hatch {
+.country.hatch, .legend-bar.hatch, circle.hatch {
 	mask: url(#mask-stripe);
-	fill: blue;
+	fill: #515151;
 }
 
 .map-options-container.ghsa-toggle-container {

@@ -1141,13 +1141,18 @@ b {
   text-align: center;
 }
 
-/* line 27, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+/* line 26, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltip-main-value .inkind-value {
+  font-size: .6em;
+}
+
+/* line 30, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
 .tooltip-main-value-label {
   margin: 15px 0 5px;
   text-align: center;
 }
 
-/* line 31, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+/* line 34, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
 .tooltip-row-content {
   margin-top: 10px;
 }
@@ -2738,9 +2743,9 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
 }
 
 /* line 181, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
-.country.hatch, .legend-bar.hatch {
+.country.hatch, .legend-bar.hatch, circle.hatch {
   mask: url(#mask-stripe);
-  fill: blue;
+  fill: #515151;
 }
 
 /* line 186, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */

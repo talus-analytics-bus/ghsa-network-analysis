@@ -169,8 +169,11 @@
 				if (scoreType === 'combined') return 'combo';
 				return 'score';
 			}
-			if (indType === 'inkind') {
-				return moneyFlow === 'funded' ? 'providedInkind' : 'receivedInkind';
+			if (indType === 'inkind' && moneyType === 'committed') {
+				return moneyFlow === 'funded' ? 'providedInkindCommitted' : 'receivedInkindCommitted';
+			}
+			if (indType === 'inkind' && moneyType === 'disbursed') {
+				return moneyFlow === 'funded' ? 'providedInkindProvided' : 'receivedInkindProvided';
 			}
 			if (moneyFlow === 'funded') {
 				return moneyType === 'committed' ? 'fundedCommitted' : 'fundedSpent';
@@ -282,17 +285,28 @@
 
 			// build data map; filter and only use data with valid country values
 			App.countries.forEach((c) => {
-				const paymentsFunded = App.fundingLookup[c.ISO2];
-				const paymentsReceived = App.recipientLookup[c.ISO2];
+				const filterCountOnce = (allProjects) => {
+					const groupedById = _.groupBy(allProjects, 'project_id');
+					return _.values(groupedById).map(d => d[0]);
+				};
+
+				const paymentsFunded = (App.fundingLookup[c.ISO2] === undefined) ? undefined : App.getFinancialProjectsWithAmounts(App.fundingLookup[c.ISO2], 'd', c.ISO2)
+				const paymentsReceived = (App.recipientLookup[c.ISO2] === undefined) ? undefined : App.getFinancialProjectsWithAmounts(App.recipientLookup[c.ISO2], 'r', c.ISO2)
+
 				const scoreObj = App.scoresByCountry[c.ISO2];
+				if (c.ISO2 === 'who') console.log(paymentsReceived)
 
 				// only include country in data map if it has a score or rec/don funds
 				let fundedCommitted = 0;
 				let fundedSpent = 0;
-				let providedInkind = 0;
+				// let providedInkind = 0;
 				let receivedCommitted = 0;
 				let receivedSpent = 0;
-				let receivedInkind = 0;
+				// let receivedInkind = 0;
+				let receivedInkindProvided = 0;
+				let receivedInkindCommitted = 0;
+				let providedInkindProvided = 0;
+				let providedInkindCommitted = 0;
 				let score = null;
 				let combo = null;
 				let receivedUnspecAmount = 0;
@@ -305,11 +319,11 @@
 				const unspecAmounts = getUnspecAmountCounts(c.ISO2);
 
 				if (paymentsFunded) {
-					({ totalCommitted: fundedCommitted, totalSpent: fundedSpent, totalInkind: providedInkind } =
+					({ totalCommitted: fundedCommitted, totalSpent: fundedSpent, totalInkindCommitted: providedInkindCommitted, totalInkindProvided: providedInkindProvided } =
 						getPaymentSum(paymentsFunded, ccs));
 				}
 				if (paymentsReceived) {
-					({ totalCommitted: receivedCommitted, totalSpent: receivedSpent, totalInkind: receivedInkind } =
+					({ totalCommitted: receivedCommitted, totalSpent: receivedSpent, totalInkindCommitted: receivedInkindCommitted, totalInkindProvided: receivedInkindProvided} =
 						getPaymentSum(paymentsReceived, ccs));
 				}
 
@@ -326,10 +340,12 @@
 				currentNodeDataMap.set(c.ISO2, {
 					fundedCommitted,
 					fundedSpent,
-					providedInkind,
+					providedInkindCommitted,
+					providedInkindProvided,
 					receivedCommitted,
 					receivedSpent,
-					receivedInkind,
+					receivedInkindCommitted,
+					receivedInkindProvided,
 					score,
 					combo,
 				});
@@ -344,7 +360,8 @@
 		function getPaymentSum(payments, ccs) {
 			let totalCommitted = 0;
 			let totalSpent = 0;
-			let totalInkind = 0;
+			let totalInkindCommitted = 0;
+			let totalInkindProvided = 0;
 			for (let i = 0, n = payments.length; i < n; i++) {
 				const p = payments[i];
 
@@ -362,10 +379,14 @@
 					const withinYears = p.years.some(year => {
 						return year <= endYear && year >= startYear;
 					});
-					totalInkind += withinYears ? 1 : 0;
+					if (p.commitment_disbursements === 'commitment') {
+						totalInkindCommitted += withinYears ? 1 : 0;
+					} else if (p.commitment_disbursements === 'disbursement') {
+						totalInkindProvided += withinYears ? 1 : 0;
+					}
 				}
 			}
-			return { totalCommitted, totalSpent, totalInkind };
+			return { totalCommitted, totalSpent, totalInkindCommitted, totalInkindProvided };
 		}
 
 		/**
@@ -394,6 +415,7 @@
 			.style('fill', function (d) {
 				const country = d3.select(this);
 				country.classed('hatch',false);
+				d.undetermined = false;
 				const isoCode = d.properties.ISO2;
 				if (currentNodeDataMap.has(isoCode)) {
 					d.value = currentNodeDataMap.get(isoCode)[valueAttrName];
@@ -408,6 +430,7 @@
 							const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
 							if (someMoney) {
 								country.classed('hatch', true);
+								d.undetermined = true;
 								return unspecifiedGray;
 							}
 						}
@@ -426,6 +449,12 @@
 					// define labels and value to be shown
 					let label = getMoneyTypeLabel(moneyFlow, moneyType);
 					let value = d.value;
+
+					let format = (indType === 'inkind') ? (val) => { return Util.comma(val) + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`; } : App.formatMoney;
+					if (d.undetermined === true) {	
+						format = (indType === 'inkind') ? (val) => { return 'Undetermined' + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`; } : () => { return 'Undetermined';};
+					}
+					
 
 					// value shows received if showing JEE score
 					if (indType === 'score') {
@@ -462,7 +491,8 @@
 					}
 					container.append('div')
 					.attr('class', 'tooltip-main-value')
-					.text(App.formatMoney(value));
+					// .classed('inkind-value', indType === 'inkind')
+					.html(format(value));
 					container.append('div')
 					.attr('class', 'tooltip-main-value-label')
 					.html(label);
@@ -721,6 +751,7 @@
 				$('.undetermined').slideDown();
 			} else {
 				$('.c-and-d').slideDown();
+				$('.undetermined').slideUp();
 			}
 
 			// determine which flow to show in tooltip
@@ -758,11 +789,12 @@
 			// populate info total value
 			let totalCommitted = 0;
 			let totalSpent = 0;
-			let totalInkind = 0;
+			let totalInkindCommitted = 0;
+			let totalInkindProvided = 0;
 			let totalUnspecAmount = 0;
 			if (currentNodeDataMap.has(country.ISO2)) {
 				const valueObj = currentNodeDataMap.get(country.ISO2);
-				if (indType === 'money' || indType === 'ghsa') {
+				if (indType === 'money' || indType === 'ghsa' || indType === 'inkind') {
 					$('.info-score-text-container').slideUp();
 				} else if (indType === 'score') {
 					let scoreText = 'Average JEE Score: ';
@@ -781,25 +813,32 @@
 				if (flowTmp === 'funded' || ((indType === 'money' || indType === 'ghsa' ) && flowToShow === 'funded')) {
 					totalCommitted += valueObj.fundedCommitted;
 					totalSpent += valueObj.fundedSpent;
-					totalInkind += valueObj.providedInkind;
+					totalInkindCommitted += valueObj.providedInkindCommitted;
+					totalInkindProvided += valueObj.providedInkindProvided;
 				} else {
 					totalCommitted += valueObj.receivedCommitted;
 					totalSpent += valueObj.receivedSpent;
-					totalInkind += valueObj.receivedInkind;
+					totalInkindCommitted += valueObj.receivedInkindCommitted;
+					totalInkindProvided += valueObj.receivedInkindProvided;
 				}
 			}
-			$('.info-committed-value').text(App.formatMoney(totalCommitted));
-			$('.info-spent-value').text(App.formatMoney(totalSpent));
+
+			const format = (indType === 'inkind') ? (val) => { return Util.comma(val) + ' projects'; } : App.formatMoney;
+			if (indType === 'inkind') {
+				const curEntityData = currentNodeDataMap.get(country.ISO2);
+				totalCommitted = totalInkindCommitted;
+				totalSpent = totalInkindProvided;
+			}
+
+
+			$('.info-committed-value').text(format(totalCommitted));
+			$('.info-spent-value').text(format(totalSpent));
 
 			// construct label for value
 			const mFlow = (indType === 'score' && country.country !== false) ? 'received' : flowToShow;
 			$('.info-committed-value-label').html(getMoneyTypeLabel(mFlow, 'committed', isGhsa));
 			$('.info-spent-value-label').html(getMoneyTypeLabel(mFlow, 'disbursed', isGhsa));
 
-			// get inkind projects
-			$('.info-inkind-value').text(Util.comma(totalInkind));
-			$('.info-inkind-unit').html(`&nbsp;in-kind contribution${(totalInkind > 1 || totalInkind === 0) ? 's' : ''}`);
-			$('.info-inkind-value-label').html(getMoneyTypeLabel(mFlow, 'inkind', isGhsa));
 			// display content
 			$('.info-container').slideDown();
 		}
@@ -901,10 +940,10 @@
 			// update indicator type ('money' or 'score') on change
 			$('.ind-type-filter .radio-option').click(function updateIndType() {
 				indType = $(this).find('input').attr('ind');
-				if (indType === 'money') {
+				if (indType === 'money' || indType === 'inkind') {
 					$('.score-filters').slideUp();
 					$('.money-filters').slideDown();
-					App.showGhsaOnly = false;
+					// App.showGhsaOnly = false;
 				} else if (indType === 'ghsa') {
 					$('.score-filters').slideUp();
 					$('.money-filters').slideDown();
@@ -971,11 +1010,6 @@
 				const $this = $(this);
 				$this.prop('checked', $this.attr('ind') === indType);
 			});
-
-			console.log('indType');
-			console.log(indType);
-			// console.log('moneyFlow');
-			// console.log(moneyFlow);
 
 			// update which radio buttons are checked based on state variables
 			if (indType === 'money' || indType === 'ghsa' || indType === 'inkind') {
@@ -1246,7 +1280,9 @@
 			// sort them by amount of funds
 			const isFinancial = indType !== 'inkind';
 			const financialField = moneyType === 'committed' ? 'totalCommitted' : 'totalSpent';
-			const sortField = isFinancial ? financialField : 'totalInkind'; // TODO committed or disbursed IKS
+
+			const inKindField = moneyType === 'committed' ? 'totalInkindCommitted' : 'totalInkindProvided';
+			let sortField = isFinancial ? financialField : inKindField; // TODO committed or disbursed IKS
 
 			orgs = _.sortBy(orgs, d => d.curPayments[sortField]).reverse();
 			// If IKS, filter out orgs that don't provide it
@@ -1256,6 +1292,19 @@
 			
 			// populate the list with spans representing each entity
 			const colorScale = getColorScale();
+			// // check whether to make it dark gray
+			// 			const flow = valueAttrName.includes('received') ? 'r' : 'd';
+			// 			const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
+			// 			const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
+			// 			if (unmappableFinancials.length > 0) {
+			// 				const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
+			// 				if (someMoney) {
+			// 					country.classed('hatch', true);
+			// 					d.undetermined = true;
+			// 					return unspecifiedGray;
+			// 				}
+			// 			}
+			// 			d.color = '#ccc';
 
 			if (orgs.length > 0) {
 				$list.selectAll('.list-item')
