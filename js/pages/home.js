@@ -1185,7 +1185,7 @@
 				const val = span.position().top;
 				const scale = getHorizOffsetScale();
 				const maxOffset = getMaxHorizOffset();
-				if (App.usingFirefox) return 130;
+				// if (App.usingFirefox) return 130;
 				// if (App.usingFirefox || true) return 110;
 				return scale(val);
 			}
