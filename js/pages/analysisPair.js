@@ -161,7 +161,7 @@
 
 			// define row data
 			let paymentTableData = [];
-			allPayments = App.getProjectsIncludingGroupsFlow(allPayments, fundIso, recIso);
+			allPayments = App.getProjectsIncludingGroupsFlow(App.fundingData, fundIso, recIso);
 			if (currentInfoTab === 'all') {
 				// paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support');
 				// paymentTableData = App.getFinancialProjectsWithAmounts(allPayments, 'r', recIso);
@@ -193,6 +193,7 @@
 			} else if (currentInfoTab === 'inkind') {
 				// paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');
 				paymentTableData = App.getInkindSupportProjects(allPayments, 'r', recIso);
+				// paymentTableData = allPayments.filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support' || payment.assistance_type.toLowerCase() === 'insupport');
 			} 
 
 			// clear DataTables plugin from table

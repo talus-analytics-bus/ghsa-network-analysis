@@ -492,7 +492,10 @@ const App = {};
 			const recipientGroups = App.getEntityGroups(recipientCode);
 			recipientGroups.push(recipientCode);
 
+			console.log('projects');
+			console.log(projects);
 			let data = [];
+			
 			data = projects.filter(project => {
 				const isFunder = funderGroups.indexOf(project.donor_code) > -1;
 				const isRecipient = recipientGroups.indexOf(project.recipient_country) > -1;
