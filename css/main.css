@@ -2989,4 +2989,9 @@ a.active {
   font-weight: 600;
 }
 
+/* line 152, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/main.scss */
+.landing-container table.dataTable thead .sorting_asc:after {
+  content: "" !important;
+}
+
 /*# sourceMappingURL=../css/main.map */

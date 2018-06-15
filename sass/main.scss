@@ -147,3 +147,9 @@ body { font-family: 'Open Sans', sans-serif; }
 a.active {
 	font-weight: 600;
 }
+
+.landing-container {
+	table.dataTable thead .sorting_asc:after {
+		content: "" !important;
+	}
+}

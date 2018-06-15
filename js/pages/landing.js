@@ -94,8 +94,8 @@
 				.addClass('active')
 				.siblings().removeClass('active');
 			$(`.global-tab-content-container .tab-content[tab="${currentTab}"]`)
-				.slideDown()
-				.siblings().slideUp();
+				.show()
+				.siblings().hide();
 		}
 
 		// populates the filters in the map options box
@@ -176,9 +176,14 @@
 		};
 
 		function populateTables(donorSelector, recSelector) {
-			const numRows = 10;
+			const lightBlue = '#678fda';
+			const lightRed = '#ff7a66';
+			const numRows = Infinity;
 			const fundColor = App.fundColorPalette;
 			const receiveColor = App.receiveColorPalette;
+
+			$(`${donorSelector}, ${recSelector}`).DataTable().destroy();
+			$(`${donorSelector} tbody tr, ${recSelector} tbody tr`).remove();
 
 			// get top funded countries
 			const countriesByFunding = [];
@@ -187,8 +192,8 @@
 					const newObj = {
 						iso,
 						name: App.codeToNameMap.get(iso),
-						total_committed: d3.sum(App.fundingLookup[iso], d => d.total_committed),
-						total_spent: d3.sum(App.fundingLookup[iso], d => d.total_spent),
+						total_committed: App.getTotalFunded(iso, {committedOnly: true}),
+						total_spent: App.getTotalFunded(iso),
 					};
 					if (newObj.total_committed !== 0 || newObj.total_spent !== 0) {
 						countriesByFunding.push(newObj);
@@ -204,8 +209,10 @@
 					const newObj = {
 						iso,
 						name: App.codeToNameMap.get(iso),
-						total_committed: d3.sum(App.recipientLookup[iso], d => d.total_committed),
-						total_spent: d3.sum(App.recipientLookup[iso], d => d.total_spent),
+						total_committed: App.getTotalReceived(iso, {committedOnly: true}),
+						total_spent: App.getTotalReceived(iso),
+						// total_committed: d3.sum(App.recipientLookup[iso], d => d.total_committed),
+						// total_spent: d3.sum(App.recipientLookup[iso], d => d.total_spent),
 					};
 					if (newObj.total_committed !== 0 || newObj.total_spent !== 0) {
 						countriesByReceived.push(newObj);
@@ -218,8 +225,10 @@
 			const dRows = d3.select(donorSelector).select('tbody').selectAll('tr')
 				.data(countriesByFunding.slice(0, numRows))
 				.enter().append('tr')
-					.style('background-color', (d, i) => fundColor[Math.floor(i / 2)])
-					.style('color', (d, i) => (i < 4 ? '#fff' : 'black'))
+					.style('background-color', lightBlue)
+					// .style('background-color', (d, i) => fundColor[Math.floor(i / 2)])
+					.style('color', 'black')
+					// .style('color', (d, i) => (i < 4 ? '#fff' : 'black'))
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {
 							hasher.setHash(`analysis/${d.iso}/d`);
@@ -240,8 +249,10 @@
 			const rRows = d3.select(recSelector).select('tbody').selectAll('tr')
 				.data(countriesByReceived.slice(0, numRows))
 				.enter().append('tr')
-					.style('background-color', (d, i) => receiveColor[Math.floor(i / 2)])
-					.style('color', (d, i) => (i < 4 ? '#fff' : 'black'))
+					.style('background-color', lightRed)
+					// .style('background-color', (d, i) => receiveColor[Math.floor(i / 2)])
+					.style('color', 'black')
+					// .style('color', (d, i) => (i < 4 ? '#fff' : 'black'))
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {
 							hasher.setHash(`analysis/${d.iso}/r`);
@@ -256,6 +267,19 @@
 			});
 			rRows.append('td').text(d => App.formatMoney(d.total_committed));
 			rRows.append('td').text(d => App.formatMoney(d.total_spent));
+			$(`${donorSelector}, ${recSelector}`).DataTable({
+					pageLength: 10,
+					scrollCollapse: false,
+					autoWidth: true,
+					ordering: false,
+					searching: false,
+					pagingType: 'simple',
+					// order: [[1, 'asc']],
+					// columnDefs: [
+					// 	{ targets: [1,2,3], orderable: false},
+					// ],
+					bLengthChange: false,
+				});
 		}
 
 		function getTotalFunc() {

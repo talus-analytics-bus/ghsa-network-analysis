@@ -43,8 +43,8 @@
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a page="about">About</a></li>
                     <li><a page="">Home</a></li>
+                    <li><a page="about">About</a></li>
                     <li><a page="map">Map</a></li>
                     <li><a page="analysis">Network</a></li>
                     <!-- <li><a page="analysis/ghsa/d">GHSA</a></li> -->
@@ -249,14 +249,15 @@
         </div>
     </script>
     <script id="landing-template" type="text/x-handlebars-template">
-        <div class="analysis-container container">
+        <div class="analysis-container landing-container container">
             <div class="analysis-global-content analysis-content">
                 <h3>Welcome to the GHS Tracking Dashboard</h3> {{!--
                 <h3>International Funding by Funder/Recipient</h3> --}} {{!--
                 <div class="instructions">
                     Explore funding by funder or recipient.
                 </div> --}}
-                <div class="global-tab-content-container tab-content-container">
+                <div class="global-tab-content-container">
+                <!-- <div class="global-tab-content-container tab-content-container"> -->
                     <div class="global-tab-content tab-content" tab="network">
                         <div class="center">
                             <div class="title-container">

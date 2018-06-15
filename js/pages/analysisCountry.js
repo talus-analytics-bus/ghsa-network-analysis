@@ -607,6 +607,7 @@
 
 			const nameKey = isGhsaPage ? 'entity_name_other' : 'entity_name';
 			fundedData = _.sortBy(fundedData, d => {
+			// console.log(d);
 				return d[nameKey].toLowerCase();
 			});
 
