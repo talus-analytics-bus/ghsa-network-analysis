@@ -2855,7 +2855,7 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   font-style: italic;
   max-width: none;
   text-align: center;
-  font-size: 1.2em;
+  font-size: 14px;
   transform-origin: top;
   margin-top: 0;
   color: #f7f8f8;
