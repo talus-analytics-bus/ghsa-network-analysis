@@ -466,6 +466,48 @@ const App = {};
 		}
 	};
 
+/**
+	 * Return projects that match the entity's code or any
+	 * group the entity is part of, funded by the other enetity
+	 * @param  {array} projects Array of projects
+	 * @param  {string} type     d or r
+	 * @param  {string} code     Entity code
+	 * @return {array}          Array of matching projects
+	 */
+	App.getProjectsIncludingGroupsFlow = (projects, funderCode, recipientCode) => {
+
+		if (funderCode === 'ghsa' || recipientCode === 'ghsa') {
+
+			// const filterCountOnce = (allProjects) => {
+			// 	const groupedById = _.groupBy(allProjects, 'project_id');
+			// 	return _.values(groupedById).map(d => d[0]);
+			// };
+
+			return projects.filter(d => d.ghsa_funding === true);
+		} else {
+			// Timor-Leste is part of IPR
+			const funderGroups = App.getEntityGroups(funderCode);
+			funderGroups.push(funderCode);
+
+			const recipientGroups = App.getEntityGroups(recipientCode);
+			recipientGroups.push(recipientCode);
+
+			let data = [];
+			data = projects.filter(project => {
+				const isFunder = funderGroups.indexOf(project.donor_code) > -1;
+				const isRecipient = recipientGroups.indexOf(project.recipient_country) > -1;
+				return isFunder && isRecipient;
+			});
+
+			const filterCountOnce = (allProjects) => {
+				const groupedById = _.groupBy(allProjects, 'project_id');
+				return _.values(groupedById).map(d => d[0]);
+			};
+
+			return filterCountOnce(data);	
+		}
+	};
+
 
 	/**
 	 * Given the set of projects, returns only those that contain financial assistance

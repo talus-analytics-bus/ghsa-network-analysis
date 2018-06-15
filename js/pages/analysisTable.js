@@ -109,7 +109,8 @@
 			let headerData = [];
 			if (currentInfoTab === 'all') {
 				headerData = [
-				{ name: 'Funder', value: 'donor_name' },
+				// { name: 'Funder', value: 'donor_name' },
+				{ name: 'Funder', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
 				{ name: 'Recipient', value: 'recipient_name', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; } },
 				{ name: 'Project Name', value: 'project_name' },
 				{ name: 'Committed', value: 'total_committed', type: 'money' },
@@ -117,8 +118,10 @@
 				];
 			} else if (currentInfoTab === 'country') {
 				headerData = [
-				{ name: 'Funder', value: d => App.codeToNameMap.get(d.donor_code) },
+				{ name: 'Funder', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
+				// { name: 'Funder', value: d => App.codeToNameMap.get(d.donor_code) },
 				{ name: 'Recipient', value: (d) => {
+					return d.recipient_name_orig || d.recipient_name;
 					if (App.codeToNameMap.has(d.recipient_country)) {
 						return App.codeToNameMap.get(d.recipient_country);
 					}
@@ -182,10 +185,12 @@
 				const totalByCountry = {};
 				allPayments = App.getProjectsIncludingGroups(App.fundingData, moneyFlow, iso);
 				allPayments.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support' && payment.assistance_type.toLowerCase() !== 'other support').forEach((p) => {
-					const dc = p.donor_code;
+					const dc = p.donor_name_orig || p.donor_name;
+					// const dc = p.donor_code;
 					let rc = p.recipient_country;
 					if (rc === 'Not reported') rc = p.recipient_name;
 					if (p.recipient_name_orig !== undefined) rc = p.recipient_name_orig
+						else rc = p.recipient_name;
 					if (!totalByCountry[dc]) totalByCountry[dc] = {};
 					if (!totalByCountry[dc][rc]) {
 						totalByCountry[dc][rc] = {
@@ -200,6 +205,7 @@
 					for (const rc in totalByCountry[dc]) {
 						paymentTableData.push({
 							donor_code: dc,
+							donor_name: dc,
 							recipient_country: rc,
 							recipient_name: rc,
 							total_committed: totalByCountry[dc][rc].total_committed,
@@ -353,7 +359,7 @@
 				columnDefs = [{ type: 'money', targets: [1, 2, 3], width: '120px' }];
 			} else if (currentInfoTab === 'inkind') {
 				order = [1, 'desc'];
-				columnDefs = [{ targets: [3], width: '450px' }];
+				columnDefs = [{ targets: [2], width: '450px' }];
 			} 
 
 			// re-initialize DataTables plugin

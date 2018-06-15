@@ -129,7 +129,8 @@
 			let headerData = [];
 			if (currentInfoTab === 'all') {
 				headerData = [
-					{ name: 'Funder', value: 'donor_name' },
+					// { name: 'Funder', value: 'donor_name' },
+					{ name: 'Funder', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
 					{ name: 'Recipient', value: 'recipient_name', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; } },
 					{ name: 'Name', value: 'project_name' },
 					{ name: 'Committed', value: 'total_committed', type: 'money' },
@@ -153,16 +154,18 @@
 				headerData = [
 					{ name: 'Provider', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
 					{ name: 'Recipient', value: 'recipient_name', value2: 'recipient_name_orig', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; }  },
-					{ name: 'Support Type', value: 'assistance_type'},
+					// { name: 'Support Type', value: 'assistance_type'},
 					{ name: 'Description', value: 'project_name' },
 				];
 			} 
 
 			// define row data
 			let paymentTableData = [];
+			allPayments = App.getProjectsIncludingGroupsFlow(allPayments, fundIso, recIso);
 			if (currentInfoTab === 'all') {
 				// paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support');
-				paymentTableData = App.getFinancialProjectsWithAmounts(allPayments, 'r', recIso);
+				// paymentTableData = App.getFinancialProjectsWithAmounts(allPayments, 'r', recIso);
+				paymentTableData = allPayments.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support' && payment.assistance_type.toLowerCase() !== 'other support');
 			} else if (currentInfoTab === 'cc') {
 				const totalByCc = {};
 				allPayments.forEach((p) => {
@@ -176,7 +179,7 @@
 						}
 						totalByCc[cc].total_committed += p.total_committed;
 						totalByCc[cc].total_spent += p.total_spent;
-						totalByCc[cc].total_inkind += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
+						totalByCc[cc].total_inkind += (p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === 'other support') ? 1 : 0;
 					});
 				});
 				for (const cc in totalByCc) {
@@ -244,7 +247,7 @@
 				columnDefs = [{ type: 'money', targets: [1, 2, 3], width: '120px' }];
 			} else if (currentInfoTab === 'inkind') {
 				order = [1, 'desc'];
-				columnDefs = [{ targets: [3], width: '450px' }];
+				columnDefs = [{ targets: [2], width: '450px' }];
 			} 
 
 			// re-initialize DataTables plugin
