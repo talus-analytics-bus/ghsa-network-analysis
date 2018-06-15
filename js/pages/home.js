@@ -91,6 +91,11 @@
 				content: App.coreCapacitiesText,
 				// content: 'Each core element is associated with one or more core capacities, indicated by prefix.',
 			});
+
+			$('.undetermined-info-img').tooltipster({
+				interactive: true,
+				content: 'Undetermined funding amounts or in-kind support project counts may occur if the most specific funder or recipient named in a project is not a single organization or country.',
+			});
 		}
 
 
@@ -703,6 +708,20 @@
 			const country = countryTmp.properties;
 			const flowTmp = countryTmp.flow;
 			const isGhsa = country.ISO2 === 'ghsa';
+
+
+			const isUndetermined = $('.country.active').hasClass('hatch');
+
+			if (isUndetermined) {
+				$('.c-and-d').slideUp();
+
+				// set undetermined messaged
+				// $('.undetermined.')
+
+				$('.undetermined').slideDown();
+			} else {
+				$('.c-and-d').slideDown();
+			}
 
 			// determine which flow to show in tooltip
 			const flowToShow = (flowTmp !== undefined) ? flowTmp : moneyFlow;
