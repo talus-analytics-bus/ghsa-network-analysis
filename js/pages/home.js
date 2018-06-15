@@ -11,8 +11,8 @@
 		// state variables for current map indicator
 		// let indType = 'inkind';  // either 'money' or 'score'
 		let indType = 'money';  // either 'money' or 'score'
-		let moneyFlow = 'funded';  // either 'funded' or 'received'
-		// let moneyFlow = 'received';  // either 'funded' or 'received'
+		// let moneyFlow = 'funded';  // either 'funded' or 'received'
+		let moneyFlow = 'received';  // either 'funded' or 'received'
 		// let moneyType = 'disbursed';  // either 'committed' or 'disbursed'
 		let moneyType = 'committed';  // either 'committed' or 'disbursed'
 		let scoreType = 'score';  // either 'score' or 'combined'

@@ -143,9 +143,9 @@
 
 	/* --- Table Section --- */
 	.global-tab-content[tab="country"] {
-		.fund-table-title {
-			font-size: 1.4em;
-			text-align: center;
+		.fund-table-title, .rec-table-title {
+			// font-size: 1.4em;
+			// text-align: center;
 		}
 		.description-container {
 			position: relative;

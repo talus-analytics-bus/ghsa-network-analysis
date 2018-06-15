@@ -66,7 +66,7 @@
 					// Clear tables
 					const donorSelector = '.donor-table';
 					const recSelector = '.recipient-table';
-					$(`${donorSelector} tbody, ${recSelector} tbody`).html('');
+					// $(`${donorSelector} tbody, ${recSelector} tbody`).html('');
 
 					// check right radio
 					$(this).find('input').prop('checked',true);
@@ -220,7 +220,7 @@
 
 			const countriesByFunding = [];
 			for (const iso in App.fundingLookup) {
-				if (iso !== 'Not reported' && iso !== 'ghsa') {
+				if (iso !== 'Not reported' && iso !== 'ghsa' && iso !== 'General Global Benefit') {
 					const newObj = {
 						iso,
 						name: App.codeToNameMap.get(iso),
@@ -237,7 +237,7 @@
 			// get top recipient countries
 			const countriesByReceived = [];
 			for (const iso in App.recipientLookup) {
-				if (iso !== 'Not reported' && iso !== 'ghsa') {
+				if (iso !== 'Not reported' && iso !== 'ghsa' && iso !== 'General Global Benefit') {
 					const newObj = {
 						iso,
 						name: App.codeToNameMap.get(iso),

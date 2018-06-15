@@ -2304,12 +2304,6 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
 }
 
 /* --- Table Section --- */
-/* line 146, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisGlobal.scss */
-.global-tab-content[tab="country"] .fund-table-title {
-  font-size: 1.4em;
-  text-align: center;
-}
-
 /* line 150, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisGlobal.scss */
 .global-tab-content[tab="country"] .description-container {
   position: relative;
