@@ -492,8 +492,6 @@ const App = {};
 			const recipientGroups = App.getEntityGroups(recipientCode);
 			recipientGroups.push(recipientCode);
 
-			console.log('projects');
-			console.log(projects);
 			let data = [];
 			
 			data = projects.filter(project => {

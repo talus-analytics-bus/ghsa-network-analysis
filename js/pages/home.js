@@ -89,12 +89,11 @@
 				interactive: true,
 				html: true,
 				content: App.coreCapacitiesText,
-				// content: 'Each core element is associated with one or more core capacities, indicated by prefix.',
 			});
 
 			$('.undetermined-info-img').tooltipster({
 				interactive: true,
-				content: 'Undetermined funding amounts or in-kind support project counts may occur if the most specific funder or recipient named in a project is not a single organization or country.',
+				content: 'Undetermined funding amounts or in-kind support project counts may occur if the most specific funder or recipient named in a project is not an individual organization or country.',
 			});
 		}
 
@@ -715,8 +714,9 @@
 			if (isUndetermined) {
 				$('.c-and-d').slideUp();
 
-				// set undetermined messaged
-				// $('.undetermined.')
+				// set undetermined message
+				const adjective = moneyFlow === 'received' ? 'received' : 'disbursed';
+				$('.undetermined-unit').text(indType === 'inkind' ? 'in-kind support projects' : `funds committed or ${adjective}`);
 
 				$('.undetermined').slideDown();
 			} else {
