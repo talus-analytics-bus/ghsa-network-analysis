@@ -1155,7 +1155,7 @@
 			const boxTop = $list.offset().top;
 			
 			function getMaxHorizOffset () {
-				return 120; // TODO dynamically, if it improves rendering.
+				return 150; // TODO dynamically, if it improves rendering.
 			}
 			
 			function getHorizOffsetScale () {
@@ -1166,7 +1166,7 @@
 				const sineScale = Util.sineScale(domain);
 
 				const range = {
-					min: 10,
+					min: 24,
 					max: getMaxHorizOffset(), // base case: linear
 				};
 
@@ -1185,7 +1185,7 @@
 				const val = span.position().top;
 				const scale = getHorizOffsetScale();
 				const maxOffset = getMaxHorizOffset();
-				if (App.usingFirefox || true) return 130;
+				if (App.usingFirefox) return 130;
 				// if (App.usingFirefox || true) return 110;
 				return scale(val);
 			}
