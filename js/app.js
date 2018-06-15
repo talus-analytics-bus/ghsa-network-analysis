@@ -452,8 +452,6 @@ const App = {};
 
 			let data = [];
 			groupsPartOf.forEach(group => {
-				console.log('group')
-				console.log(group)
 				if (dataToCheck[group] !== undefined)
 				data = data.concat(dataToCheck[group]);
 			});
