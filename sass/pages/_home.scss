@@ -71,7 +71,12 @@
 		// background-color: rgba(240,240,240,0.925);
 	}
 
-
+	.dropdown-menu {
+		left: -270px !important;
+		&.firefox {
+			left: -257px !important;
+		}
+	}
 
 
 	.map-options-title {

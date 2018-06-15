@@ -987,7 +987,10 @@
 		// populates and initializes behavior for map options
 		function initFilters() {
 			// populate dropdowns
-			App.populateCcDropdown('.cc-select', { dropRight: true });
+			// App.populateCcDropdown('.cc-select', { dropRight: true });
+			App.populateCcDropdown('.cc-select', { dropUp: true, dropLeft: true, });
+
+			d3.select('.dropdown-menu').classed('firefox', App.usingFirefox);
 
 			// update indicator type ('money' or 'score') on change
 			$('.ind-type-filter .radio-option').click(function updateIndType() {

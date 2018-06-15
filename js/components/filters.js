@@ -12,6 +12,8 @@
 			maxHeight: 260,
 			includeSelectAllOption: true,
 			numberDisplayed: 0,
+			dropUp: param.dropUp || false,
+			dropLeft: param.dropLeft || false,
 			dropRight: param.dropRight || false,
 		});
 	};
