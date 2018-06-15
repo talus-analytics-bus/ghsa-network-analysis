@@ -57,6 +57,7 @@ const App = {};
 		App.capacities = [{"id":"P.1","name":"P.1 - National Legislation, Policy, and Financing","idx":0},{"id":"P.2","name":"P.2 - IHR Coordination, Communicaton and Advocacy","idx":1},{"id":"P.3","name":"P.3 - Antimicrobial Resistance (AMR)","idx":2},{"id":"P.4","name":"P.4 - Zoonotic Disease","idx":3},{"id":"P.5","name":"P.5 - Food Safety","idx":4},{"id":"P.6","name":"P.6 - Biosafety and Biosecurity","idx":5},{"id":"P.7","name":"P.7 - Immunization","idx":6},{"id":"D.1","name":"D.1 - National Laboratory System","idx":7},{"id":"D.2","name":"D.2 - Real Time Surveillance","idx":8},{"id":"D.3","name":"D.3 - Reporting","idx":9},{"id":"D.4","name":"D.4 - Workforce Development","idx":10},{"id":"R.1","name":"R.1 - Preparedness","idx":11},{"id":"R.2","name":"R.2 - Emergency Response Operations","idx":12},{"id":"R.3","name":"R.3 - Linking Public Health and Security Authorities","idx":13},{"id":"R.4","name":"R.4 - Medical Countermeasures and Personnel Deployment","idx":14},{"id":"R.5","name":"R.5 - Risk Communication","idx":15},{"id":"PoE","name":"PoE - Point of Entry (PoE)","idx":16},{"id":"CE","name":"CE - Chemical Events","idx":17},{"id":"RE","name":"RE - Radiation Emergencies","idx":18},{"id":"General IHR Implementation","name":"General IHR Implementation","idx":19}];
 		App.coreCapacitiesText = 'Core capacities were tagged based on names and descriptions of commitments and disbursements. Additional information on how core capacities were tagged can be found on the <a href="#glossary" onlick="function(){hasher.setHash(`#glossary`)}">data definitions</a> page.';
 		App.generalIhrText = 'Funds or support for "General IHR Implementation" are not associated with any specific core capacities, but instead provide general support for capacity-building under the International Health Regulations (e.g., supporting JEE missions, overall capacity building).';
+		App.inKindDefinition = `In-kind support is the contribution of goods or services to a recipient. Examples of in-kind support include providing technical expertise or programming support, or  supporting GHSA action packages.`;
 
 		// front-load all the data
 		NProgress.start();
@@ -366,30 +367,34 @@ const App = {};
 	 * @return {array}          Array of projects categorized as Other Support
 	 */
 	App.getInkindSupportProjects = (projects, type, code, params = {}) => {
-		const typeIsFunded = type === 'd';
-		const codeField = typeIsFunded ? 'donor_code' : 'recipient_country';
-		const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
-		const groupsPartOf = App.getEntityGroups(code);
-		const filterIsCode = (project) => { 
-			const isSoloProject = project[codeField] === code;
-			const isGroupProject = groupsPartOf.indexOf(project[codeField]) > -1;
-			return isSoloProject || isGroupProject;
-		};
+		if (code === 'ghsa') {
+			return projects.filter(d => d.ghsa_funding === true && (d.assistance_type.toLowerCase() === "in-kind support" || d.assistance_type.toLowerCase() === "other support"));
+		} else {
+			const typeIsFunded = type === 'd';
+			const codeField = typeIsFunded ? 'donor_code' : 'recipient_country';
+			const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
+			const groupsPartOf = App.getEntityGroups(code);
+			const filterIsCode = (project) => { 
+				const isSoloProject = project[codeField] === code;
+				const isGroupProject = groupsPartOf.indexOf(project[codeField]) > -1;
+				return isSoloProject || isGroupProject;
+			};
 
-		const filterIsOther = (project) => {
-			const projectAssistanceType = project.assistance_type.toLowerCase();
-			const isOther = projectAssistanceType === "in-kind support" || projectAssistanceType === "other support";
-			const isUnspecAmount = project[unspecAmountField] === true || project[codeField] !== code;
-			return isOther;
-			// return isOther || isUnspecAmount;
-		};
+			const filterIsOther = (project) => {
+				const projectAssistanceType = project.assistance_type.toLowerCase();
+				const isOther = projectAssistanceType === "in-kind support" || projectAssistanceType === "other support";
+				const isUnspecAmount = project[unspecAmountField] === true || project[codeField] !== code;
+				return isOther;
+				// return isOther || isUnspecAmount;
+			};
 
-		const filterCountOnce = (allProjects) => {
-			const groupedById = _.groupBy(allProjects, 'project_id');
-			return _.values(groupedById).map(d => d[0]);
-		};
+			const filterCountOnce = (allProjects) => {
+				const groupedById = _.groupBy(allProjects, 'project_id');
+				return _.values(groupedById).map(d => d[0]);
+			};
 
-		return filterCountOnce(projects.filter(filterIsOther).filter(filterIsCode));
+			return filterCountOnce(projects.filter(filterIsOther).filter(filterIsCode));
+		}
 	};
 
 	/**

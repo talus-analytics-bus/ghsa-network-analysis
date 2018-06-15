@@ -793,7 +793,7 @@
 						};
 					}
 
-					if ((p[codeFieldOther] === iso && p[unspecField] !== true) && iso !== 'ghsa') {
+					if (((p[codeFieldOther] === iso && p[unspecField] !== true) && iso !== 'ghsa') || iso === 'ghsa') {
 						tableRowsByCodeOrName[codeOrName].all_unspec_amounts = false
 						// Increment counts
 						tableRowsByCodeOrName[codeOrName].total_committed += p.total_committed;

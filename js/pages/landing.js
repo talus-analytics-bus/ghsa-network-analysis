@@ -26,6 +26,14 @@
 			$('.btn-view-ghsa').click(function(){
 				hasher.setHash('analysis/ghsa/d');
 			});
+			$('.btn-funders-map').click(function(){
+				App.mapSet = 'funded';
+				hasher.setHash('map');
+			});
+			$('.btn-recipients-map').click(function(){
+				App.mapSet = 'received';
+				hasher.setHash('map');
+			});
 		}
 
 		function initGhsaToggle(tab = 'network') {

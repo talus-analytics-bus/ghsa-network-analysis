@@ -11,11 +11,16 @@
 		// state variables for current map indicator
 		// let indType = 'inkind';  // either 'money' or 'score'
 		let indType = 'money';  // either 'money' or 'score'
-		// let moneyFlow = 'funded';  // either 'funded' or 'received'
-		let moneyFlow = 'received';  // either 'funded' or 'received'
+		let moneyFlow = 'funded';  // either 'funded' or 'received'
+		// let moneyFlow = 'received';  // either 'funded' or 'received'
 		// let moneyType = 'disbursed';  // either 'committed' or 'disbursed'
 		let moneyType = 'committed';  // either 'committed' or 'disbursed'
 		let scoreType = 'score';  // either 'score' or 'combined'
+
+		if (App.mapSet !== undefined) {
+			moneyFlow = App.mapSet;
+			App.mapSet = undefined;
+		}
 
 		// colors
 		const purples = [
@@ -94,6 +99,10 @@
 			$('.undetermined-info-img').tooltipster({
 				interactive: true,
 				content: 'Undetermined funding amounts or in-kind support project counts may occur if the most specific funder or recipient named in a project is not an individual organization or country.',
+			});
+			$('.inkind-support-info-img').tooltipster({
+				interactive: true,
+				content: App.inKindDefinition,
 			});
 		}
 
@@ -793,8 +802,6 @@
 			let totalInkindCommitted = 0;
 			let totalInkindProvided = 0;
 			let totalUnspecAmount = 0;
-			console.log('currentNodeDataMap');
-			console.log(currentNodeDataMap);
 			if (currentNodeDataMap.has(country.ISO2)) {
 				const valueObj = currentNodeDataMap.get(country.ISO2);
 				if (indType === 'money' || indType === 'ghsa' || indType === 'inkind') {
