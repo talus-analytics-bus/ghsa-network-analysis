@@ -609,6 +609,7 @@ const App = {};
 
 		// Timor-Leste is part of IPR
 		const groupsPartOf = App.getEntityGroups(code);
+		groupsPartOf.push(code);
 
 		let data = [];
 		groupsPartOf.forEach(group => {
@@ -629,10 +630,11 @@ const App = {};
 		// Get financial support that is disbursed to groups TL is part of.
 		const filterAmountUnmappable = (project) => {
 			// Is financial
+			const isUnspecifiedForTarget = project[unspecAmountField] === true;
 			const isFinancial = project.assistance_type.toLowerCase().includes('financial');
 
 			// Is for a group Timor-Leste belongs to.
-			return isFinancial;
+			return isFinancial || isUnspecifiedForTarget;
 		};
 
 		const filterCountOnce = (allProjects) => {

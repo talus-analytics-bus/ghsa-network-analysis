@@ -279,9 +279,14 @@
 			for (let i = 0; i < App.countries.length; i++) {
 				const c = App.countries[i];
 				const iso = c.ISO2;
+				
 				// remove general global benefit
-				const fundedPaymentsTmp = App.fundingLookup[iso];
-				const receivedPayments = App.recipientLookup[iso];
+				
+				const fundedPaymentsTmp = Util.uniqueCollection(App.fundingLookup[iso], 'project_id');
+				const receivedPayments = Util.uniqueCollection(App.recipientLookup[iso], 'project_id');
+
+
+				if (iso === 'US') console.log(fundedPaymentsTmp);
 				const fundedPayments = (fundedPaymentsTmp) ? fundedPaymentsTmp : undefined;
 				// construct chord data; sort by region and subregion
 				let totalFunded = 0;
@@ -452,6 +457,7 @@
 
 		function buildNetworkMap() {
 			const networkData = getNetworkData();
+
 			const chart = App.buildNetworkMap('.network-map-content', networkData, {
 				countryClickFn: displayCountryInNetwork,
 				regionPadding: 1,
