@@ -359,13 +359,13 @@ const App = {};
 	/**
 	 * Given a set of projects, the type (funder/recipient), and the
 	 * code of the funder/recipient, returns anything that would be 
-	 * classified as "Other Support", one object per "table row".
+	 * classified as "Inkind Support", one object per "table row".
 	 * @param  {array} projects Array of projects (objects)
 	 * @param  {string} type     'd' or 'r'
 	 * @param  {string} code     The 'donor_code' or 'recipient_country' to lookup
 	 * @return {array}          Array of projects categorized as Other Support
 	 */
-	App.getOtherSupportProjects = (projects, type, code) => {
+	App.getInkindSupportProjects = (projects, type, code) => {
 		const typeIsFunded = type === 'd';
 		const codeField = typeIsFunded ? 'donor_code' : 'recipient_country';
 		const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
@@ -380,7 +380,8 @@ const App = {};
 			const projectAssistanceType = project.assistance_type.toLowerCase();
 			const isOther = projectAssistanceType === "in-kind support" || projectAssistanceType === "other support";
 			const isUnspecAmount = project[unspecAmountField] === true || project[codeField] !== code;
-			return isOther || isUnspecAmount;
+			return isOther;
+			// return isOther || isUnspecAmount;
 		};
 
 		const filterCountOnce = (allProjects) => {
@@ -494,12 +495,15 @@ const App = {};
 			data = data.concat(dataToCheck[group]);
 		});
 		const ccs = $('.cc-select').val();
-		projects = data.filter(p => {
-			// Tagged with right ccs?
-			if (!App.passesCategoryFilter(p.core_capacities, ccs)) return false;
-			return true;
+		if (ccs === undefined) projects = data;
+		else {
+			projects = data.filter(p => {
+				// Tagged with right ccs?
+				if (!App.passesCategoryFilter(p.core_capacities, ccs)) return false;
+				return true;
 
-		});
+			});
+		}
 
 		// Get financial support that is disbursed to groups TL is part of.
 		const filterAmountUnmappable = (project) => {

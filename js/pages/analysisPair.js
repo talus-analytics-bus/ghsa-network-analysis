@@ -189,7 +189,7 @@
 				}
 			} else if (currentInfoTab === 'inkind') {
 				// paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');
-				paymentTableData = App.getOtherSupportProjects(allPayments, 'r', recIso);
+				paymentTableData = App.getInkindSupportProjects(allPayments, 'r', recIso);
 			} 
 
 			// clear DataTables plugin from table

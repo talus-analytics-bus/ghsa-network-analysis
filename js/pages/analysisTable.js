@@ -162,7 +162,7 @@
 				headerData = [
 				{ name: 'Provider', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
 				{ name: 'Recipient', value: 'recipient_name', value2: 'recipient_name_orig', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; }  },
-				{ name: 'Support Type', value: 'assistance_type' },
+				// { name: 'Support Type', value: 'assistance_type' },
 				{ name: 'Description', value: 'project_name' },
 				];
 				// headerData = [
@@ -175,14 +175,17 @@
 
 			// define row data
 			let paymentTableData = [];
+			allPayments = App.getProjectsIncludingGroups(App.fundingData, moneyFlow, iso);
 			if (currentInfoTab === 'all') {
-				paymentTableData = App.getFinancialProjectsWithAmounts(App.fundingData, moneyFlow, iso);
+				paymentTableData = allPayments.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support' && payment.assistance_type.toLowerCase() !== 'other support');
 			} else if (currentInfoTab === 'country') {
 				const totalByCountry = {};
-				allPayments.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support').forEach((p) => {
+				allPayments = App.getProjectsIncludingGroups(App.fundingData, moneyFlow, iso);
+				allPayments.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support' && payment.assistance_type.toLowerCase() !== 'other support').forEach((p) => {
 					const dc = p.donor_code;
 					let rc = p.recipient_country;
 					if (rc === 'Not reported') rc = p.recipient_name;
+					if (p.recipient_name_orig !== undefined) rc = p.recipient_name_orig
 					if (!totalByCountry[dc]) totalByCountry[dc] = {};
 					if (!totalByCountry[dc][rc]) {
 						totalByCountry[dc][rc] = {
@@ -198,6 +201,7 @@
 						paymentTableData.push({
 							donor_code: dc,
 							recipient_country: rc,
+							recipient_name: rc,
 							total_committed: totalByCountry[dc][rc].total_committed,
 							total_spent: totalByCountry[dc][rc].total_spent,
 						});
@@ -229,13 +233,13 @@
 							hasACe = true;
 							totalByCe[ce].total_committed += p.total_committed;
 							totalByCe[ce].total_spent += p.total_spent;
-							totalByCe[ce].total_other += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
+							totalByCe[ce].total_other += (p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support") ? 1 : 0;
 						}
 					});
 					if (!hasACe) {
 						totalByCe.None.total_committed += p.total_committed;
 						totalByCe.None.total_spent += p.total_spent;
-						totalByCe.None.total_other += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
+						totalByCe.None.total_other += (p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support") ? 1 : 0;
 					}
 				});
 				for (const ce in totalByCe) {
@@ -260,13 +264,13 @@
 						if (totalByCc[cc]) {
 							totalByCc[cc].total_committed += p.total_committed;
 							totalByCc[cc].total_spent += p.total_spent;
-							totalByCc[cc].total_other += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
+							totalByCc[cc].total_other += (p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support") ? 1 : 0;
 						}
 					});
 					if (!p.core_capacities.length) {
 						totalByCc.None.total_committed += p.total_committed;
 						totalByCc.None.total_spent += p.total_spent;
-						totalByCc.None.total_other += (p.assistance_type.toLowerCase() === "in-kind support") ? 1 : 0;
+						totalByCc.None.total_other += (p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support") ? 1 : 0;
 					}
 				});
 				for (const cc in totalByCc) {
@@ -279,7 +283,7 @@
 				}
 			} else if (currentInfoTab === 'inkind') {
 				// paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');
-				paymentTableData = App.getOtherSupportProjects(App.fundingData, moneyFlow, iso);
+				paymentTableData = App.getInkindSupportProjects(App.fundingData, moneyFlow, iso);
 			} 
 
 
