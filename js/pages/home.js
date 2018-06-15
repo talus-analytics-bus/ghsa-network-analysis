@@ -1153,11 +1153,21 @@
 			const parentHeight = circleNode.parentNode.parentNode.parentNode.offsetHeight;
 			const factor = (parentHeight / lineHeight) - 1;
 
-			function getTop (factor) {
-				if (factor === 1) return '-15px';
-				if (factor === 2) return '-24px';
-				if (factor === 3) return '-33px';
-				else return '-42px';
+			if (App.usingFirefox) {
+				function getTop (factor) {
+					factor = Math.round(factor);
+					if (factor === 1) return '-15px';
+					if (factor === 2) return '-24px';
+					if (factor === 3) return '-33px';
+					else return '-42px';
+				}
+			} else {
+				function getTop (factor) {
+					if (factor === 1) return '-15px';
+					if (factor === 2) return '-24px';
+					if (factor === 3) return '-33px';
+					else return '-42px';
+				}
 			}
 			$(circleNode.parentNode.parentNode).css('top', getTop(factor));
 		}
