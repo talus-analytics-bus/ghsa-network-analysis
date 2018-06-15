@@ -922,11 +922,18 @@
 				let match;
 				if (!nonCountry) {
 					match = d3.selectAll('.country')
-						.filter(c => result.ISO2 === c.properties.ISO2);
+						.filter(c => {
+							if (!c.properties) return false;
+							return result.ISO2 === c.properties.ISO2
+						});
 				} else {
+					d3.selectAll('.list-item')
+
 					const matchTmp = d3.selectAll('.list-item')
-						.filter(c => result.ISO2 === c.entity_data.ISO2);
-					const entityData = matchTmp.datum().entity_data;
+						.filter(c => result.ISO2 === c.donor_code);
+						// .filter(c => result.ISO2 === c.entity_data.ISO2);
+					const entityData = App.countries.find(d => d.ISO2 === matchTmp.datum().donor_code);
+					// const entityData = matchTmp.datum().entity_data;
 					match = matchTmp;
 					match.datum = () => { return {
 						properties: entityData,
