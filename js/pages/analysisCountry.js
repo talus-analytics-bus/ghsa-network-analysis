@@ -770,6 +770,7 @@
 					const nameForTable = p[nameFieldOrig] !== undefined ? p[nameFieldOrig] : p[nameField];
 
 					// Add default data for the table if they don't yet exist.
+					if (codeOrName === 'Not reported') return;
 					if (!tableRowsByCodeOrName[codeOrName]) {
 						tableRowsByCodeOrName[codeOrName] = {
 							name: nameForTable,

@@ -308,7 +308,7 @@
 			rows.exit().remove();
 			const newRows = rows.enter().append('tr');
 			newRows.merge(rows).on('click', (p) => {
-				if ((currentInfoTab !== 'cc' && currentInfoTab !== 'ce')) {
+				if ((currentInfoTab !== 'cc' && currentInfoTab !== 'ce' && p.recipient_country !== "Not reported")) {
 					// clicking on a row navigates user to country pair page
 					hasher.setHash(`analysis/${p.donor_code}/${p.recipient_country}`);
 				}
