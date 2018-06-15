@@ -62,8 +62,38 @@
         <div class="home-container">
             <div class="map-container"></div>
             <div class="right-container">
-                <div class="map-and-search-container">
-                    <div class="map-options-container ghsa-toggle-container">
+                <div class="non-country-list-container right">
+                    <div class="list-title right">
+                        <span>Non-country Recipients</span>
+                    </div>
+                    <div class="non-country-list recipient-list"></div>
+                </div>
+                
+            </div>
+            <div class="left-container">
+                <div class="non-country-list-container left">
+                    <div class="list-title left">
+                        <span>Non-country Funders</span>
+                    </div>
+                    <div class="non-country-list funder-list"></div>
+                </div>
+            </div>
+            <div class="legend-container">
+                <div class="legend-display-tab">
+                    <img class="collapse-arrow" src="img/chevron_down.png" />
+                    <span>hide legend</span>
+                    <img class="collapse-arrow" src="img/chevron_down.png" />
+                </div>
+                <div class="legend-content">
+                    <div class="legend-box">
+                        <svg class="legend">
+                            <g class="legend-group"></g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="map-and-search-container">
+{{!--                     <div class="map-options-container ghsa-toggle-container">
                         <div class="map-options-title">
                             <div class="top-state-toggle-container top-state-toggle-switch toggle-container">
                                 <label>
@@ -71,6 +101,16 @@
                                     <img class="ghsa-info-img info-img" src="img/info.png" />
                                 </label>
                             </div>
+                        </div>
+                    </div> --}}
+                    <div class="search-container">
+                        <div class="form-group has-feedback">
+                            <input type="text" class="country-search-input form-control" placeholder="search here...">
+                            <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                        </div>
+                        <div class="live-search-results-container reverse">
+                            <div class="live-search-no-results-text">No results found</div>
+                            <div class="live-search-results-contents"></div>
                         </div>
                     </div>
                     <div class="map-options-container">
@@ -81,19 +121,16 @@
                         <div class="map-options-content">
                             <div class="filter-section">
                                 <div class="filter-box">
+                                <label>
+                                    <input class="form-check-input ghsa-only-checkbox" type="checkbox" value="" id="ghsa-only-checkbox"> Show GHSA Projects Only
+                                    <img class="ghsa-info-img info-img" src="img/info.png" />
+                                </label>
                                     <div class="dropdown-label">Click to show:</div>
                                     <div class="ind-type-filter">
                                         <div class="radio-option">
                                             <input type="radio" name="ind" ind="money" checked/>
                                             <span>Financial Support</span>
                                         </div>
-                                        {{!--
-                                        <div class="radio-option multi-line">
-                                            <input type="radio" name="ind" ind="ghsa" />
-                                            <div>GHSA Financial Resources
-                                                <br>Only</div>
-                                            <img class="ghsa-info-img info-img" src="img/info.png" />
-                                        </div> --}}
                                         <div class="radio-option multi-line">
                                             <input type="radio" name="ind" ind="inkind" />
                                             <div>In-kind Support</div>
@@ -169,46 +206,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="search-container">
-                        <div class="form-group has-feedback">
-                            <input type="text" class="country-search-input form-control" placeholder="search here...">
-                            <i class="glyphicon glyphicon-search form-control-feedback"></i>
-                        </div>
-                        <div class="live-search-results-container">
-                            <div class="live-search-no-results-text">No results found</div>
-                            <div class="live-search-results-contents"></div>
-                        </div>
-                    </div>
+                    
                 </div>
-                <div class="non-country-list-container right">
-                    <div class="list-title right">
-                        <span>Non-country Recipients</span>
-                    </div>
-                    <div class="non-country-list recipient-list"></div>
-                </div>
-            </div>
-            <div class="left-container">
-                <div class="non-country-list-container left">
-                    <div class="list-title left">
-                        <span>Non-country Funders</span>
-                    </div>
-                    <div class="non-country-list funder-list"></div>
-                </div>
-            </div>
-            <div class="legend-container">
-                <div class="legend-display-tab">
-                    <img class="collapse-arrow" src="img/chevron_down.png" />
-                    <span>hide legend</span>
-                    <img class="collapse-arrow" src="img/chevron_down.png" />
-                </div>
-                <div class="legend-content">
-                    <div class="legend-box">
-                        <svg class="legend">
-                            <g class="legend-group"></g>
-                        </svg>
-                    </div>
-                </div>
-            </div>
             <div class="info-container">
                 <div class="info-box">
                     <div class="info-close-button">

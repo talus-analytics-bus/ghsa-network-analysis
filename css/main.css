@@ -762,18 +762,28 @@ select.form-control {
   top: -20px;
 }
 
+/* line 166, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
+.non-country-list-container .list-title.right {
+  text-align: left;
+}
+
 /* line 169, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
+.non-country-list-container .list-title.left {
+  text-align: right;
+}
+
+/* line 175, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
 .circle-container {
   top: -15px;
   position: relative;
 }
 
-/* line 171, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
+/* line 177, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
 .circle-container.left {
   left: 170px !important;
 }
 
-/* line 174, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
+/* line 180, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_maps.scss */
 .circle-container.right {
   left: -170px !important;
 }
@@ -847,13 +857,18 @@ select.form-control {
   text-align: left;
 }
 
-/* line 11, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
+/* line 5, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
+.live-search-results-container.reverse {
+  top: -126px;
+}
+
+/* line 14, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
 .live-search-results-container.top-layout {
   top: auto;
   bottom: 49px;
 }
 
-/* line 16, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
+/* line 19, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
 .live-search-no-results-text {
   display: none;
   padding: 10px;
@@ -861,7 +876,7 @@ select.form-control {
   font-style: italic;
 }
 
-/* line 22, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
+/* line 25, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
 .live-search-results-box {
   padding: 10px 20px;
   border-bottom: 1px solid #ccc;
@@ -874,7 +889,7 @@ select.form-control {
   background: -o-linear-gradient(top, #fefefe, #f3f3f3);
 }
 
-/* line 27, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
+/* line 30, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
 .live-search-results-box:hover, .live-search-results-box.active {
   background-color: #e6e6e6;
   background: -webkit-gradient(linear, left top, left bottom, from(#e6e6e6), to(#d9d9d9));
@@ -884,29 +899,29 @@ select.form-control {
   background: -o-linear-gradient(top, #e6e6e6, #d9d9d9);
 }
 
-/* line 30, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
+/* line 33, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
 .live-search-results-box:hover div, .live-search-results-box.active div {
   color: #000;
 }
 
-/* line 35, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
+/* line 38, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
 .live-search-results-container.top-layout .live-search-results-box:first-child,
 .live-search-results-container.top-layout .live-search-no-results-text {
   border-top: 1px solid #999;
 }
 
-/* line 41, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
+/* line 44, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
 .live-search-results-container.bottom-layout .live-search-results-box:last-child,
 .live-search-results-container.bottom-layout .live-search-no-results-text {
   border-bottom: 1px solid #999;
 }
 
-/* line 47, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
+/* line 50, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
 .live-search-results-title {
   font-weight: 600;
 }
 
-/* line 50, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
+/* line 53, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_search.scss */
 .live-search-results-subtitle {
   font-size: 0.9em;
 }
@@ -2512,7 +2527,7 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   overflow-y: hidden;
 }
 
-/* line 16, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 17, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .right-container {
   position: absolute;
   top: 15px;
@@ -2520,7 +2535,7 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   z-index: 100;
 }
 
-/* line 22, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 23, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .left-container {
   position: absolute;
   /* top: 15px; */
@@ -2528,19 +2543,25 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   z-index: 100;
 }
 
-/* line 28, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 29, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-and-search-container {
-  transform-origin: top right;
+  transform-origin: bottom right;
+  z-index: 200;
+  bottom: 0;
+  float: right;
+  /* top: 0; */
+  right: 20px;
+  position: absolute;
 }
 
-/* line 31, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 39, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .search-container {
   position: relative;
   margin-top: 10px;
   transform-origin: top right;
 }
 
-/* line 36, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 44, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .search-container input {
   position: relative;
   width: 280px;
@@ -2554,16 +2575,17 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   background-clip: padding-box;
 }
 
-/* line 44, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 52, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .radio-option.multi-line * {
   display: inline-block;
   vertical-align: top;
 }
 
-/* line 49, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 57, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container {
   display: none;
   width: 280px;
+  margin-bottom: 20px;
   border: 1px solid #999;
   text-align: left;
   background-color: #f0f0f0;
@@ -2572,12 +2594,12 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   transform-origin: top right;
 }
 
-/* line 60, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 69, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container:hover {
   background-color: #f0f0f0;
 }
 
-/* line 68, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 77, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .map-options-title {
   display: flex;
   justify-content: space-between;
@@ -2587,103 +2609,103 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   cursor: pointer;
 }
 
-/* line 77, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 86, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .map-options-title img {
   top: 4px;
 }
 
-/* line 78, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 87, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .map-options-title:hover {
   background-color: #f0f0f0;
 }
 
-/* line 82, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 91, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .map-options-content {
   display: none;
   border-top: 1px solid #999;
   padding: 15px 20px;
 }
 
-/* line 87, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 96, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .filter-section:nth-child(n+2) {
   margin-top: 15px;
   border-top: 1px solid #999;
   padding-top: 15px;
 }
 
-/* line 92, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 101, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .filter-box:nth-child(n+2) {
   margin-top: 15px;
 }
 
-/* line 95, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 104, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .score-filters {
   display: none;
 }
 
-/* line 96, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 105, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .money-flow-type-filter {
   float: left;
 }
 
-/* line 99, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 108, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .money-type-filter {
   margin-left: 102px;
 }
 
-/* line 102, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 111, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .multiselect {
   width: 190px;
 }
 
-/* line 105, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 114, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .radio-option {
   margin-left: 10px;
   cursor: pointer;
 }
 
-/* line 108, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 117, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .radio-option span, .map-options-container .radio-option div {
   position: relative;
   top: 3px;
 }
 
-/* line 113, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 122, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .radio-option input {
   position: relative;
   top: 2px;
 }
 
-/* line 117, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 126, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .radio-option td {
   vertical-align: top;
 }
 
-/* line 120, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 129, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .radio-option td:nth-child(2) {
   position: relative;
   top: 2px;
   left: 3px;
 }
 
-/* line 125, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 134, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .slider {
   margin: 5px 0 15px 15px;
   width: 210px;
 }
 
-/* line 133, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 142, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .inkind-support-info-img {
   top: 7px;
 }
 
-/* line 136, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 145, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container .or-text {
   padding-left: 27px;
   font-size: 0.95em;
 }
 
-/* line 141, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 150, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .legend-container {
   transform-origin: bottom;
   display: none;
@@ -2693,7 +2715,7 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   width: 100%;
 }
 
-/* line 149, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 158, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .legend-container .legend-display-tab {
   display: inline-block;
   padding: 3px 12px;
@@ -2710,7 +2732,7 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   background-clip: padding-box;
 }
 
-/* line 156, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 165, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .legend-container .legend-display-tab img {
   top: 0;
   width: 10px;
@@ -2718,7 +2740,7 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   margin: 0 7px;
 }
 
-/* line 166, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 175, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .legend-container .legend-box {
   display: inline-block;
   padding: 20px 15px 10px;
@@ -2726,55 +2748,55 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   background-color: rgba(255, 255, 255, 0.8);
 }
 
-/* line 172, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 181, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .legend-container .legend-tick {
   stroke: #333;
 }
 
-/* line 175, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 184, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .legend-container image.legend-tooltip {
   width: 14px;
   height: 14px;
 }
 
-/* line 181, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 190, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .country.hatch, .legend-bar.hatch, circle.hatch {
   mask: url(#mask-stripe);
   fill: #515151;
 }
 
-/* line 186, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 195, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container.ghsa-toggle-container {
   margin-bottom: 10px;
 }
 
-/* line 189, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 198, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container.ghsa-toggle-container .map-options-title {
   padding: 5px 20px;
 }
 
-/* line 191, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 200, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container.ghsa-toggle-container .map-options-title .ghsa-info-img {
   top: 0px;
 }
 
-/* line 195, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 204, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container.ghsa-toggle-container .toggle-container {
   top: 3px;
   position: relative;
 }
 
-/* line 199, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 208, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container.ghsa-toggle-container .ghsa-only-checkbox {
   margin-right: 5px;
 }
 
-/* line 204, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 213, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .viewport-ellipse.outer {
   fill: #3e3e3e;
 }
 
-/* line 209, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 218, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .home-image {
   margin-top: 20px;
   height: 300px;
@@ -2785,34 +2807,34 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   cursor: pointer;
 }
 
-/* line 217, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 226, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .home-image:hover {
   box-shadow: 0 0 1px 1px white inset;
 }
 
-/* line 222, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 231, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .landing-controls {
   text-align: center;
   margin: auto;
   display: block !important;
 }
 
-/* line 227, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 236, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .landing-introduction-section {
   margin-bottom: 40px;
 }
 
-/* line 230, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 239, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .fund-header-row * {
   background: #082b84;
 }
 
-/* line 233, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 242, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .rec-header-row * {
   background: #c91414;
 }
 
-/* line 236, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 245, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .rec-header-row, .fund-header-row * {
   color: #fff;
   font-size: 1.2em;

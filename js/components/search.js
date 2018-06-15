@@ -6,13 +6,19 @@
 		let results = [];
 		let activeResultNum = -1;
 
+
 		// define jquery elements
 		const $container = $(selector);
 		const $input = $container.find('input');
 		const $resultsBox = $container.find('.live-search-results-container');
+		if (App.usingFirefox) {
+			$resultsBox.css('top','-124px');	
+		}
 		if (param.topLayout) $resultsBox.addClass('top-layout');
 		else $resultsBox.addClass('bottom-layout');
-
+		const isReverse = param.isReverse === true;
+		const down = isReverse ? 38 : 40;
+		const up = isReverse ? 40 : 38;
 		// set search bar behavior
 		$input
 			.on('focus', function focus() {
@@ -34,13 +40,13 @@
 				} else if (ev.which === 27) {
 					// escape key: blur
 					hideSearch();
-				} else if (ev.which === 40) {
+				} else if (ev.which === down) {
 					// down arrow: scroll for search results
 					if (activeResultNum < numResultsToDisplay - 1) {
 						activeResultNum++;
 						highlightResultBox();
 					}
-				} else if (ev.which === 38) {
+				} else if (ev.which === up) {
 					// up arrow: scroll for search results
 					if (activeResultNum > -1) {
 						activeResultNum--;

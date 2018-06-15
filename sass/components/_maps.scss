@@ -163,6 +163,12 @@
   position: relative;
   top: -20px;
   // margin-top:
+  &.right {
+    text-align: left
+  }
+  &.left {
+    text-align: right
+  }
 }
 }
 
@@ -176,7 +182,7 @@
   }
   position: relative;
   // svg circle {
-  //   stroke: black;
-  //   stroke-width: 1;
-  // }
-}
+    //   stroke: black;
+    //   stroke-width: 1;
+    // }
+  }

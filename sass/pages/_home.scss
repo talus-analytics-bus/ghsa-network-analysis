@@ -11,6 +11,7 @@
 	overflow-y: hidden;
 	svg {
 		// min-width: 1200px;
+		// margin-top: -32px;
 	}
 }
 .right-container {
@@ -26,7 +27,14 @@
 	z-index: 100;
 }
 .map-and-search-container {
-	transform-origin: top right;
+	transform-origin: bottom right;
+	z-index: 200;
+	bottom: 0;
+	float: right;
+	/* top: 0; */
+	right: 20px;
+	position: absolute;
+	// position: fixed;
 }
 .search-container {
 	position: relative;
@@ -49,6 +57,7 @@
 .map-options-container {
 	display: none;
 	width: 280px;
+	    margin-bottom: 20px;
 	border: $border;
 	text-align: left;
 	background-color: rgba(240,240,240,1);

@@ -962,7 +962,7 @@
 					scrollToListItem(activeCountry);
 				};
 				displayCountryInfo();
-			});
+			}, {isReverse: true});
 		}
 
 		// initializes slider functionality
@@ -1228,6 +1228,11 @@
 				$mapAndSearchContainer.css('transform',`scale(${scaleFactor})`);
 				$countryInfoBox.css('transform',`scale(${scaleFactor})`);
 				$legendContainer.css('transform',`scale(${scaleFactor})`);
+
+				$box
+					.css('transform',`scale(${scaleFactor})`)
+					.css('-moz-transform',`scale(${scaleFactor})`);
+
 				// $searchContainer.css('transform',`scale(${scaleFactor})`);
 
 				// Set top position of box
@@ -1235,12 +1240,14 @@
 				const boxHeight = $box[0].getBoundingClientRect().height;
 				const listTitleHeight = $listTitle[0].getBoundingClientRect().height;
 				const heuristicTopPositionCorrection = -10 * scaleFactor / heuristicScaleFactorCorrection;
-				const yShift = ((viewportHeight / 2) - (boxHeight / 2)) + heuristicTopPositionCorrection;
+				// const yShift = ((viewportHeight / 2) - (boxHeight / 2)) + heuristicTopPositionCorrection;
+				// const yShift = ((viewportHeight / 2) - (boxHeight / 2)) + heuristicTopPositionCorrection;
+				const yShift = 0;
 				// const yShift = ((viewportHeight / 2) - (boxHeight / 2));
 				const top = viewportTop + yShift;
 				// $rightOrLeftContainer.css('top', top + 'px');
 				$box.css('top', top + 'px');
-				$mapAndSearchContainer.css('top', top + 'px');
+				// $mapAndSearchContainer.css('top', top + 'px');
 				// $countryInfoBox.css('top', top + 'px');
 				// $searchContainer.css('top', top + 'px');
 
