@@ -290,11 +290,12 @@
 					return _.values(groupedById).map(d => d[0]);
 				};
 
-				const paymentsFunded = (App.fundingLookup[c.ISO2] === undefined) ? undefined : App.getFinancialProjectsWithAmounts(App.fundingLookup[c.ISO2], 'd', c.ISO2)
-				const paymentsReceived = (App.recipientLookup[c.ISO2] === undefined) ? undefined : App.getFinancialProjectsWithAmounts(App.recipientLookup[c.ISO2], 'r', c.ISO2)
+				const paymentsFunded = (App.fundingLookup[c.ISO2] === undefined) ? undefined : App.getMappableProjects(App.fundingLookup[c.ISO2], 'd', c.ISO2)
+				const paymentsReceived = (App.recipientLookup[c.ISO2] === undefined) ? undefined : App.getMappableProjects(App.recipientLookup[c.ISO2], 'r', c.ISO2)
+				// const paymentsFunded = (App.fundingLookup[c.ISO2] === undefined) ? undefined : App.getFinancialProjectsWithAmounts(App.fundingLookup[c.ISO2], 'd', c.ISO2)
+				// const paymentsReceived = (App.recipientLookup[c.ISO2] === undefined) ? undefined : App.getFinancialProjectsWithAmounts(App.recipientLookup[c.ISO2], 'r', c.ISO2)
 
 				const scoreObj = App.scoresByCountry[c.ISO2];
-				if (c.ISO2 === 'who') console.log(paymentsReceived)
 
 				// only include country in data map if it has a score or rec/don funds
 				let fundedCommitted = 0;
@@ -792,6 +793,8 @@
 			let totalInkindCommitted = 0;
 			let totalInkindProvided = 0;
 			let totalUnspecAmount = 0;
+			console.log('currentNodeDataMap');
+			console.log(currentNodeDataMap);
 			if (currentNodeDataMap.has(country.ISO2)) {
 				const valueObj = currentNodeDataMap.get(country.ISO2);
 				if (indType === 'money' || indType === 'ghsa' || indType === 'inkind') {
@@ -826,8 +829,13 @@
 			const format = (indType === 'inkind') ? (val) => { return Util.comma(val) + ' projects'; } : App.formatMoney;
 			if (indType === 'inkind') {
 				const curEntityData = currentNodeDataMap.get(country.ISO2);
-				totalCommitted = totalInkindCommitted;
-				totalSpent = totalInkindProvided;
+				if (flowToShow === 'funded') {
+					totalCommitted = curEntityData.providedInkindCommitted;
+					totalSpent = curEntityData.providedInkindProvided;
+				} else {
+					totalCommitted = curEntityData.receivedInkindCommitted;
+					totalSpent = curEntityData.receivedInkindProvided;
+				}
 			}
 
 
@@ -1292,19 +1300,20 @@
 			
 			// populate the list with spans representing each entity
 			const colorScale = getColorScale();
-			// // check whether to make it dark gray
-			// 			const flow = valueAttrName.includes('received') ? 'r' : 'd';
-			// 			const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
-			// 			const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
-			// 			if (unmappableFinancials.length > 0) {
-			// 				const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
-			// 				if (someMoney) {
-			// 					country.classed('hatch', true);
-			// 					d.undetermined = true;
-			// 					return unspecifiedGray;
-			// 				}
-			// 			}
-			// 			d.color = '#ccc';
+
+			// // check whether to make it dark gray hatch
+			// // const flow = valueAttrName.includes('received') ? 'r' : 'd';
+			// // const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
+			// const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
+			// if (unmappableFinancials.length > 0) {
+			// 	const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
+			// 	if (someMoney) {
+			// 		country.classed('hatch', true);
+			// 		d.undetermined = true;
+			// 		return unspecifiedGray;
+			// 	}
+			// }
+			// d.color = '#ccc';
 
 			if (orgs.length > 0) {
 				$list.selectAll('.list-item')

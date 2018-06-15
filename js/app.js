@@ -565,6 +565,27 @@ const App = {};
 		return filterCountOnce(projects.filter(filterAmountUnmappable));		
 	};
 
+	App.getMappableProjects = (projects, type, code) => {
+		const typeIsFunded = type === 'd';
+		const codeField = typeIsFunded ? 'donor_code' : 'recipient_country';
+		const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
+
+		const filterIsCode = (project) => { 
+			return project[codeField] === code;
+		};
+
+		const filterHasAmount = (project) => {
+			return project[unspecAmountField] !== true;
+		};
+
+		const filterCountOnce = (allProjects) => {
+			const groupedById = _.groupBy(allProjects, 'project_id');
+			return _.values(groupedById).map(d => d[0]);
+		};
+
+		return filterCountOnce(projects.filter(filterIsCode).filter(filterHasAmount));		
+	};
+
 
 	App.addOtherRecipients = (codeObj) => {
 		// if not a country
