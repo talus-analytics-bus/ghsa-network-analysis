@@ -249,6 +249,8 @@
 					}
 				});
 				for (const ce in totalByCe) {
+					const nonZero = _.values(totalByCe[ce]).some(d => d > 0);
+					if (nonZero)
 					paymentTableData.push({
 						ce,
 						total_committed: totalByCe[ce].total_committed,
@@ -280,12 +282,14 @@
 					}
 				});
 				for (const cc in totalByCc) {
-					paymentTableData.push({
-						cc,
-						total_committed: totalByCc[cc].total_committed,
-						total_spent: totalByCc[cc].total_spent,
-						total_other: totalByCc[cc].total_other,
-					});
+					const nonZero = _.values(totalByCc[cc]).some(d => d > 0);
+					if (nonZero)
+						paymentTableData.push({
+							cc,
+							total_committed: totalByCc[cc].total_committed,
+							total_spent: totalByCc[cc].total_spent,
+							total_other: totalByCc[cc].total_other,
+						});
 				}
 			} else if (currentInfoTab === 'inkind') {
 				// paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');

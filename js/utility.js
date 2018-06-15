@@ -60,6 +60,19 @@ const Util = {};
 	    return output;
 	};
 
+
+	Util.uniqueCollection2 = (collection, key1, key2) => {
+	    const output = [];
+	    const groupedCollection = _.groupBy(collection, d => {
+	    	return d[key1] + d[key2];
+	    });
+
+	    _.mapObject(groupedCollection, (val) => {
+	        output.push(val[0]);
+	    });
+	    return output;
+	};
+
 	// populates a select element with the given data using d3
 	Util.populateSelect = (selector, data, param = {}) => {
 		let options = d3.selectAll(selector).selectAll('option')

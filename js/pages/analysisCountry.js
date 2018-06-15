@@ -607,7 +607,9 @@
 			});
 
 			// remove duplicates
-			fundedData = Util.uniqueCollection(fundedData, 'project_name');
+			console.log('fundedData');
+			console.log(fundedData);
+			fundedData = Util.uniqueCollection2(fundedData, 'project_name', 'iso');
 			
 			// draw table
 			const drawTable = (type) => {
