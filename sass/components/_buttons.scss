@@ -12,8 +12,12 @@
 	border: none;
 }
 
-.btn-view-ghsa {
+.btn-view-ghsa,
+.btn-view-map {
 	top: -2px;
     position: relative;
     left: 15px;
+    &.btn-view-map {
+    	left: 30px;
+    }
 }

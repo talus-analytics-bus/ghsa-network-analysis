@@ -38,6 +38,9 @@
 				interactive: true,
 				content: App.inKindDefinition,
 			});
+			$('.home-image').click(()=>{
+				hasher.setHash('map');
+			});
 		}
 
 		function initGhsaToggle(tab = 'network') {
