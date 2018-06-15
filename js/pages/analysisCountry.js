@@ -791,32 +791,33 @@
 						};
 					}
 
-					// Increment counts
-					tableRowsByCodeOrName[codeOrName].total_committed += p.total_committed;
-					tableRowsByCodeOrName[codeOrName].total_spent += p.total_spent;
 					if ((p[codeFieldOther] === iso && p[unspecField] !== true) && iso !== 'ghsa') {
 						tableRowsByCodeOrName[codeOrName].all_unspec_amounts = false
-					};
-					p.core_capacities.forEach(cc => {
-						const ccAbbrev = cc.split('.')[0];
-						if (ccAbbrev === 'P') {
-							tableRowsByCodeOrName[codeOrName].spent_on_prevent += p.total_spent;
-							tableRowsByCodeOrName[codeOrName].committed_on_prevent += p.total_committed;
-						} else if (ccAbbrev === 'D') {
-							tableRowsByCodeOrName[codeOrName].spent_on_detect += p.total_spent;
-							tableRowsByCodeOrName[codeOrName].committed_on_detect += p.total_committed;
-						} else if (ccAbbrev === 'R') {
-							tableRowsByCodeOrName[codeOrName].spent_on_respond += p.total_spent;
-							tableRowsByCodeOrName[codeOrName].committed_on_respond += p.total_committed;
-						} else if (ccAbbrev === 'General IHR Implementation') {
-							tableRowsByCodeOrName[codeOrName].spent_on_general += p.total_spent;
-							tableRowsByCodeOrName[codeOrName].committed_on_general += p.total_committed;
-						} else {
-							tableRowsByCodeOrName[codeOrName].spent_on_other += p.total_spent;
-							tableRowsByCodeOrName[codeOrName].committed_on_other += p.total_committed;
-						}
-					});
+						// Increment counts
+						tableRowsByCodeOrName[codeOrName].total_committed += p.total_committed;
+						tableRowsByCodeOrName[codeOrName].total_spent += p.total_spent;
 
+						p.core_capacities.forEach(cc => {
+							const ccAbbrev = cc.split('.')[0];
+							if (ccAbbrev === 'P') {
+								tableRowsByCodeOrName[codeOrName].spent_on_prevent += p.total_spent;
+								tableRowsByCodeOrName[codeOrName].committed_on_prevent += p.total_committed;
+							} else if (ccAbbrev === 'D') {
+								tableRowsByCodeOrName[codeOrName].spent_on_detect += p.total_spent;
+								tableRowsByCodeOrName[codeOrName].committed_on_detect += p.total_committed;
+							} else if (ccAbbrev === 'R') {
+								tableRowsByCodeOrName[codeOrName].spent_on_respond += p.total_spent;
+								tableRowsByCodeOrName[codeOrName].committed_on_respond += p.total_committed;
+							} else if (ccAbbrev === 'General IHR Implementation') {
+								tableRowsByCodeOrName[codeOrName].spent_on_general += p.total_spent;
+								tableRowsByCodeOrName[codeOrName].committed_on_general += p.total_committed;
+							} else {
+								tableRowsByCodeOrName[codeOrName].spent_on_other += p.total_spent;
+								tableRowsByCodeOrName[codeOrName].committed_on_other += p.total_committed;
+							}
+						});
+					}
+					
 				});
 
 			// Map data for display in table
