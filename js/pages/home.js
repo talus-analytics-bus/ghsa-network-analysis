@@ -113,9 +113,15 @@
 		/* ---------------------- Functions ----------------------- */
 		// builds the map, attaches tooltips to countries, populates coordinates dict
 		function buildMap() {
+
+			// add title
+			d3.select('.map-container').append('div')
+				.attr('class','map-title instructions')
+				.text('Choose country or organization name to view details');
+
 			// add map to map container
 			const mapObj = Map.createWorldMap('.map-container', App.geoData);
-
+			
 			const maskHtml = `<pattern id="pattern-stripe" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
                         <rect width="3.5" height="4" transform="translate(0,0)" fill="lightgray"></rect>
                     </pattern>
@@ -1215,6 +1221,7 @@
 			const $mapAndSearchContainer = $('.map-and-search-container');
 			const $countryInfoBox = $('.info-box');
 			const $legendContainer = $('.legend-container');
+			const $mapTitle = $('.map-title');
 			// const $searchContainer = $('.search-container');
 
 			function onChange() {
@@ -1231,6 +1238,7 @@
 				$mapAndSearchContainer.css('transform',`scale(${scaleFactor})`);
 				$countryInfoBox.css('transform',`scale(${scaleFactor})`);
 				$legendContainer.css('transform',`scale(${scaleFactor})`);
+				$mapTitle.css('transform',`scale(${scaleFactor})`);
 
 				$box
 					.css('transform',`scale(${scaleFactor})`)
@@ -1250,6 +1258,7 @@
 				const top = viewportTop + yShift;
 				// $rightOrLeftContainer.css('top', top + 'px');
 				$box.css('top', top + 'px');
+				$mapTitle.css('top', (viewportTop + heuristicTopPositionCorrection - 40) + 'px');
 				// $mapAndSearchContainer.css('top', top + 'px');
 				// $countryInfoBox.css('top', top + 'px');
 				// $searchContainer.css('top', top + 'px');

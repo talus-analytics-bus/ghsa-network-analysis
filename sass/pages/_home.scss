@@ -57,7 +57,7 @@
 .map-options-container {
 	display: none;
 	width: 280px;
-	    margin-bottom: 20px;
+	margin-bottom: 20px;
 	border: $border;
 	text-align: left;
 	background-color: rgba(240,240,240,1);
@@ -250,4 +250,17 @@
 	.rec-header-row, .fund-header-row *{
 		color: #fff;
 		font-size: 1.2em;
+	}
+
+	.map-title.instructions {
+		font-style: italic;
+		max-width: none;
+		text-align: center;
+		font-size: 1.2em;
+		transform-origin: top;
+		margin-top: 0;
+		color: #f7f8f8;
+		width: 100%;
+		top: 13%;
+		position: fixed;
 	}
