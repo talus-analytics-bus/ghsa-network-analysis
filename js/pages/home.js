@@ -98,7 +98,7 @@
 
 			$('.undetermined-info-img').tooltipster({
 				interactive: true,
-				content: 'Undetermined funding amounts or in-kind support project counts may occur if the most specific funder or recipient named in a project is not an individual organization or country.',
+				content: 'Undetermined funding amounts or in-kind support project counts may occur if the most specific funder or recipient named in a project is a general region or other group of countries.',
 			});
 			$('.inkind-support-info-img').tooltipster({
 				interactive: true,
@@ -367,11 +367,16 @@
 		}
 
 		// gets the sum of payments for the years and capacities selected
-		function getPaymentSum(payments, ccs) {
+		function getPaymentSum(payments, ccs, params = {}) {
 			let totalCommitted = 0;
 			let totalSpent = 0;
 			let totalInkindCommitted = 0;
 			let totalInkindProvided = 0;
+			let allUnspecFinancial = true;
+			let allUnspecInkindCommitted = true;
+			let allUnspecInkindProvided = true;
+			let allUnspecInkind = true;
+
 			for (let i = 0, n = payments.length; i < n; i++) {
 				const p = payments[i];
 
@@ -389,10 +394,12 @@
 					const withinYears = p.years.some(year => {
 						return year <= endYear && year >= startYear;
 					});
-					if (p.commitment_disbursements === 'commitment') {
-						totalInkindCommitted += withinYears ? 1 : 0;
-					} else if (p.commitment_disbursements === 'disbursement') {
-						totalInkindProvided += withinYears ? 1 : 0;
+					if (withinYears) {
+						if (p.commitment_disbursements === 'commitment') {
+							totalInkindCommitted += withinYears ? 1 : 0;
+						} else if (p.commitment_disbursements === 'disbursement') {
+							totalInkindProvided += withinYears ? 1 : 0;
+						}
 					}
 				}
 			}
@@ -433,12 +440,25 @@
 						d.color = d.value ? colorScale(d.value) : '#ccc';
 					} else if (indType !== 'score' && indType !== 'combo') {
 						// check whether to make it dark gray
-						const flow = valueAttrName.includes('received') ? 'r' : 'd';
-						const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
-						const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
-						if (unmappableFinancials.length > 0) {
-							const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
-							if (someMoney) {
+						if (indType !== 'inkind') {
+							const flow = valueAttrName.includes('received') ? 'r' : 'd';
+							const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
+							const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
+							if (unmappableFinancials.length > 0) {
+								const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
+								if (someMoney) {
+									country.classed('hatch', true);
+									d.undetermined = true;
+									return unspecifiedGray;
+								}
+							}
+						} else {
+							const flow = valueAttrName.includes('received') ? 'r' : 'd';
+							const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
+							const unmappableFinancials = App.getInkindProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
+							console.log('unmappableFinancials')
+							console.log(unmappableFinancials)
+							if (unmappableFinancials.length > 0) {
 								country.classed('hatch', true);
 								d.undetermined = true;
 								return unspecifiedGray;
@@ -1286,7 +1306,7 @@
 				const code = org.donor_code;
 				const projects = lookup[code];
 				if (projects === undefined || projects.length === 0) return false;
-				org.curPayments = getPaymentSum(projects, ccs); // TODO don't check ccs twice
+				org.curPayments = getPaymentSum(projects, ccs, {moneyFlow}); // TODO don't check ccs twice
 				const values = _.values(org.curPayments);
 				if (values.some(d => d > 0)) return true;
 				else return false;
@@ -1300,10 +1320,13 @@
 			let sortField = isFinancial ? financialField : inKindField; // TODO committed or disbursed IKS
 
 			orgs = _.sortBy(orgs, d => d.curPayments[sortField]).reverse();
+
+
+
 			// If IKS, filter out orgs that don't provide it
-			if (!isFinancial) {
+			// if (!isFinancial) {
 				orgs = orgs.filter(d => d.curPayments[sortField] > 0);
-			}
+			// }
 			
 			// populate the list with spans representing each entity
 			const colorScale = getColorScale();
@@ -1357,8 +1380,10 @@
 								.attr('r',6)
 								.attr('cx', 6)
 								.attr('cy', 6)
+								// .classed('hatch',true)
 								.style('fill', d => {
-									if (d.curPayments[sortField] === 0) return 'rgb(204, 204, 204)';
+									if (d.curPayments[sortField] === 0) return 'red';
+									// if (d.curPayments[sortField] === 0) return 'rgb(204, 204, 204)';
 									return colorScale(d.curPayments[sortField])
 								})
 								.each(function(){setDotPosition(this)});

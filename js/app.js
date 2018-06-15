@@ -573,6 +573,62 @@ const App = {};
 		return filterCountOnce(projects.filter(filterAmountUnmappable));		
 	};
 
+	/**
+	 * Given the set of projects, returns only those that contain financial assistance
+	 * amounts that are NOT attributable to the entity (either funded or received).
+	 * This set of projects is used to determine whether to color a country/entity gray
+	 * on the Map -- they are dark gray if there are only projects with unspecified
+	 * financials and "Financial Resources" has been selected.
+	 * @param  {array} projects The projects
+	 * @param  {string} type     'd' or 'r'
+	 * @param  {string} code     Entity code
+	 * @return {array}          Projects that contain financial assistance WITHOUT attributable
+	 * amounts
+	 */
+	App.getInkindProjectsWithUnmappableAmounts = (projects, type, code) => {
+		const typeIsFunded = type === 'd';
+		const codeField = typeIsFunded ? 'donor_code': 'recipient_country';
+		const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
+
+		const dataToCheck = typeIsFunded ? App.fundingLookup : App.recipientLookup;
+
+		// Timor-Leste is part of IPR
+		const groupsPartOf = App.getEntityGroups(code);
+
+		let data = [];
+		groupsPartOf.forEach(group => {
+			if (dataToCheck[group] !== undefined)
+			data = data.concat(dataToCheck[group]);
+		});
+		const ccs = $('.cc-select').val();
+		if (ccs === undefined) projects = data;
+		else {
+			projects = data.filter(p => {
+				// Tagged with right ccs?
+				if (!App.passesCategoryFilter(p.core_capacities, ccs)) return false;
+				return true;
+
+			});
+		}
+
+		// Get financial support that is disbursed to groups TL is part of.
+		const filterAmountUnmappable = (project) => {
+			// Is financial
+			const isInkind = project.assistance_type.toLowerCase().includes('other support') || project.assistance_type.toLowerCase().includes('in-kind support');
+
+			// Is for a group Timor-Leste belongs to.
+			return isInkind;
+		};
+
+		const filterCountOnce = (allProjects) => {
+			const groupedById = _.groupBy(allProjects, 'project_id');
+			return _.values(groupedById).map(d => d[0]);
+		};
+
+		return filterCountOnce(projects.filter(filterAmountUnmappable));		
+	};
+
+
 	App.getMappableProjects = (projects, type, code) => {
 		const typeIsFunded = type === 'd';
 		const codeField = typeIsFunded ? 'donor_code' : 'recipient_country';
