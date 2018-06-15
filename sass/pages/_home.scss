@@ -184,10 +184,17 @@
 }
 
 .map-options-container.ghsa-toggle-container {
+	    margin-bottom: 10px;
+
 	.map-options-title {
+		padding: 5px 20px;
 		.ghsa-info-img {
 			top: 0px;
 		}
+	}
+	.toggle-container {
+		    top: 3px;
+    position: relative;
 	}
 	.ghsa-only-checkbox {
 		margin-right: 5px;

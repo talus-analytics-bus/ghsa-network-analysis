@@ -2738,17 +2738,33 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   fill: blue;
 }
 
-/* line 188, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 186, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+.map-options-container.ghsa-toggle-container {
+  margin-bottom: 10px;
+}
+
+/* line 189, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+.map-options-container.ghsa-toggle-container .map-options-title {
+  padding: 5px 20px;
+}
+
+/* line 191, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container.ghsa-toggle-container .map-options-title .ghsa-info-img {
   top: 0px;
 }
 
-/* line 192, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 195, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+.map-options-container.ghsa-toggle-container .toggle-container {
+  top: 3px;
+  position: relative;
+}
+
+/* line 199, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .map-options-container.ghsa-toggle-container .ghsa-only-checkbox {
   margin-right: 5px;
 }
 
-/* line 197, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
+/* line 204, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
 .viewport-ellipse.outer {
   fill: #3e3e3e;
 }
