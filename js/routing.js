@@ -66,7 +66,8 @@ const Routing = {};
 	};
 
 	function loadPage(pageName, func, ...data) {
-		let navName = pageName.split('-')[0];
+		let navName = pageName;
+		// let navName = pageName.split('-')[0];
 		if (pageName === "landing") navName = "";
 		// set nav
 		$('a.active').removeClass('active');

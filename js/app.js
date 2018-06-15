@@ -266,6 +266,8 @@ const App = {};
 		}
 		if (params.includeCommitments === true) {
 			return d3.sum(fundsToAdd, d => d.total_spent + d.total_committed);
+		} else if (params.committedOnly === true) {
+			return d3.sum(fundsToAdd, d => d.total_committed);
 		}
 		else {
 			return d3.sum(fundsToAdd, d => d.total_spent);
@@ -275,12 +277,19 @@ const App = {};
 	// returns the total amount of money received by a given country
 	App.getTotalReceived = (iso, params = {}) => {
 		if (!App.recipientLookup[iso]) return 0;
-		const fundsToAdd = App.getFinancialProjectsWithAmounts(App.recipientLookup[iso], 'r', iso);
+		let fundsToAdd = [];
+		if (iso === 'ghsa') {
+			fundsToAdd = Util.uniqueCollection(App.recipientLookup[iso], 'project_id');
+		} else {
+			fundsToAdd = App.getFinancialProjectsWithAmounts(App.recipientLookup[iso], 'r', iso);
+		}
 		if (params.includeCommitments === true) {
-			return d3.sum(App.recipientLookup[iso], d => d.total_spent + d.total_committed);
+			return d3.sum(fundsToAdd, d => d.total_spent + d.total_committed);
+		} else if (params.committedOnly === true) {
+			return d3.sum(fundsToAdd, d => d.total_committed);
 		}
 		else {
-			return d3.sum(App.recipientLookup[iso], d => d.total_spent);
+			return d3.sum(fundsToAdd, d => d.total_spent);
 		}
 	};
 

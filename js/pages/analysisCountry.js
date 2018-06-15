@@ -61,6 +61,7 @@
 			$('.end-year').text(App.dataEndYear);
 			$('.money-type').text('disbursed');
 			// $('.money-type').text(moneyType === 'd' ? 'disbursed' : 'committed');
+			$('.provided-or-received').text(moneyType === 'd' ? 'Provided' : 'Received');
 			$('.money-type-cap').text(moneyType === 'd' ? 'Disbursed' : 'Received');
 			$('.money-type-noun').text(moneyType === 'd' ? 'funder' : 'recipient');
 			$('.money-type-noun-cap').text(moneyType === 'd' ? 'Funder' : 'Recipient');
@@ -265,7 +266,9 @@
 			// fill out funder/recipient text
 			let hasNoData = false;
 			const totalFunded = App.getTotalFunded(iso);
+			const totalFundedCommitted = App.getTotalFunded(iso, {committedOnly: true});
 			const totalReceived = App.getTotalReceived(iso);
+			const totalReceivedCommitted = App.getTotalReceived(iso, {committedOnly: true});
 			const projectsIncludingGroups = App.getProjectsIncludingGroups(App.fundingData, moneyType, iso);
 			lookup[iso] = projectsIncludingGroups; // TODO check if this breaks things
 
@@ -281,7 +284,8 @@
 				 	.text('Switch to Recipient Profile')
 				 	.on('click', () => hasher.setHash(`analysis/${iso}/r`));
 
-				$('.country-summary-value').text(App.formatMoney(totalFunded));
+				$('.country-summary-value.committed').text(App.formatMoney(totalFundedCommitted));
+				$('.country-summary-value.disbursed').text(App.formatMoney(totalFunded));
 			} else if (moneyType === 'r') {
 				hasNoData = projectsIncludingGroups === undefined || projectsIncludingGroups.length === 0;
 
@@ -294,11 +298,14 @@
 				 	.text('Switch to Funder Profile')
 				 	.on('click', () => hasher.setHash(`analysis/${iso}/d`));
 
-				$('.country-summary-value').text(App.formatMoney(totalReceived));
+				$('.country-summary-value.committed').text(App.formatMoney(totalReceivedCommitted));
+				$('.country-summary-value.disbursed').text(App.formatMoney(totalReceived));
 			}
 
 			const codeField = moneyType === 'r' ? 'recipient_country' : 'donor_code';
-			const projectsJustForCountry = (iso !== 'ghsa') ? projectsIncludingGroups.filter(d => d[codeField] === iso) : projectsIncludingGroups;
+            const unspecField = moneyType === 'r' ? 'recipient_amount_unspec' : 'donor_amount_unspec';
+
+			const projectsJustForCountry = (iso !== 'ghsa') ? projectsIncludingGroups.filter(d => d[codeField] === iso && d[unspecField] !== true) : projectsIncludingGroups;
 			const zeroCommittments = (projectsJustForCountry !== undefined) ? (d3.sum(projectsJustForCountry, d => d.total_committed) === 0) : true;
 			const zeroDisbursements = (projectsJustForCountry !== undefined) ? (d3.sum(projectsJustForCountry, d => d.total_spent) === 0) : true;
 			const hasNoFinancialData = zeroCommittments && zeroDisbursements;
@@ -339,12 +346,8 @@
 
 			// draw charts
 			if (!hasNoData && hasNoFinancialData) {
-				// TODO
-				console.log('NO FINANCIAL DATA')
 				$('.progress-circle-section, .category-chart-section, .country-flow-summary .data-area').remove();
 				$('.no-data-message.funds').show();
-				// drawTimeChart();
-				// drawProgressCircles();
 				drawCountryTable('.country-table-section', moneyType);
 				if (isGhsaPage) {
 					drawCountryTable('.second-country-table-section', (moneyType === 'd') ? 'r' : 'd');
@@ -361,8 +364,6 @@
 				// display content
 				$('.country-flow-content').slideDown();
 
-				console.log('lookup[iso]')
-				console.log(lookup[iso])
 			} else if (hasNoData) {
 				$('.country-flow-summary, .progress-circle-section, .country-chart-container, .country-flow-content, .category-chart-section, .circle-pack-container, .inkind-table-section').hide();
 				$('.country-flow-summary-empty').slideDown();
@@ -387,8 +388,6 @@
 				$('.country-flow-content').slideDown();
 			}
 		}
-
-
 
         function drawProgressCircles() {
             $('.progress-circle-title .info-img').tooltipster({
@@ -707,11 +706,13 @@
 			const codeField = (moneyTypeForTable === 'd') ? 'recipient_country' : 'donor_code';
 			const codeFieldOther = (moneyTypeForTable === 'd') ? 'donor_code' : 'recipient_country';
 
+            const unspecField = moneyType === 'r' ? 'recipient_amount_unspec' : 'donor_amount_unspec';
+            const unspecFieldOther = moneyType === 'r' ? 'donor_amount_unspec' : 'recipient_amount_unspec';
+
+
 			// nameField is the original 
 			// name field for the recipient if hte table is 
 			// "Top Recipients" or the donor if its "Top Funders"
-			console.log('moneyTypeForTable')
-			console.log(moneyTypeForTable)
 			const nameFieldOrig = (moneyTypeForTable === 'd') ? 'recipient_name_orig' : 'donor_name_orig';
 			const nameFieldOrigOther = (moneyTypeForTable === 'd') ? 'donor_name_orig' : 'recipient_name_orig';
 			const nameField = (moneyTypeForTable === 'd') ? 'recipient_name' : 'donor_name';
@@ -728,8 +729,6 @@
 
 
 			// GHSA special code:
-			if (true) {
-			// if (isGhsaPage) {
 				// keep only first project in each array
 				const projectsToIterateOn = projectArrays.map(d => d[0]);
 
@@ -765,9 +764,7 @@
 					// Increment counts
 					tableRowsByCodeOrName[codeOrName].total_committed += p.total_committed;
 					tableRowsByCodeOrName[codeOrName].total_spent += p.total_spent;
-					if (p[codeFieldOther] === iso && iso !== 'ghsa') {
-						console.log('p!!!');
-						console.log(p);
+					if ((p[codeFieldOther] === iso && p[unspecField] !== true) && iso !== 'ghsa') {
 						tableRowsByCodeOrName[codeOrName].all_unspec_amounts = false
 					};
 					p.core_capacities.forEach(cc => {
@@ -791,28 +788,12 @@
 					});
 
 				});
-				console.log('tableRowsByCodeOrName')
-				console.log(tableRowsByCodeOrName)
-
-			}
 
 			// Map data for display in table
 			const tableData2 = [];
 			for (const key in tableRowsByCodeOrName) {
 				tableData2.push(tableRowsByCodeOrName[key]);
 			}
-
-			console.log('tableData2')
-			console.log(tableData2)
-
-			// .forEach(p => {
-			// 	// If GHSA Page: just put exactly what we know
-			// 	if (p[nameField] !== undefined) {
-
-			// 	}
-
-			// });
-
 
 			lookup[iso]
 			.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support' && payment.assistance_type.toLowerCase() !== 'other support')
@@ -892,15 +873,7 @@
 				header.append('td').html('General IHR <img class="general-ihr-info-img info-img" src="img/info.png" />');
 
 				const body = table.append('tbody');
-
-
 				fundedData = tableData2;
-
-				console.log('fundedData');
-				console.log(fundedData);
-
-
-
 
 				const rows = body.selectAll('tr')
 					.data(fundedData.sort((a, b) => {
@@ -1130,7 +1103,10 @@
                     total_spent: 0,
                 };
             }
+            const codeField = moneyType === 'r' ? 'recipient_country' : 'donor_code';
+            const unspecField = moneyType === 'r' ? 'recipient_amount_unspec' : 'donor_amount_unspec';
             lookup[iso].forEach((p) => {
+            	if (iso !== 'ghsa' && (iso !== p[codeField] || p[unspecField] === true)) return;
                 for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
                     fundsByYear[i].total_committed += p.committed_by_year[i];
                     fundsByYear[i].total_spent += p.spent_by_year[i];
