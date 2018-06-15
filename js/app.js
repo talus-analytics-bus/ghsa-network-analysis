@@ -517,6 +517,36 @@ const App = {};
 		}
 	};
 
+	/**
+	 * Returns the tooltip text for Not Reported
+	 * @param  {Array} projects Projects from which to pull the "maybe" orgs
+	 * @param  {[type]} name     [description]
+	 * @param  {[type]} noun     [description]
+	 * @return {[type]}          [description]
+	 */
+	App.getNotReportedMessage = (projects, name, flow) => {
+
+		// If it's not an organization, then use "a multilateral group"
+		// If "a multilateral group" is already there then use it once
+		const nameField = flow === 'd' ? 'donor_name' : 'recipient_name';
+		const nameOrigField = flow === 'd' ? 'donor_name_orig' : 'recipient_name_orig';
+		const noun = flow === 'd' ? 'funder' : 'recipient';
+
+		const projWithName = Util.uniqueCollection(projects, nameField);
+		const namesList = _.unique(_.pluck(projWithName, nameField));
+		const length = namesList.length;
+		let nameString;
+		if (length > 2) {
+			namesList[length-1] = 'and ' + namesList[length-1];
+			nameString = namesList.join(', ');
+		} else {
+			nameString = namesList.join(' and ');
+		}
+
+		const message = `${name} included as ${noun} for ${nameString} projects.`;
+		return message;
+	};
+
 
 	/**
 	 * Given the set of projects, returns only those that contain financial assistance

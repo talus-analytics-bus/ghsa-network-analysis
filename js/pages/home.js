@@ -38,7 +38,8 @@
 		// Countries are this color if they've funded/received money
 		// but only as part of a group and we don't know how much they gave/got
 		// because of that.
-		const unspecifiedGray = '#515151';
+		const unspecifiedGray = 'rgb(204, 204, 204)';
+		// const unspecifiedGray = '#515151';
 
 		// source: http://colorbrewer2.org/#type=sequential&scheme=Greens&n=8
 		const greens = [
@@ -116,7 +117,7 @@
 			const mapObj = Map.createWorldMap('.map-container', App.geoData);
 
 			const maskHtml = `<pattern id="pattern-stripe" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                        <rect width="3" height="4" transform="translate(0,0)" fill="white"></rect>
+                        <rect width="3.5" height="4" transform="translate(0,0)" fill="lightgray"></rect>
                     </pattern>
                     <mask id="mask-stripe">
                         <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
@@ -449,6 +450,9 @@
 								if (someMoney) {
 									country.classed('hatch', true);
 									d.undetermined = true;
+
+									// Get tooltip text
+									d.undetermined_message = App.getNotReportedMessage(unmappableFinancials, d.properties.NAME, flow);
 									return unspecifiedGray;
 								}
 							}
@@ -456,11 +460,11 @@
 							const flow = valueAttrName.includes('received') ? 'r' : 'd';
 							const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
 							const unmappableFinancials = App.getInkindProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
-							console.log('unmappableFinancials')
-							console.log(unmappableFinancials)
 							if (unmappableFinancials.length > 0) {
 								country.classed('hatch', true);
 								d.undetermined = true;
+								// Get tooltip text
+								d.undetermined_message = App.getNotReportedMessage(unmappableFinancials, d.properties.NAME, flow);
 								return unspecifiedGray;
 							}
 						}
@@ -776,7 +780,12 @@
 
 				// set undetermined message
 				const adjective = moneyFlow === 'received' ? 'received' : 'disbursed';
-				$('.undetermined-unit').text(indType === 'inkind' ? 'in-kind support projects' : `funds committed or ${adjective}`);
+				const message = d3.select('.country.active').datum().undetermined_message || '';
+
+				$('.undetermined-value').text(message);
+				$('.undetermined-unit').text('');
+				$('.undetermined-value-label').text('Specific amounts not reported.');
+				// $('.undetermined-unit').text(indType === 'inkind' ? 'in-kind support projects' : `funds committed or ${adjective}`);
 
 				$('.undetermined').slideDown();
 			} else {
