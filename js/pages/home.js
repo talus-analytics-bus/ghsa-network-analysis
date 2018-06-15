@@ -512,6 +512,7 @@
 			const valueAttrName = getValueAttrName();
 			const isJeeScore = (indType === 'score' && scoreType === 'score');
 			const isOther = indType === 'inkind';
+			const needHatch = indType === 'inkind' || indType === 'money';
 
 			const barHeight = 16;
 			let barWidth = 70;
@@ -521,47 +522,54 @@
 			if (isJeeScore) barWidth = 50;
 
 			const colors = colorScale.range();
+			if (needHatch) colors.push('black');
 			const thresholds = getLegendThresholds(indType, colorScale);
 			const maxValue = d3.max(currentNodeDataMap.values()
 				.map(d => d[valueAttrName]));
 
+			const hatchSpacing = needHatch ? 1 : 0;
+
 			const legend = d3.select('.legend')
-			.attr('width', barWidth * colors.length + 2 * legendPadding)
-			.attr('height', barHeight + 50)
-			.select('g')
-			.attr('transform', `translate(${legendPadding}, 0)`);
-			let legendGroups = legend.selectAll('g')
-			.data(colors);
-			legendGroups.exit().remove();
+				.attr('width', barWidth * colors.length + 2 * legendPadding + barWidth*hatchSpacing)
+				.attr('height', barHeight + 50)
+				.select('g')
+				.attr('transform', `translate(${legendPadding}, 0)`);
+			legend.selectAll('g').remove()
+				let legendGroups = legend.selectAll('g.legend-bar-group')
+					.data(colors);
+				legendGroups.exit().remove();
 
 			// add bars, texts, ticks for each group
 			const newLegendGroups = legendGroups.enter().append('g');
 			newLegendGroups.append('rect')
-			.attr('class', 'legend-bar')
-			.attr('height', barHeight);
+				.attr('class', 'legend-bar')
+				.attr('height', barHeight);
 			newLegendGroups.append('text')
-			.attr('class', 'legend-text')
-			.attr('dy', '.35em');
+				.attr('class', 'legend-text')
+				.attr('dy', '.35em');
 			newLegendGroups.append('line')
-			.attr('class', 'legend-tick')
-			.attr('y1', barHeight)
-			.attr('y2', barHeight + 4);
+				.attr('class', 'legend-tick')
+				.attr('y1', barHeight)
+				.attr('y2', barHeight + 4);
 
 			legendGroups = legendGroups.merge(newLegendGroups)
-			.attr('transform', (d, i) => `translate(${barWidth * i}, 0)`);
+				.attr('transform', (d, i) => `translate(${barWidth * i}, 0)`);
 			legendGroups.select('.legend-bar')
-			.attr('width', barWidth)
-			.style('fill', d => d);
+				.attr('width', barWidth)
+				.style('fill', d => d);
 			const legendText = legendGroups.select('.legend-text')
-			.attr('x', barWidth)
-			.attr('y', isJeeScore ? barHeight + 14 : barHeight + 12);
+				.attr('x', barWidth)
+				.attr('y', isJeeScore ? barHeight + 14 : barHeight + 12);
 			legendGroups.select('.legend-tick')
-			.attr('x1', (d, i) => (i === colors.length - 2 ? 2 * barWidth - 1 : 2 * barWidth))
-			.attr('x2', (d, i) => (i === colors.length - 2 ? 2 * barWidth - 1 : 2 * barWidth))
-			.style('display', (d, i) => {
-				if (!isJeeScore) return 'none';
-				return (i % 2 === 0) ? 'inline' : 'none';
-			});
+				.attr('x1', (d, i) => (i === colors.length - 2 ? 2 * barWidth - 1 : 2 * barWidth))
+				.attr('x2', (d, i) => (i === colors.length - 2 ? 2 * barWidth - 1 : 2 * barWidth))
+				.style('display', (d, i) => {
+					if (!isJeeScore) return 'none';
+					return (i % 2 === 0) ? 'inline' : 'none';
+				});
+
+
+
 
 			// fix starting label position
 			const legendStartLabel = legend.select('.legend-start-label')
@@ -641,8 +649,15 @@
 				}
 			}
 
+				
+			// legend.select('.hatch-legend-group').remove();
+			// legend.append('g')
+			// 	.attr('class','hatch-legend-group')
+			// 	.attr('transform', `translate(${barWidth * (colors.length)}, 0)`);
+
 			legend.select('.legend-title')
-			.attr('x', barWidth * colors.length / 2)
+			.attr('x', (barWidth * colors.length + barWidth*hatchSpacing)/2)
+			// .attr('x', barWidth * colors.length / 2)
 			.attr('y', barHeight + 45)
 			.text(titleText);
 
@@ -662,6 +677,21 @@
 					'unmet based on their ratio of financial resources to need.');
 			} else {
 				$('.legend-tooltip').hide();
+			}
+
+			if (needHatch) {
+				const undetermined = d3.select('.legend-group').select('g:last-child');
+				undetermined
+					.attr('transform', `translate(${barWidth*hatchSpacing + (barWidth * (colors.length - 1))}, 0)`);
+				undetermined.select('text')
+					.attr('x', barWidth / 2)
+					.text('Undetermined');
+				const rectMask = undetermined.select('rect')
+					.attr('class','mask-bar');
+				const clone = Util.clone_d3_selection(rectMask, 1)
+					.attr('mask','url(#mask-stripe)')
+					.style('fill', unspecifiedGray);
+
 			}
 
 			$('.legend-container').slideDown();

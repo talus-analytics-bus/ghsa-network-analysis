@@ -136,4 +136,20 @@ Util.save = function(data, filename){
 		};
 		return scale;
 	};
+	Util.clone_d3_selection = (selection, i) => {
+            // Assume the selection contains only one object, or just work
+            // on the first object. 'i' is an index to add to the id of the
+            // newly cloned DOM element.
+    var attr = selection.node().attributes;
+    var length = attr.length;
+    var node_name = selection.property("nodeName");
+    var parent = d3.select(selection.node().parentNode);
+    var cloned = parent.append(node_name)
+                 .attr("id", selection.attr("id") + i);
+    for (var j = 0; j < length; j++) { // Iterate on attributes and skip on "id"
+        if (attr[j].nodeName == "id") continue;
+        cloned.attr(attr[j].name,attr[j].value);
+    }
+    return cloned;
+}
 })();

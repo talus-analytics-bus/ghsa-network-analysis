@@ -2732,7 +2732,7 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
 }
 
 /* line 181, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
-.country.hatch {
+.country.hatch, .legend-bar.hatch {
   mask: url(#mask-stripe);
   fill: blue;
 }
