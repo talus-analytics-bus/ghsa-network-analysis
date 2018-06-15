@@ -726,6 +726,7 @@ const App = {};
 		if (codeObj.donor_sector === "Government") return;
 		const code = codeObj.donor_code;
 		const name = codeObj.donor_name;
+		if (code === 'ghsa') return;
 
 		// add as a "country"
 		App.countries = App.countries.concat(

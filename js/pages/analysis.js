@@ -438,9 +438,10 @@
 		}
 
 		function toggleNetworkContent (networkData) {
-			const noContentMessage = App.showGhsaOnly ? 'Not enough GHSA funding data to show network.' : 'There are no data with the combination of filters chosen.';
-			$('.network-map-no-content > span.text').text(noContentMessage);
-			if (!networkData.length || App.showGhsaOnly === true) {
+			// const noContentMessage = App.showGhsaOnly ? 'Not enough GHSA funding data to show network.' : 'There are no data with the combination of filters chosen.';
+			// $('.network-map-no-content > span.text').text(noContentMessage);
+			if (!networkData.length) {
+			// if (!networkData.length || App.showGhsaOnly === true) {
 				$('.network-map-content').hide();
 				$('.network-map-no-content').show();
 			} else {
