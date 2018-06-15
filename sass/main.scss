@@ -64,6 +64,10 @@ body { font-family: 'Open Sans', sans-serif; }
 	* {
 		cursor: pointer;
 	}
+	label {
+		font-weight: normal;
+		margin-bottom: 0;
+	}
 }
 .support-type-toggle-options {
 	margin-left: 40px !important;

@@ -5,6 +5,7 @@
 		let endYear = App.dataEndYear + 1;
 		let networkMap;
 		let activeCountry;
+		let supportType = 'financial' // 'financial' or 'inkind'
 
 		function init() {
             App.setSources();
@@ -23,8 +24,13 @@
 				populateTables('.donor-table', '.recipient-table');
 			}
 			initGhsaToggle(tab);
+			initSupportTypeToggle();
+
 			$('.btn-view-ghsa').click(function(){
 				hasher.setHash('analysis/ghsa/d');
+			});
+			$('.btn-view-map').click(function(){
+				hasher.setHash('map');
 			});
 			$('.btn-funders-map').click(function(){
 				App.mapSet = 'funded';
@@ -50,10 +56,11 @@
 			}
 
 			if (tab === 'country') {
-				$('.global-tab-content[tab="country"] .ind-type-filter .radio-option').click(function updateIndType() {
+				$('.global-tab-content[tab="country"] .ind-type-filter-ghsa .radio-option').click(function updateIndType() {
 					// Load correct funding data
 					indType = $(this).find('input').attr('ind');
 					App.showGhsaOnly = indType === 'ghsa';
+					App.doNotScroll = true;
 					App.loadFundingData({ showGhsaOnly: App.showGhsaOnly });
 
 					// Clear tables
@@ -68,7 +75,7 @@
 					populateTables(donorSelector, recSelector);
 				});
 			} else if (tab === 'network') {
-				$('.global-tab-content[tab="network"] .ind-type-filter .radio-option').click(function updateIndType() {
+				$('.global-tab-content[tab="network"] .ind-type-filter-ghsa .radio-option').click(function updateIndType() {
 					// Load correct funding data
 					indType = $(this).find('input').attr('ind');
 					App.showGhsaOnly = indType === 'ghsa';
@@ -83,6 +90,17 @@
 			$('.ghsa-info-img').tooltipster({
 				interactive: true,
 				content: App.ghsaInfoTooltipContent,
+			});
+		}
+
+		function initSupportTypeToggle(){
+			const donorSelector = '.donor-table';
+			const recSelector = '.recipient-table';
+			$('input[name=supporttype]').change(function () {
+				supportType = $(this).attr('ind');
+
+				// Repopulate tables with chosen data
+				populateTables(donorSelector, recSelector);
 			});
 		}
 
@@ -183,8 +201,8 @@
 		};
 
 		function populateTables(donorSelector, recSelector) {
-			const lightBlue = '#678fda';
-			const lightRed = '#ff7a66';
+			const taBlue = '#082b84';
+			const taRed = '#c91414';
 			const numRows = Infinity;
 			const fundColor = App.fundColorPalette;
 			const receiveColor = App.receiveColorPalette;
@@ -193,7 +211,12 @@
 			$(`${donorSelector} tbody tr, ${recSelector} tbody tr`).remove();
 
 			// get top funded countries
-			// const type = 
+			const fundedFunc = (supportType === 'financial') ? App.getTotalFunded : App.getInkindFunded;
+			const formatFunc = (supportType === 'financial') ? App.formatMoney : App.formatInkind;
+			const receivedFunc = (supportType === 'financial') ? App.getTotalReceived : App.getInkindReceived;
+			const funderNoun = (supportType === 'financial') ? 'Funder' : 'Provider';
+			$('.fund-table-title .text').text('Top ' + funderNoun + 's');
+			$('.fund-col-name').text(funderNoun);
 
 			const countriesByFunding = [];
 			for (const iso in App.fundingLookup) {
@@ -201,8 +224,8 @@
 					const newObj = {
 						iso,
 						name: App.codeToNameMap.get(iso),
-						total_committed: App.getTotalFunded(iso, {committedOnly: true}),
-						total_spent: App.getTotalFunded(iso),
+						total_committed: fundedFunc(iso, {committedOnly: true}),
+						total_spent: fundedFunc(iso),
 					};
 					if (newObj.total_committed !== 0 || newObj.total_spent !== 0) {
 						countriesByFunding.push(newObj);
@@ -218,10 +241,8 @@
 					const newObj = {
 						iso,
 						name: App.codeToNameMap.get(iso),
-						total_committed: App.getTotalReceived(iso, {committedOnly: true}),
-						total_spent: App.getTotalReceived(iso),
-						// total_committed: d3.sum(App.recipientLookup[iso], d => d.total_committed),
-						// total_spent: d3.sum(App.recipientLookup[iso], d => d.total_spent),
+						total_committed: receivedFunc(iso, {committedOnly: true}),
+						total_spent: receivedFunc(iso),
 					};
 					if (newObj.total_committed !== 0 || newObj.total_spent !== 0) {
 						countriesByReceived.push(newObj);
@@ -234,7 +255,7 @@
 			const dRows = d3.select(donorSelector).select('tbody').selectAll('tr')
 				.data(countriesByFunding.slice(0, numRows))
 				.enter().append('tr')
-					.style('background-color', lightBlue)
+					.style('background-color', '#eaeaea')
 					// .style('background-color', (d, i) => fundColor[Math.floor(i / 2)])
 					.style('color', 'black')
 					// .style('color', (d, i) => (i < 4 ? '#fff' : 'black'))
@@ -251,17 +272,15 @@
 				return `<div class="flag-container">${flagHtml}</div>` +
 					`<div class="name-container">${name}</div>`;
 			});
-			dRows.append('td').text(d => App.formatMoney(d.total_committed));
-			dRows.append('td').text(d => App.formatMoney(d.total_spent));
+			dRows.append('td').text(d => formatFunc(d.total_committed));
+			dRows.append('td').text(d => formatFunc(d.total_spent));
 
 			// populate recipient table
 			const rRows = d3.select(recSelector).select('tbody').selectAll('tr')
 				.data(countriesByReceived.slice(0, numRows))
 				.enter().append('tr')
-					.style('background-color', lightRed)
-					// .style('background-color', (d, i) => receiveColor[Math.floor(i / 2)])
+					.style('background-color', '#eaeaea')
 					.style('color', 'black')
-					// .style('color', (d, i) => (i < 4 ? '#fff' : 'black'))
 					.on('click', (d) => {
 						if (d.iso !== 'Not reported') {
 							hasher.setHash(`analysis/${d.iso}/r`);
@@ -274,8 +293,8 @@
 				return `<div class="flag-container">${flagHtml}</div>` +
 						`<div class="name-container">${name}</div>`;
 			});
-			rRows.append('td').text(d => App.formatMoney(d.total_committed));
-			rRows.append('td').text(d => App.formatMoney(d.total_spent));
+			rRows.append('td').text(d => formatFunc(d.total_committed));
+			rRows.append('td').text(d => formatFunc(d.total_spent));
 			$(`${donorSelector}, ${recSelector}`).DataTable({
 					pageLength: 10,
 					scrollCollapse: false,

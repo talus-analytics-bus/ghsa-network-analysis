@@ -224,3 +224,16 @@
 		margin: auto;
 		display: block !important;
 	}
+	.landing-introduction-section{
+		margin-bottom: 40px;
+	}
+	.fund-header-row *{
+		background: $dark-blue;
+	}
+	.rec-header-row * {
+		background: $dark-red;
+	}
+	.rec-header-row, .fund-header-row *{
+		color: #fff;
+		font-size: 1.2em;
+	}

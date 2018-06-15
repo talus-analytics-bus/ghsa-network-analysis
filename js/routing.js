@@ -76,7 +76,11 @@ const Routing = {};
 		// load page
 		loadTemplate(pageName);
 		if (func) func(...data);
-		window.scrollTo(0, 0);
+		if (App.doNotScroll === undefined) {
+			window.scrollTo(0, 0);
+		} else {
+			App.doNotScroll = undefined;
+		}
 	}
 	function parseHash(newHash) { crossroads.parse(newHash); }
 	function loadTemplate(page, data) {

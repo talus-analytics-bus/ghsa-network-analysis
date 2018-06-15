@@ -304,7 +304,7 @@ const App = {};
 		if (iso === 'ghsa') {
 			fundsToAdd = Util.uniqueCollection(App.recipientLookup[iso], 'project_id');
 		} else {
-			fundsToAdd = App.getInkindSupportProjects(App.recipientLookup[iso], 'd', iso);
+			fundsToAdd = App.getInkindSupportProjects(App.recipientLookup[iso], 'r', iso);
 		}
 		if (params.includeCommitments === true) {
 			return d3.sum(fundsToAdd, d => d.total_spent + d.total_committed);
@@ -881,6 +881,10 @@ const App = {};
 	App.formatMoneyFull = (usdValue) => {
 		if (usdValue < 100) return `${Math.round(usdValue)} ${App.currencyIso}`;
 		return `${d3.format(',.3r')(usdValue)} ${App.currencyIso}`;
+	};
+	App.formatInkind = (val) => {
+		if (val !== 1) return Util.comma(val) + ' projects';
+		else return Util.comma(val) + ' project';
 	};
 
 
