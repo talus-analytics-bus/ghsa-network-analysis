@@ -258,7 +258,12 @@ const App = {};
 	// returns the total amount of money donated by a given country
 	App.getTotalFunded = (iso, params = {}) => {
 		if (!App.fundingLookup[iso]) return 0;
-		const fundsToAdd = App.getFinancialProjectsWithAmounts(App.fundingLookup[iso], 'd', iso);
+		let fundsToAdd = [];
+		if (iso === 'ghsa') {
+			fundsToAdd = Util.uniqueCollection(App.fundingLookup[iso], 'project_id');
+		} else {
+			fundsToAdd = App.getFinancialProjectsWithAmounts(App.fundingLookup[iso], 'd', iso);
+		}
 		if (params.includeCommitments === true) {
 			return d3.sum(fundsToAdd, d => d.total_spent + d.total_committed);
 		}
