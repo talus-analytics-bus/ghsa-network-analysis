@@ -311,6 +311,10 @@
 			const hasNoFinancialData = zeroCommittments && zeroDisbursements;
 
 			$('input[type=radio][value="total_spent"]').prop('checked', true);
+			if (zeroDisbursements) {
+				$('input[name=fundtype][value=total_committed').prop('checked', true).change();
+			}
+
 			// $('.money-type-cap').text('Disbursed');
 
 			$('.toggle-disbursed').click(function() {
@@ -607,8 +611,6 @@
 			});
 
 			// remove duplicates
-			console.log('fundedData');
-			console.log(fundedData);
 			fundedData = Util.uniqueCollection2(fundedData, 'project_name', 'iso');
 			
 			// draw table
@@ -705,7 +707,8 @@
 				drawTable(fundTypeChoice);
 			});
 
-			drawTable('total_spent');
+			const tableType = $(`input[name=fundtype]:checked`).val();
+			drawTable(tableType);
 
             // If there was no data in the table, say so
             if (fundedData.length === 0) {
@@ -979,7 +982,8 @@
 				});
 			};
 
-			drawTable('total_spent');
+			const tableType = $(`input[name=fundtype]:checked`).val();
+			drawTable(tableType);
 
            $('input[name=fundtype]').change(function(){
 				// Get selection and set all radio buttons to that
