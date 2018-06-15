@@ -65,8 +65,11 @@ body { font-family: 'Open Sans', sans-serif; }
 		cursor: pointer;
 	}
 }
-
+.support-type-toggle-options {
+	margin-left: 40px !important;
+}
 .ghsa-toggle-options,
+.support-type-toggle-options,
 .jee-sort-options {
 	display: inline-block;
 	vertical-align: top;

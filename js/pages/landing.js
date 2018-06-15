@@ -34,6 +34,10 @@
 				App.mapSet = 'received';
 				hasher.setHash('map');
 			});
+			$('.inkind-support-info-img').tooltipster({
+				interactive: true,
+				content: App.inKindDefinition,
+			});
 		}
 
 		function initGhsaToggle(tab = 'network') {
@@ -186,6 +190,8 @@
 			$(`${donorSelector} tbody tr, ${recSelector} tbody tr`).remove();
 
 			// get top funded countries
+			// const type = 
+
 			const countriesByFunding = [];
 			for (const iso in App.fundingLookup) {
 				if (iso !== 'Not reported' && iso !== 'ghsa') {

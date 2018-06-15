@@ -278,6 +278,46 @@ const App = {};
 		}
 	};
 
+	App.getInkindFunded = (iso, params = {}) => {
+		if (!App.fundingLookup[iso]) return 0;
+		let fundsToAdd = [];
+		if (iso === 'ghsa') {
+			fundsToAdd = Util.uniqueCollection(App.fundingLookup[iso], 'project_id');
+		} else {
+			fundsToAdd = App.getInkindSupportProjects(App.fundingLookup[iso], 'd', iso);
+		}
+		if (params.includeCommitments === true) {
+			return d3.sum(fundsToAdd, d => d.total_spent + d.total_committed);
+		} else if (params.committedOnly === true) {
+			return fundsToAdd.filter(d => d.commitment_disbursements === 'commitment').length;
+			// return d3.sum(fundsToAdd, d => d.total_committed);
+		}
+		else {
+			return fundsToAdd.filter(d => d.commitment_disbursements === 'disbursement').length;
+			// return d3.sum(fundsToAdd, d => d.total_spent);
+		}
+	};
+
+	App.getInkindReceived = (iso, params = {}) => {
+		if (!App.fundingLookup[iso]) return 0;
+		let fundsToAdd = [];
+		if (iso === 'ghsa') {
+			fundsToAdd = Util.uniqueCollection(App.recipientLookup[iso], 'project_id');
+		} else {
+			fundsToAdd = App.getInkindSupportProjects(App.recipientLookup[iso], 'd', iso);
+		}
+		if (params.includeCommitments === true) {
+			return d3.sum(fundsToAdd, d => d.total_spent + d.total_committed);
+		} else if (params.committedOnly === true) {
+			return fundsToAdd.filter(d => d.commitment_disbursements === 'commitment').length;
+			// return d3.sum(fundsToAdd, d => d.total_committed);
+		}
+		else {
+			return fundsToAdd.filter(d => d.commitment_disbursements === 'disbursement').length;
+			// return d3.sum(fundsToAdd, d => d.total_spent);
+		}
+	};
+
 	// returns the total amount of money received by a given country
 	App.getTotalReceived = (iso, params = {}) => {
 		if (!App.recipientLookup[iso]) return 0;
