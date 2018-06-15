@@ -446,7 +446,8 @@
 							const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
 							const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
 							if (unmappableFinancials.length > 0) {
-								const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
+								// const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
+								const someMoney = true;
 								if (someMoney) {
 									country.classed('hatch', true);
 									d.undetermined = true;

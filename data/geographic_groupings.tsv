@@ -1,11 +1,11 @@
 group	group_code	country	iso2	references
-G-7	g-7	Canada	CA	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
-G-7	g-7	United States of America	US	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
-G-7	g-7	Italy	IT	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
-G-7	g-7	Germany	DE	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
-G-7	g-7	France	FR	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
-G-7	g-7	Japan	JP	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
-G-7	g-7	United Kingdom	GB	“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119.
+G-7	g-7	Canada	CA	"“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119."
+G-7	g-7	United States of America	US	"“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119."
+G-7	g-7	Italy	IT	"“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119."
+G-7	g-7	Germany	DE	"“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119."
+G-7	g-7	France	FR	"“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119."
+G-7	g-7	Japan	JP	"“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119."
+G-7	g-7	United Kingdom	GB	"“World Economic Outlook Database, October 2017.” Major Advanced Economies (G7), International Monetary Fund (IMF), Oct. 2017, www.imf.org/external/pubs/ft/weo/2017/02/weodata/weoselco.aspx?g=119."
 EU	eu	Austria	AT	https://www.gov.uk/eu-eea
 EU	eu	Belgium	BE	https://www.gov.uk/eu-eea
 EU	eu	Bulgaria	BG	https://www.gov.uk/eu-eea
@@ -329,7 +329,7 @@ Caribbean	caribbean	Antigua and Barbuda	AG	https://unstats.un.org/unsd/methodolo
 Caribbean	caribbean	Aruba	AW	https://unstats.un.org/unsd/methodology/m49/
 Caribbean	caribbean	Bahamas	BS	https://unstats.un.org/unsd/methodology/m49/
 Caribbean	caribbean	Barbados	BB	https://unstats.un.org/unsd/methodology/m49/
-Caribbean	caribbean	Bonaire, Sint Eustatius and Saba	BQ	https://unstats.un.org/unsd/methodology/m49/
+Caribbean	caribbean	"Bonaire, Sint Eustatius and Saba"	BQ	https://unstats.un.org/unsd/methodology/m49/
 Caribbean	caribbean	British Virgin Islands	VG	https://unstats.un.org/unsd/methodology/m49/
 Caribbean	caribbean	Cayman Islands	KY	https://unstats.un.org/unsd/methodology/m49/
 Caribbean	caribbean	Cuba	CU	https://unstats.un.org/unsd/methodology/m49/
@@ -474,11 +474,11 @@ CARICOM	caricom	Montserrat	MS	https://caricom.org/about-caricom/who-we-are/our-g
 CARICOM	caricom	Saint Lucia	LC	https://caricom.org/about-caricom/who-we-are/our-governance/members-and-associate-members/
 CARICOM	caricom	St Kitts and Nevis	KN	https://caricom.org/about-caricom/who-we-are/our-governance/members-and-associate-members/
 CARICOM	caricom	St Vincent and the Grenadines	VC	https://caricom.org/about-caricom/who-we-are/our-governance/members-and-associate-members/
-Nordic countries	nordic	Denmark	DK	
-Nordic countries	nordic	Finland	FI	
-Nordic countries	nordic	Iceland	IS	
-Nordic countries	nordic	Norway	NO	
-Nordic countries	nordic	Sweden	SE	
-Nordic countries	nordic	Faroe Islands	FO	
-Nordic countries	nordic	Aland	AX	
-Nordic countries	nordic	Greenland	GL	
+Nordic countries	nordic-countries	Denmark	DK	
+Nordic countries	nordic-countries	Finland	FI	
+Nordic countries	nordic-countries	Iceland	IS	
+Nordic countries	nordic-countries	Norway	NO	
+Nordic countries	nordic-countries	Sweden	SE	
+Nordic countries	nordic-countries	Faroe Islands	FO	
+Nordic countries	nordic-countries	Aland	AX	
+Nordic countries	nordic-countries	Greenland	GL	
