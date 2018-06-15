@@ -105,6 +105,10 @@
 
 		// update the table content depending on tab chosen
 		function updateInfoTable() {
+
+			const expectedName = App.codeToNameMap.get(iso);
+			const expectedNameField = moneyFlow === 'd' ? 'donor_name' : 'recipient_name';
+			const expectedNameOrigField = moneyFlow === 'd' ? 'donor_name_orig' : 'recipient_name_orig';
 			// define column data
 			let headerData = [];
 			if (currentInfoTab === 'all') {
@@ -113,8 +117,10 @@
 				{ name: 'Funder', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
 				{ name: 'Recipient', value: 'recipient_name', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; } },
 				{ name: 'Project Name', value: 'project_name' },
-				{ name: 'Committed', value: 'total_committed', type: 'money' },
-				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
+				{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { if (expectedName === d[expectedNameField]) return d.total_committed; else return 'Specific amount unknown'} },
+				{ name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { if (expectedName === d[expectedNameField]) return d.total_spent; else return 'Specific amount unknown'} },
+				// { name: 'Committed', value: 'total_committed', type: 'money' },
+				// { name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
 			} else if (currentInfoTab === 'country') {
 				headerData = [
@@ -127,8 +133,9 @@
 					}
 					return d.recipient_country;
 				} },
-				{ name: 'Committed', value: 'total_committed', type: 'money' },
-				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
+				{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { if (expectedName === d[expectedNameField]) return d.total_committed; else return 'Specific amount unknown'} },
+				{ name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { if (expectedName === d[expectedNameField]) return d.total_spent; else return 'Specific amount unknown'} },
+				// { name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
 			} else if (currentInfoTab === 'ce') {
 				headerData = [
@@ -157,7 +164,7 @@
 						return cap ? cap.name : d.cc;
 					},
 				},
-				{ name: 'Committed', value: 'total_committed', type: 'money' },
+				{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { if (d.unspecified) return 'Specific amount unknown'; else return d.total_committed; }},
 				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
 				{ name: 'In-kind Contributions', value: 'total_other', type: 'number' },
 				];
@@ -340,7 +347,9 @@
 				} else {
 					cellValue = d.rowData[d.colData.value];
 				}
+				if (cellValue === 'Specific amount unknown') return cellValue;
 				if (d.colData.type === 'money') return App.formatMoneyFull(cellValue);
+				
 				return cellValue;
 			});
 
