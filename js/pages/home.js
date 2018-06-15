@@ -632,6 +632,13 @@
 				} else if (scoreType === 'combined') {
 					titleText = 'Financial Resources / Needs Metric';
 				}
+			} else if (indType === 'inkind') {
+				if (moneyType === 'committed') {
+					titleText = 'In-kind Support Projects Committed';
+				} else {
+					if (moneyFlow === 'funded') titleText = 'In-kind Support Projects Provided';
+					else titleText = 'In-kind Support Projects Received';
+				}
 			}
 
 			legend.select('.legend-title')
