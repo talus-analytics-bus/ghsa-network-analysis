@@ -247,6 +247,14 @@
 			rRows.append('td').text(d => App.formatMoney(d.total_spent));
 		}
 
+		function tagDivisors(projects) {
+			const projectsById = _.groupBy(projects, 'project_id');
+			_.mapObject(projectsById, (val,key) => {
+				const divisor = val.length;
+				val.forEach(p => p.divisor = divisor);
+			});
+		}
+
 		function getTotalFunc() {
 			const ccs = $('.cc-select').val();
 			const ind = $('.money-type-filter input:checked').attr('ind');
@@ -267,7 +275,183 @@
 			};
 		}
 
-		function getNetworkData() {
+		function getNetworkData () {
+			// Get total funded and total received for each entity in App.countries except those that will be excluded
+			// which are:
+			// GGB
+			// GHSA
+			// All regions, countries, governments
+			// const excludedSectors = ['Region'];
+			const allowedEntities = App.codes;
+			// const allowedEntities = App.codes.filter(d => d.donor_sector !== 'Region');
+			const entities = App.countries.filter(d => {
+				if (d.country !== false) return true;
+				if (allowedEntities.find(allowedEntity => d.ISO2 === allowedEntity.donor_code)) return true;
+				else return false;
+			}).filter(d => d.FIPS !== "");
+
+			// For each allowed entity, calculate totalFunded and totalReceived, financials only
+			// {
+			//   "name": "Tunisia",
+			//   "iso": "TN",
+			//   "totalFunded": 3,
+			//   "totalReceived": 25816408.19752373,
+			//   "totalFlow": 25816411.19752373,
+			//   "funds": [
+			//     {
+			//       "donor": "TN",
+			//       "recipient": "undefined",
+			//       "value": 3
+			//     }
+			//   ]
+			// }
+			
+			const entityData = {};
+			const getTotalForProject = getTotalFunc();
+			// const allowedFunds = App.fundingData.filter(d => d.assistance_type.includes('financial'));
+			// tagDivisors(allowedFunds);
+			const allowedFunds = Util.uniqueCollection(App.fundingData.filter(d => d.assistance_type.includes('financial')), 'project_id');
+			const fundsByProvider = _.groupBy(allowedFunds, 'donor_code');
+			const allowedEntityIsos = _.pluck(entities,'ISO2');
+			entities.forEach(entity => {
+				const name = entity.NAME;
+				const iso = entity.ISO2;
+				const region = entity.regionName;
+				const subregion = entity.subRegionName;
+
+				// get all funds provided by this entity
+				let rawFunds = fundsByProvider[iso] || [];
+
+				// get unique ones only 
+				// Already done above
+				
+				// filter out anything provided to an entity not in 'entities'
+				rawFunds = rawFunds.filter(p => {
+					return allowedEntityIsos.indexOf(p.recipient_country) > -1;
+				});
+
+				// filter out anything that is undetermined: provided to multi recipients for example
+				const includeUnexactAmounts = false;
+				// const includeUnexactAmounts = true;
+				if (!includeUnexactAmounts) {
+					rawFunds = rawFunds.filter(p => {
+						const amountNotExact = p.donor_amount_unspec === true || p.recipient_amount_unspec === true;
+						return !amountNotExact;
+					});
+				}
+
+				// filter out anything that has a zero amount but is financial
+				const excludeZeroAmounts = true;
+				// const excludeZeroAmounts = false;
+				const amountShift = excludeZeroAmounts ? 0 : 0;
+				// const amountShift = excludeZeroAmounts ? 0 : 10000000;
+				if (excludeZeroAmounts) {
+					rawFunds = rawFunds.filter(p => {
+						return getTotalForProject(p) > 0;
+					});
+				} else {
+					rawFunds.forEach(p => {
+						if (getTotalForProject(p) === 0) {
+							p.doFakeIncrement = true;
+						}
+					})
+				}
+
+				// group by recipient ISOs (recipient_country)
+				const rawFundsByRecipientIso = _.groupBy(rawFunds, 'recipient_country');
+				
+
+				const noFundsToAdd = Object.keys(rawFundsByRecipientIso).length === 0;
+				if (noFundsToAdd) {
+					entityData[iso] = {
+						iso: iso,
+						name: name,
+						region: region,
+						subregion: subregion,
+						totalFunded: 0.0,
+						funds: [],
+					};
+				} else {
+					// calculate total for each recipient and push to funds array
+					const funds = [];
+					let totalFunded = 0.0;
+					const totalsByRecipientIso = _.mapObject(rawFundsByRecipientIso, (recipientFunds, recipientIso) => {
+						let value = 0.0;
+						recipientFunds.forEach(p => {
+							value = value + ((getTotalForProject(p)) || amountShift);
+							// value = value + ((getTotalForProject(p)/p.divisor) || amountShift);
+						});
+						totalFunded = totalFunded + value;
+						funds.push({
+							value: value,
+							donor: iso,
+							recipient: recipientIso,
+						});
+					});
+					entityData[iso] = {
+						iso: iso,
+						name: name,
+						region: region,
+						subregion: subregion,
+						totalFunded: totalFunded,
+						funds: funds,
+					};
+				}
+			});
+
+			// PART 2: Calculate totalReceived, and remove any with a totalFlow of zero.
+			_.mapObject(entityData, (recipientDatum, recipientIso) => {
+				let totalReceived = 0.0;
+				allowedEntityIsos.forEach(funderIso => {
+					const funderDatum = entityData[funderIso];
+					if (!funderDatum) return;
+					const recipientFunds = funderDatum.funds.find(fund => fund.recipient === recipientIso);
+					if (recipientFunds) {
+						totalReceived = totalReceived + recipientFunds.value;
+					}
+				});
+				recipientDatum.totalReceived = totalReceived;
+				recipientDatum.totalFlow = recipientDatum.totalReceived + recipientDatum.totalFunded;
+			});
+
+			_.mapObject(entityData, (entityDatum, entityIso) => {
+				if (entityDatum.totalFlow === 0) delete entityData[entityIso];
+			});
+
+			// PART 3: Map to chord arc structure.
+			// Get region totals
+			const fundsByRegion = _.groupBy(_.values(entityData), 'region');
+			
+			const chordData = _.mapObject(fundsByRegion, (regionFunds, region) => {
+				// First: get totalFunded, totalReceived, and totalFlow by subregion
+				const fundsBySubregion = _.groupBy(regionFunds, 'subregion');
+				const regionChildren = _.mapObject(fundsBySubregion, (subregionFunds, subregion) => {
+					const regionChild = {
+						name: subregion,
+						children: subregionFunds,
+						totalFunded: d3.sum(_.values(subregionFunds), d => d.totalFunded),
+						totalReceived: d3.sum(_.values(subregionFunds), d => d.totalReceived),
+					};
+					regionChild.totalFlow = regionChild.totalFunded + regionChild.totalReceived;
+					return regionChild;
+				});
+				const regionDatum = {
+					name: region,
+					children: _.values(regionChildren),
+					totalFunded: d3.sum(_.values(regionFunds), d => d.totalFunded),
+					totalReceived: d3.sum(_.values(regionFunds), d => d.totalReceived),
+				};
+				regionDatum.totalFlow = regionDatum.totalFunded + regionDatum.totalReceived;
+				return regionDatum;
+			});
+			console.log('chordData');
+			console.log(chordData);
+
+			return _.values(chordData);
+		}
+		// App.getNetworkData2();
+
+		function getNetworkDataOld() {
 			// get data function
 			const totalFunc = getTotalFunc();
 
@@ -439,6 +623,8 @@
 				}
 				networkData.push(region);
 			}
+			console.log('networkData');
+			console.log(JSON.parse(JSON.stringify(networkData)));
 			return networkData;
 		}
 

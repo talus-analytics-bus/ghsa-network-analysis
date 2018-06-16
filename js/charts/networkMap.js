@@ -1,5 +1,7 @@
 (() => {
 	App.buildNetworkMap = (selector, initData, param = {}) => {
+		console.log('initData');
+		console.log(initData);
 		// define colors
 		const fundColor = App.fundColor;
 		const receiveColor = App.receiveColor;
@@ -114,6 +116,8 @@
 			.text('Receives More');
 
 		chart.update = (data, moneyType) => {
+			console.log('data');
+			console.log(data);
 			addAnglesToData(data);
 			drawArcs(data, moneyType);
 			drawLinks(moneyType);

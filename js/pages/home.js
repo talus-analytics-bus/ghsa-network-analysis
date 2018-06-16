@@ -493,7 +493,7 @@
 
 					let format = (indType === 'inkind') ? (val) => { return Util.comma(val) + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`; } : App.formatMoney;
 					if (d.undetermined === true) {	
-						format = (indType === 'inkind') ? (val) => { return 'Not Reported' + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`; } : () => { return 'Not Reported';};
+						format = (indType === 'inkind') ? (val) => { return 'Unspecified Value' + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`; } : () => { return 'Unspecified Value';};
 					}
 					
 
@@ -591,7 +591,7 @@
 
 			const barHeight = 16;
 			let barWidth = 70;
-			const legendPadding = 20;
+			const legendPadding = 25;
 
 			// adjust width for JEE score
 			if (isJeeScore) barWidth = 50;
@@ -760,7 +760,7 @@
 					.attr('transform', `translate(${barWidth*hatchSpacing + (barWidth * (colors.length - 1))}, 0)`);
 				undetermined.select('text')
 					.attr('x', barWidth / 2)
-					.text('Not Reported');
+					.text('Unspecified Value');
 				const rectMask = undetermined.select('rect')
 					.attr('class','mask-bar');
 				const clone = Util.clone_d3_selection(rectMask, 1)
@@ -791,7 +791,7 @@
 
 				$('.undetermined-value').text(message);
 				$('.undetermined-unit').text('');
-				$('.undetermined-value-label').text('Specific amounts not reported.');
+				$('.undetermined-value-label').text('Specific amounts not indicated.');
 				// $('.undetermined-unit').text(indType === 'inkind' ? 'in-kind support projects' : `funds committed or ${adjective}`);
 
 				$('.undetermined').slideDown();
