@@ -650,10 +650,6 @@ const App = {};
 			});
 		}
 
-		if (code === 'AU'){
-			console.log('projects')
-			console.log(projects)
-		}
 		// Get financial support that is disbursed to groups TL is part of.
 		const filterAmountUnmappable = (project) => {
 			// Is financial

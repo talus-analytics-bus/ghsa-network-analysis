@@ -7,8 +7,6 @@
 		let startYear = App.dataStartYear;  // the start year of the time range shown
 		let endYear = App.dataEndYear + 1;  // the end year of the time range shown
 		params.ghsaOnly = true;
-		console.log('currentNodeDataMap');
-		console.log(currentNodeDataMap);
 
 		// state variables for current map indicator
 		// let indType = 'inkind';  // either 'money' or 'score'
@@ -1331,7 +1329,6 @@
 
 									// Get tooltip text
 									d.undetermined_message = App.getNotReportedMessage(unmappableFinancials, d.donor_name, flow);
-									console.log(d.undetermined_message);
 									return unspecifiedGray;
 								}
 							}

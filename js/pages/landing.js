@@ -52,7 +52,8 @@
 		function initGhsaToggle(tab = 'network') {
 			// set GHSA radio button to checked if that is set
 			if (App.showGhsaOnly) {
-				$(`input[type=radio][name="ind-${tab === 'network' ? tab : 'country-global'}"][ind="ghsa"]`).prop('checked',true);
+				$(`input[type=radio][name="ghsa-toggle-landing"][ind="ghsa"]`).prop('checked',true);
+				// $(`input[type=radio][name="ind-${tab === 'network' ? tab : 'ghsa-toggle-landing'}"][ind="ghsa"]`).prop('checked',true);
 			}
 
 			if (tab === 'country') {
