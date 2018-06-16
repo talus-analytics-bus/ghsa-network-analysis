@@ -448,8 +448,6 @@
 				regionDatum.totalFlow = regionDatum.totalFunded + regionDatum.totalReceived;
 				return regionDatum;
 			});
-			console.log('chordData');
-			console.log(chordData);
 
 			return _.values(chordData);
 		}

@@ -53,7 +53,7 @@ Germany,de,Government,DE,,,Germany
 Global Fund,gffatm,Multilateral,,,,Global Fund
 Global Health Security Agenda (GHSA) Consortium,ghsa-consortium,Multilateral,,,,Global Health Security Agenda (GHSA) Consortium
 Global Health Security Agenda (GHSA) Private Sector Roundtable (PSRT),ghsa-psrt,Public Private Partnership,,,,Global Health Security Agenda (GHSA) Private Sector Roundtable (PSRT)
-Global Health Security Agenda (GHSA),ghsa,Category,,Global Health Security Agenda (GHSA),,Global Health Security Agenda (GHSA) Projects
+Global Health Security Agenda (GHSA) Projects,ghsa,Category,,Global Health Security Agenda (GHSA),,Global Health Security Agenda (GHSA) Projects
 Haiti Hospital Appeal,gb-chc-1117528,International NGO,,,,Haiti Hospital Appeal
 Handicap International,fr-pdr-w691075333,International NGO,,,,Handicap International
 Handicap International Belgique,be-bce_kbo-0432235661,National NGO,,,,Handicap International Belgique
@@ -197,4 +197,4 @@ Asia,asia,Region,,,,Asia
 ReAct,react,International NGO,,,,ReAct
 Asia-Pacific,asia-pacific,Region,,,,Asia-Pacific
 CARICOM,caricom,Region,,,,CARICOM
-Nordic countries,nordic-countries,Region,,,,Nordic countries
+Nordic Countries,nordic-countries,Region,,,,Nordic countries

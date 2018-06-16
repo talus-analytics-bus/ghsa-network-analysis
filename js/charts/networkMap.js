@@ -116,8 +116,6 @@
 			.text('Receives More');
 
 		chart.update = (data, moneyType) => {
-			console.log('data');
-			console.log(data);
 			addAnglesToData(data);
 			drawArcs(data, moneyType);
 			drawLinks(moneyType);

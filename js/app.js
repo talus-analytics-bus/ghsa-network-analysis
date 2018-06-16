@@ -573,8 +573,26 @@ const App = {};
 		const noun = flow === 'd' ? 'funder' : 'recipient';
 
 		const projWithName = Util.uniqueCollection(projects, nameField);
-		const namesList = _.unique(_.pluck(projWithName, nameField));
-		const length = namesList.length;
+		let namesListTmp = [];
+		projWithName.forEach(p => {
+			namesListTmp.push(p[nameOrigField] || p[nameField]);
+		});
+		namesListTmp = _.unique(namesListTmp);
+
+		const length = namesListTmp.length;
+
+		let namesList = [];
+		let isJustUnspecifiedFinancial = false;
+		namesListTmp.forEach(nameListed => {
+			isJustUnspecifiedFinancial = nameListed === name;
+			if (isJustUnspecifiedFinancial) {
+				return;
+			}
+			const isMultilateralEffort = App.codes.find(d => d.donor_name === nameListed) === undefined;
+			if (isMultilateralEffort) nameListed = 'multilateral group';
+			namesList.push(nameListed);
+		});		
+		namesList = _.unique(namesList);
 		let nameString;
 		if (length > 2) {
 			namesList[length-1] = 'and ' + namesList[length-1];
@@ -583,7 +601,12 @@ const App = {};
 			nameString = namesList.join(' and ');
 		}
 
-		const message = `${name} included as ${noun} for ${nameString} projects.`;
+
+		const message = `${name} included as ${noun} for ${nameString} projects`;
+		if (isJustUnspecifiedFinancial) {
+			return `${name} included as ${noun} for projects with unspecified value`;
+		}
+
 		return message;
 	};
 
