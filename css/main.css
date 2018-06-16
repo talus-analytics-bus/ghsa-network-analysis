@@ -2496,9 +2496,10 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
 .country-funds-content .summary-text {
   margin: 0 20px 40px;
   font-size: 1.2em;
+  visibility: hidden;
 }
 
-/* line 37, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisTable.scss */
+/* line 39, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisTable.scss */
 .country-funds-content .funds-table-container {
   display: inline-block;
   padding: 20px 30px;
@@ -2511,7 +2512,7 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* line 47, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisTable.scss */
+/* line 49, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisTable.scss */
 .country-funds-content .funds-table .money-cell,
 .country-funds-content .funds-table .inkind-cell {
   width: 120px;
@@ -2519,12 +2520,12 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
   white-space: nowrap;
 }
 
-/* line 54, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisTable.scss */
+/* line 56, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisTable.scss */
 .country-funds-content .funds-table tr {
   cursor: pointer;
 }
 
-/* line 57, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisTable.scss */
+/* line 59, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisTable.scss */
 .country-funds-content .funds-source-text {
   margin-top: 15px;
   font-size: 0.9em;

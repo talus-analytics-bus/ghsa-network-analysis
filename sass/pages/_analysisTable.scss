@@ -32,7 +32,9 @@
 
 	.summary-text {
 		margin: 0 20px 40px;
+		// margin: 0 20px 40px;
 		font-size: 1.2em;
+		visibility: hidden;
 	}
 	.funds-table-container {
 		display: inline-block;
