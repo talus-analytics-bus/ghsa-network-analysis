@@ -1314,6 +1314,7 @@
 		 	// const isoCode = d.properties.ISO2;
 		 	if (currentNodeDataMap.has(isoCode)) {
 		 		d.value = currentNodeDataMap.get(isoCode)[valueAttrName];
+		 		
 		 		if (d.value && d.value !== 0) {
 		 			d.color = d.value ? colorScale(d.value) : '#ccc';
 		 		} else if (indType !== 'score' && indType !== 'combo') {
@@ -1323,8 +1324,9 @@
 							const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
 							const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,isoCode)
 							if (unmappableFinancials.length > 0) {
-								const someMoney = true;
-								if (someMoney) {
+								// const someMoney = d3.sum(unmappableFinancials, d => d.total_spent + d.total_committed) > 0;
+								if (true) {
+									console.log('isoCode')
 									country.classed('hatch', true);
 									d.undetermined = true;
 
@@ -1604,6 +1606,10 @@
 							// display info box
 							displayCountryInfo();
 							return true;
+						})
+						.style('fill', function (d) {
+							checkHatchStatus(d, d3.select(this), colorScale);
+							return 'green;'
 						})
 						.insert('div')
 							.attr('class','circle-container right')
