@@ -7,6 +7,10 @@
 		let activeCountry;
 
 		function init() {
+			if (App.showGhsaOnly) {
+				App.showGhsaOnly = false;
+				App.loadFundingData({ showGhsaOnly: App.showGhsaOnly });
+			}
             App.setSources();
 			initTabs();
 			updateTab();
@@ -309,9 +313,8 @@
 			const entityData = {};
 			const getTotalForProject = getTotalFunc();
 			// const allowedFunds = App.fundingData.filter(d => d.assistance_type.includes('financial'));
-			const allowedFunds = App.fundingData.filter(d => d.assistance_type.includes('financial'));
-			tagDivisors(allowedFunds);
-			// const allowedFunds = Util.uniqueCollection(App.fundingData.filter(d => d.assistance_type.includes('financial')), 'project_id');
+			// tagDivisors(allowedFunds);
+			const allowedFunds = Util.uniqueCollection(App.fundingData.filter(d => d.assistance_type.includes('financial')), 'project_id');
 			const fundsByProvider = _.groupBy(allowedFunds, 'donor_code');
 			const allowedEntityIsos = _.pluck(entities,'ISO2');
 			entities.forEach(entity => {
@@ -332,8 +335,8 @@
 				});
 
 				// filter out anything that is undetermined: provided to multi recipients for example
-				// const includeUnexactAmounts = false;
-				const includeUnexactAmounts = true;
+				const includeUnexactAmounts = false;
+				// const includeUnexactAmounts = true;
 				if (!includeUnexactAmounts) {
 					rawFunds = rawFunds.filter(p => {
 						const amountNotExact = p.donor_amount_unspec === true || p.recipient_amount_unspec === true;
@@ -342,8 +345,8 @@
 				}
 
 				// filter out anything that has a zero amount but is financial
-				// const excludeZeroAmounts = true;
-				const excludeZeroAmounts = false;
+				const excludeZeroAmounts = true;
+				// const excludeZeroAmounts = false;
 				const amountShift = excludeZeroAmounts ? 0 : 0;
 				// const amountShift = excludeZeroAmounts ? 0 : 10000000;
 				if (excludeZeroAmounts) {
