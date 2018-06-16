@@ -780,16 +780,22 @@
 			const country = countryTmp.properties;
 			const flowTmp = countryTmp.flow;
 			const isGhsa = country.ISO2 === 'ghsa';
+			// const activeData = $('.country.active').datum() || 
 
-
-			const isUndetermined = $('.country.active').hasClass('hatch');
+			const listItemData = countryTmp.listItemData;
+			const hasListItemData = listItemData !== undefined;
+			const isUndetermined = $('.country.active').hasClass('hatch') || (hasListItemData && listItemData.undetermined === true);
 
 			if (isUndetermined) {
 				$('.c-and-d').slideUp();
 
 				// set undetermined message
 				const adjective = moneyFlow === 'received' ? 'received' : 'disbursed';
-				const message = d3.select('.country.active').datum().undetermined_message || '';
+
+				let message = '';
+				if (hasListItemData) message = listItemData.undetermined_message;
+				else message = d3.select('.country.active').datum().undetermined_message
+				// const message = d3.select('.country.active').datum().undetermined_message || '';
 
 				$('.undetermined-value').text(message);
 				$('.undetermined-unit').text('');
@@ -1474,7 +1480,7 @@
 							curListItem.classed('active', true);
 
 							activeCountry = {
-								datum: () => { return {flow: moneyFlow, properties: App.nonCountries.find(dd => d.donor_code === dd.FIPS) } }
+								datum: () => { return {listItemData: d, flow: moneyFlow, properties: App.nonCountries.find(dd => d.donor_code === dd.FIPS) } }
 							};
 
 							// display info box
@@ -1596,7 +1602,7 @@
 							curListItem.classed('active', true);
 
 							activeCountry = {
-								datum: () => { return {flow: moneyFlow, properties: App.nonCountries.find(dd => d.donor_code === dd.FIPS) } }
+								datum: () => { return {listItemData: d, flow: moneyFlow, properties: App.nonCountries.find(dd => d.donor_code === dd.FIPS) } }
 							};
 
 							// display info box
