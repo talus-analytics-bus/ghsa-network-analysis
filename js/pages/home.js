@@ -19,7 +19,16 @@
 
 		if (App.mapSet !== undefined) {
 			moneyFlow = App.mapSet;
+			$(`input[name="rec-or-fund"][ind="${moneyFlow}"]`).prop('checked', true);
 			App.mapSet = undefined;
+		}
+
+		if (App.mapType !== undefined) {
+			indType = App.mapType === 'inkind' ? 'inkind' : 'money';
+			console.log('App.mapType');
+			console.log(App.mapType);
+			$(`input[name="ind"][ind="${indType}"]`).prop('checked', true);
+			App.mapType = undefined;
 		}
 
 		// colors
@@ -207,7 +216,8 @@
 			if (mType === 'committed') {
 				noun = 'Committed';
 			} else if (mType === 'disbursed') {
-				if (mFlow === 'funded') noun = 'Disbursed';
+				if (mFlow === 'funded' && indType === 'inkind') noun = 'Provided';
+				else if (mFlow === 'funded' && indType !== 'inkind') noun = 'Disbursed';
 				else noun = 'Received';
 			} else if (mType === 'inkind') {
 				noun = '';
@@ -1387,7 +1397,8 @@
 		function initLeftList (selector, ccs=[]) {
 			const $list = d3.select(selector).html('');
 			const label = "Non-government Organization<br>";
-			d3.select('.list-title.left').html(label + (moneyFlow === 'funded' ? 'Funders' : 'Recipients') );
+			const dNounPlural = indType === 'inkind' ? 'Providers' : 'Funders';
+			d3.select('.list-title.left').html(label + (moneyFlow === 'funded' ? dNounPlural : 'Recipients') );
 
 			// get data for funders and group it by funder
 			const curFundingData = App.fundingData.filter(p => {
@@ -1543,7 +1554,8 @@
 			
 			const $list = d3.select(selector).html('');
 			const label = "Foundations, Philanthropies, and Private Sector";
-			d3.select('.list-title.right').text(label + (moneyFlow === 'funded' ? ' Funders' : ' Recipients') );
+			const dNounPlural = indType === 'inkind' ? 'Providers' : 'Funders';
+			d3.select('.list-title.right').text(label + (moneyFlow === 'funded' ? ' ' + dNounPlural : ' Recipients') );
 
 			// get data for funders and group it by funder
 			const curFundingData = App.fundingData.filter(p => {

@@ -34,10 +34,12 @@
 			});
 			$('.btn-funders-map').click(function(){
 				App.mapSet = 'funded';
+				App.mapType = $('input[name=supporttype]:checked').attr('ind');
 				hasher.setHash('map');
 			});
 			$('.btn-recipients-map').click(function(){
 				App.mapSet = 'received';
+				App.mapType = $('input[name=supporttype]:checked').attr('ind');
 				hasher.setHash('map');
 			});
 			$('.inkind-support-info-img').tooltipster({
@@ -216,8 +218,10 @@
 			const formatFunc = (supportType === 'financial') ? App.formatMoney : App.formatInkind;
 			const receivedFunc = (supportType === 'financial') ? App.getTotalReceived : App.getInkindReceived;
 			const funderNoun = (supportType === 'financial') ? 'Funder' : 'Provider';
+			const dNoun = (supportType === 'financial') ? 'Disbursed' : 'Provided';
 			$('.fund-table-title .text').text('Top ' + funderNoun + 's');
 			$('.fund-col-name').text(funderNoun);
+			$('.d-col-name').text(dNoun);
 
 			const countriesByFunding = [];
 			for (const iso in App.fundingLookup) {
