@@ -194,9 +194,12 @@
 
 	.country.hatch, .legend-bar.hatch, circle.hatch {
 		mask: url(#mask-stripe);
-		fill: #515151;
+		fill: #515151 !important;
 	}
-
+	.list-item.hatch circle {
+		mask: url(#mask-stripe);
+		fill: lightgray !important;
+	}
 	.map-options-container.ghsa-toggle-container {
 		margin-bottom: 10px;
 

@@ -7,6 +7,8 @@
 		let startYear = App.dataStartYear;  // the start year of the time range shown
 		let endYear = App.dataEndYear + 1;  // the end year of the time range shown
 		params.ghsaOnly = true;
+		console.log('currentNodeDataMap');
+		console.log(currentNodeDataMap);
 
 		// state variables for current map indicator
 		// let indType = 'inkind';  // either 'money' or 'score'
@@ -428,6 +430,9 @@
 			}
 		};
 
+		
+
+
 		// updates map colors and country tooltip
 		function updateMap() {
 			const valueAttrName = getValueAttrName();
@@ -452,7 +457,6 @@
 							const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
 							const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
 							if (unmappableFinancials.length > 0) {
-								// const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
 								const someMoney = true;
 								if (someMoney) {
 									country.classed('hatch', true);
@@ -1297,6 +1301,64 @@
 		}
 
 		/**
+		 * hatch
+		 * @param  {obj} d Entity data (country style)
+		 * @return {[type]}   [description]
+		 */
+		 function checkHatchStatus (d, $item, colorScale) {
+		 	const country = $item;
+		 	country.classed('hatch',false);
+		 	d.undetermined = false;
+		 	const isoCode = d.donor_code;
+		 	const valueAttrName = getValueAttrName();
+		 	// const isoCode = d.properties.ISO2;
+		 	if (currentNodeDataMap.has(isoCode)) {
+		 		d.value = currentNodeDataMap.get(isoCode)[valueAttrName];
+		 		if (d.value && d.value !== 0) {
+		 			d.color = d.value ? colorScale(d.value) : '#ccc';
+		 		} else if (indType !== 'score' && indType !== 'combo') {
+						// check whether to make it dark gray
+						if (indType !== 'inkind') {
+							const flow = valueAttrName.includes('received') ? 'r' : 'd';
+							const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
+							const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,isoCode)
+							if (unmappableFinancials.length > 0) {
+								const someMoney = true;
+								if (someMoney) {
+									country.classed('hatch', true);
+									d.undetermined = true;
+
+									// Get tooltip text
+									d.undetermined_message = App.getNotReportedMessage(unmappableFinancials, d.donor_name, flow);
+									console.log(d.undetermined_message);
+									return unspecifiedGray;
+								}
+							}
+						} else {
+							const flow = valueAttrName.includes('received') ? 'r' : 'd';
+							const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
+							const unmappableFinancials = App.getInkindProjectsWithUnmappableAmounts(App.fundingData,flow,isoCode)
+							if (unmappableFinancials.length > 0) {
+								country.classed('hatch', true);
+								d.undetermined = true;
+								// Get tooltip text
+								d.undetermined_message = App.getNotReportedMessage(unmappableFinancials, d.donor_name, flow);
+								return unspecifiedGray;
+							}
+						}
+						d.color = '#ccc';
+					} else {
+						d.color = '#ccc';
+					}
+				} else {
+					d.value = null;
+					d.color = '#ccc';
+				}
+
+				return d.color;
+			}
+
+		/**
 		 * Initializes the list of funders that appears on the left side of the Map.
 		 * @param  {string} selector      D3 selector string of div that
 		 * 								  contains the list of funders
@@ -1367,19 +1429,33 @@
 			// populate the list with spans representing each entity
 			const colorScale = getColorScale();
 
-			// // check whether to make it dark gray hatch
-			// // const flow = valueAttrName.includes('received') ? 'r' : 'd';
-			// // const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
-			// const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
-			// if (unmappableFinancials.length > 0) {
-			// 	const someMoney = d3.sum(unmappableFinancials, d => d[type]) > 0;
-			// 	if (someMoney) {
-			// 		country.classed('hatch', true);
-			// 		d.undetermined = true;
-			// 		return unspecifiedGray;
-			// 	}
-			// }
-			// d.color = '#ccc';
+			// if (indType !== 'inkind') {
+			// 				const flow = valueAttrName.includes('received') ? 'r' : 'd';
+			// 				const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
+			// 				const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
+			// 				if (unmappableFinancials.length > 0) {
+			// 					const someMoney = true;
+			// 					if (someMoney) {
+			// 						country.classed('hatch', true);
+			// 						d.undetermined = true;
+
+			// 						// Get tooltip text
+			// 						d.undetermined_message = App.getNotReportedMessage(unmappableFinancials, d.properties.NAME, flow);
+			// 						return unspecifiedGray;
+			// 					}
+			// 				}
+			// 			} else {
+			// 				const flow = valueAttrName.includes('received') ? 'r' : 'd';
+			// 				const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
+			// 				const unmappableFinancials = App.getInkindProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
+			// 				if (unmappableFinancials.length > 0) {
+			// 					country.classed('hatch', true);
+			// 					d.undetermined = true;
+			// 					// Get tooltip text
+			// 					d.undetermined_message = App.getNotReportedMessage(unmappableFinancials, d.properties.NAME, flow);
+			// 					return unspecifiedGray;
+			// 				}
+			// 			}
 
 			if (orgs.length > 0) {
 				$list.selectAll('.list-item')
@@ -1407,6 +1483,11 @@
 							displayCountryInfo();
 							return true;
 						})
+						.style('fill', function (d) {
+							checkHatchStatus(d, d3.select(this), colorScale);
+							return 'green;'
+						})
+						// .each(d => {checkHatchStatus(d, colorScale)})
 						.insert('div')
 							.attr('class','circle-container left')
 							.append('svg')
