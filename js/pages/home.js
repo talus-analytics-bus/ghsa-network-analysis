@@ -1301,7 +1301,7 @@
 		}
 
 		/**
-		 * hatch
+		 * hatch status of circles to left and right of map
 		 * @param  {obj} d Entity data (country style)
 		 * @return {[type]}   [description]
 		 */
@@ -1326,7 +1326,6 @@
 							if (unmappableFinancials.length > 0) {
 								// const someMoney = d3.sum(unmappableFinancials, d => d.total_spent + d.total_committed) > 0;
 								if (true) {
-									console.log('isoCode')
 									country.classed('hatch', true);
 									d.undetermined = true;
 

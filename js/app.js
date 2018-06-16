@@ -650,6 +650,10 @@ const App = {};
 			});
 		}
 
+		if (code === 'AU'){
+			console.log('projects')
+			console.log(projects)
+		}
 		// Get financial support that is disbursed to groups TL is part of.
 		const filterAmountUnmappable = (project) => {
 			// Is financial
@@ -657,7 +661,7 @@ const App = {};
 			const isFinancial = project.assistance_type.toLowerCase().includes('financial');
 
 			// Is for a group Timor-Leste belongs to.
-			return isFinancial || isUnspecifiedForTarget;
+			return isFinancial && isUnspecifiedForTarget;
 		};
 
 		const filterCountOnce = (allProjects) => {
