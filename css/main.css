@@ -315,6 +315,22 @@
   left: 30px;
 }
 
+/* line 23, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_buttons.scss */
+.btn-view-ghsa.map-btn,
+.btn-view-map.map-btn {
+  vertical-align: text-top;
+  top: -8px;
+  position: relative;
+  font-style: normal;
+  left: 15px;
+}
+
+/* line 30, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_buttons.scss */
+.btn-view-ghsa.btn-hidden,
+.btn-view-map.btn-hidden {
+  display: none;
+}
+
 /* line 1, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_containers.scss */
 .container-content {
   padding: 10px 30px 30px;

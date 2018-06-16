@@ -20,4 +20,14 @@
     &.btn-view-map {
     	left: 30px;
     }
+    &.map-btn {
+    	vertical-align: text-top;
+	    top: -8px;
+	    position: relative;
+	    font-style: normal;
+	    left: 15px;
+    }
+	    &.btn-hidden {
+		    display: none;
+	    }
 }

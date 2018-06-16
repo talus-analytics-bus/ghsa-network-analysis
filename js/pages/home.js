@@ -126,7 +126,12 @@
 			// add title
 			d3.select('.map-container').append('div')
 				.attr('class','map-title instructions')
-				.text('Choose country or organization name to view details');
+				.text('Choose country or organization name to view details')
+					.append('button')
+						.attr('class','btn btn-primary alt-btn btn-view-ghsa map-btn btn-hidden')
+						.classed('btn-hidden', !App.showGhsaOnly)
+						.text('View GHSA Details')
+						.on('click', function(){ hasher.setHash('analysis/ghsa/d'); });
 
 			// add map to map container
 			const mapObj = Map.createWorldMap('.map-container', App.geoData);
@@ -942,6 +947,7 @@
 				} else {
 					App.showGhsaOnly = false;
 				}
+				d3.select('.map-btn').classed('btn-hidden', !App.showGhsaOnly)
 				updateFilters();
 			});
 		}
@@ -1399,6 +1405,11 @@
 			const label = "Non-government Organization<br>";
 			const dNounPlural = indType === 'inkind' ? 'Providers' : 'Funders';
 			d3.select('.list-title.left').html(label + (moneyFlow === 'funded' ? dNounPlural : 'Recipients') );
+			const dFlow = indType === 'inkind' ? 'Provided' : 'Funded';
+			const dType = indType === 'inkind' ? 'Sent' : 'Disbursed';
+			$('.d-flow span').text(dFlow);
+			$('.d-type span').text(dType);
+
 
 			// get data for funders and group it by funder
 			const curFundingData = App.fundingData.filter(p => {
@@ -1538,7 +1549,7 @@
 			} else {
 				$list.append('div')
 						.attr('class','list-item no-data')
-						.text(`No ${moneyFlow === 'funded' ? 'funders' : 'recipients'} to show. Change Options above to view data.`);
+						.text(`No ${moneyFlow === 'funded' ? 'funders' : 'recipients'} to show. Change options in bottom right to view data.`);
 			}
 
 		};
@@ -1658,7 +1669,7 @@
 			} else {
 				$list.append('div')
 						.attr('class','list-item no-data')
-						.text(`No ${moneyFlow === 'funded' ? 'funders' : 'recipients'} to show. Change Options above to view data.`);
+						.text(`No ${moneyFlow === 'funded' ? 'funders' : 'recipients'} to show. Change options in bottom right to view data.`);
 			}
 			if (indType === 'score' || indType === 'combo') {
 				$('.non-country-list-container').css('opacity',0);
