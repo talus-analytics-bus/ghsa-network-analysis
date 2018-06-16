@@ -475,6 +475,38 @@
   height: 16px;
 }
 
+/* line 127, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+.undetermined-value {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.1em;
+  max-width: 370px;
+  margin-top: 20px;
+  margin: 20px auto 0;
+  text-align: center;
+  line-height: 20px;
+}
+
+/* line 139, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+.undetermined-label {
+  max-width: 100px;
+  margin: 10px auto 0 auto;
+}
+
+/* line 143, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+.info-value {
+  font-family: 'Raleway', sans-serif;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* line 149, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+.info-value-label {
+  text-align: center;
+  font-size: .8em;
+  margin: 10px auto 0;
+  max-width: 350px;
+}
+
 /* line 1, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/components/_dropdowns.scss */
 select.form-control {
   display: inline-block;

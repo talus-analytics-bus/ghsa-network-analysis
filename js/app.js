@@ -575,7 +575,13 @@ const App = {};
 		const projWithName = Util.uniqueCollection(projects, nameField);
 		let namesListTmp = [];
 		projWithName.forEach(p => {
-			namesListTmp.push(p[nameOrigField] || p[nameField]);
+			// If the recipient's name is not the same as the name, then
+			// push the name; otherwise push the orig name
+			if (p[nameField] === name) {
+				namesListTmp.push(p[nameOrigField]);
+			} else {
+				namesListTmp.push(p[nameField]);
+			}
 		});
 		namesListTmp = _.unique(namesListTmp);
 
@@ -603,6 +609,10 @@ const App = {};
 
 
 		const message = `${name} included as ${noun} for ${nameString} projects`;
+		console.log('message');
+		console.log(message);
+		console.log('projects');
+		console.log(projects);
 		if (isJustUnspecifiedFinancial) {
 			return `${name} included as ${noun} for projects with unspecified value`;
 		}

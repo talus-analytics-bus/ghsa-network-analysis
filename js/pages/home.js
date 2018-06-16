@@ -495,7 +495,10 @@
 
 					let format = (indType === 'inkind') ? (val) => { return Util.comma(val) + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`; } : App.formatMoney;
 					if (d.undetermined === true) {	
-						format = (indType === 'inkind') ? (val) => { return 'Unspecified Value' + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`; } : () => { return 'Unspecified Value';};
+						// format = (indType === 'inkind') ? (val) => { return 'Unspecified Value' + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`; } : () => { return 'Unspecified Value';};
+						format = (d) => {
+							return d.undetermined_message;
+						};
 					}
 					
 
@@ -509,36 +512,48 @@
 					// build tooltip
 					const container = d3.select(document.createElement('div'));
 					container.append('div')
-					.attr('class', 'tooltip-title')
-					.text(d.properties.NAME);
-					if (indType === 'score') {
-						let scoreText = 'Avg. JEE Score: ';
-						let score = 0;
-						if (currentNodeDataMap.has(d.properties.ISO2)) {
-							score = currentNodeDataMap.get(d.properties.ISO2).score;
-						}
-						if (score) {
-							scoreText = App.getScoreNameHtml(score);
+						.attr('class', 'tooltip-title info-box')
+						.text(d.properties.NAME);
+					if (d.undetermined !== true) {
+						if (indType === 'score') {
+							let scoreText = 'Avg. JEE Score: ';
+							let score = 0;
+							if (currentNodeDataMap.has(d.properties.ISO2)) {
+								score = currentNodeDataMap.get(d.properties.ISO2).score;
+							}
+							if (score) {
+								scoreText = App.getScoreNameHtml(score);
+							} else {
+								scoreText = 'No JEE score data available';
+							}
+							container.append('div')
+							.attr('class', 'tooltip-score-text')
+							.html(scoreText);
 						} else {
-							scoreText = 'No JEE score data available';
+							const infoLabel = (moneyFlow === 'funded') ?
+							'Funder Information' : 'Recipient Information';
+							container.append('div')
+							.attr('class', 'tooltip-profile-type')
+							.text(infoLabel);
 						}
 						container.append('div')
-						.attr('class', 'tooltip-score-text')
-						.html(scoreText);
-					} else {
-						const infoLabel = (moneyFlow === 'funded') ?
-						'Funder Information' : 'Recipient Information';
+							.attr('class', 'tooltip-main-value')
+							.html(format(value));
 						container.append('div')
-						.attr('class', 'tooltip-profile-type')
-						.text(infoLabel);
+							.attr('class', 'tooltip-main-value-label')
+							.html(label);
+					} else {
+						const infoLabel = (moneyFlow === 'funded') ? 'Funder Information' : 'Recipient Information';
+							container.append('div')
+								.attr('class', 'tooltip-profile-type')
+								.text(infoLabel);
+							container.append('div')
+								.attr('class', 'undetermined-value info-value')
+								.text(d.undetermined_message);
+							container.append('div')
+								.attr('class', 'undetermined-value-label info-value-label')
+								.text('Specific amounts not indicated');
 					}
-					container.append('div')
-					.attr('class', 'tooltip-main-value')
-					// .classed('inkind-value', indType === 'inkind')
-					.html(format(value));
-					container.append('div')
-					.attr('class', 'tooltip-main-value-label')
-					.html(label);
 
 					$(this).tooltipster('content', container.html());
 				});
