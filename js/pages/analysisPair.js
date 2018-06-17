@@ -139,15 +139,13 @@
 				const noValueReported = d.no_value_reported === true;
 				
 				if (noValueReported || allValuesUnspec) return 'Specific amount unknown';
-				// else if (iso === 'ghsa')
-				// 	return d[moneyField];
 				else if (d[expectedNameOrigFieldR] && d[expectedNameOrigFieldR] !== expectedNameR)
 					return 'Specific amount unknown';
-				else if (expectedNameR !== d[expectedNameFieldR])
+				else if (recIso !== d.recipient_country)
 					return 'Specific amount unknown';
 				else if (d[expectedNameOrigFieldF] && d[expectedNameOrigFieldF] !== expectedNameF)
 					return 'Specific amount unknown';
-				else if (expectedNameF !== d[expectedNameFieldF])
+				else if (fundIso !== d.donor_code)
 					return 'Specific amount unknown';
 				else return d[moneyField];
 			};
