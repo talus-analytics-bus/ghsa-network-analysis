@@ -125,8 +125,23 @@
 		// update the table content depending on tab chosen
 		function updateInfoTable() {
 
+			const expectedName = App.codeToNameMap.get(recIso);
+			const expectedNameField = 'recipient_name';
+			// const expectedNameField = moneyFlow === 'd' ? 'donor_name' : 'recipient_name';
+			const expectedNameOrigField = 'recipient_name_orig';
+			// const expectedNameOrigField = moneyFlow === 'd' ? 'donor_name_orig' : 'recipient_name_orig';
+
 			function getMoneyCellValue (d, moneyField) { 
-				if (d.no_value_reported) return 'Specific amount unknown';
+				const allValuesUnspec = d.all_unspec === true;
+				const noValueReported = d.no_value_reported === true;
+				
+				if (noValueReported || allValuesUnspec) return 'Specific amount unknown';
+				// else if (iso === 'ghsa')
+				// 	return d[moneyField];
+				else if (d[expectedNameOrigField] && d[expectedNameOrigField] !== expectedName)
+					return 'Specific amount unknown';
+				else if (expectedName !== d[expectedNameField])
+					return 'Specific amount unknown';
 				else return d[moneyField];
 			};
 
@@ -229,7 +244,7 @@
 				.merge(cells)
 				.classed('money-cell', d => d.colData.type === 'money')
 				.classed('inkind-cell', d => d.colData.value === 'total_inkind')
-				.html((d) => {
+				.html(function(d){
 					let cellValue = '';
 					if (d.colData.valueFunc) {
 						cellValue = d.colData.valueFunc(d.rowData);
@@ -238,8 +253,15 @@
 					} else {
 						cellValue = d.rowData[d.colData.value];
 					}
-					if (cellValue === 'Specific amount unknown') return cellValue;
-					if (d.colData.type === 'money') return App.formatMoneyFull(cellValue);
+					let dataSortValue = cellValue;
+					if (cellValue === 'Specific amount unknown') {
+						d3.select(this).attr('data-sort', -1000);
+						return cellValue;
+					}
+					if (d.colData.type === 'money') {
+						d3.select(this).attr('data-sort', App.formatMoneyFull(cellValue));
+						return App.formatMoneyFull(cellValue);
+					}
 					return cellValue;
 				});
 

@@ -864,10 +864,6 @@
 					fundedByCountry[recIso].total_spent += p.total_spent;
 					const isoMatch = (p[countryIndOther] === iso || iso === 'ghsa');
 					if (isoMatch && !p.no_value_reported) fundedByCountry[recIso].all_unspec_amounts = false;
-						console.log('p');
-						console.log(p);
-						console.log('countryIndOther')
-						console.log(countryIndOther)
 					p.core_capacities.forEach(cc => {
 						const ccAbbrev = cc.split('.')[0];
 						if (ccAbbrev === 'P') {

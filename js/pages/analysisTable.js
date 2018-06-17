@@ -115,10 +115,15 @@
 			function getMoneyCellValue (d, moneyField) { 
 				const allValuesUnspec = d.all_unspec === true;
 				const noValueReported = d.no_value_reported === true;
+				
 				if (noValueReported || allValuesUnspec) return 'Specific amount unknown';
-				else if (iso === 'ghsa' || expectedName === d[expectedNameField]) 
+				else if (iso === 'ghsa')
 					return d[moneyField];
-				else return 'Specific amount unknown'; 
+				else if (d[expectedNameOrigField] && d[expectedNameOrigField] !== expectedName)
+					return 'Specific amount unknown';
+				else if (expectedName !== d[expectedNameField])
+					return 'Specific amount unknown';
+				else return d[moneyField];
 			};
 
 			// define column data
