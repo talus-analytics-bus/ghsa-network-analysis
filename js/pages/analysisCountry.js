@@ -857,7 +857,13 @@
 					}
 					fundedByCountry[recIso].total_committed += p.total_committed;
 					fundedByCountry[recIso].total_spent += p.total_spent;
-					if (p[countryIndOther] === iso || iso === 'ghsa') fundedByCountry[recIso].all_unspec_amounts = false;
+					if ((p[countryIndOther] === iso || iso === 'ghsa') && !p.no_value_reported) fundedByCountry[recIso].all_unspec_amounts = false;
+					if (recIso === 'CM') {
+						console.log('p');
+						console.log(p);
+						console.log('countryIndOther')
+						console.log(countryIndOther)
+					}
 					p.core_capacities.forEach(cc => {
 						const ccAbbrev = cc.split('.')[0];
 						if (ccAbbrev === 'P') {

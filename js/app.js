@@ -527,14 +527,10 @@ const App = {};
 	 */
 	App.getProjectsIncludingGroupsFlow = (projects, funderCode, recipientCode) => {
 
-		if (funderCode === 'ghsa' || recipientCode === 'ghsa') {
-
-			// const filterCountOnce = (allProjects) => {
-			// 	const groupedById = _.groupBy(allProjects, 'project_id');
-			// 	return _.values(groupedById).map(d => d[0]);
-			// };
-
-			return projects.filter(d => d.ghsa_funding === true);
+		if (funderCode === 'ghsa') {
+			return projects.filter(d => d.ghsa_funding === true && d.recipient_country === recipientCode);
+		} else if (recipientCode === 'ghsa') {
+			return projects.filter(d => d.ghsa_funding === true && d.donor_code === funderCode);
 		} else {
 			// Timor-Leste is part of IPR
 			const funderGroups = App.getEntityGroups(funderCode);
