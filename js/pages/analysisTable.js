@@ -113,7 +113,7 @@
 			const expectedNameOrigField = moneyFlow === 'd' ? 'donor_name_orig' : 'recipient_name_orig';
 
 			function getMoneyCellValue (d, moneyField) { 
-				if (d.no_value_reported) return 'Specific amount unknown';
+				if (d.no_value_reported || d.all_unspec) return 'Specific amount unknown';
 				else if (expectedName === d[expectedNameField]) 
 					return d[moneyField];
 				else return 'Specific amount unknown'; 
@@ -123,19 +123,15 @@
 			let headerData = [];
 			if (currentInfoTab === 'all') {
 				headerData = [
-				// { name: 'Funder', value: 'donor_name' },
 				{ name: 'Funder', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
 				{ name: 'Recipient', value: 'recipient_name', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; } },
 				{ name: 'Project Name', value: 'project_name' },
 				{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_committed'); } },
 				{ name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_spent'); } },
-				// { name: 'Committed', value: 'total_committed', type: 'money' },
-				// { name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
 			} else if (currentInfoTab === 'country') {
 				headerData = [
 				{ name: 'Funder', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
-				// { name: 'Funder', value: d => App.codeToNameMap.get(d.donor_code) },
 				{ name: 'Recipient', value: (d) => {
 					return d.recipient_name_orig || d.recipient_name;
 					if (App.codeToNameMap.has(d.recipient_country)) {
@@ -143,9 +139,10 @@
 					}
 					return d.recipient_country;
 				} },
-				{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { if (expectedName === d[expectedNameField]) return d.total_committed; else return 'Specific amount unknown'} },
-				{ name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { if (expectedName === d[expectedNameField]) return d.total_spent; else return 'Specific amount unknown'} },
-				// { name: 'Disbursed', value: 'total_spent', type: 'money' },
+				{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_committed'); } },
+				{ name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_spent'); } },
+				// { name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { if (expectedName === d[expectedNameField]) return d.total_committed; else return 'Specific amount unknown'} },
+				// { name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { if (expectedName === d[expectedNameField]) return d.total_spent; else return 'Specific amount unknown'} },
 				];
 			} else if (currentInfoTab === 'ce') {
 				headerData = [
@@ -213,10 +210,12 @@
 						totalByCountry[dc][rc] = {
 							total_committed: 0,
 							total_spent: 0,
+							all_unspec: true,
 						};
 					}
 					totalByCountry[dc][rc].total_committed += p.total_committed;
 					totalByCountry[dc][rc].total_spent += p.total_spent;
+					if (p.no_value_reported !== true) totalByCountry[dc][rc].all_unspec = false;
 				});
 				for (const dc in totalByCountry) {
 					for (const rc in totalByCountry[dc]) {
@@ -227,6 +226,7 @@
 							recipient_name: rc,
 							total_committed: totalByCountry[dc][rc].total_committed,
 							total_spent: totalByCountry[dc][rc].total_spent,
+							all_unspec: totalByCountry[dc][rc].all_unspec,
 						});
 					}
 				}
