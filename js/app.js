@@ -154,6 +154,9 @@ const App = {};
 				// hide unops data until we can fix it
 				fundingData = fundingData.filter(d => d.donor_code !== '41aaa');
 
+				// tag datum if no specific value reported
+				App.tagProjectsWithNoValuesReported(fundingData);
+
 				App.fundingData = fundingData;
 				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
 				
@@ -572,10 +575,12 @@ const App = {};
 		const nameOrigField = flow === 'd' ? 'donor_name_orig' : 'recipient_name_orig';
 		const noun = flow === 'd' ? 'funder' : 'recipient';
 
+		// Extract a list of projects representing the unique names of the F/R
+		// that we are looking at
 		const projWithName = Util.uniqueCollection(projects, nameField);
 		let namesListTmp = [];
 		projWithName.forEach(p => {
-			// If the recipient's name is not the same as the name, then
+			// If the recipient's name is not the same as the "name", then
 			// push the name; otherwise push the orig name
 			if (p[nameField] === name) {
 				namesListTmp.push(p[nameOrigField]);
@@ -586,7 +591,6 @@ const App = {};
 		namesListTmp = _.unique(namesListTmp);
 
 		const length = namesListTmp.length;
-
 		let namesList = [];
 		let isJustUnspecifiedFinancial = false;
 		namesListTmp.forEach(nameListed => {
@@ -607,12 +611,7 @@ const App = {};
 			nameString = namesList.join(' and ');
 		}
 
-
 		const message = `${name} included as ${noun} for ${nameString} projects`;
-		console.log('message');
-		console.log(message);
-		console.log('projects');
-		console.log(projects);
 		if (isJustUnspecifiedFinancial) {
 			return `${name} included as ${noun} for projects with unspecified value`;
 		}
@@ -620,6 +619,38 @@ const App = {};
 		return message;
 	};
 
+	/**
+	 * Returns an array representing the projects in 'projects' that were within
+	 * the start and end years, inclusive. This is used to determine which non-IATI
+	 * projects are 'unknown value' c/d's
+	 * @param  {Array} projects  Projects to check (should be non-IATI ones)
+	 * @param  {int} startYear the start year
+	 * @param  {int} endYear   the end year
+	 * @return {Array}           Projects that were within the year range
+	 */
+	App.getNonIatiProjectWithinYears = (projects, startYear, endYear) => {
+		return projects.filter(p => {
+			return p.years.some(year => startYear <= year && endYear >= year);
+		}); 
+	}
+
+
+	/**
+	 * Returns array of projects that had 'zero' reported for all commitments and disbursements
+	 * by year
+	 * @param  {array} projects Array of projects
+	 * @return {array}          Array of matching projects
+	 */
+	App.tagProjectsWithNoValuesReported = (projects) => {
+		projects.forEach(p => {
+			const zero = {
+				c: _.values(p.committed_by_year).every(val => val <= 0),
+				d: _.values(p.spent_by_year).every(val => val <= 0),
+			};
+			if (zero.c && zero.d) p.no_value_reported = true;
+			else p.no_value_reported = false;
+		});
+	};
 
 	/**
 	 * Given the set of projects, returns only those that contain financial assistance

@@ -103,12 +103,22 @@
 			.siblings().removeClass('active');
 		}
 
+
+
 		// update the table content depending on tab chosen
 		function updateInfoTable() {
 
 			const expectedName = App.codeToNameMap.get(iso);
 			const expectedNameField = moneyFlow === 'd' ? 'donor_name' : 'recipient_name';
 			const expectedNameOrigField = moneyFlow === 'd' ? 'donor_name_orig' : 'recipient_name_orig';
+
+			function getMoneyCellValue (d, moneyField) { 
+				if (d.no_value_reported) return 'Specific amount unknown';
+				else if (expectedName === d[expectedNameField]) 
+					return d[moneyField];
+				else return 'Specific amount unknown'; 
+			};
+
 			// define column data
 			let headerData = [];
 			if (currentInfoTab === 'all') {
@@ -117,8 +127,8 @@
 				{ name: 'Funder', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
 				{ name: 'Recipient', value: 'recipient_name', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; } },
 				{ name: 'Project Name', value: 'project_name' },
-				{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { if (expectedName === d[expectedNameField]) return d.total_committed; else return 'Specific amount unknown'} },
-				{ name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { if (expectedName === d[expectedNameField]) return d.total_spent; else return 'Specific amount unknown'} },
+				{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_committed'); } },
+				{ name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_spent'); } },
 				// { name: 'Committed', value: 'total_committed', type: 'money' },
 				// { name: 'Disbursed', value: 'total_spent', type: 'money' },
 				];
