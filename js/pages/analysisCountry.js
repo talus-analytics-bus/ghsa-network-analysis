@@ -793,11 +793,16 @@
 							committed_on_respond: 0,
 							committed_on_other: 0,
 							committed_on_general: 0,
-							all_unspec_amounts: !isGhsaPage, // will always show full proj value for GHSA page
+							all_unspec_amounts: true, // will always show full proj value for GHSA page
 						};
 					}
 
-					if (((p[codeFieldOther] === iso && p[unspecField] !== true) && iso !== 'ghsa') || iso === 'ghsa') {
+					const matchesIso = p[codeFieldOther] === iso;
+					const amountSpecified = p[unspecField] !== true;
+					const amountNotReportedAtAll = p.no_value_reported;
+					const isGhsaPage = iso === 'ghsa';
+
+					if ((((matchesIso && amountSpecified) && !isGhsaPage) || isGhsaPage) && !amountNotReportedAtAll) {
 						tableRowsByCodeOrName[codeOrName].all_unspec_amounts = false
 						// Increment counts
 						tableRowsByCodeOrName[codeOrName].total_committed += p.total_committed;
@@ -857,13 +862,12 @@
 					}
 					fundedByCountry[recIso].total_committed += p.total_committed;
 					fundedByCountry[recIso].total_spent += p.total_spent;
-					if ((p[countryIndOther] === iso || iso === 'ghsa') && !p.no_value_reported) fundedByCountry[recIso].all_unspec_amounts = false;
-					if (recIso === 'CM') {
+					const isoMatch = (p[countryIndOther] === iso || iso === 'ghsa');
+					if (isoMatch && !p.no_value_reported) fundedByCountry[recIso].all_unspec_amounts = false;
 						console.log('p');
 						console.log(p);
 						console.log('countryIndOther')
 						console.log(countryIndOther)
-					}
 					p.core_capacities.forEach(cc => {
 						const ccAbbrev = cc.split('.')[0];
 						if (ccAbbrev === 'P') {
@@ -956,6 +960,7 @@
 				};
 
 				rows.append('td').text(d => {
+					console.log(d);
 					if (d.all_unspec_amounts) return 'Specific amount unknown';
 					return App.formatMoney(d[type])
 				});

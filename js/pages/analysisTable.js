@@ -113,8 +113,10 @@
 			const expectedNameOrigField = moneyFlow === 'd' ? 'donor_name_orig' : 'recipient_name_orig';
 
 			function getMoneyCellValue (d, moneyField) { 
-				if (d.no_value_reported || d.all_unspec) return 'Specific amount unknown';
-				else if (expectedName === d[expectedNameField]) 
+				const allValuesUnspec = d.all_unspec === true;
+				const noValueReported = d.no_value_reported === true;
+				if (noValueReported || allValuesUnspec) return 'Specific amount unknown';
+				else if (iso === 'ghsa' || expectedName === d[expectedNameField]) 
 					return d[moneyField];
 				else return 'Specific amount unknown'; 
 			};
@@ -348,7 +350,7 @@
 			.merge(cells)
 			.classed('money-cell', d => d.colData.type === 'money')
 			.classed('inkind-cell', d => d.colData.value === 'total_other')
-			.html((d) => {
+			.html(function(d) {
 				let cellValue = '';
 				if (d.colData.valueFunc) {
 					cellValue = d.colData.valueFunc(d.rowData);
@@ -357,8 +359,16 @@
 				} else {
 					cellValue = d.rowData[d.colData.value];
 				}
-				if (cellValue === 'Specific amount unknown') return cellValue;
-				if (d.colData.type === 'money') return App.formatMoneyFull(cellValue);
+				let dataSortValue = cellValue;
+				if (cellValue === 'Specific amount unknown') {
+					d3.select(this).attr('data-sort', -1000);
+					return cellValue;
+				}
+				if (d.colData.type === 'money') {
+					d3.select(this).attr('data-sort', App.formatMoneyFull(cellValue));
+					return App.formatMoneyFull(cellValue);
+				}
+
 				
 				return cellValue;
 			});
