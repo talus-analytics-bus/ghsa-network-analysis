@@ -955,10 +955,14 @@
 					return App.formatMoney(val)
 				};
 
-				rows.append('td').text(d => {
-					console.log(d);
-					if (d.all_unspec_amounts) return 'Specific amount unknown';
-					return App.formatMoney(d[type])
+				rows.append('td').text(function(d) {
+					if (d.all_unspec_amounts) {
+						d3.select(this).attr('data-sort', -1000);
+						return 'Specific amount unknown';
+					} else {
+						d3.select(this).attr('data-sort', d[type]);
+						return App.formatMoney(d[type]);
+					}
 				});
 				if (type === 'total_spent') {
 					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.spent_on_prevent));
@@ -979,7 +983,8 @@
 					pageLength: 10,
 					scrollCollapse: false,
 					autoWidth: false,
-					ordering: false,
+					ordering: true,
+					order: [1, 'desc'],
 					bLengthChange: false,
 				});
 

@@ -125,11 +125,14 @@
 		// update the table content depending on tab chosen
 		function updateInfoTable() {
 
-			const expectedName = App.codeToNameMap.get(recIso);
-			const expectedNameField = 'recipient_name';
-			// const expectedNameField = moneyFlow === 'd' ? 'donor_name' : 'recipient_name';
-			const expectedNameOrigField = 'recipient_name_orig';
-			// const expectedNameOrigField = moneyFlow === 'd' ? 'donor_name_orig' : 'recipient_name_orig';
+			const expectedNameR = App.codeToNameMap.get(recIso);
+			const expectedNameFieldR = 'recipient_name';
+			const expectedNameOrigFieldR = 'recipient_name_orig';
+
+			const expectedNameF = App.codeToNameMap.get(fundIso);
+			const expectedNameFieldF = 'donor_name';
+			const expectedNameOrigFieldF = 'donor_name_orig';
+
 
 			function getMoneyCellValue (d, moneyField) { 
 				const allValuesUnspec = d.all_unspec === true;
@@ -138,9 +141,13 @@
 				if (noValueReported || allValuesUnspec) return 'Specific amount unknown';
 				// else if (iso === 'ghsa')
 				// 	return d[moneyField];
-				else if (d[expectedNameOrigField] && d[expectedNameOrigField] !== expectedName)
+				else if (d[expectedNameOrigFieldR] && d[expectedNameOrigFieldR] !== expectedNameR)
 					return 'Specific amount unknown';
-				else if (expectedName !== d[expectedNameField])
+				else if (expectedNameR !== d[expectedNameFieldR])
+					return 'Specific amount unknown';
+				else if (d[expectedNameOrigFieldF] && d[expectedNameOrigFieldF] !== expectedNameF)
+					return 'Specific amount unknown';
+				else if (expectedNameF !== d[expectedNameFieldF])
 					return 'Specific amount unknown';
 				else return d[moneyField];
 			};
