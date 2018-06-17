@@ -143,10 +143,13 @@
 					return 'Specific amount unknown';
 				else if (recIso !== d.recipient_country)
 					return 'Specific amount unknown';
-				else if (d[expectedNameOrigFieldF] && d[expectedNameOrigFieldF] !== expectedNameF)
-					return 'Specific amount unknown';
-				else if (fundIso !== d.donor_code)
-					return 'Specific amount unknown';
+				else if (fundIso !== 'ghsa') {
+					if (d[expectedNameOrigFieldF] && d[expectedNameOrigFieldF] !== expectedNameF)
+						return 'Specific amount unknown';
+					else if (fundIso !== d.donor_code)
+						return 'Specific amount unknown';
+					else return d[moneyField];
+				}
 				else return d[moneyField];
 			};
 
