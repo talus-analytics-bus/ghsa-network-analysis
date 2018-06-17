@@ -195,6 +195,9 @@
 			// define row data
 			let paymentTableData = [];
 			allPayments = App.getProjectsIncludingGroups(App.fundingData, moneyFlow, iso);
+			if (iso === 'ghsa') {
+				allPayments = Util.uniqueCollection(allPayments, 'project_id');
+			}
 			if (currentInfoTab === 'all') {
 				paymentTableData = allPayments.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support' && payment.assistance_type.toLowerCase() !== 'other support');
 			} else if (currentInfoTab === 'country') {
