@@ -1264,7 +1264,7 @@
 			// const $searchContainer = $('.search-container');
 
 			function onChange() {
-				// Scale the size of the box
+				// Scale the size of the content on this page
 				// Scale factor = difference between original viewport height and current viewport height
 				const viewportHeight = $viewport[0].getBoundingClientRect().height;
 				const origViewportHeight = 640;
@@ -1283,25 +1283,17 @@
 					.css('transform',`scale(${scaleFactor})`)
 					.css('-moz-transform',`scale(${scaleFactor})`);
 
-				// $searchContainer.css('transform',`scale(${scaleFactor})`);
-
-				// Set top position of box
+				// Calculate the new position of the box and the map title tops
 				const viewportTop = $viewport.offset().top + 20;
 				const boxHeight = $box[0].getBoundingClientRect().height;
 				const listTitleHeight = $listTitle[0].getBoundingClientRect().height;
 				const heuristicTopPositionCorrection = -10 * scaleFactor / heuristicScaleFactorCorrection;
-				// const yShift = ((viewportHeight / 2) - (boxHeight / 2)) + heuristicTopPositionCorrection;
-				// const yShift = ((viewportHeight / 2) - (boxHeight / 2)) + heuristicTopPositionCorrection;
 				const yShift = 0;
-				// const yShift = ((viewportHeight / 2) - (boxHeight / 2));
 				const top = viewportTop + yShift;
-				// $rightOrLeftContainer.css('top', top + 'px');
+
+				// Set the positions of the box and the map title tops
 				$box.css('top', top + 'px');
 				$mapTitle.css('top', (viewportTop + heuristicTopPositionCorrection - 40) + 'px');
-				// $mapAndSearchContainer.css('top', top + 'px');
-				// $countryInfoBox.css('top', top + 'px');
-				// $searchContainer.css('top', top + 'px');
-
 
 				// Set indentations of 'span' elements of list
 				setHorizOffsets($list)
@@ -1312,13 +1304,17 @@
 		}
 
 		function setDotPosition (circleNode) {
-			const lineHeight = 17;
+			const lineHeight = parseFloat(window.getComputedStyle(circleNode.parentNode.parentNode.parentNode)['line-height']);
 			const parentHeight = circleNode.parentNode.parentNode.parentNode.offsetHeight;
 			const factor = (parentHeight / lineHeight) - 1;
+			const circlePosScale = d3.scaleLinear()
+				.domain([1, 4])
+				.range([-15, -42]);
 
 			if (App.usingFirefox) {
 				function getTop (factor) {
-					factor = Math.round(factor);
+					// factor = Math.round(factor);
+					return circlePosScale(factor);
 					if (factor === 1) return '-15px';
 					if (factor === 2) return '-24px';
 					if (factor === 3) return '-33px';
@@ -1326,6 +1322,7 @@
 				}
 			} else {
 				function getTop (factor) {
+					return circlePosScale(factor);
 					if (factor === 1) return '-15px';
 					if (factor === 2) return '-24px';
 					if (factor === 3) return '-33px';

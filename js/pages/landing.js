@@ -303,7 +303,7 @@
 			$(`${donorSelector}, ${recSelector}`).DataTable({
 					pageLength: 10,
 					scrollCollapse: false,
-					autoWidth: true,
+					autoWidth: false,
 					ordering: false,
 					searching: false,
 					pagingType: 'simple',
