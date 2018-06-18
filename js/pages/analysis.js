@@ -261,7 +261,7 @@
 			const indName = (ind === 'committed') ? 'committed_by_year' : 'spent_by_year';
 			return (p) => {
 				// for network map, no "Not reported" recipients
-				if (p.recipient_country === 'Not reported') return 0;
+				// if (p.recipient_country === 'Not reported') return 0;
 
 				// run through filter first
 				if (!App.passesCategoryFilter(p.core_capacities, ccs)) return 0;
@@ -282,6 +282,7 @@
 			// GHSA
 			// All regions, countries, governments
 			// const excludedSectors = ['Region'];
+			App.codeToNameMap.set('Not reported', 'Not reported');
 			const allowedEntities = App.codes;
 			// const allowedEntities = App.codes.filter(d => d.donor_sector !== 'Region');
 			const entities = App.countries.filter(d => {
@@ -289,6 +290,22 @@
 				if (allowedEntities.find(allowedEntity => d.ISO2 === allowedEntity.donor_code)) return true;
 				else return false;
 			}).filter(d => d.FIPS !== "");
+
+			entities.push({
+			  "FIPS": 'Not reported',
+			  "ISO2": 'Not reported',
+			  "NAME": 'Not reported',
+			  "regionName": "Other Funders / Recipients",
+			  "subRegionName": "Other Funders / Recipients",
+			  "intermediateRegionName": "Other Funders / Recipients",
+			  "country": false,
+			});
+
+
+			allowedEntities.push({
+				donor_code: 'Not reported',
+				donor_name: 'Not reported',
+			})
 
 			// For each allowed entity, calculate totalFunded and totalReceived, financials only
 			// {
@@ -472,7 +489,6 @@
 				const receivedPayments = Util.uniqueCollection(App.recipientLookup[iso], 'project_id');
 
 
-				if (iso === 'US') console.log(fundedPaymentsTmp);
 				const fundedPayments = (fundedPaymentsTmp) ? fundedPaymentsTmp : undefined;
 				// construct chord data; sort by region and subregion
 				let totalFunded = 0;
@@ -625,8 +641,6 @@
 				}
 				networkData.push(region);
 			}
-			console.log('networkData');
-			console.log(JSON.parse(JSON.stringify(networkData)));
 			return networkData;
 		}
 
