@@ -153,6 +153,39 @@
 				else return d[moneyField];
 			};
 
+			function getMoneyCellValue (d, moneyField, param = {}) { 
+				const allValuesUnspec = d.all_unspec === true;
+				const noValueReported = d.no_value_reported === true;
+				const unspecified = param.unspecifiedIsZero === true ? 0 : 'Specific amount unknown';
+				let returnFunc = (moneyField !== 'total_other_d' && moneyField !== 'total_other_c') ? (p) => { return p[moneyField]; } : (p) => { return (p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support") ? 1 : 0 };
+				if (moneyField === 'total_other_d' || moneyField === 'total_other_c') {
+					if (moneyField === 'total_other_d') {
+						returnFunc = (p) => {
+							const isInkind = p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support";
+							return (isInkind && p.commitment_disbursements === 'disbursement') ? 1 : 0; 
+						};
+					} else {
+						returnFunc = (p) => {
+							const isInkind = p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support";
+							return (isInkind && p.commitment_disbursements === 'commitment') ? 1 : 0; 
+						};
+					}
+				}
+				if (noValueReported || allValuesUnspec) return unspecified;
+				else if (d[expectedNameOrigFieldR] && d[expectedNameOrigFieldR] !== expectedNameR)
+					return unspecified;
+				else if (recIso !== d.recipient_country)
+					return unspecified;
+				else if (fundIso !== 'ghsa') {
+					if (d[expectedNameOrigFieldF] && d[expectedNameOrigFieldF] !== expectedNameF)
+						return unspecified;
+					else if (fundIso !== d.donor_code)
+						return unspecified;
+					else return d[moneyField];
+				}
+				else return d[moneyField];
+			};
+
 			// define column data
 			let headerData = [];
 			if (currentInfoTab === 'all') {
@@ -174,15 +207,16 @@
 							return cap ? cap.name : d.cc;
 						},
 					},
-					{ name: 'Committed', value: 'total_committed', type: 'money' },
-					{ name: 'Disbursed', value: 'total_spent', type: 'money' },
-					{ name: 'In-kind Contributions', value: 'total_inkind', type: 'number' },
+					{ name: 'Committed Funds', value: 'total_committed', type: 'money' },
+					{ name: 'Disbursed Funds', value: 'total_spent', type: 'money' },
+					{ name: 'Committed In-kind Projects', value: 'total_other_c', type: 'num', supportType: 'inkind' },
+					{ name: 'Disbursed In-kind Projects', value: 'total_other_d', type: 'num', supportType: 'inkind' },
 				];
 			} else if (currentInfoTab === 'inkind') {
 				headerData = [
 					{ name: 'Provider', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
 					{ name: 'Recipient', value: 'recipient_name', value2: 'recipient_name_orig', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; }  },
-					// { name: 'Support Type', value: 'assistance_type'},
+					{ name: 'Commitment or Disbursement', value: 'commitment_disbursements', valueFunc: (p) => { const lower = p.commitment_disbursements; return lower.charAt(0).toUpperCase() + lower.substr(1); }},
 					{ name: 'Description', value: 'project_name' },
 				];
 			} 
@@ -190,9 +224,8 @@
 			// define row data
 			let paymentTableData = [];
 			allPayments = App.getProjectsIncludingGroupsFlow(App.fundingData, fundIso, recIso);
+			const unspecified = 'Specific amount unknown';
 			if (currentInfoTab === 'all') {
-				// paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support');
-				// paymentTableData = App.getFinancialProjectsWithAmounts(allPayments, 'r', recIso);
 				paymentTableData = allPayments.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support' && payment.assistance_type.toLowerCase() !== 'other support');
 			} else if (currentInfoTab === 'cc') {
 				const totalByCc = {};
@@ -202,26 +235,38 @@
 							totalByCc[cc] = {
 								total_committed: 0,
 								total_spent: 0,
-								total_inkind: 0,
+								total_other_d: 0,
+								total_other_c: 0,
+								some_funds: false,
+								some_inkind: false,
 							};
 						}
-						totalByCc[cc].total_committed += p.total_committed;
-						totalByCc[cc].total_spent += p.total_spent;
-						totalByCc[cc].total_inkind += (p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === 'other support') ? 1 : 0;
+						totalByCc[cc].total_committed += getMoneyCellValue(p, 'total_committed', {unspecifiedIsZero: true});
+						totalByCc[cc].total_spent += getMoneyCellValue(p, 'total_spent', {unspecifiedIsZero: true});
+						totalByCc[cc].total_other_d += getMoneyCellValue(p, 'total_other_d', {unspecifiedIsZero: true});
+						totalByCc[cc].total_other_c += getMoneyCellValue(p, 'total_other_c', {unspecifiedIsZero: true});
+						if (p.assistance_type.includes('ther') || p.assistance_type.includes('nkind')) totalByCc[cc].some_inkind = true;
+						if (!p.no_value_reported && p.assistance_type.includes('irect financial')) totalByCc[cc].some_funds = true;
 					});
 				});
+				function getDisplayValForCc (val, key) {
+					if (val[key] > 0) return val[key];
+					if (key.includes('other') && val.some_inkind) return unspecified;
+					if (!key.includes('other') && !val.some_funds) return unspecified;
+					else return 0;
+				};
+
 				for (const cc in totalByCc) {
 					paymentTableData.push({
-						cc,
-						total_committed: totalByCc[cc].total_committed,
-						total_spent: totalByCc[cc].total_spent,
-						total_inkind: totalByCc[cc].total_inkind,
+						cc: cc || "None",
+						total_committed: getDisplayValForCc(totalByCc[cc], 'total_committed'),
+						total_spent: getDisplayValForCc(totalByCc[cc], 'total_spent'),
+						total_other_d: getDisplayValForCc(totalByCc[cc], 'total_other_d'),
+						total_other_c: getDisplayValForCc(totalByCc[cc], 'total_other_c'),
 					});
 				}
 			} else if (currentInfoTab === 'inkind') {
-				// paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');
 				paymentTableData = App.getInkindSupportProjects(allPayments, 'r', recIso);
-				// paymentTableData = allPayments.filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support' || payment.assistance_type.toLowerCase() === 'insupport');
 			} 
 
 			// clear DataTables plugin from table
@@ -251,7 +296,7 @@
 			cells.enter().append('td')
 				.merge(cells)
 				.classed('money-cell', d => d.colData.type === 'money')
-				.classed('inkind-cell', d => d.colData.value === 'total_inkind')
+				.classed('inkind-cell', d => d.colData.supportType === 'inkind')
 				.html(function(d){
 					let cellValue = '';
 					if (d.colData.valueFunc) {
@@ -261,7 +306,6 @@
 					} else {
 						cellValue = d.rowData[d.colData.value];
 					}
-					let dataSortValue = cellValue;
 					if (cellValue === 'Specific amount unknown') {
 						d3.select(this).attr('data-sort', -1000);
 						return cellValue;
@@ -270,7 +314,7 @@
 						d3.select(this).attr('data-sort', App.formatMoneyFull(cellValue));
 						return App.formatMoneyFull(cellValue);
 					}
-					if (d.colData.type === 'inkind') {
+					if (d.colData.supportType === 'inkind') {
 						d3.select(this).attr('data-sort', cellValue);
 						return Util.comma(cellValue);
 					}

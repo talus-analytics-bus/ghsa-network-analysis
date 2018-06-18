@@ -130,7 +130,6 @@
 						};
 					}
 				}
-
 				if (noValueReported || allValuesUnspec) return unspecified;
 				else if (iso === 'ghsa')
 					return returnFunc(d);
@@ -140,10 +139,6 @@
 					return unspecified;
 				else return returnFunc(d);
 			};
-
-			function getJeeCellValue () {
-				// if the cell is zero except for 
-			}
 
 			// define column data
 			let headerData = [];
@@ -167,8 +162,6 @@
 				} },
 				{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_committed'); } },
 				{ name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_spent'); } },
-				// { name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { if (expectedName === d[expectedNameField]) return d.total_committed; else return 'Specific amount unknown'} },
-				// { name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { if (expectedName === d[expectedNameField]) return d.total_spent; else return 'Specific amount unknown'} },
 				];
 			} else if (currentInfoTab === 'ce') {
 				headerData = [
@@ -219,6 +212,13 @@
 			} 
 
 			// define row data
+				const unspecified = 'Specific amount unknown';
+			function getDisplayValForCc (val, key) {
+					if (val[key] > 0) return val[key];
+					if (key.includes('other') && val.some_inkind) return unspecified;
+					if (!key.includes('other') && !val.some_funds) return unspecified;
+					else return 0;
+				};
 			let paymentTableData = [];
 			allPayments = App.getProjectsIncludingGroups(App.fundingData, moneyFlow, iso);
 			if (iso === 'ghsa') {
@@ -234,14 +234,18 @@
 				}
 				allPayments.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support' && payment.assistance_type.toLowerCase() !== 'other support').forEach((p) => {
 					const dc = p.donor_name_orig || p.donor_name;
+					const donor_code = p.donor_code;
 					// const dc = p.donor_code;
 					let rc = p.recipient_country;
+					const recipient_country = p.recipient_country;
 					if (rc === 'Not reported') rc = p.recipient_name;
 					if (p.recipient_name_orig !== undefined) rc = p.recipient_name_orig
 						else rc = p.recipient_name;
 					if (!totalByCountry[dc]) totalByCountry[dc] = {};
 					if (!totalByCountry[dc][rc]) {
 						totalByCountry[dc][rc] = {
+							donor_code: donor_code,
+							recipient_country: recipient_country,
 							total_committed: 0,
 							total_spent: 0,
 							all_unspec: true,
@@ -254,9 +258,9 @@
 				for (const dc in totalByCountry) {
 					for (const rc in totalByCountry[dc]) {
 						paymentTableData.push({
-							donor_code: dc,
+							donor_code: totalByCountry[dc][rc].donor_code,
 							donor_name: dc,
-							recipient_country: rc,
+							recipient_country: totalByCountry[dc][rc].recipient_country,
 							recipient_name: rc,
 							total_committed: totalByCountry[dc][rc].total_committed,
 							total_spent: totalByCountry[dc][rc].total_spent,
@@ -266,17 +270,17 @@
 				}
 			} else if (currentInfoTab === 'ce') {
 				const totalByCe = {};
-				const coreElements = ['P', 'D', 'R', 'O', 'General IHR Implementation'];
-				coreElements.concat('None').forEach((ce) => {
-					totalByCe[ce] = {
-						total_committed: 0,
-						total_spent: 0,
-						total_other_d: 0,
-						total_other_c: 0,
-						// money_unspec: true,
-						// inkind_unspec: true,
-					};
-				});
+				const coreElements = ['P', 'D', 'R', 'O', 'General IHR Implementation', ''];
+				// coreElements.concat('None').forEach((ce) => {
+				// 	totalByCe[ce] = {
+				// 		total_committed: 0,
+				// 		total_spent: 0,
+				// 		total_other_d: 0,
+				// 		total_other_c: 0,
+				// 		// money_unspec: true,
+				// 		// inkind_unspec: true,
+				// 	};
+				// });
 				allPayments.forEach((p) => {
 					let hasACe = false;
 					coreElements.forEach((ce) => {
@@ -286,71 +290,75 @@
 								return firstThree === 'PoE' || firstThree === 'CE' || firstThree === 'RE';
 							} else if (ce === 'General IHR Implementation') {
 								return cc === 'General IHR Implementation';
+							} else if (cc === '' && ce === '') {
+								return true;
 							}
 							return cc.slice(0, 2) === `${ce}.`;
 						});
 						if (hasCe) {
+							if (!totalByCe[ce]) {
+								totalByCe[ce] = {
+									total_committed: 0,
+									total_spent: 0,
+									total_other_d: 0,
+									total_other_c: 0,
+									some_funds: false,
+									some_inkind: false,
+								};
+							}
 							hasACe = true;
 							totalByCe[ce].total_committed += getMoneyCellValue(p, 'total_committed', {unspecifiedIsZero: true});
 							totalByCe[ce].total_spent += getMoneyCellValue(p, 'total_spent', {unspecifiedIsZero: true});
 							totalByCe[ce].total_other_d += getMoneyCellValue(p, 'total_other_d', {unspecifiedIsZero: true});
 							totalByCe[ce].total_other_c += getMoneyCellValue(p, 'total_other_c', {unspecifiedIsZero: true});
+							if (p.assistance_type.includes('ther') || p.assistance_type.includes('nkind')) totalByCc[cc].some_inkind = true;
+							if (!p.no_value_reported && p.assistance_type.includes('irect financial')) totalByCc[cc].some_funds = true;
 						}
 					});
-					if (!hasACe) {
-						totalByCe.None.total_committed += getMoneyCellValue(p, 'total_committed', {unspecifiedIsZero: true});
-						totalByCe.None.total_spent += getMoneyCellValue(p, 'total_spent', {unspecifiedIsZero: true});
-						totalByCe.None.total_other_d += getMoneyCellValue(p, 'total_other_d', {unspecifiedIsZero: true});
-						totalByCe.None.total_other_c += getMoneyCellValue(p, 'total_other_c', {unspecifiedIsZero: true});
-					}
 				});
 				for (const ce in totalByCe) {
-					const nonZero = _.values(totalByCe[ce]).some(d => d > 0);
-					if (nonZero)
 					paymentTableData.push({
-						ce,
-						total_committed: totalByCe[ce].total_committed,
-						total_spent: totalByCe[ce].total_spent,
-						total_other_d: totalByCe[ce].total_other_d,
-						total_other_c: totalByCe[ce].total_other_c,
+						ce: ce || 'None',
+						total_committed: getDisplayValForCc(totalByCe[ce], 'total_committed'),
+						total_spent: getDisplayValForCc(totalByCe[ce], 'total_spent'),
+						total_other_d: getDisplayValForCc(totalByCe[ce], 'total_other_d'),
+						total_other_c: getDisplayValForCc(totalByCe[ce], 'total_other_c'),
 					});
 				}
+				console.log('paymentTableData');
+				console.log(paymentTableData);
 			} else if (currentInfoTab === 'cc') {
 				const totalByCc = {};
-				App.capacities.concat({ id: 'None' }).forEach((cc) => {
-					totalByCc[cc.id] = {
-						total_committed: 0,
-						total_spent: 0,
-						total_other_d: 0,
-						total_other_c: 0,
-					};
-				});
 				allPayments.forEach((p) => {
 					p.core_capacities.forEach((cc) => {
-						if (totalByCc[cc]) {
-							totalByCc[cc].total_committed += getMoneyCellValue(p, 'total_committed', {unspecifiedIsZero: true});
-							totalByCc[cc].total_spent += getMoneyCellValue(p, 'total_spent', {unspecifiedIsZero: true});
-							totalByCc[cc].total_other_d += getMoneyCellValue(p, 'total_other_d', {unspecifiedIsZero: true});
-							totalByCc[cc].total_other_c += getMoneyCellValue(p, 'total_other_c', {unspecifiedIsZero: true});
+						if (!totalByCc[cc]) {
+							totalByCc[cc] = {
+								total_committed: 0,
+								total_spent: 0,
+								total_other_d: 0,
+								total_other_c: 0,
+								some_funds: false,
+								some_inkind: false,
+							};
 						}
+						totalByCc[cc].total_committed += getMoneyCellValue(p, 'total_committed', {unspecifiedIsZero: true});
+						totalByCc[cc].total_spent += getMoneyCellValue(p, 'total_spent', {unspecifiedIsZero: true});
+						totalByCc[cc].total_other_d += getMoneyCellValue(p, 'total_other_d', {unspecifiedIsZero: true});
+						totalByCc[cc].total_other_c += getMoneyCellValue(p, 'total_other_c', {unspecifiedIsZero: true});
+						if (p.assistance_type.includes('ther') || p.assistance_type.includes('nkind')) totalByCc[cc].some_inkind = true;
+						if (!p.no_value_reported && p.assistance_type.includes('irect financial')) totalByCc[cc].some_funds = true;
 					});
-					if (!p.core_capacities.length || (p.core_capacities.length === 1 && p.core_capacities[0] === "")) {
-						totalByCc.None.total_committed += getMoneyCellValue(p, 'total_committed', {unspecifiedIsZero: true});
-						totalByCc.None.total_spent += getMoneyCellValue(p, 'total_spent', {unspecifiedIsZero: true});
-						totalByCc.None.total_other_d += getMoneyCellValue(p, 'total_other_d', {unspecifiedIsZero: true});
-						totalByCc.None.total_other_c += getMoneyCellValue(p, 'total_other_c', {unspecifiedIsZero: true});
-					}
 				});
+				
+
 				for (const cc in totalByCc) {
-					const nonZero = _.values(totalByCc[cc]).some(d => d > 0);
-					if (nonZero)
-						paymentTableData.push({
-							cc,
-							total_committed: totalByCc[cc].total_committed,
-							total_spent: totalByCc[cc].total_spent,
-							total_other_d: totalByCc[cc].total_other_d,
-							total_other_c: totalByCc[cc].total_other_c,
-						});
+					paymentTableData.push({
+						cc: cc || "None",
+						total_committed: getDisplayValForCc(totalByCc[cc], 'total_committed'),
+						total_spent: getDisplayValForCc(totalByCc[cc], 'total_spent'),
+						total_other_d: getDisplayValForCc(totalByCc[cc], 'total_other_d'),
+						total_other_c: getDisplayValForCc(totalByCc[cc], 'total_other_c'),
+					});
 				}
 			} else if (currentInfoTab === 'inkind') {
 				paymentTableData = App.getInkindSupportProjects(App.fundingData, moneyFlow, iso);
