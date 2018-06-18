@@ -74,6 +74,7 @@ const Routing = {};
 		$(`a[page="${navName}"]`).addClass('active');
 
 		// load page
+		$('body').removeClass('dark');
 		loadTemplate(pageName);
 		if (func) func(...data);
 		window.scrollTo(0, 0);

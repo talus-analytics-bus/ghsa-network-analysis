@@ -127,6 +127,7 @@
   direction: ltr;
   line-height: 1.25;
   max-width: 160px;
+  font-size: 1.25em;
   // max-width: 180px;
   margin-bottom: 30px;
   
@@ -160,16 +161,19 @@
 }
 
 .list-title {
-  font-size: 1.5em;
-  font-weight: 600;
-  position: relative;
-  top: -20px;
-  // margin-top:
+    font-size: 1.65em;
+    font-weight: 600;
+    width: 380px;
+    position: relative;
+    top: -20px;
   &.right {
-    text-align: left
+    text-align: left;
+    left: -80px;
   }
   &.left {
-    text-align: right
+    text-align: right;
+    right: -25px;
+    // left: 80px;
   }
 }
 }

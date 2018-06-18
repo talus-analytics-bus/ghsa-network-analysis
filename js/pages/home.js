@@ -81,6 +81,8 @@
 
 		// function for initializing the page
 		function init() {
+			$('body').addClass('dark');
+
 			App.loadFundingData({ showGhsaOnly: params.showGhsaOnly === 'true' });
 			App.setSources();
 			
@@ -1309,7 +1311,7 @@
 			const factor = (parentHeight / lineHeight) - 1;
 			const circlePosScale = d3.scaleLinear()
 				.domain([1, 4])
-				.range([-15, -42]);
+				.range([-15-6, -42-6-6]);
 
 			if (App.usingFirefox) {
 				function getTop (factor) {
@@ -1399,7 +1401,7 @@
 		 */
 		function initLeftList (selector, ccs=[]) {
 			const $list = d3.select(selector).html('');
-			const label = "Non-government Organization<br>";
+			const label = "Non-government Organization ";
 			const dNounPlural = indType === 'inkind' ? 'Providers' : 'Funders';
 			d3.select('.list-title.left').html(label + (moneyFlow === 'funded' ? dNounPlural : 'Recipients') );
 			const dFlow = indType === 'inkind' ? 'Provided' : 'Funded';
