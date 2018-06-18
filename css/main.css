@@ -2218,7 +2218,7 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
 .network-map-container {
   position: relative;
   margin-top: 30px;
-  min-height: 780px;
+  min-height: 790px;
 }
 
 /* line 37, /Users/mikevanmaele/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisGlobal.scss */

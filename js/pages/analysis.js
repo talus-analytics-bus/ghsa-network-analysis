@@ -722,14 +722,17 @@
 			const data = arc.datum();
 			activeCountry = countryIso;
 			$('.nci-title').text(countryName);
+			const moneyType = $('.money-type-filter input:checked').attr('ind');
 			if (data.totalFunded) {
 				$('.nci-donor-value').text(App.formatMoney(data.totalFunded));
+				$('.nci-donor-section .nci-value-label').text(moneyType === 'committed' ? 'Total Funded Commitments' : 'Total Funded Disbursements');
 				$('.nci-donor-section').slideDown();
 			} else {
 				$('.nci-donor-section').slideUp();
 			}
 			if (data.totalReceived) {
 				$('.nci-recipient-value').text(App.formatMoney(data.totalReceived));
+				$('.nci-recipient-section .nci-value-label').text(moneyType === 'committed' ? 'Total Received Commitments' : 'Total Received Disbursements');
 				$('.nci-recipient-section').slideDown();
 			} else {
 				$('.nci-recipient-section').slideUp();
