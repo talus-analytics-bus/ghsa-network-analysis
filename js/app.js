@@ -639,6 +639,10 @@ const App = {};
 	 */
 	App.tagProjectsWithNoValuesReported = (projects) => {
 		projects.forEach(p => {
+			if (p.assistance_type.toLowerCase().includes('in-kind') || p.assistance_type.toLowerCase().includes('other')) {
+				p.no_value_reported = false;
+				return;
+			}
 			const zero = {
 				c: _.values(p.committed_by_year).every(val => val <= 0),
 				d: _.values(p.spent_by_year).every(val => val <= 0),

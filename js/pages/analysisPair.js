@@ -270,6 +270,10 @@
 						d3.select(this).attr('data-sort', App.formatMoneyFull(cellValue));
 						return App.formatMoneyFull(cellValue);
 					}
+					if (d.colData.type === 'inkind') {
+						d3.select(this).attr('data-sort', cellValue);
+						return Util.comma(cellValue);
+					}
 					return cellValue;
 				});
 

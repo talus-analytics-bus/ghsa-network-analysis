@@ -112,19 +112,38 @@
 			const expectedNameField = moneyFlow === 'd' ? 'donor_name' : 'recipient_name';
 			const expectedNameOrigField = moneyFlow === 'd' ? 'donor_name_orig' : 'recipient_name_orig';
 
-			function getMoneyCellValue (d, moneyField) { 
+			function getMoneyCellValue (d, moneyField, param = {}) { 
 				const allValuesUnspec = d.all_unspec === true;
 				const noValueReported = d.no_value_reported === true;
-				
-				if (noValueReported || allValuesUnspec) return 'Specific amount unknown';
+				const unspecified = param.unspecifiedIsZero === true ? 0 : 'Specific amount unknown';
+				let returnFunc = (moneyField !== 'total_other_d' && moneyField !== 'total_other_c') ? (p) => { return p[moneyField]; } : (p) => { return (p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support") ? 1 : 0 };
+				if (moneyField === 'total_other_d' || moneyField === 'total_other_c') {
+					if (moneyField === 'total_other_d') {
+						returnFunc = (p) => {
+							const isInkind = p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support";
+							return (isInkind && p.commitment_disbursements === 'disbursement') ? 1 : 0; 
+						};
+					} else {
+						returnFunc = (p) => {
+							const isInkind = p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support";
+							return (isInkind && p.commitment_disbursements === 'commitment') ? 1 : 0; 
+						};
+					}
+				}
+
+				if (noValueReported || allValuesUnspec) return unspecified;
 				else if (iso === 'ghsa')
-					return d[moneyField];
+					return returnFunc(d);
 				else if (d[expectedNameOrigField] && d[expectedNameOrigField] !== expectedName)
-					return 'Specific amount unknown';
+					return unspecified;
 				else if (expectedName !== d[expectedNameField])
-					return 'Specific amount unknown';
-				else return d[moneyField];
+					return unspecified;
+				else return returnFunc(d);
 			};
+
+			function getJeeCellValue () {
+				// if the cell is zero except for 
+			}
 
 			// define column data
 			let headerData = [];
@@ -164,9 +183,10 @@
 						return 'None';
 					},
 				},
-				{ name: 'Committed', value: 'total_committed', type: 'money' },
-				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
-				{ name: 'In-kind Contributions', value: 'total_other', type: 'number' },
+				{ name: 'Committed Funds', value: 'total_committed', type: 'money' },
+				{ name: 'Disbursed Funds', value: 'total_spent', type: 'money' },
+				{ name: 'Committed In-kind Projects', value: 'total_other_c', type: 'num' },
+				{ name: 'Disbursed In-kind Projects', value: 'total_other_d', type: 'num' },
 				];
 			} else if (currentInfoTab === 'cc') {
 				headerData = [
@@ -178,15 +198,16 @@
 						return cap ? cap.name : d.cc;
 					},
 				},
-				{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { if (d.unspecified) return 'Specific amount unknown'; else return d.total_committed; }},
-				{ name: 'Disbursed', value: 'total_spent', type: 'money' },
-				{ name: 'In-kind Contributions', value: 'total_other', type: 'number' },
+				{ name: 'Committed Funds', value: 'total_committed', type: 'money', valueFunc: (d) => { if (d.unspecified) return 'Specific amount unknown'; else return d.total_committed; }},
+				{ name: 'Disbursed Funds', value: 'total_spent', type: 'money' },
+				{ name: 'Committed In-kind Projects', value: 'total_other_c', type: 'num' },
+				{ name: 'Disbursed In-kind Projects', value: 'total_other_d', type: 'num' },
 				];
 			} else if (currentInfoTab === 'inkind') {
 				headerData = [
 				{ name: 'Provider', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
 				{ name: 'Recipient', value: 'recipient_name', value2: 'recipient_name_orig', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; }  },
-				// { name: 'Support Type', value: 'assistance_type' },
+				{ name: 'Commitment or Disbursement', value: 'commitment_disbursements', valueFunc: (p) => { const lower = p.commitment_disbursements; return lower.charAt(0).toUpperCase() + lower.substr(1); }},
 				{ name: 'Description', value: 'project_name' },
 				];
 				// headerData = [
@@ -208,6 +229,9 @@
 			} else if (currentInfoTab === 'country') {
 				const totalByCountry = {};
 				allPayments = App.getProjectsIncludingGroups(App.fundingData, moneyFlow, iso);
+				if (iso === 'ghsa') {
+					allPayments = Util.uniqueCollection(allPayments, 'project_id');
+				}
 				allPayments.filter(payment => payment.assistance_type.toLowerCase() !== 'in-kind support' && payment.assistance_type.toLowerCase() !== 'other support').forEach((p) => {
 					const dc = p.donor_name_orig || p.donor_name;
 					// const dc = p.donor_code;
@@ -247,7 +271,10 @@
 					totalByCe[ce] = {
 						total_committed: 0,
 						total_spent: 0,
-						total_other: 0,
+						total_other_d: 0,
+						total_other_c: 0,
+						// money_unspec: true,
+						// inkind_unspec: true,
 					};
 				});
 				allPayments.forEach((p) => {
@@ -264,15 +291,17 @@
 						});
 						if (hasCe) {
 							hasACe = true;
-							totalByCe[ce].total_committed += p.total_committed;
-							totalByCe[ce].total_spent += p.total_spent;
-							totalByCe[ce].total_other += (p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support") ? 1 : 0;
+							totalByCe[ce].total_committed += getMoneyCellValue(p, 'total_committed', {unspecifiedIsZero: true});
+							totalByCe[ce].total_spent += getMoneyCellValue(p, 'total_spent', {unspecifiedIsZero: true});
+							totalByCe[ce].total_other_d += getMoneyCellValue(p, 'total_other_d', {unspecifiedIsZero: true});
+							totalByCe[ce].total_other_c += getMoneyCellValue(p, 'total_other_c', {unspecifiedIsZero: true});
 						}
 					});
 					if (!hasACe) {
-						totalByCe.None.total_committed += p.total_committed;
-						totalByCe.None.total_spent += p.total_spent;
-						totalByCe.None.total_other += (p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support") ? 1 : 0;
+						totalByCe.None.total_committed += getMoneyCellValue(p, 'total_committed', {unspecifiedIsZero: true});
+						totalByCe.None.total_spent += getMoneyCellValue(p, 'total_spent', {unspecifiedIsZero: true});
+						totalByCe.None.total_other_d += getMoneyCellValue(p, 'total_other_d', {unspecifiedIsZero: true});
+						totalByCe.None.total_other_c += getMoneyCellValue(p, 'total_other_c', {unspecifiedIsZero: true});
 					}
 				});
 				for (const ce in totalByCe) {
@@ -282,7 +311,8 @@
 						ce,
 						total_committed: totalByCe[ce].total_committed,
 						total_spent: totalByCe[ce].total_spent,
-						total_other: totalByCe[ce].total_other,
+						total_other_d: totalByCe[ce].total_other_d,
+						total_other_c: totalByCe[ce].total_other_c,
 					});
 				}
 			} else if (currentInfoTab === 'cc') {
@@ -291,21 +321,24 @@
 					totalByCc[cc.id] = {
 						total_committed: 0,
 						total_spent: 0,
-						total_other: 0,
+						total_other_d: 0,
+						total_other_c: 0,
 					};
 				});
 				allPayments.forEach((p) => {
 					p.core_capacities.forEach((cc) => {
 						if (totalByCc[cc]) {
-							totalByCc[cc].total_committed += p.total_committed;
-							totalByCc[cc].total_spent += p.total_spent;
-							totalByCc[cc].total_other += (p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support") ? 1 : 0;
+							totalByCc[cc].total_committed += getMoneyCellValue(p, 'total_committed', {unspecifiedIsZero: true});
+							totalByCc[cc].total_spent += getMoneyCellValue(p, 'total_spent', {unspecifiedIsZero: true});
+							totalByCc[cc].total_other_d += getMoneyCellValue(p, 'total_other_d', {unspecifiedIsZero: true});
+							totalByCc[cc].total_other_c += getMoneyCellValue(p, 'total_other_c', {unspecifiedIsZero: true});
 						}
 					});
-					if (!p.core_capacities.length) {
-						totalByCc.None.total_committed += p.total_committed;
-						totalByCc.None.total_spent += p.total_spent;
-						totalByCc.None.total_other += (p.assistance_type.toLowerCase() === "in-kind support" || p.assistance_type.toLowerCase() === "other support") ? 1 : 0;
+					if (!p.core_capacities.length || (p.core_capacities.length === 1 && p.core_capacities[0] === "")) {
+						totalByCc.None.total_committed += getMoneyCellValue(p, 'total_committed', {unspecifiedIsZero: true});
+						totalByCc.None.total_spent += getMoneyCellValue(p, 'total_spent', {unspecifiedIsZero: true});
+						totalByCc.None.total_other_d += getMoneyCellValue(p, 'total_other_d', {unspecifiedIsZero: true});
+						totalByCc.None.total_other_c += getMoneyCellValue(p, 'total_other_c', {unspecifiedIsZero: true});
 					}
 				});
 				for (const cc in totalByCc) {
@@ -315,11 +348,11 @@
 							cc,
 							total_committed: totalByCc[cc].total_committed,
 							total_spent: totalByCc[cc].total_spent,
-							total_other: totalByCc[cc].total_other,
+							total_other_d: totalByCc[cc].total_other_d,
+							total_other_c: totalByCc[cc].total_other_c,
 						});
 				}
 			} else if (currentInfoTab === 'inkind') {
-				// paymentTableData = allPayments.slice(0).filter(payment => payment.assistance_type.toLowerCase() === 'in-kind support');
 				paymentTableData = App.getInkindSupportProjects(App.fundingData, moneyFlow, iso);
 			} 
 
@@ -336,7 +369,7 @@
 			headers.enter().append('th')
 			.merge(headers)
 			.classed('money-cell', d => d.type === 'money')
-			.classed('inkind-cell', d => d.value === 'total_other')
+			.classed('inkind-cell', d => d.value === 'total_other_c' || d.value === 'total_other_d')
 			.text(d => d.name);
 
 			const infoTbody = infoTable.select('tbody');
@@ -357,7 +390,7 @@
 			cells.enter().append('td')
 			.merge(cells)
 			.classed('money-cell', d => d.colData.type === 'money')
-			.classed('inkind-cell', d => d.colData.value === 'total_other')
+			.classed('inkind-cell', d => d.colData.value === 'total_other_d' || d.colData.value === 'total_other_c')
 			.html(function(d) {
 				let cellValue = '';
 				if (d.colData.valueFunc) {
@@ -367,7 +400,6 @@
 				} else {
 					cellValue = d.rowData[d.colData.value];
 				}
-				let dataSortValue = cellValue;
 				if (cellValue === 'Specific amount unknown') {
 					d3.select(this).attr('data-sort', -1000);
 					return cellValue;
@@ -376,7 +408,10 @@
 					d3.select(this).attr('data-sort', App.formatMoneyFull(cellValue));
 					return App.formatMoneyFull(cellValue);
 				}
-
+				if (d.colData.value === 'total_other_c' || d.colData.value === 'total_other_d') {
+					d3.select(this).attr('data-sort', cellValue);
+					return Util.comma(cellValue);
+				}
 				
 				return cellValue;
 			});
