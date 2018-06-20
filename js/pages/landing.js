@@ -219,7 +219,8 @@
 			const receivedFunc = (supportType === 'financial') ? App.getTotalReceived : App.getInkindReceived;
 			const funderNoun = (supportType === 'financial') ? 'Funder' : 'Provider';
 			const dNoun = (supportType === 'financial') ? 'Disbursed' : 'Provided';
-			$('.fund-table-title .text').text('Top ' + funderNoun + 's');
+			$('.fund-table-title .text').text(`Top ${funderNoun}s (${App.dataStartYear} - ${App.dataEndYear})`);
+			$('.rec-table-title .text').text(`Top Recipients (${App.dataStartYear} - ${App.dataEndYear})`);
 			$('.fund-col-name').text(funderNoun);
 			$('.d-col-name').text(dNoun);
 
@@ -384,76 +385,6 @@
 					}
 				}
 			}
-
-			// // add non-countries funders
-			// let otherFunders = false;
-			// fundsByRegion['Other Funders'] = { 'Other Funders': {} };
-			// for (const iso in App.fundingLookup) {
-			// 	if (!App.countries.find(c => c.ISO2 === iso)) {
-			// 		fundsByRegion['Other Funders']['Other Funders'][iso] = {
-			// 			totalFunded: d3.sum(App.fundingLookup[iso], d => totalFunc(d)),
-			// 			totalReceived: 0,
-			// 			fundsByC: {},
-			// 		};
-			// 		App.fundingLookup[iso].forEach((p) => {
-			// 			const value = totalFunc(p);
-			// 			if (value) {
-			// 				otherFunders = true;
-			// 				const rIso = p.recipient_country;
-			// 				if (!fundsByRegion['Other Funders']['Other Funders'][iso].fundsByC[rIso]) {
-			// 					fundsByRegion['Other Funders']['Other Funders'][iso].fundsByC[rIso] = 0;
-			// 				}
-			// 				fundsByRegion['Other Funders']['Other Funders'][iso].fundsByC[rIso] += value;
-			// 			}
-			// 		});
-			// 	}
-			// }
-
-			// if (!otherFunders) delete fundsByRegion['Other Funders'];
-
-			// // add non-countries
-			// fundsByRegion['Other Recipients'] = { 'Other Recipients': {} };
-			// for (const iso in App.recipientLookup) {
-			// 	if (App.countries.find(c => c.ISO2 === iso && c.country === false)) {
-			// 		fundsByRegion['Other Recipients']['Other Recipients'][iso] = {
-			// 			totalReceived: d3.sum(App.recipientLookup[iso], d => totalFunc(d)),
-			// 			totalFunded: 0,
-			// 			fundsByC: {},
-			// 		};
-			// 		// App.recipientLookup[iso].forEach((p) => {
-			// 		// 	const value = totalFunc(p);
-			// 		// 	if (value) {
-			// 		// 		const rIso = p.recipient_country;
-			// 		// 		if (!fundsByRegion['Other Recipients']['Other Recipients'][iso].fundsByC[rIso]) {
-			// 		// 			fundsByRegion['Other Recipients']['Other Recipients'][iso].fundsByC[rIso] = 0;
-			// 		// 		}
-			// 		// 		fundsByRegion['Other Recipients']['Other Recipients'][iso].fundsByC[rIso] += value;
-			// 		// 	}
-			// 		// });
-			// 	}
-			// }
-
-			// // add non-countries
-			// fundsByRegion['Other Funders / Recipients'] = { 'Other Funders / Recipients': {} };
-			// for (const iso in App.recipientLookup) {
-			// 	if (App.countries.find(c => c.ISO2 === iso && c.country === false)) {
-			// 		fundsByRegion['Other Funders / Recipients']['Other Funders / Recipients'][iso] = {
-			// 			totalReceived: d3.sum(App.recipientLookup[iso], d => totalFunc(d)),
-			// 			totalFunded: 0,
-			// 			fundsByC: {},
-			// 		};
-			// 		App.recipientLookup[iso].forEach((p) => {
-			// 			const value = totalFunc(p);
-			// 			if (value) {
-			// 				const rIso = p.recipient_country;
-			// 				if (!fundsByRegion['Other Funders / Recipients']['Other Funders / Recipients'][iso].fundsByC[rIso]) {
-			// 					fundsByRegion['Other Funders / Recipients']['Other Funders / Recipients'][iso].fundsByC[rIso] = 0;
-			// 				}
-			// 				fundsByRegion['Other Funders / Recipients']['Other Funders / Recipients'][iso].fundsByC[rIso] += value;
-			// 			}
-			// 		});
-			// 	}
-			// }
 
 			// build chord chart data
 			for (const r in fundsByRegion) {
