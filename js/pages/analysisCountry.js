@@ -412,7 +412,10 @@
 
             let totalSpent = 0;
             let totalCommitted = 0;
-            lookup[iso].forEach((p) => {
+
+            const projects = (iso !== 'ghsa') ? lookup[iso] : Util.uniqueCollection(lookup[iso], 'project_id');
+            projects.forEach((p) => {
+            // lookup[iso].forEach((p) => {
                 ccs.forEach((cc) => {
                     if (cc === 'General IHR Implementation') {
                     	// General IHR Implementation
@@ -1017,7 +1020,10 @@
 			const countryInd = (moneyType === 'd') ? 'recipient_country' : 'donor_code';
 			const catData = [];
 			const fundsByCat = {};
-			lookup[iso].forEach((p) => {
+
+			const projects = (iso !== 'ghsa') ? lookup[iso] : Util.uniqueCollection(lookup[iso], 'project_id');
+			projects.forEach((p) => {
+			// lookup[iso].forEach((p) => {
 				const recIso = p[countryInd];
 				const catValues = p.core_capacities;
 				catValues.forEach((c) => {
@@ -1155,7 +1161,8 @@
             }
             const codeField = moneyType === 'r' ? 'recipient_country' : 'donor_code';
             const unspecField = moneyType === 'r' ? 'recipient_amount_unspec' : 'donor_amount_unspec';
-            lookup[iso].forEach((p) => {
+            const projects = (iso !== 'ghsa') ? lookup[iso] : Util.uniqueCollection(lookup[iso], 'project_id');
+            projects.forEach((p) => {
             	if (iso !== 'ghsa' && (iso !== p[codeField] || p[unspecField] === true)) return;
                 for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
                     fundsByYear[i].total_committed += p.committed_by_year[i];
