@@ -271,6 +271,8 @@
 			const totalReceivedCommitted = App.getTotalReceived(iso, {committedOnly: true});
 			const projectsIncludingGroups = App.getProjectsIncludingGroups(App.fundingData, moneyType, iso);
 			lookup[iso] = projectsIncludingGroups; // TODO check if this breaks things
+			console.log('lookup[iso]')
+			console.log(lookup[iso])
 
 			if (moneyType === 'd') {
 				hasNoData = projectsIncludingGroups === undefined || projectsIncludingGroups.length === 0;
@@ -1021,7 +1023,13 @@
 			const catData = [];
 			const fundsByCat = {};
 
-			const projects = (iso !== 'ghsa') ? lookup[iso] : Util.uniqueCollection(lookup[iso], 'project_id');
+			let projects = [];
+			if (iso !== 'ghsa') {
+				projects = App.getFinancialProjectsWithAmounts(lookup[iso], moneyType, iso);
+			} else {
+				projects = Util.uniqueCollection(lookup[iso], 'project_id')
+			}
+
 			projects.forEach((p) => {
 			// lookup[iso].forEach((p) => {
 				const recIso = p[countryInd];
