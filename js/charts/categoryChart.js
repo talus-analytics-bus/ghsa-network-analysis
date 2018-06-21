@@ -167,6 +167,8 @@
 				.attr('transform', d => `translate(0, ${y(d.name)})`);
 
 			barGroups = newGroups.merge(barGroups);
+			console.log('data');
+			console.log(data);
 
 			barGroups.selectAll('rect')
 				.data(d => d.children.map(c => ({ cc: d.name, country: c })))
@@ -182,9 +184,12 @@
 					if ($(this).hasClass('tooltipstered')) {
 						$(this).tooltipster('destroy');
 					}
+					console.log('d')
+					console.log(d)
 					$(this).tooltipster({
 						content: `<b>Core Capacity:</b> ${d.cc}` +
-						`<br><b>${oppNoun}:</b> ${App.getCountryName(d.country.iso)}` +
+						`<br><b>${oppNoun}:</b> ${d.country.name}` +
+						// `<br><b>${oppNoun}:</b> ${App.getCountryName(d.country.iso)}` +
 						`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.country.total_committed)}` +
 						`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.country.total_spent)}`,
 					});

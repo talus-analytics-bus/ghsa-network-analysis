@@ -1036,6 +1036,23 @@
 				projects = Util.uniqueCollection(lookup[iso], 'project_id')
 			}
 
+			/**
+			 * Returns the name of the funder/recipient of the project that should be displayed
+			 * in the UI. If the funder/recipient is a group of entities then the group of
+			 * entities is displayed.
+			 * @param  {object} p         The project
+			 * @param  {string} moneyType 'd' (funded) or 'r' (received)
+			 * @return {string}           The funder/recipient name to display
+			 */
+			function getEntityDisplayName (p, moneyType) {
+				// if funded, need recipient name
+				if (moneyType === 'd') {
+					return p.recipient_name_orig || p.recipient_name;
+				} else {
+					return p.donor_name_orig || p.donor_name;
+				}
+			};
+
 			projects.forEach((p) => {
 			// lookup[iso].forEach((p) => {
 				const recIso = p[countryInd];
@@ -1045,6 +1062,7 @@
 					if (!fundsByCat[c][recIso]) {
 						fundsByCat[c][recIso] = {
 							iso: recIso,
+							name: getEntityDisplayName(p, moneyType),
 							total_committed: 0,
 							total_spent: 0,
 						};
