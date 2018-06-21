@@ -101,7 +101,7 @@
 			.style('font-size', '14px')
 			.text('Core Capacity');
 
-		chart.update = (rawData, newSelector = selected) => {
+		chart.update = (rawData, newSelector = selected, params = {}) => {
 			// determine whether this is a country with jee scores available
 			const showJee = param.showJee;
 			const scores = param.scores; // undefined if not available
@@ -167,8 +167,6 @@
 				.attr('transform', d => `translate(0, ${y(d.name)})`);
 
 			barGroups = newGroups.merge(barGroups);
-			console.log('data');
-			console.log(data);
 
 			barGroups.selectAll('rect')
 				.data(d => d.children.map(c => ({ cc: d.name, country: c })))
@@ -184,15 +182,23 @@
 					if ($(this).hasClass('tooltipstered')) {
 						$(this).tooltipster('destroy');
 					}
-					console.log('d')
-					console.log(d)
-					$(this).tooltipster({
-						content: `<b>Core Capacity:</b> ${d.cc}` +
-						`<br><b>${oppNoun}:</b> ${d.country.name}` +
-						// `<br><b>${oppNoun}:</b> ${App.getCountryName(d.country.iso)}` +
-						`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.country.total_committed)}` +
-						`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.country.total_spent)}`,
-					});
+					if (params.isGhsaPage === true) {
+						$(this).tooltipster({
+							content: `<b>Core Capacity:</b> ${d.cc}` +
+							`<br><b>Recipient:</b> ${d.country.name}` +
+							`<br><b>Funder:</b> ${d.country.otherName}` +
+							`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.country.total_committed)}` +
+							`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.country.total_spent)}`,
+						});
+					} else {
+						$(this).tooltipster({
+							content: `<b>Core Capacity:</b> ${d.cc}` +
+							`<br><b>${oppNoun}:</b> ${d.country.name}` +
+							`<br><b>Total Committed Funds:</b> ${App.formatMoney(d.country.total_committed)}` +
+							`<br><b>Total Disbursed Funds:</b> ${App.formatMoney(d.country.total_spent)}`,
+						});
+					}
+					
 				});
 
 			// set axes labels

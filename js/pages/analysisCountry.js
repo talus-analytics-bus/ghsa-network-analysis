@@ -271,8 +271,6 @@
 			const totalReceivedCommitted = App.getTotalReceived(iso, {committedOnly: true});
 			const projectsIncludingGroups = App.getProjectsIncludingGroups(App.fundingData, moneyType, iso);
 			lookup[iso] = projectsIncludingGroups; // TODO check if this breaks things
-			console.log('lookup[iso]')
-			console.log(lookup[iso])
 
 			if (moneyType === 'd') {
 				hasNoData = projectsIncludingGroups === undefined || projectsIncludingGroups.length === 0;
@@ -618,7 +616,6 @@
 
 			const nameKey = isGhsaPage ? 'entity_name_other' : 'entity_name';
 			fundedData = _.sortBy(fundedData, d => {
-			// console.log(d);
 				return d[nameKey].toLowerCase();
 			});
 
@@ -1063,6 +1060,7 @@
 						fundsByCat[c][recIso] = {
 							iso: recIso,
 							name: getEntityDisplayName(p, moneyType),
+							otherName: getEntityDisplayName(p, moneyType === 'd' ? 'r' : 'd'),
 							total_committed: 0,
 							total_spent: 0,
 						};
@@ -1131,7 +1129,7 @@
 				scores: App.scoresByCountry[iso],
 			});
 
-			chart.update(catData, selected);
+			chart.update(catData, selected, {isGhsaPage});
 
 			$('input[name=fundtype]').change(function(){
 				// Get selection and set all radio buttons to that
@@ -1162,9 +1160,9 @@
 
 			const updateData = (fundTypeChoice) => {
 				if (filterData === 'small') {
-					chart.update(smallData, fundTypeChoice);
+					chart.update(smallData, fundTypeChoice, {isGhsaPage});
 				} else {
-					chart.update(catData, fundTypeChoice);
+					chart.update(catData, fundTypeChoice, {isGhsaPage});
 				}
 				if (fundTypeChoice === 'total_spent') {
 					$('.money-type').text('disbursed');
