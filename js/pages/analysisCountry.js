@@ -415,7 +415,13 @@
             let totalSpent = 0;
             let totalCommitted = 0;
 
-            const projects = (iso !== 'ghsa') ? lookup[iso] : Util.uniqueCollection(lookup[iso], 'project_id');
+            // const projects = (iso !== 'ghsa') ? lookup[iso] : Util.uniqueCollection(lookup[iso], 'project_id');
+            let projects = [];
+			if (iso !== 'ghsa') {
+				projects = App.getFinancialProjectsWithAmounts(lookup[iso], moneyType, iso);
+			} else {
+				projects = Util.uniqueCollection(lookup[iso], 'project_id')
+			}
             projects.forEach((p) => {
             // lookup[iso].forEach((p) => {
                 ccs.forEach((cc) => {
