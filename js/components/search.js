@@ -63,17 +63,17 @@
 
 		// define domain
 		const countries = App.countries.slice(0);
-		if (param.includeNonCountries) {
-			App.codeToNameMap.entries().forEach((d) => {
-				if (!App.countries.find(c => c.ISO2 === d.key)) {
-					countries.push({
-						ISO2: d.key,
-						ISO3: d.key,
-						NAME: d.value,
-					});
-				}
-			});
-		}
+		// if (param.includeNonCountries) {
+		// 	App.codeToNameMap.entries().forEach((d) => {
+		// 		if (!App.countries.find(c => c.ISO2 === d.key)) {
+		// 			countries.push({
+		// 				ISO2: d.key,
+		// 				ISO3: d.key,
+		// 				NAME: d.value,
+		// 			});
+		// 		}
+		// 	});
+		// }
 
 		// initialize search engine
 		const fuse = new Fuse(countries, {
