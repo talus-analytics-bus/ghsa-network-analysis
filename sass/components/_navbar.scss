@@ -2,12 +2,12 @@
 	padding-left: 15px;
 	padding-right: 25px;
 	border-bottom: $border;
-	@include gradient(#fff, #f0f0f0);
 }
 .navbar .navbar-brand {
-	color: #555;
-	padding: 7px 10px;
+	padding-top: 3px;
 	cursor: pointer;
+  	height: 40px;
+	width: 150px;
 }
 .navbar .navbar-nav > li {
 	cursor: pointer;

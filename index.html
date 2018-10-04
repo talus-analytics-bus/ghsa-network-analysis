@@ -5,11 +5,15 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122495993-1"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+		window.dataLayer = window.dataLayer || [];
 
-        gtag('config', 'UA-122495993-1');
+		function gtag() {
+			dataLayer.push(arguments);
+		}
+
+		gtag('js', new Date());
+
+		gtag('config', 'UA-122495993-1');
     </script>
 
 
@@ -33,56 +37,46 @@
 
 </head>
 
-<body>
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <div class="navbar-brand">
-                    <a href="https://ghss.georgetown.edu/" target="_blank">
-                    <img class="logo gtown-logo" alt="Georgetown University" src="img/logo-georgetown.png"/>
-                </a>
-                    <a href="http://www.talusanalytics.com" target="_blank">
-                    <img class="logo talus-logo" alt="Talus Analytics" src="img/talus-logo.png"/>
-                </a>
-                    <span>GHS Tracking Dashboard</span>
-                </div>
-            </div>
-            <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a page="">Home</a></li>
-                    <li><a page="about">About</a></li>
-                    <li><a page="map">Map</a></li>
-                    <li><a page="analysis">Network</a></li>
-                    <!-- <li><a page="analysis/ghsa/d">GHSA</a></li> -->
-                    <li><a page="submit">Submit Data</a></li>
-                    <li><a page="settings">Settings</a></li>
-                </ul>
-            </div>
-            <!-- /.navbar-collapse -->
+<body class="light-theme">
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="navbar-brand"><a page="" class="logo-image"></a></div>
         </div>
-        <!-- /.container-fluid -->
-    </nav>
-    <div id="page-content"></div>
+        <div class="collapse navbar-collapse" id="navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a page="">Explore</a></li>
+                <li><a page="">Analysis</a></li>
+                <li><a page="">Data</a></li>
+                <li><a page="about">About</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>
+<div id="page-content"></div>
 
 
-    <!-- General Libraries -->
-    <!--<script src="lib/jquery-3.2.1.min.js"></script>
+<!-- General Libraries -->
+<!--<script src="lib/jquery-3.2.1.min.js"></script>
 <script src="lib/d3.min.js"></script>
 <script src="lib/popper.min.js"></script>
 <script src="lib/bootstrap.min.js"></script> -->
-    <!-- Routing Libraries -->
-    <!--<script src="lib/signals.min.js"></script>
+<!-- Routing Libraries -->
+<!--<script src="lib/signals.min.js"></script>
 <script src="lib/crossroads.min.js"></script>
 <script src="lib/hasher.min.js"></script>
 <script src="lib/handlebars-v3.0.0.js"></script>-->
-    <!-- Miscellaneous Libraries -->
-    <!--<script src="lib/wrap.js"></script>
+<!-- Miscellaneous Libraries -->
+<!--<script src="lib/wrap.js"></script>
 <script src="lib/fuse.min.js"></script>
 <script src="lib/nprogress.min.js"></script>
 <script src="lib/topojson.v2.min.js"></script>
@@ -93,38 +87,36 @@
 <script src="lib/jquery.noty.packaged.min.js"></script>
 <script src="lib/tooltipster.bundle.min.js"></script>
 <script src="lib/tooltipster-follower.min.js"></script>-->
-    <!--<script src="lib/underscore-min.js"></script>-->
-    <!--<script src="lib/jquery.nicescroll.min.js"></script>-->
+<!--<script src="lib/underscore-min.js"></script>-->
+<!--<script src="lib/jquery.nicescroll.min.js"></script>-->
 
-    <script src="build/lib.min.js"></script>
-
-
+<script src="build/lib.min.js"></script>
 
 
-    <!-- Project Specific Files -->
-    <script src="js/utility.js"></script>
-    <script src="js/routing.js"></script>
-    <script src="js/app.js"></script>
-    <script src="js/charts/categoryChart.js"></script>
-    <script src="js/charts/circlePack.js"></script>
-    <script src="js/charts/networkMap.js"></script>
-    <script src="js/charts/progressCircles.js"></script>
-    <script src="js/charts/timeChart.js"></script>
-    <script src="js/charts/valueSquares.js"></script>
-    <script src="js/components/filters.js"></script>
-    <script src="js/components/map.js"></script>
-    <script src="js/components/search.js"></script>
-    <script src="js/components/slider.js"></script>
-    <script src="js/pages/landing.js"></script>
-    <script src="js/pages/analysis.js"></script>
-    <script src="js/pages/analysisCountry.js"></script>
-    <script src="js/pages/analysisPair.js"></script>
-    <script src="js/pages/analysisTable.js"></script>
-    <script src="js/pages/home.js"></script>
-    <script src="js/pages/settings.js"></script>
-    <script src="js/pages/submit.js"></script>
-    <script src="js/init.js"></script>
-    <!--<script src="build/bundle.min.js"></script>-->
+<!-- Project Specific Files -->
+<script src="js/utility.js"></script>
+<script src="js/routing.js"></script>
+<script src="js/app.js"></script>
+<script src="js/charts/categoryChart.js"></script>
+<script src="js/charts/circlePack.js"></script>
+<script src="js/charts/networkMap.js"></script>
+<script src="js/charts/progressCircles.js"></script>
+<script src="js/charts/timeChart.js"></script>
+<script src="js/charts/valueSquares.js"></script>
+<script src="js/components/filters.js"></script>
+<script src="js/components/map.js"></script>
+<script src="js/components/search.js"></script>
+<script src="js/components/slider.js"></script>
+<script src="js/pages/landing.js"></script>
+<script src="js/pages/analysis.js"></script>
+<script src="js/pages/analysisCountry.js"></script>
+<script src="js/pages/analysisPair.js"></script>
+<script src="js/pages/analysisTable.js"></script>
+<script src="js/pages/home.js"></script>
+<script src="js/pages/settings.js"></script>
+<script src="js/pages/submit.js"></script>
+<script src="js/init.js"></script>
+<!--<script src="build/bundle.min.js"></script>-->
 </body>
 
 </html>

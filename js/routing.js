@@ -5,6 +5,7 @@ const Routing = {};
 	const partials = {};
 
 	const hbTemplates = [
+		'home',
 		'about',
 		'analysis-country',
 		'analysis-pair',
@@ -109,13 +110,12 @@ const Routing = {};
 
 	crossroads.ignoreState = true;
 	Routing.initializeRoutes = () => {
-		console.log(templates);
 		// setup crossroads for routing
 		crossroads.addRoute('/map', () => {
 			loadPage('map', App.initHome);
 		});
 		crossroads.addRoute('/', () => {
-			loadPage('landing', App.initLanding, 'country');
+			loadPage('home', App.initLanding, 'country');
 		});
 		crossroads.addRoute('/analysis', () => {
 			loadPage('analysis', App.initAnalysis, 'network');
