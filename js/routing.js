@@ -1,18 +1,115 @@
 const Routing = {};
 
 (() => {
-	// Precompiles all html handlebars templates on startup.
-	// Compiling is front-loaded so the compiling does not happen on page changes.
 	const templates = {};
-	Routing.precompileTemplates = () => {
+	const partials = {};
+
+	const hbTemplates = [
+		'about',
+		'analysis-country',
+		'analysis-pair',
+		'analysis-table',
+		'analysis',
+		'glossary',
+		'landing',
+		'map',
+		'settings',
+		'submit',
+	]; // Add the name of the new template here
+	const hbPartials = []; // Add name of new partial here
+	const hbDirectory = 'templates/'; // Don't touch
+	const hbFileSuffix = '.hbs'; // Don't touch
+
+
+	//
+	// Logic: 	1) Load the handlebar templates from disk
+	//			2) Precompile the templates
+	//			3) Initialize the routes
+	//		Now the handlebar templates / partials are able to be used.
+	//
+	//
+	// The template compilation will happen once all of the handlebar templates are loaded into body.
+	//
+	Routing.prepareHandlebarPartials = (callback) => {
+
+		if (hbPartials.length === 0) {
+			if (callback) {
+				callback()
+			} else {
+				return;
+			}
+		}
+
+		let hbCount = 0; // This is the counter.
+		hbPartials.forEach((d) => {
+			$.ajax({
+				url: `${hbDirectory}${d}-partial${hbFileSuffix}`,
+				cache: true,
+				success: function (data, status, error) {
+					source = data;
+					$('body').append(data);
+					hbCount++;
+					if (hbCount === hbPartials.length) Routing.registerPartials(callback);
+				},
+				error: function (data, status, error) {
+
+					// ToDo write the error handler details here
+				},
+			});
+		});
+	};
+
+	Routing.prepareHandlebarTemplates = (callback) => {
+		let count = 0; // This is the counter.
+		hbTemplates.forEach((d) => {
+			$.ajax({
+				url: `${hbDirectory}${d}-template${hbFileSuffix}`,
+				cache: true,
+				success: function (data, status, error) {
+					source = data;
+					$('body').append(data);
+					count++;
+					if (count === hbTemplates.length) Routing.precompileTemplates(callback);
+				},
+				error: function (data, status, error) {
+					// ToDo write the error handler details here
+				},
+			});
+		});
+	};
+
+	Routing.prepareHandlebar = () => {
+		Routing.prepareHandlebarPartials(() => {
+			Routing.prepareHandlebarTemplates(() => {
+				Routing.initializeRoutes();
+			});
+		});
+	};
+
+	Routing.precompileTemplates = (callback) => {
 		$("script[type='text/x-handlebars-template']").each((i, e) => {
 			templates[e.id.replace('-template', '')] = Handlebars.compile($(e).html());
 		});
+
+		if (callback) {
+			callback();
+		}
+	};
+
+	Routing.registerPartials = (callback) => {
+		$("script[type='text/x-handlebars-partial']").each((i, e) => {
+			const name = e.id.replace('-template', '');
+			partials[name] = Handlebars.registerPartial(name, $(e).html());
+		});
+
+		if (callback) {
+			callback();
+		}
 	};
 
 	crossroads.ignoreState = true;
 	Routing.initializeRoutes = () => {
-
+		console.log(templates);
 		// setup crossroads for routing
 		crossroads.addRoute('/map', () => {
 			loadPage('map', App.initHome);

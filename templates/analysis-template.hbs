@@ -1,0 +1,186 @@
+<script id="analysis-template" type="text/x-handlebars-template">
+    <div class="analysis-container container">
+        <div class="analysis-global-content analysis-content">
+            <h3>International Funding Network</h3> {{!--
+                <div class="instructions">
+                    View network analysis of the flow of funds globally, or explore funding by funder or recipient.
+                </div> --}} {{!--
+                <div class="analysis-global-tab-container">
+                    <div class="btn-group">
+                        <div class="tab btn btn-default" tab="network">Global Network</div>
+                        <div class="tab btn btn-default" tab="country">Funding by Funder or Recipient</div>
+                    </div>
+                </div> --}}
+            <div class="global-tab-content-container tab-content-container">
+                <div class="global-tab-content tab-content" tab="network">
+                    <div class="">
+                        {{!--
+                        <div class="center"> --}}
+                        <div class="">
+                            {{!--
+                            <div class="title-container"> --}} {{!--
+                                        <h3>International Funding Network</h3> --}}
+                            <div class="description network">
+                                The figure below illustrates the flow of funds from funder to recipient. Countries and non-country funders are grouped along the outside of the circle, and lines through the center of the circle correspond to the transfer of funds from funder to recipient. Thicker lines represent larger amounts of funding commitments or disbursements. Hover over any line to see additional details on the funding amount or funders and recipients involved. Amounts shown here may differ from those shown elsewhere in this site because additional, estimated commitments and disbursements are included to enable visualization of more reported funding flows.
+                            </div>
+                        </div>
+                        <div class="network-map-no-content">
+                            <span class="text">There are no data with the combination of filters chosen.</span>
+                            <br>
+                            <div class="submit-data-btn btn btn-default margin-top-10">Submit Data</div>
+                        </div>
+                    </div>
+                    <div class="network-map-container">
+                        <div class="network-map-content"></div>
+                        <div class="network-right-column">
+                            <div class="network-map-options">
+                                <div class="network-country-search search-container">
+                                    <div class="form-group has-feedback">
+                                        <input type="text" class="country-search-input form-control" placeholder="search here...">
+                                        <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                                    </div>
+                                    <div class="live-search-results-container">
+                                        <div class="live-search-no-results-text">No results found</div>
+                                        <div class="live-search-results-contents"></div>
+                                    </div>
+                                </div>
+                                <div class="slider-box">
+                                    <div class="dropdown-label">Time Range</div>
+                                    <input class="time-slider slider" />
+                                </div>
+                                <div class="ghsa-toggle-options">
+                                    <div class="dropdown-label">Click to show:</div>
+                                    <div class="ind-type-filter">
+                                        <div class="radio-option">
+                                            <input type="radio" name="ind-network" ind="money" checked/>
+                                            <span>All Funding</span>
+                                        </div>
+                                        <div class="radio-option">
+                                            <input type="radio" name="ind-network" ind="ghsa" />
+                                            <span>GHSA Funding Only</span>
+                                            <img class="ghsa-info-img info-img" src="img/info.png" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="filter-box money-type-filter">
+                                    <div class="dropdown-label">Show flow by:</div>
+                                    <div class="radio-option">
+                                        <input type="radio" ind="committed" checked/>
+                                        <span>Amount Committed</span>
+                                        <img class="committed-info-img info-img" src="img/info.png" />
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" ind="disbursed" />
+                                        <span>Amount Disbursed</span>
+                                        <img class="disbursed-info-img info-img" src="img/info.png" />
+                                    </div><div class="ghsa-toggle-options">
+
+                                </div>
+                                    <div class="filter-box">
+                                        <div class="dropdown-label">Core Capacity</div>
+                                        <select class="cc-select form-control" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <div class="network-country-info">
+                                    <div class="nci-title"></div>
+                                    <div class="info-close-button">
+                                        <img class="close-icon" src="img/close.png" />
+                                    </div>
+                                    <div class="nci-donor-section nci-section">
+                                        <div class="nci-donor-value nci-value"></div>
+                                        <div class="nci-value-label">Total Disbursed Funds</div>
+                                    </div>
+                                    <div class="nci-recipient-section nci-section">
+                                        <div class="nci-recipient-value nci-value"></div>
+                                        <div class="nci-value-label">Total Received Funds</div>
+                                    </div>
+                                    <div class="nci-button-container">
+                                        <div class="nci-more-button btn btn-default">Show Details</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="source-text" style="position: relative; left: 10px;">
+                                <b>Source:</b> International Aid Transparency Initiative (IATI) registry via
+                                <a href="http://d-portal.org" target="_blank">d-portal</a>, 2014-2017.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="global-tab-content tab-content" tab="country">
+                        <div class="">
+                            <div class="">
+                                {{!--
+                                <div class="description-container">
+                                    <div class="description-content"> --}}
+                                <h3>International Funding by Funder/Recipient</h3>
+                                <div class="description">
+                                    The tables below identify the funders that have committed the most funds, and the recipients that have recieved the most funds. Click on any entry in the tables for additional detail on that funder or recipient's activities. For information on a funder or recipient not included on this list, search for that country or organization below.
+                                </div>
+                                <div class="table-country-search">
+                                    <div class="search-container">
+                                        <div class="form-group has-feedback">
+                                            <input type="text" class="country-search-input form-control" placeholder="search for a country or organization...">
+                                            <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                                        </div>
+                                        <div class="live-search-results-container">
+                                            <div class="live-search-no-results-text">No results found</div>
+                                            <div class="live-search-results-contents"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ghsa-toggle-options">
+                                    <div class="dropdown-label">Click to show:</div>
+                                    <div class="ind-type-filter">
+                                        <div class="radio-option">
+                                            <input type="radio" name="ind-country-global" ind="money" checked/>
+                                            <span>All Funding</span>
+                                        </div>
+                                        <div class="radio-option">
+                                            <input type="radio" name="ind-country-global" ind="ghsa" />
+                                            <span>GHSA Funding Only</span>
+                                            <img class="ghsa-info-img info-img" src="img/info.png" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-content row">
+                            <div class="col-sm-6">
+                                <h3 class="fund-table-title">Top Funders</h3>
+                                <table class="donor-table country-table table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <td>Funder</td>
+                                        <td>Committed</td>
+                                        <td>Disbursed</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-6">
+                                <h3 class="fund-table-title">Top Recipients</h3>
+                                <table class="recipient-table country-table table table-bordered table-hover">
+                                    <thead>
+                                    <tr>
+                                        <td>Recipient</td>
+                                        <td>Committed</td>
+                                        <td>Disbursed</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="source-text-row row">
+                            <div class="col-sm-12">
+                                <div class="source-text fund-table-source-text">
+                                    <b>Source:</b> International Aid Transparency Initiative (IATI) registry via
+                                    <a href="http://d-portal.org" target="_blank">d-portal</a>, 2014-2017.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</script>

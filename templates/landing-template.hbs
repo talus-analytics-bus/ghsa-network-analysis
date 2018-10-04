@@ -1,0 +1,118 @@
+<script id="landing-template" type="text/x-handlebars-template">
+    <div class="analysis-container landing-container container">
+        <div class="analysis-global-content analysis-content">
+            <h3>Welcome to the GHS Tracking Dashboard</h3> {{!--
+                <h3>International Funding by Funder/Recipient</h3> --}} {{!--
+                <div class="instructions">
+                    Explore funding by funder or recipient.
+                </div> --}}
+            <div class="home-image"></div>
+            <div class="global-tab-content-container">
+                <!-- <div class="global-tab-content-container tab-content-container"> -->
+                <div class="global-tab-content tab-content" tab="network">
+                    <div class="center">
+                        <div class="title-container">
+                            <h3>International Funding Network</h3>
+                            <div class="description network">
+                                The figure below illustrates the flow of funds from funder to recipient. Countries and non-country funders are grouped along the outside of the circle, and lines through the center of the circle correspond to the the transfer of funds from funder to recipient. Thicker lines represent larger amounts of funding commitments or disbursals. Hover over any line to see additional details on the funding amount or funders and recipients involved.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="global-tab-content tab-content" tab="country">
+                    <div class="landing-introduction-section">
+                        <div class="">
+                            {{!--
+                            <h3>International Funding by Funder/Recipient</h3> --}}
+                            <div class="description landing">
+                                The GHS Tracking Dashboard maps the flow of committed and disbursed funds for global health security. The tables below identify the funders that have committed the most funds, and the recipients that have recieved the most funds. Click on any entry in the tables, use the search bar, or click the buttons for additional detail on a funder or recipient's activities.
+                            </div>
+                            <div class="table-country-search landing-controls">
+                                <div class="search-container">
+                                    <div class="form-group has-feedback">
+                                        <input type="text" class="country-search-input form-control" placeholder="search for a country or organization...">
+                                        <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                                    </div>
+                                    <div class="live-search-results-container" style="z-index:10000;">
+                                        <div class="live-search-no-results-text">No results found</div>
+                                        <div class="live-search-results-contents"></div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary alt-btn btn-view-ghsa">View GHSA Details</button>
+                                <button class="btn btn-primary alt-btn btn-view-map">View Map</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="landing-controls-container">
+                        <div class="ghsa-toggle-options landing-page-options">
+                            <div class="dropdown-label">Click to show:</div>
+                            <div class="ind-type-filter-ghsa">
+                                <div class="radio-option">
+                                    <input type="radio" name="ghsa-toggle-landing" ind="money" checked/>
+                                    <span>All Funding</span>
+                                </div>
+                                <div class="radio-option">
+                                    <input type="radio" name="ghsa-toggle-landing" ind="ghsa" />
+                                    <span>GHSA Funding Only</span>
+                                    <img class="ghsa-info-img info-img" src="img/info.png" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="support-type-toggle-options landing-page-options">
+                            <div class="dropdown-label">Support type:</div>
+                            <div class="ind-type-filter">
+                                <div class="radio-option">
+                                    <label>
+                                        <input type="radio" name="supporttype" ind="financial" checked/>
+                                        Financial Support
+                                    </label>
+                                </div>
+                                <div class="radio-option">
+                                    <label>
+                                        <input type="radio" name="supporttype" ind="inkind" />
+                                        In-kind Support <img class="inkind-support-info-img info-img" src="img/info.png" /></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-content row">
+                        <div class="col-lg-6">
+                            <h3 class="fund-table-title"><span class="text">Top Funders</span> <button class="btn btn-sm btn-primary alt-btn btn-funders-map">View on Map</button></h3>
+                            <table class="donor-table country-table table table-bordered table-hover">
+                                <thead>
+                                <tr class="fund-header-row">
+                                    <td class="fund-col-name">Funder</td>
+                                    <td>Committed</td>
+                                    <td class="d-col-name">Disbursed</td>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-6">
+                            <h3 class="rec-table-title"><span class="text">Top Recipients</span> <button class="btn btn-sm btn-primary alt-btn btn-recipients-map">View on Map</button></h3>
+                            <table class="recipient-table country-table table table-bordered table-hover">
+                                <thead>
+                                <tr class="rec-header-row">
+                                    <td>Recipient</td>
+                                    <td>Committed</td>
+                                    <td class="d-col-name">Disbursed</td>
+                                </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="source-text-row row">
+                        <div class="col-sm-12">
+                            <div class="source-text fund-table-source-text">
+                                <b>Source:</b> International Aid Transparency Initiative (IATI) registry via
+                                <a href="http://d-portal.org" target="_blank">d-portal</a>, 2014-2017.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
