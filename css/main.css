@@ -1653,6 +1653,7 @@ b {
 
 .home-container {
   width: 100%;
+  min-height: 500px;
   height: 100%;
   display: -webkit-box;
   display: -moz-box;
@@ -1660,8 +1661,6 @@ b {
   display: -webkit-flex;
   display: flex;
   flex-flow: row wrap; }
-  .home-container div {
-    border: 1px solid red; }
   .home-container .left-pane {
     -webkit-box-flex: 1 1 300px;
     -moz-box-flex: 1 1 300px;
@@ -1673,7 +1672,8 @@ b {
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;
-    flex-flow: column nowrap; }
+    flex-flow: column nowrap;
+    justify-content: space-between; }
     .home-container .left-pane .welcome-container .welcome-text {
       font-size: 28px;
       text-transform: uppercase;
@@ -1693,7 +1693,20 @@ b {
     -moz-box-flex: 1 1 300px;
     -webkit-flex: 1 1 300px;
     -ms-flex: 1 1 300px;
-    flex: 1 1 300px; }
+    flex: 1 1 300px;
+    background-color: #F2F2F2;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between; }
+    .home-container .map-container .map-title {
+      font-size: 22px;
+      text-transform: uppercase;
+      color: #11315D;
+      font-family: 'Raleway', sans-serif; }
 
 .settings-page-container select {
   margin-top: 3px; }

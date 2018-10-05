@@ -114,8 +114,11 @@ const Routing = {};
 		crossroads.addRoute('/map', () => {
 			loadPage('map', App.initHome);
 		});
+		// crossroads.addRoute('/', () => {
+		// 	loadPage('landing', App.initLanding, 'country');
+		// });
 		crossroads.addRoute('/', () => {
-			loadPage('home', App.initLanding, 'country');
+			loadPage('home', App.initHome);
 		});
 		crossroads.addRoute('/analysis', () => {
 			loadPage('analysis', App.initAnalysis, 'network');

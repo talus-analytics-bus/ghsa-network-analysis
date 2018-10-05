@@ -1,19 +1,17 @@
 .home-container {
   width: 100%;
+  min-height: 500px;
   height: 100%;
 
   @include flexbox();
   flex-flow: row wrap;
-
-  div {
-    border: 1px solid red;
-  }
 
   .left-pane {
     @include flex(1 1 300px);
 
     @include flexbox();
     flex-flow: column nowrap;
+    justify-content: space-between;
 
     .welcome-container {
 
@@ -52,5 +50,18 @@
   }
   .map-container {
     @include flex(1 1 300px);
+
+    background-color: #F2F2F2;
+
+    @include flexbox();
+    flex-flow: column nowrap;
+    justify-content: space-between;
+
+    .map-title {
+      font-size: 22px;
+      text-transform: uppercase;
+      color: #11315D;
+      font-family: 'Raleway', sans-serif;
+    }
   }
 }

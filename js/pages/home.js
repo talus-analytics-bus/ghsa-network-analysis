@@ -81,7 +81,7 @@
 
 		// function for initializing the page
 		function init() {
-			$('body').addClass('dark');
+			// $('body').addClass('dark');
 
 			App.loadFundingData({ showGhsaOnly: params.showGhsaOnly === 'true' });
 			App.setSources();
