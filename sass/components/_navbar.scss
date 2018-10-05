@@ -1,32 +1,59 @@
 .navbar {
-	padding-left: 15px;
-	padding-right: 25px;
-	border-bottom: $border;
+  padding-left: 15px;
+  padding-right: 25px;
+  border-bottom: $light-border;
+  background-color: white;
+  height: 80px;
+  max-height: 80px;
+  .navbar-header {
+    .navbar-brand {
+      padding-top: 3px;
+      cursor: pointer;
+      width: 100%;
+      height: auto;
+      .logo {
+        display: inline-block;
+        max-height: 70px;
+        height: 80px;
+        margin-right: 10px;
+
+        width: 300px;
+        background-image: url('/img/logo-light.png');
+        background-repeat: no-repeat;
+        background-position: top left;
+        background-size: contain;
+
+      }
+      span:hover {
+        color: #000;
+      }
+
+      a:hover {
+        text-decoration: none;
+      }
+    }
+
+    @media (max-width: 576px) {   // default *smallest* bootstrap breakpoint
+      /* This defines the mobile view!! */
+      .navbar-brand {
+        width: auto;
+        .logo {
+          width: 100px;
+        }
+      }
+    }
+  }
+  .navbar-nav > li {
+    cursor: pointer;
+    margin-top: 10px;
+    &.active,
+    &:hover {
+      @include gradient(#e9e9e9, #e0e0e0);
+    }
+    & > a {
+      color: #555;
+    }
+  }
 }
-.navbar .navbar-brand {
-	padding-top: 3px;
-	cursor: pointer;
-  	height: 40px;
-	width: 150px;
-}
-.navbar .navbar-nav > li {
-	cursor: pointer;
-	&.active,
-	&:hover {
-		@include gradient(#e9e9e9, #e0e0e0);
-	}
-}
-.navbar .navbar-nav > li > a {
-	color: #555;
-}
-.navbar-brand img.logo {
-	display: inline-block;
-	height: 40px;
-	margin-right: 10px;
-}
-.navbar-brand span:hover {
-	color: #000;
-}
-.navbar-brand a:hover {
-	text-decoration: none;
-}
+
+
