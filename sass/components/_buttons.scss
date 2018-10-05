@@ -8,26 +8,65 @@
 // }
 
 .alt-btn {
-	background: rgb(5, 48, 97);
-	border: none;
+  background: rgb(5, 48, 97);
+  border: none;
 }
 
 .btn-view-ghsa,
 .btn-view-map {
-	top: -2px;
+  top: -2px;
+  position: relative;
+  left: 15px;
+  &.btn-view-map {
+    left: 30px;
+  }
+  &.map-btn {
+    vertical-align: text-top;
+    top: -8px;
     position: relative;
+    font-style: normal;
     left: 15px;
-    &.btn-view-map {
-    	left: 30px;
+  }
+  &.btn-hidden {
+    display: none;
+  }
+}
+
+.funder-recipient-toggle {
+  color: white;
+  text-transform: uppercase;
+  font-size: 16px;
+
+  $fundingColor: #597251;
+  $recipientColor: #623B63;
+
+  $arrowSize: 10px;
+
+  span {
+    padding: 3px 5px;
+  }
+
+  .funder {
+    position: relative;
+    display: inline-block;
+    background-color: $fundingColor;
+    margin-right: ($arrowSize / 2);
+    border-radius: 5px;
+
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: (-$arrowSize + 3px);
+
+      height: 0;
+      width: 0;
+      border-left: $arrowSize solid $fundingColor;
+      border-top: 15px solid transparent;
+      border-bottom: 15px solid transparent;
     }
-    &.map-btn {
-    	vertical-align: text-top;
-	    top: -8px;
-	    position: relative;
-	    font-style: normal;
-	    left: 15px;
-    }
-	    &.btn-hidden {
-		    display: none;
-	    }
+  }
+
+  .recipient {
+  }
 }
