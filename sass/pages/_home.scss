@@ -7,7 +7,9 @@
   flex-flow: row wrap;
 
   .left-pane {
-    @include flex(1 1 300px);
+    @include flex(1 1 180px);
+
+    padding: 20px 50px 0 0;
 
     @include flexbox();
     flex-flow: column nowrap;
@@ -23,6 +25,7 @@
       }
 
       .welcome-desc {
+        margin-top: 10px;
         font-size: 18px;
         font-family: 'Open Sans', sans-serif;
         color: #4D4D4D;
@@ -30,6 +33,7 @@
     }
 
     .search-container {
+      margin-top: 100px;
 
       .search-title {
         font-size: 22px;
@@ -39,10 +43,15 @@
       }
 
       .search-box {
-
+        padding-top: 10px;
+        padding-bottom: 5px;
       }
 
       .search-buttons {
+        @include flexbox();
+        flex-flow: row;
+        justify-content: end;
+        padding: 0;
 
       }
     }
@@ -52,6 +61,8 @@
     @include flex(1 1 300px);
 
     background-color: #F2F2F2;
+
+    padding: 20px;
 
     @include flexbox();
     flex-flow: column nowrap;

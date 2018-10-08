@@ -966,13 +966,13 @@
 
 			// initialize components
 			initFilters();
-			initSlider();
+			// initSlider();
 			initSearch();
 		}
 
 		// initializes search functionality
 		function initSearch() {
-			App.initCountrySearchBar('.search-container', (result) => {
+			App.initCountrySearchBar('.search-box', (result) => {
 				if (result.item !== undefined) result = result.item;
 				d3.selectAll('.country, .list-item').classed('active', false);
 				

@@ -245,19 +245,14 @@
 
 .btn-view-ghsa,
 .btn-view-map {
-  top: -2px;
-  position: relative;
-  left: 15px; }
-  .btn-view-ghsa.btn-view-map,
-  .btn-view-map.btn-view-map {
-    left: 30px; }
+  padding: 10px 15px;
+  font-size: 16px;
+  margin: 10px; }
   .btn-view-ghsa.map-btn,
   .btn-view-map.map-btn {
     vertical-align: text-top;
-    top: -8px;
     position: relative;
-    font-style: normal;
-    left: 15px; }
+    font-style: normal; }
   .btn-view-ghsa.btn-hidden,
   .btn-view-map.btn-hidden {
     display: none; }
@@ -1678,11 +1673,12 @@ b {
   display: flex;
   flex-flow: row wrap; }
   .home-container .left-pane {
-    -webkit-box-flex: 1 1 300px;
-    -moz-box-flex: 1 1 300px;
-    -webkit-flex: 1 1 300px;
-    -ms-flex: 1 1 300px;
-    flex: 1 1 300px;
+    -webkit-box-flex: 1 1 180px;
+    -moz-box-flex: 1 1 180px;
+    -webkit-flex: 1 1 180px;
+    -ms-flex: 1 1 180px;
+    flex: 1 1 180px;
+    padding: 20px 50px 0 0;
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;
@@ -1696,14 +1692,29 @@ b {
       color: #11315D;
       font-family: 'Raleway', sans-serif; }
     .home-container .left-pane .welcome-container .welcome-desc {
+      margin-top: 10px;
       font-size: 18px;
       font-family: 'Open Sans', sans-serif;
       color: #4D4D4D; }
-    .home-container .left-pane .search-container .search-title {
-      font-size: 22px;
-      text-transform: uppercase;
-      color: #11315D;
-      font-family: 'Raleway', sans-serif; }
+    .home-container .left-pane .search-container {
+      margin-top: 100px; }
+      .home-container .left-pane .search-container .search-title {
+        font-size: 22px;
+        text-transform: uppercase;
+        color: #11315D;
+        font-family: 'Raleway', sans-serif; }
+      .home-container .left-pane .search-container .search-box {
+        padding-top: 10px;
+        padding-bottom: 5px; }
+      .home-container .left-pane .search-container .search-buttons {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        flex-flow: row;
+        justify-content: end;
+        padding: 0; }
   .home-container .map-container {
     -webkit-box-flex: 1 1 300px;
     -moz-box-flex: 1 1 300px;
@@ -1711,6 +1722,7 @@ b {
     -ms-flex: 1 1 300px;
     flex: 1 1 300px;
     background-color: #F2F2F2;
+    padding: 20px;
     display: -webkit-box;
     display: -moz-box;
     display: -ms-flexbox;

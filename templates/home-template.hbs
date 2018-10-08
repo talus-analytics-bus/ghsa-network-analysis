@@ -20,12 +20,22 @@
                     View specific country or organization details
                 </div>
 
-                <div class="search-box">
-
+                <div class="network-country-search search-box">
+                    <div class="form-group has-feedback">
+                        <input type="text"
+                            class="country-search-input form-control"
+                            placeholder="search for a country or organization">
+                        <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                    </div>
+                    <div class="live-search-results-container">
+                        <div class="live-search-no-results-text">No results found</div>
+                        <div class="live-search-results-contents"></div>
+                    </div>
                 </div>
 
-                <div clas="search-buttons">
-
+                <div class="search-buttons">
+                    <button class="btn btn-primary alt-btn btn-view-ghsa">GHSA</button>
+                    <button class="btn btn-primary alt-btn btn-view-map">View Detailed Profile</button>
                 </div>
             </div>
         </div>
@@ -36,7 +46,8 @@
             </div>
 
             <div class="map-buttons">
-
+                <button class="btn btn-primary alt-btn">Funding Map</button>
+                <button class="btn btn-primary alt-btn">JEE Score Map</button>
             </div>
 
             <div class="funding-recipient-map">
