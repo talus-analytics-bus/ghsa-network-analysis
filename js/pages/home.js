@@ -83,6 +83,8 @@
 		function init() {
 			// $('body').addClass('dark');
 
+			App.newToggle('.funder-recipient-toggle');
+
 			App.loadFundingData({ showGhsaOnly: params.showGhsaOnly === 'true' });
 			App.setSources();
 			

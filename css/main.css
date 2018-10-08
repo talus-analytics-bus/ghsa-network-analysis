@@ -265,25 +265,9 @@
 .funder-recipient-toggle {
   color: white;
   text-transform: uppercase;
-  font-size: 16px; }
-  .funder-recipient-toggle span {
-    padding: 3px 5px; }
-  .funder-recipient-toggle .funder {
-    position: relative;
-    display: inline-block;
-    background-color: #597251;
-    margin-right: 5px;
-    border-radius: 5px; }
-    .funder-recipient-toggle .funder:after {
-      content: "";
-      position: absolute;
-      top: 0;
-      right: -7px;
-      height: 0;
-      width: 0;
-      border-left: 10px solid #597251;
-      border-top: 15px solid transparent;
-      border-bottom: 15px solid transparent; }
+  font-size: 16px;
+  height: 50px;
+  width: 250px; }
 
 .container-content {
   padding: 10px 30px 30px; }
