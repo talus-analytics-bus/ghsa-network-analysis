@@ -112,7 +112,7 @@ const Routing = {};
 	Routing.initializeRoutes = () => {
 		// setup crossroads for routing
 		crossroads.addRoute('/map', () => {
-			loadPage('map', App.initHome);
+			loadPage('map', App.initMap);
 		});
 		// crossroads.addRoute('/', () => {
 		// 	loadPage('landing', App.initLanding, 'country');
