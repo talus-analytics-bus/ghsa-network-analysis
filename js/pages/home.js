@@ -100,8 +100,8 @@
 			const ccs = $('.cc-select').val();
 			initLeftList('.non-country-list.funder-list', ccs);
 			initRightList('.non-country-list.recipient-list', ccs);
-			initListScaling('.non-country-list-container.right');
-			initListScaling('.non-country-list-container.left');
+			// initListScaling('.non-country-list-container.right');
+			// initListScaling('.non-country-list-container.left');
 			updateAll();
 
 			$('.core-capacity-text').tooltipster({
@@ -126,19 +126,8 @@
 		/* ---------------------- Functions ----------------------- */
 		// builds the map, attaches tooltips to countries, populates coordinates dict
 		function buildMap() {
-
-			// add title
-			d3.select('.map-container').append('div')
-				.attr('class','map-title instructions')
-				.text('Choose country or organization name to view details')
-					.append('button')
-						.attr('class','btn btn-primary alt-btn btn-view-ghsa map-btn btn-hidden')
-						.classed('btn-hidden', !App.showGhsaOnly)
-						.text('View GHSA Details')
-						.on('click', function(){ hasher.setHash('analysis/ghsa/d'); });
-
 			// add map to map container
-			const mapObj = Map.createWorldMap('.map-container', App.geoData);
+			const mapObj = Map.createWorldMap('.funding-recipient-map', App.geoData);
 			
 			const maskHtml = `<pattern id="pattern-stripe" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
                         <rect width="3.5" height="4" transform="translate(0,0)" fill="lightgray"></rect>
@@ -388,8 +377,8 @@
 			});
 			initLeftList('.non-country-list.funder-list', ccs);
 			initRightList('.non-country-list.recipient-list', ccs);
-			initListScaling('.non-country-list-container.right');
-			initListScaling('.non-country-list-container.left');
+			// initListScaling('.non-country-list-container.right');
+			// initListScaling('.non-country-list-container.left');
 		}
 
 		// gets the sum of payments for the years and capacities selected

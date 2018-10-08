@@ -1731,10 +1731,15 @@ b {
     flex-flow: column nowrap;
     justify-content: space-between; }
     .home-container .map-container .map-title {
+      justify-self: flex-start;
       font-size: 22px;
       text-transform: uppercase;
       color: #11315D;
       font-family: 'Raleway', sans-serif; }
+    .home-container .map-container .map-buttons {
+      justify-self: flex-start; }
+    .home-container .map-container .funder-recipient-toggle {
+      align-self: flex-end; }
 
 .settings-page-container select {
   margin-top: 3px; }

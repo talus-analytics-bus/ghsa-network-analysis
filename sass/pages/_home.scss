@@ -69,10 +69,19 @@
     justify-content: space-between;
 
     .map-title {
+      justify-self: flex-start;
       font-size: 22px;
       text-transform: uppercase;
       color: #11315D;
       font-family: 'Raleway', sans-serif;
+    }
+
+    .map-buttons {
+      justify-self: flex-start;
+    }
+
+    .funder-recipient-toggle {
+      align-self: flex-end;
     }
   }
 }
