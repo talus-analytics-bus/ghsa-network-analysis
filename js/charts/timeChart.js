@@ -2,9 +2,11 @@
     App.buildTimeChart = (selector, data, param = {}) => {
         // remove existing
         d3.select(selector).html('');
+        
+        
 
         // start building the chart
-        const margin = { top: 15, right: 150, bottom: 35, left: 75 };
+        const margin = { top: 25, right: 150, bottom: 35, left: 75 };
         const width = 630;
         const height = 150;
         const color = d3.color(param.color || 'steelblue');
@@ -17,6 +19,8 @@
         .append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+
+        
         const x = d3.scaleBand()
         .padding(0.2)
         .domain(data.map(d => d.year))
@@ -51,6 +55,15 @@
         chart.append('g')
         .attr('class', 'y axis')
         .call(yAxis);
+
+//based on line chart example 
+       /* const line = d3.line()
+            .x(d => this.xScale(d.))
+            .y(d => this.yScale(d.))
+        
+        const lineStyles= {
+            
+        }*/
 
         // add bars
         const barGroups = chart.selectAll('.bar-group')
