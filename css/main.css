@@ -448,6 +448,43 @@ select.form-control {
   .collapse-arrow.rotated {
     transform: rotate(180deg); }
 
+.map-page-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: flex-start; }
+  .map-page-container .map-page-title {
+    -webkit-box-flex: 0 0 50px;
+    -moz-box-flex: 0 0 50px;
+    -webkit-flex: 0 0 50px;
+    -ms-flex: 0 0 50px;
+    flex: 0 0 50px;
+    font-size: 28px;
+    text-transform: uppercase;
+    font-family: 'Raleway', sans-serif; }
+  .map-page-container .map-page-buttons {
+    -webkit-box-flex: 0 0 50px;
+    -moz-box-flex: 0 0 50px;
+    -webkit-flex: 0 0 50px;
+    -ms-flex: 0 0 50px;
+    flex: 0 0 50px;
+    position: relative;
+    top: 100px;
+    align-self: flex-end; }
+  .map-page-container .map-page-tabs .tab-content {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-between;
+    align-items: flex-start; }
+
 /* ------------------- */
 /* Generic Map Styling */
 /* ------------------- */
@@ -1740,14 +1777,35 @@ b {
     flex-flow: column nowrap;
     justify-content: space-between; }
     .home-container .map-container .map-title {
+      -webkit-box-flex: 1 0 20px;
+      -moz-box-flex: 1 0 20px;
+      -webkit-flex: 1 0 20px;
+      -ms-flex: 1 0 20px;
+      flex: 1 0 20px;
       justify-self: flex-start;
       font-size: 22px;
       text-transform: uppercase;
       color: #11315D;
       font-family: 'Raleway', sans-serif; }
     .home-container .map-container .map-buttons {
+      -webkit-box-flex: 1 0 20px;
+      -moz-box-flex: 1 0 20px;
+      -webkit-flex: 1 0 20px;
+      -ms-flex: 1 0 20px;
+      flex: 1 0 20px;
       justify-self: flex-start; }
+    .home-container .map-container .funding-recipient-map {
+      -webkit-box-flex: 5 0 600px;
+      -moz-box-flex: 5 0 600px;
+      -webkit-flex: 5 0 600px;
+      -ms-flex: 5 0 600px;
+      flex: 5 0 600px; }
     .home-container .map-container .funder-recipient-toggle {
+      -webkit-box-flex: 1 0 20px;
+      -moz-box-flex: 1 0 20px;
+      -webkit-flex: 1 0 20px;
+      -ms-flex: 1 0 20px;
+      flex: 1 0 20px;
       align-self: flex-end; }
 
 .settings-page-container select {

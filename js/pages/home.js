@@ -263,17 +263,6 @@
 		// add map to map container
 		const mapObj = Map.createWorldMap(selector, App.geoData);
 
-		const maskHtml = `<pattern id="pattern-stripe" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                        <rect width="3.5" height="4" transform="translate(0,0)" fill="lightgray"></rect>
-                    </pattern>
-                    <mask id="mask-stripe">
-                        <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
-                    </mask>`;
-		mapObj.element.append('defs').html(maskHtml);
-
-		// clicking overlay resets map
-		mapObj.element.select('.overlay').on('click', resetMap);
-
 		// define country click behavior and attach tooltips
 		d3.selectAll('.country')
 			.on('click', function onClick(d) {
@@ -590,7 +579,9 @@
 		const colorScale = getColorScale();
 
 		// color countries and update tooltip content
-		map.element.selectAll('.country').transition()
+		map.chart
+			.selectAll('.country')
+			.transition()
 			.duration(500)
 			.style('fill', function (d) {
 				const country = d3.select(this);
@@ -1414,10 +1405,10 @@
 		function onChange() {
 			// Scale the size of the content on this page
 			// Scale factor = difference between original viewport height and current viewport height
-			const viewportHeight = $viewport[0].getBoundingClientRect().height;
+			// const viewportHeight = $viewport[0].getBoundingClientRect().height;
 			const origViewportHeight = 640;
 			const heuristicScaleFactorCorrection = 1.3; // Dividing by this value gets the initial size right
-			const scaleFactor = (viewportHeight / origViewportHeight) / heuristicScaleFactorCorrection;
+			const scaleFactor = (origViewportHeight / origViewportHeight) / heuristicScaleFactorCorrection;
 			$box
 				.css('transform', `scale(${scaleFactor})`)
 				.css('-moz-transform', `scale(${scaleFactor})`);
@@ -1432,19 +1423,19 @@
 				.css('-moz-transform', `scale(${scaleFactor})`);
 
 			// Calculate the new position of the box and the map title tops
-			const viewportTop = $viewport.offset().top + 20;
+			// const viewportTop = $viewport.offset().top + 20;
 			const boxHeight = $box[0].getBoundingClientRect().height;
 			const listTitleHeight = $listTitle[0].getBoundingClientRect().height;
 			const heuristicTopPositionCorrection = -10 * scaleFactor / heuristicScaleFactorCorrection;
 			const yShift = 0;
-			const top = viewportTop + yShift;
+			const top = origViewportHeight + yShift;
 
 			// Set the positions of the box and the map title tops
 			$box.css('top', top + 'px');
-			$mapTitle.css('top', (viewportTop + heuristicTopPositionCorrection - 40) + 'px');
+			$mapTitle.css('top', (origViewportHeight + heuristicTopPositionCorrection - 40) + 'px');
 
 			// Set indentations of 'span' elements of list
-			setHorizOffsets($list)
+			setHorizOffsets($list);
 		}
 
 		onChange();

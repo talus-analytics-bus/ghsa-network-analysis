@@ -69,6 +69,7 @@
     justify-content: space-between;
 
     .map-title {
+      @include flex(1 0 20px);
       justify-self: flex-start;
       font-size: 22px;
       text-transform: uppercase;
@@ -77,10 +78,16 @@
     }
 
     .map-buttons {
+      @include flex(1 0 20px);
       justify-self: flex-start;
     }
 
+    .funding-recipient-map {
+      @include flex(5 0 600px);
+    }
+
     .funder-recipient-toggle {
+      @include flex(1 0 20px);
       align-self: flex-end;
     }
   }

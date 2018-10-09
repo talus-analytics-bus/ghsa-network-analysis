@@ -46,6 +46,7 @@ const App = {};
 			});
 		};
 
+		// http://www.bootstraptoggle.com/
 		$('#theme-toggle').change(function () {
 			const val = $(this).prop('checked');
 			if (val) {

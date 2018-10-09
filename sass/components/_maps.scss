@@ -1,4 +1,32 @@
-.map-container {
+.map-page-container {
+  @include flexbox();
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .map-page-title {
+    @include flex(0 0 50px);
+    font-size: 28px;
+    text-transform: uppercase;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .map-page-buttons {
+    @include flex(0 0 50px);
+    position: relative;
+    top: 100px;
+    align-self: flex-end;
+  }
+
+  .map-page-tabs {
+    .tab-content {
+      @include flexbox();
+      flex-flow: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+  }
 }
 
 
