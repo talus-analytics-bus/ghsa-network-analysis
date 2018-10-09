@@ -93,13 +93,6 @@
 	App.initHome = (params = {}) => {
 		setConstants(params);
 
-		App.newToggle('.funder-recipient-toggle', {}, () => {
-			moneyFlow = 'funded';
-			updateMap(false);
-		}, () => {
-			moneyFlow = 'received';
-			updateMap(false);
-		});
 		initSearch('.search-box');
 		map = buildMap('.funding-recipient-map');
 
@@ -189,8 +182,18 @@
 				combo,
 			});
 		});
+
 		updateMap(false);
-		// updateAll(false);
+
+		App.newToggle('.funder-recipient-toggle', {}, () => {
+			moneyFlow = 'funded';
+			map.reset();
+			updateMap(false);
+		}, () => {
+			moneyFlow = 'received';
+			map.reset();
+			updateMap(false);
+		});
 	};
 
 	App.initMap = (params = {}) => {
