@@ -95,13 +95,13 @@
 
 		initSearch('.search-box');
 		map = buildMap('.funding-recipient-map');
+		d3.selectAll('.viewport-ellipse,.viewport-edge').remove();
 
 		App.loadFundingData({showGhsaOnly: App.showGhsaOnly});
 
 		// get filter values
 		// const ccs = _.clone(App.capacities);
 		const ccs = [];
-		console.log(App.capacities);
 
 		// clear out current data
 		currentNodeDataMap.clear();
@@ -201,7 +201,7 @@
 
 		// function for initializing the page
 		function init() {
-			$('body').addClass('dark');
+			App.toggleTheme('dark');
 
 			App.loadFundingData({showGhsaOnly: params.showGhsaOnly === 'true'});
 			App.setSources();
@@ -585,7 +585,7 @@
 
 
 	// updates map colors and country tooltip
-	function updateMap(updateLegend = true) {
+	function updateMap(updateLegendFlag = true) {
 		const valueAttrName = getValueAttrName();
 		const colorScale = getColorScale();
 
@@ -714,7 +714,7 @@
 			});
 
 		// update legend
-		if (updateLegend) {
+		if (updateLegendFlag) {
 			updateLegend(colorScale);
 		}
 	}

@@ -41,11 +41,28 @@
 @import 'pages/submit';
 
 
-body { font-family: 'Open Sans', sans-serif; }
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: $lightcolor;
 
-body.dark {
-	border-bottom: 1px solid #5a5a5a;
-    background-color: #212121;
+  .dark {
+	  border-bottom: 1px solid #5a5a5a;
+	  background-color: $darkcolor;
+  }
+
+}
+
+.toggle-theme {
+	position: fixed !important;
+	bottom: 10px !important;
+	left: 10px !important;
+
+	.toggle-off {
+      background-color: $lightcolor;
+	}
+	.toggle-on {
+		background-color: $darkcolor;
+	}
 }
 
 #page-content {

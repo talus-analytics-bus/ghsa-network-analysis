@@ -3,6 +3,9 @@
   padding-right: 25px;
   border-bottom: $light-border;
   background-color: white;
+  .dark {
+    background-color: $darkcolor;
+  }
   height: 80px;
   max-height: 80px;
   .navbar-header {

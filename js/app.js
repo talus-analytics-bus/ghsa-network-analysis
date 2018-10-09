@@ -14,6 +14,44 @@ const App = {};
 			}
 		});
 
+		App.currentTheme = 'light';
+		App.toggleTheme = (to) => {
+			const elementsToChange = [
+				'body',
+				'.navbar',
+				'#page-content',
+			];
+			let classToAdd;
+			switch(to) {
+				case 'dark':
+					classToAdd = 'light';
+					break;
+				case 'light':
+					classToAdd = 'dark';
+					break;
+				default:
+					if (App.currentTheme === 'light') {
+						classToAdd = 'dark'
+					} else {
+						classToAdd = 'light'
+					}
+					break
+			}
+			App.currentTheme = classToAdd;
+			elementsToChange.forEach(e => {
+				$(e).removeClass('light').removeClass('dark').addClass(classToAdd);
+			});
+		};
+
+		$('#theme-toggle').change(function() {
+			const val = $(this).prop('checked');
+			if (val) {
+				App.toggleTheme('light');
+			} else {
+				App.toggleTheme('dark');
+			}
+		});
+
 		// data definition variables
 		App.dataStartYear = 2014;
 		App.dataEndYear = 2018;

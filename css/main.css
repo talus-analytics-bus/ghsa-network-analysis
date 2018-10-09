@@ -448,6 +448,12 @@ select.form-control {
   .collapse-arrow.rotated {
     transform: rotate(180deg); }
 
+.map-container {
+  background-color: #233343; }
+
+/* ------------------- */
+/* Generic Map Styling */
+/* ------------------- */
 .overlay {
   fill: none;
   pointer-events: all; }
@@ -590,6 +596,8 @@ select.form-control {
   background-color: white;
   height: 80px;
   max-height: 80px; }
+  .navbar .dark {
+    background-color: #233343; }
   .navbar .navbar-header .navbar-brand {
     padding-top: 3px;
     cursor: pointer;
@@ -1778,11 +1786,20 @@ b {
     width: 250px; }
 
 body {
-  font-family: 'Open Sans', sans-serif; }
+  font-family: 'Open Sans', sans-serif;
+  background-color: white; }
+  body .dark {
+    border-bottom: 1px solid #5a5a5a;
+    background-color: #233343; }
 
-body.dark {
-  border-bottom: 1px solid #5a5a5a;
-  background-color: #212121; }
+.toggle-theme {
+  position: fixed !important;
+  bottom: 10px !important;
+  left: 10px !important; }
+  .toggle-theme .toggle-off {
+    background-color: white; }
+  .toggle-theme .toggle-on {
+    background-color: #233343; }
 
 #page-content {
   margin-top: 81px;
