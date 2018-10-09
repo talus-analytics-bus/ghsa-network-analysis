@@ -14,6 +14,8 @@
 			this.normalTextWeight = 300;
 			this.selectedTextWeight = 500;
 
+			this.state = params.default || 'funded';
+
 			this.init();
 		}
 
@@ -63,6 +65,7 @@
 		draw() {
 			this.drawFundingButton();
 			this.drawReceivingButton();
+			this.toggle(this.state);
 		}
 
 		drawFundingButton() {
@@ -71,25 +74,7 @@
 				.attr('d', this.getFundingPath())
 				.style('fill', this.fundingColor)
 				.style('stroke-opacity', 0)
-				.on('click', () => {
-					this.chart
-						.selectAll('path')
-						.style('filter', null);
-
-					this.chart
-						.selectAll('.label text')
-						.style('font-weight', this.normalTextWeight);
-
-					this.funding
-						.selectAll('path')
-						.style('filter', 'url(#dropShadow)');
-
-					this.funding
-						.selectAll('.label text')
-						.style('font-weight', this.selectedTextWeight);
-
-					this.funderCallback();
-				});
+				.on('click', () => this.toggle('funded'));
 
 			this.newGroup('label', this.funding)
 				.attr('transform', 'translate(7, 22)')
@@ -114,25 +99,7 @@
 				.attr('d', this.getReceivingPath())
 				.style('fill', this.recipientColor)
 				.style('stroke-opacity', 0)
-				.on('click', () => {
-					this.chart
-						.selectAll('path')
-						.style('filter', null);
-
-					this.chart
-						.selectAll('.label text')
-						.style('font-weight', this.normalTextWeight);
-
-					this.receiving
-						.selectAll('path')
-						.style('filter', 'url(#dropShadow)');
-
-					this.receiving
-						.selectAll('.label text')
-						.style('font-weight', this.selectedTextWeight);
-
-					this.recipientCallback();
-				});
+				.on('click', () => this.toggle('received'));
 
 			this.newGroup('label', this.receiving)
 				.attr('transform', 'translate(16, 22)')
@@ -148,6 +115,58 @@
 
 		getReceivingPath() {
 			return "M2.22,30.07a.71.71,0,0,1-.55-1.14L12.55,15.27c.11-.11.14-.18.14-.24a.28.28,0,0,0-.09-.18L1.09,2l0,0A.72.72,0,0,1,.71,1.3.71.71,0,0,1,1.25.73c.1,0,.1,0,5.21,0C29.11.7,120,.78,120,.78a2.54,2.54,0,0,1,1.8.75,2.57,2.57,0,0,1,.75,1.8l0,24.31A2.55,2.55,0,0,1,120,30.19Z";
+		}
+
+		toggle(to=undefined) {
+			const switchToFunded = () => {
+				this.state = 'funded';
+
+				this.chart
+					.selectAll('path')
+					.style('filter', null);
+
+				this.chart
+					.selectAll('.label text')
+					.style('font-weight', this.normalTextWeight);
+
+				this.funding
+					.selectAll('path')
+					.style('filter', 'url(#dropShadow)');
+
+				this.funding
+					.selectAll('.label text')
+					.style('font-weight', this.selectedTextWeight);
+
+				this.funderCallback();
+			};
+
+			const switchToReceived = () => {
+				this.state = 'received';
+
+				this.chart
+					.selectAll('path')
+					.style('filter', null);
+
+				this.chart
+					.selectAll('.label text')
+					.style('font-weight', this.normalTextWeight);
+
+				this.receiving
+					.selectAll('path')
+					.style('filter', 'url(#dropShadow)');
+
+				this.receiving
+					.selectAll('.label text')
+					.style('font-weight', this.selectedTextWeight);
+
+				this.recipientCallback();
+			};
+
+			if (to === 'received' || (to === undefined && this.state === 'funded')) {
+				switchToReceived();
+			} else if (to === 'funded' || (to === undefined && this.state === 'received')) {
+				switchToFunded()
+			}
 		}
 	}
 

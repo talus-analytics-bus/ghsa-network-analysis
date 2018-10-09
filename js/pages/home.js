@@ -61,7 +61,7 @@
 		// let indType = 'inkind';  // either 'money' or 'score'
 		indType = 'money';  // either 'money' or 'score'
 		// let moneyFlow = 'funded';  // either 'funded' or 'received'
-		moneyFlow = 'received';  // either 'funded' or 'received'
+		moneyFlow = 'funded';  // either 'funded' or 'received'
 		// let moneyType = 'disbursed';  // either 'committed' or 'disbursed'
 		moneyType = 'committed';  // either 'committed' or 'disbursed'
 		scoreType = 'score';  // either 'score' or 'combined'
@@ -93,22 +93,116 @@
 	App.initHome = (params = {}) => {
 		setConstants(params);
 
-		App.newToggle('.funder-recipient-toggle');
+		App.newToggle('.funder-recipient-toggle', {}, () => {
+			moneyFlow = 'funded';
+			updateMap(false);
+		}, () => {
+			moneyFlow = 'received';
+			updateMap(false);
+		});
 		initSearch('.search-box');
 		map = buildMap('.funding-recipient-map');
 
-		updateAll(false);
+		App.loadFundingData({showGhsaOnly: App.showGhsaOnly});
+
+		// get filter values
+		// const ccs = _.clone(App.capacities);
+		const ccs = [];
+		console.log(App.capacities);
+
+		// clear out current data
+		currentNodeDataMap.clear();
+
+		// build data map; filter and only use data with valid country values
+		App.countries.forEach((c) => {
+			const filterCountOnce = (allProjects) => {
+				const groupedById = _.groupBy(allProjects, 'project_id');
+				return _.values(groupedById).map(d => d[0]);
+			};
+
+			const paymentsFunded = (App.fundingLookup[c.ISO2] === undefined) ? undefined : App.getMappableProjects(App.fundingLookup[c.ISO2], 'd', c.ISO2);
+			const paymentsReceived = (App.recipientLookup[c.ISO2] === undefined) ? undefined : App.getMappableProjects(App.recipientLookup[c.ISO2], 'r', c.ISO2);
+
+			const scoreObj = App.scoresByCountry[c.ISO2];
+
+			// only include country in data map if it has a score or rec/don funds
+			let fundedCommitted = 0;
+			let fundedSpent = 0;
+			// let providedInkind = 0;
+			let receivedCommitted = 0;
+			let receivedSpent = 0;
+			// let receivedInkind = 0;
+			let receivedInkindProvided = 0;
+			let receivedInkindCommitted = 0;
+			let providedInkindProvided = 0;
+			let providedInkindCommitted = 0;
+			let score = null;
+			let combo = null;
+			let receivedUnspecAmount = 0;
+			let fundedUnspecAmount = 0;
+
+			// Tabulate projects with DFS that had unspecified amount because
+			// they were funded or received by a "region" (e.g., EU or Southeast Asia)
+			// Get full list of projects for this funder/recipient
+			// const allProjects = [].concat(paymentsFunded).concat(paymentsReceived).filter(d => d);
+			const unspecAmounts = getUnspecAmountCounts(c.ISO2);
+
+			if (paymentsFunded) {
+				({
+					totalCommitted: fundedCommitted,
+					totalSpent: fundedSpent,
+					totalInkindCommitted: providedInkindCommitted,
+					totalInkindProvided: providedInkindProvided
+				} =
+					getPaymentSum(paymentsFunded, ccs));
+			}
+			if (paymentsReceived) {
+				({
+					totalCommitted: receivedCommitted,
+					totalSpent: receivedSpent,
+					totalInkindCommitted: receivedInkindCommitted,
+					totalInkindProvided: receivedInkindProvided
+				} =
+					getPaymentSum(paymentsReceived, ccs));
+			}
+
+			if (scoreObj) {
+				const capScores = scoreObj.avgCapScores
+					.filter(d => ccs.includes(d.capId));
+				score = d3.mean(capScores, d => d.score);
+				const numerator = 10 + Math.log10(1 + receivedSpent);
+				const denominator = 5.01 - score;
+				combo = numerator / denominator;
+			}
+
+			// set in node map
+			currentNodeDataMap.set(c.ISO2, {
+				fundedCommitted,
+				fundedSpent,
+				providedInkindCommitted,
+				providedInkindProvided,
+				receivedCommitted,
+				receivedSpent,
+				receivedInkindCommitted,
+				receivedInkindProvided,
+				score,
+				combo,
+			});
+		});
+		updateMap(false);
+		// updateAll(false);
 	};
 
 	App.initMap = (params = {}) => {
 		setConstants(params);
+
 		// function for initializing the page
 		function init() {
 			$('body').addClass('dark');
 
-			App.loadFundingData({ showGhsaOnly: params.showGhsaOnly === 'true' });
+			App.loadFundingData({showGhsaOnly: params.showGhsaOnly === 'true'});
 			App.setSources();
-			
+
 			// build map and initialize search
 			map = buildMap();
 			initMapOptions();
@@ -147,18 +241,21 @@
 
 
 	/* ---------------------- Functions ----------------------- */
+
 	// builds the map, attaches tooltips to countries, populates coordinates dict
-	function buildMap(selector='.map-container') {
+	function buildMap(selector = '.map-container') {
 
 		// add title
 		d3.select(selector).append('div')
-			.attr('class','map-title instructions')
+			.attr('class', 'map-title instructions')
 			.text('Choose country or organization name to view details')
 			.append('button')
-			.attr('class','btn btn-primary alt-btn btn-view-ghsa map-btn btn-hidden')
+			.attr('class', 'btn btn-primary alt-btn btn-view-ghsa map-btn btn-hidden')
 			.classed('btn-hidden', !App.showGhsaOnly)
 			.text('View GHSA Details')
-			.on('click', function(){ hasher.setHash('analysis/ghsa/d'); });
+			.on('click', function () {
+				hasher.setHash('analysis/ghsa/d');
+			});
 
 		// add map to map container
 		const mapObj = Map.createWorldMap(selector, App.geoData);
@@ -191,7 +288,7 @@
 				displayCountryInfo();
 
 				// deselect all list items
-				d3.selectAll('.list-item').classed('active',false);
+				d3.selectAll('.list-item').classed('active', false);
 
 				return true;
 			})
@@ -281,7 +378,7 @@
 				.range(jeeColors);
 		} else if (indType === 'inkind') {
 			return d3.scaleThreshold()
-				.domain([5,10,15,20,25,30])
+				.domain([5, 10, 15, 20, 25, 30])
 				// .domain([10,20,30,40,50,60])
 				.range(greens);
 		}
@@ -298,7 +395,7 @@
 	}
 
 	// update everything if any parameters change
-	function updateAll(drawLegend=true) {
+	function updateAll(drawLegend = true) {
 		// update funding data
 		App.loadFundingData({showGhsaOnly: App.showGhsaOnly});
 
@@ -378,11 +475,21 @@
 			const unspecAmounts = getUnspecAmountCounts(c.ISO2);
 
 			if (paymentsFunded !== undefined) {
-				({ totalCommitted: fundedCommitted, totalSpent: fundedSpent, totalInkindCommitted: providedInkindCommitted, totalInkindProvided: providedInkindProvided } =
+				({
+					totalCommitted: fundedCommitted,
+					totalSpent: fundedSpent,
+					totalInkindCommitted: providedInkindCommitted,
+					totalInkindProvided: providedInkindProvided
+				} =
 					getPaymentSum(paymentsFunded, ccs));
 			}
 			if (paymentsReceived !== undefined) {
-				({ totalCommitted: receivedCommitted, totalSpent: receivedSpent, totalInkindCommitted: receivedInkindCommitted, totalInkindProvided: receivedInkindProvided} =
+				({
+					totalCommitted: receivedCommitted,
+					totalSpent: receivedSpent,
+					totalInkindCommitted: receivedInkindCommitted,
+					totalInkindProvided: receivedInkindProvided
+				} =
 					getPaymentSum(paymentsReceived, ccs));
 			}
 
@@ -430,7 +537,10 @@
 			const p = payments[i];
 
 			// filter by core category
-			if (!App.passesCategoryFilter(p.core_capacities, ccs)) continue;
+			// TODO figure out if this is necessary
+			// if (!App.passesCategoryFilter(p.core_capacities, ccs)) {
+			// 	continue;
+			// }
 
 			// add payment values by year
 			for (let k = startYear; k < endYear; k++) {
@@ -452,7 +562,7 @@
 				}
 			}
 		}
-		return { totalCommitted, totalSpent, totalInkindCommitted, totalInkindProvided };
+		return {totalCommitted, totalSpent, totalInkindCommitted, totalInkindProvided};
 	}
 
 	/**
@@ -471,21 +581,17 @@
 	};
 
 
-
-
 	// updates map colors and country tooltip
-	function updateMap(updateLegend=true) {
+	function updateMap(updateLegend = true) {
 		const valueAttrName = getValueAttrName();
 		const colorScale = getColorScale();
-
-		console.log(currentNodeDataMap);
 
 		// color countries and update tooltip content
 		map.element.selectAll('.country').transition()
 			.duration(500)
 			.style('fill', function (d) {
 				const country = d3.select(this);
-				country.classed('hatch',false);
+				country.classed('hatch', false);
 				d.undetermined = false;
 				const isoCode = d.properties.ISO2;
 				if (currentNodeDataMap.has(isoCode)) {
@@ -497,7 +603,7 @@
 						if (indType !== 'inkind') {
 							const flow = valueAttrName.includes('received') ? 'r' : 'd';
 							const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
-							const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
+							const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData, flow, d.properties.ISO2)
 							if (unmappableFinancials.length > 0) {
 								const someMoney = true;
 								if (someMoney) {
@@ -512,7 +618,7 @@
 						} else {
 							const flow = valueAttrName.includes('received') ? 'r' : 'd';
 							const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
-							const unmappableFinancials = App.getInkindProjectsWithUnmappableAmounts(App.fundingData,flow,d.properties.ISO2)
+							const unmappableFinancials = App.getInkindProjectsWithUnmappableAmounts(App.fundingData, flow, d.properties.ISO2)
 							if (unmappableFinancials.length > 0) {
 								country.classed('hatch', true);
 								d.undetermined = true;
@@ -537,7 +643,9 @@
 				let label = getMoneyTypeLabel(moneyFlow, moneyType);
 				let value = d.value;
 
-				let format = (indType === 'inkind') ? (val) => { return Util.comma(val) + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`; } : App.formatMoney;
+				let format = (indType === 'inkind') ? (val) => {
+					return Util.comma(val) + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`;
+				} : App.formatMoney;
 				if (d.undetermined === true) {
 					// format = (indType === 'inkind') ? (val) => { return 'Unspecified Value' + ` <br><span class="inkind-value">in-kind support project${val !== 1 ? 's' : ''}</span>`; } : () => { return 'Unspecified Value';};
 					format = (d) => {
@@ -630,7 +738,9 @@
 		legend.append('image')
 			.attr('class', 'legend-tooltip')
 			.attr('xlink:href', 'img/info.png')
-			.each(function addTooltip() { $(this).tooltipster(); });
+			.each(function addTooltip() {
+				$(this).tooltipster();
+			});
 	}
 
 	/**
@@ -668,7 +778,7 @@
 		const hatchSpacing = needHatch ? 1 : 0;
 
 		const legend = d3.select('.legend')
-			.attr('width', barWidth * colors.length + 2 * legendPadding + barWidth*hatchSpacing)
+			.attr('width', barWidth * colors.length + 2 * legendPadding + barWidth * hatchSpacing)
 			.attr('height', barHeight + 50)
 			.select('g')
 			.attr('transform', `translate(${legendPadding}, 0)`);
@@ -705,8 +815,6 @@
 				if (!isJeeScore) return 'none';
 				return (i % 2 === 0) ? 'inline' : 'none';
 			});
-
-
 
 
 		// fix starting label position
@@ -794,7 +902,7 @@
 		// 	.attr('transform', `translate(${barWidth * (colors.length)}, 0)`);
 
 		legend.select('.legend-title')
-			.attr('x', (barWidth * colors.length + barWidth*hatchSpacing)/2)
+			.attr('x', (barWidth * colors.length + barWidth * hatchSpacing) / 2)
 			// .attr('x', barWidth * colors.length / 2)
 			.attr('y', barHeight + 45)
 			.text(titleText);
@@ -820,14 +928,14 @@
 		if (needHatch) {
 			const undetermined = d3.select('.legend-group').select('g:last-child');
 			undetermined
-				.attr('transform', `translate(${barWidth*hatchSpacing + (barWidth * (colors.length - 1))}, 0)`);
+				.attr('transform', `translate(${barWidth * hatchSpacing + (barWidth * (colors.length - 1))}, 0)`);
 			undetermined.select('text')
 				.attr('x', barWidth / 2)
 				.text('Unspecified Value');
 			const rectMask = undetermined.select('rect')
-				.attr('class','mask-bar');
+				.attr('class', 'mask-bar');
 			const clone = Util.clone_d3_selection(rectMask, 1)
-				.attr('mask','url(#mask-stripe)')
+				.attr('mask', 'url(#mask-stripe)')
 				.style('fill', unspecifiedGray);
 
 		}
@@ -877,7 +985,7 @@
 		if (country.ISO2 === 'ghsa') {
 			d3.select('.info-title').append('img')
 				.attr('class', 'ghsa-info-img info-img')
-				.attr('src','img/info.png');
+				.attr('src', 'img/info.png');
 			$('.info-title > img.ghsa-info-img').tooltipster({
 				interactive: true,
 				content: App.ghsaInfoTooltipContent,
@@ -925,7 +1033,7 @@
 					$('.info-score-text-container').slideDown();
 				}
 			}
-			if (flowTmp === 'funded' || ((indType === 'money' || indType === 'ghsa' ) && flowToShow === 'funded')) {
+			if (flowTmp === 'funded' || ((indType === 'money' || indType === 'ghsa') && flowToShow === 'funded')) {
 				totalCommitted += valueObj.fundedCommitted;
 				totalSpent += valueObj.fundedSpent;
 				totalInkindCommitted += valueObj.providedInkindCommitted;
@@ -938,7 +1046,9 @@
 			}
 		}
 
-		const format = (indType === 'inkind') ? (val) => { return Util.comma(val) + ' projects'; } : App.formatMoney;
+		const format = (indType === 'inkind') ? (val) => {
+			return Util.comma(val) + ' projects';
+		} : App.formatMoney;
 		if (indType === 'inkind') {
 			const curEntityData = currentNodeDataMap.get(country.ISO2);
 			if (flowToShow === 'funded') {
@@ -968,7 +1078,7 @@
 		const selector = 'input.ghsa-only-checkbox[type=checkbox]';
 		if (App.showGhsaOnly) {
 			// $('input[type=radio][name="ind"][ind="ghsa"]').prop('checked',true);
-			$(selector).prop('checked',true);
+			$(selector).prop('checked', true);
 		}
 
 		$(selector).off('change');
@@ -998,7 +1108,7 @@
 	}
 
 	// initializes search functionality
-	function initSearch(selector='.search-container') {
+	function initSearch(selector = '.search-container') {
 		App.initCountrySearchBar(selector, (result) => {
 			if (result.item !== undefined) result = result.item;
 			d3.selectAll('.country, .list-item').classed('active', false);
@@ -1021,10 +1131,12 @@
 				const entityData = App.countries.find(d => d.ISO2 === matchTmp.datum().donor_code);
 				// const entityData = matchTmp.datum().entity_data;
 				match = matchTmp;
-				match.datum = () => { return {
-					properties: entityData,
-					flow: 'funded',
-				}; };
+				match.datum = () => {
+					return {
+						properties: entityData,
+						flow: 'funded',
+					};
+				};
 			}
 
 			// set country as active
@@ -1036,7 +1148,8 @@
 			}
 			else {
 				scrollToListItem(activeCountry);
-			};
+			}
+			;
 			displayCountryInfo();
 		}, {isReverse: true});
 	}
@@ -1064,7 +1177,7 @@
 	function initFilters() {
 		// populate dropdowns
 		// App.populateCcDropdown('.cc-select', { dropRight: true });
-		App.populateCcDropdown('.cc-select', { dropUp: true, dropLeft: true, });
+		App.populateCcDropdown('.cc-select', {dropUp: true, dropLeft: true,});
 
 		d3.select('.dropdown-menu').classed('firefox', App.usingFirefox);
 
@@ -1189,7 +1302,7 @@
 	/**
 	 * If browser is Firefox, use jQuery NiceScroll to style the scrollbars
 	 */
-	function initFirefoxScrollBars () {
+	function initFirefoxScrollBars() {
 		$('.non-country-list.funder-list').niceScroll(
 			{
 				railalign: 'left',
@@ -1223,18 +1336,18 @@
 
 	// Function to set the horizontal offsets of the Non-country Funder/Recipient
 	// list items so they flow around the elliptical viewport.
-	function setHorizOffsets ($list) {
+	function setHorizOffsets($list) {
 		let directionSign = 1;
 		if ($list.hasClass('funder-list')) {
 			directionSign = -1;
 		}
 		const boxTop = $list.offset().top;
 
-		function getMaxHorizOffset () {
+		function getMaxHorizOffset() {
 			return 150; // TODO dynamically, if it improves rendering.
 		}
 
-		function getHorizOffsetScale () {
+		function getHorizOffsetScale() {
 			const domain = {
 				min: $list.first('div').position().top,
 				max: $list[0].getBoundingClientRect().height,
@@ -1257,7 +1370,7 @@
 			return horizOffsetScale;
 		}
 
-		function getHorizOffset (span, scrollTop) {
+		function getHorizOffset(span, scrollTop) {
 			const val = span.position().top;
 			const scale = getHorizOffsetScale();
 			const maxOffset = getMaxHorizOffset();
@@ -1268,11 +1381,11 @@
 
 		$list
 			.off('scroll')
-			.scroll(function(e){
+			.scroll(function (e) {
 				const element = $(this);
 				const scrollTop = element.scrollTop();
 				const spans = element.find('div');
-				spans.each(function(span){
+				spans.each(function (span) {
 					const $span = $(this);
 					const horizOffset = getHorizOffset($span);
 					$span.css('left', (directionSign * horizOffset) + 'px');
@@ -1292,6 +1405,7 @@
 		const $countryInfoBox = $('.info-box');
 		const $legendContainer = $('.legend-container');
 		const $mapTitle = $('.map-title');
+
 		// const $searchContainer = $('.search-container');
 
 		function onChange() {
@@ -1302,17 +1416,17 @@
 			const heuristicScaleFactorCorrection = 1.3; // Dividing by this value gets the initial size right
 			const scaleFactor = (viewportHeight / origViewportHeight) / heuristicScaleFactorCorrection;
 			$box
-				.css('transform',`scale(${scaleFactor})`)
-				.css('-moz-transform',`scale(${scaleFactor})`);
+				.css('transform', `scale(${scaleFactor})`)
+				.css('-moz-transform', `scale(${scaleFactor})`);
 
-			$mapAndSearchContainer.css('transform',`scale(${scaleFactor})`);
-			$countryInfoBox.css('transform',`scale(${scaleFactor})`);
-			$legendContainer.css('transform',`scale(${scaleFactor})`);
-			$mapTitle.css('transform',`scale(${scaleFactor})`);
+			$mapAndSearchContainer.css('transform', `scale(${scaleFactor})`);
+			$countryInfoBox.css('transform', `scale(${scaleFactor})`);
+			$legendContainer.css('transform', `scale(${scaleFactor})`);
+			$mapTitle.css('transform', `scale(${scaleFactor})`);
 
 			$box
-				.css('transform',`scale(${scaleFactor})`)
-				.css('-moz-transform',`scale(${scaleFactor})`);
+				.css('transform', `scale(${scaleFactor})`)
+				.css('-moz-transform', `scale(${scaleFactor})`);
 
 			// Calculate the new position of the box and the map title tops
 			const viewportTop = $viewport.offset().top + 20;
@@ -1329,21 +1443,22 @@
 			// Set indentations of 'span' elements of list
 			setHorizOffsets($list)
 		}
+
 		onChange();
 		setHorizOffsets($list);
 		window.addEventListener("resize", onChange);
 	}
 
-	function setDotPosition (circleNode) {
+	function setDotPosition(circleNode) {
 		const lineHeight = parseFloat(window.getComputedStyle(circleNode.parentNode.parentNode.parentNode)['line-height']);
 		const parentHeight = circleNode.parentNode.parentNode.parentNode.offsetHeight;
 		const factor = (parentHeight / lineHeight) - 1;
 		const circlePosScale = d3.scaleLinear()
 			.domain([1, 4])
-			.range([-15-6, -42-6-6]);
+			.range([-15 - 6, -42 - 6 - 6]);
 
 		if (App.usingFirefox) {
-			function getTop (factor) {
+			function getTop(factor) {
 				// factor = Math.round(factor);
 				return circlePosScale(factor);
 				if (factor === 1) return '-15px';
@@ -1352,7 +1467,7 @@
 				else return '-42px';
 			}
 		} else {
-			function getTop (factor) {
+			function getTop(factor) {
 				return circlePosScale(factor);
 				if (factor === 1) return '-15px';
 				if (factor === 2) return '-24px';
@@ -1368,9 +1483,9 @@
 	 * @param  {obj} d Entity data (country style)
 	 * @return {[type]}   [description]
 	 */
-	function checkHatchStatus (d, $item, colorScale) {
+	function checkHatchStatus(d, $item, colorScale) {
 		const country = $item;
-		country.classed('hatch',false);
+		country.classed('hatch', false);
 		d.undetermined = false;
 		const isoCode = d.donor_code;
 		const valueAttrName = getValueAttrName();
@@ -1385,7 +1500,7 @@
 				if (indType !== 'inkind') {
 					const flow = valueAttrName.includes('received') ? 'r' : 'd';
 					const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
-					const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData,flow,isoCode)
+					const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData, flow, isoCode)
 					if (unmappableFinancials.length > 0) {
 						// const someMoney = d3.sum(unmappableFinancials, d => d.total_spent + d.total_committed) > 0;
 						if (true) {
@@ -1400,7 +1515,7 @@
 				} else {
 					const flow = valueAttrName.includes('received') ? 'r' : 'd';
 					const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
-					const unmappableFinancials = App.getInkindProjectsWithUnmappableAmounts(App.fundingData,flow,isoCode)
+					const unmappableFinancials = App.getInkindProjectsWithUnmappableAmounts(App.fundingData, flow, isoCode)
 					if (unmappableFinancials.length > 0) {
 						country.classed('hatch', true);
 						d.undetermined = true;
@@ -1424,15 +1539,15 @@
 	/**
 	 * Initializes the list of funders that appears on the left side of the Map.
 	 * @param  {string} selector      D3 selector string of div that
-	 * 								  contains the list of funders
+	 *                                  contains the list of funders
 	 *
 	 * @return {null} No return value
 	 */
-	function initLeftList (selector, ccs=[]) {
+	function initLeftList(selector, ccs = []) {
 		const $list = d3.select(selector).html('');
 		const label = "Non-government Organization ";
 		const dNounPlural = indType === 'inkind' ? 'Providers' : 'Funders';
-		d3.select('.list-title.left').html(label + (moneyFlow === 'funded' ? dNounPlural : 'Recipients') );
+		d3.select('.list-title.left').html(label + (moneyFlow === 'funded' ? dNounPlural : 'Recipients'));
 		const dFlow = indType === 'inkind' ? 'Provided' : 'Funded';
 		const dType = indType === 'inkind' ? 'Sent' : 'Disbursed';
 		$('.d-flow span').text(dFlow);
@@ -1489,7 +1604,6 @@
 		orgs = _.sortBy(orgs, d => d.curPayments[sortField]).reverse();
 
 
-
 		// If IKS, filter out orgs that don't provide it
 		// if (!isFinancial) {
 		orgs = orgs.filter(d => d.curPayments[sortField] > 0);
@@ -1529,23 +1643,29 @@
 		if (orgs.length > 0) {
 			$list.selectAll('.list-item')
 				.data(orgs).enter().append('div')
-				.attr('class','list-item')
+				.attr('class', 'list-item')
 				.text(d => d.donor_name)
 				// .style('color',function(d) { return colorScale(d.curPayments[sortField])})
 				.on('click', function onClick(d) {
 					const curListItem = d3.select(this);
 					if (curListItem.classed('active')) {
-						d3.selectAll('.list-item').classed('active',false);
+						d3.selectAll('.list-item').classed('active', false);
 						return resetMap();
 					} else if ($('.list-item.active').length === 0) {
 						map.reset();
 					}
 
-					d3.selectAll('.list-item').classed('active',false);
+					d3.selectAll('.list-item').classed('active', false);
 					curListItem.classed('active', true);
 
 					activeCountry = {
-						datum: () => { return {listItemData: d, flow: moneyFlow, properties: App.nonCountries.find(dd => d.donor_code === dd.FIPS) } }
+						datum: () => {
+							return {
+								listItemData: d,
+								flow: moneyFlow,
+								properties: App.nonCountries.find(dd => d.donor_code === dd.FIPS)
+							}
+						}
 					};
 
 					// display info box
@@ -1558,12 +1678,12 @@
 				})
 				// .each(d => {checkHatchStatus(d, colorScale)})
 				.insert('div')
-				.attr('class','circle-container left')
+				.attr('class', 'circle-container left')
 				.append('svg')
-				.attr('width','12')
-				.attr('height','12')
+				.attr('width', '12')
+				.attr('height', '12')
 				.append('circle')
-				.attr('r',6)
+				.attr('r', 6)
 				.attr('cx', 6)
 				.attr('cy', 6)
 				// .classed('hatch',true)
@@ -1572,11 +1692,13 @@
 					// if (d.curPayments[sortField] === 0) return 'rgb(204, 204, 204)';
 					return colorScale(d.curPayments[sortField])
 				})
-				.each(function(){setDotPosition(this)});
+				.each(function () {
+					setDotPosition(this)
+				});
 			// .insert('br');
 		} else {
 			$list.append('div')
-				.attr('class','list-item no-data')
+				.attr('class', 'list-item no-data')
 				.text(`No ${moneyFlow === 'funded' ? 'funders' : 'recipients'} to show. Change options in bottom right to view data.`);
 		}
 
@@ -1585,16 +1707,16 @@
 	/**
 	 * Initializes the list of philanthropies and foundations that appears on the right side of the Map.
 	 * @param  {string} selector      D3 selector string of div that
-	 * 								  contains the list of recipients
+	 *                                  contains the list of recipients
 	 *
 	 * @return {null} No return value
 	 */
-	function initRightList (selector, ccs=[]) {
+	function initRightList(selector, ccs = []) {
 
 		const $list = d3.select(selector).html('');
 		const label = "Foundations, Philanthropies, and Private Sector";
 		const dNounPlural = indType === 'inkind' ? 'Providers' : 'Funders';
-		d3.select('.list-title.right').text(label + (moneyFlow === 'funded' ? ' ' + dNounPlural : ' Recipients') );
+		d3.select('.list-title.right').text(label + (moneyFlow === 'funded' ? ' ' + dNounPlural : ' Recipients'));
 
 		// get data for funders and group it by funder
 		const curFundingData = App.fundingData.filter(p => {
@@ -1652,23 +1774,29 @@
 		if (orgs.length > 0) {
 			$list.selectAll('.list-item')
 				.data(orgs).enter().append('div')
-				.attr('class','list-item')
+				.attr('class', 'list-item')
 				.text(d => d.donor_name)
 				// .style('color',function(d) { return colorScale(d.curPayments[sortField])})
 				.on('click', function onClick(d) {
 					const curListItem = d3.select(this);
 					if (curListItem.classed('active')) {
-						d3.selectAll('.list-item').classed('active',false);
+						d3.selectAll('.list-item').classed('active', false);
 						return resetMap();
 					} else if ($('.list-item.active').length === 0) {
 						map.reset();
 					}
 
-					d3.selectAll('.list-item').classed('active',false);
+					d3.selectAll('.list-item').classed('active', false);
 					curListItem.classed('active', true);
 
 					activeCountry = {
-						datum: () => { return {listItemData: d, flow: moneyFlow, properties: App.nonCountries.find(dd => d.donor_code === dd.FIPS) } }
+						datum: () => {
+							return {
+								listItemData: d,
+								flow: moneyFlow,
+								properties: App.nonCountries.find(dd => d.donor_code === dd.FIPS)
+							}
+						}
 					};
 
 					// display info box
@@ -1680,29 +1808,31 @@
 					return 'green;'
 				})
 				.insert('div')
-				.attr('class','circle-container right')
+				.attr('class', 'circle-container right')
 				.append('svg')
-				.attr('width','12')
-				.attr('height','12')
+				.attr('width', '12')
+				.attr('height', '12')
 				.append('circle')
-				.attr('r',6)
+				.attr('r', 6)
 				.attr('cx', 6)
 				.attr('cy', 6)
 				.style('fill', d => {
 					if (d.curPayments[sortField] === 0) return 'rgb(204, 204, 204)';
 					return colorScale(d.curPayments[sortField])
 				})
-				.each(function(){setDotPosition(this)});
+				.each(function () {
+					setDotPosition(this)
+				});
 			// .insert('br');
 		} else {
 			$list.append('div')
-				.attr('class','list-item no-data')
+				.attr('class', 'list-item no-data')
 				.text(`No ${moneyFlow === 'funded' ? 'funders' : 'recipients'} to show. Change options in bottom right to view data.`);
 		}
 		if (indType === 'score' || indType === 'combo') {
-			$('.non-country-list-container').css('opacity',0);
+			$('.non-country-list-container').css('opacity', 0);
 		} else {
-			$('.non-country-list-container').css('opacity',1);
+			$('.non-country-list-container').css('opacity', 1);
 		}
 	};
 
@@ -1710,7 +1840,7 @@
 	 * Scrolls the list div to the item indicated in the argument (animated).
 	 * @param  {D3 selection} $item         The list item D3 selection to be scrolled to
 	 */
-	function scrollToListItem ($item) {
+	function scrollToListItem($item) {
 		// get current list
 
 		$item = $($item.node());
