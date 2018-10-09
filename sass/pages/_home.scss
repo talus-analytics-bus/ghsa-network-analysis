@@ -21,6 +21,9 @@
         font-size: 28px;
         text-transform: uppercase;
         color: #11315D;
+        &.dark {
+          color: white;
+        }
         font-family: 'Raleway', sans-serif;
       }
 
@@ -29,6 +32,9 @@
         font-size: 18px;
         font-family: 'Open Sans', sans-serif;
         color: #4D4D4D;
+        &.dark {
+          color: #eee;
+        }
       }
     }
 
@@ -40,6 +46,9 @@
         text-transform: uppercase;
         color: #11315D;
         font-family: 'Raleway', sans-serif;
+        &.dark {
+          color: white;
+        }
       }
 
       .search-box {
@@ -61,6 +70,9 @@
     @include flex(1 1 300px);
 
     background-color: #F2F2F2;
+    &.dark {
+      background-color: $darkcolor;
+    }
 
     padding: 20px;
 
@@ -73,8 +85,11 @@
       justify-self: flex-start;
       font-size: 22px;
       text-transform: uppercase;
-      color: #11315D;
       font-family: 'Raleway', sans-serif;
+      color: #11315D;
+      &.dark {
+        color: white;
+      }
     }
 
     .map-buttons {
@@ -83,7 +98,7 @@
     }
 
     .funding-recipient-map {
-      @include flex(5 0 600px);
+      @include flex(5 0 200px);
     }
 
     .funder-recipient-toggle {

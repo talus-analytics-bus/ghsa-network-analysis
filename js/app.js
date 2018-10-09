@@ -19,6 +19,8 @@ const App = {};
 			const elementsToChange = [
 				'html',
 				'body',
+				'body div',
+				'.map-container',
 				'.navbar',
 				'.navbar a',
 				'#page-content',

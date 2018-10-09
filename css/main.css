@@ -1737,11 +1737,15 @@ b {
       text-transform: uppercase;
       color: #11315D;
       font-family: 'Raleway', sans-serif; }
+      .home-container .left-pane .welcome-container .welcome-text.dark {
+        color: white; }
     .home-container .left-pane .welcome-container .welcome-desc {
       margin-top: 10px;
       font-size: 18px;
       font-family: 'Open Sans', sans-serif;
       color: #4D4D4D; }
+      .home-container .left-pane .welcome-container .welcome-desc.dark {
+        color: #eee; }
     .home-container .left-pane .search-container {
       margin-top: 100px; }
       .home-container .left-pane .search-container .search-title {
@@ -1749,6 +1753,8 @@ b {
         text-transform: uppercase;
         color: #11315D;
         font-family: 'Raleway', sans-serif; }
+        .home-container .left-pane .search-container .search-title.dark {
+          color: white; }
       .home-container .left-pane .search-container .search-box {
         padding-top: 10px;
         padding-bottom: 5px; }
@@ -1776,6 +1782,8 @@ b {
     display: flex;
     flex-flow: column nowrap;
     justify-content: space-between; }
+    .home-container .map-container.dark {
+      background-color: #233343; }
     .home-container .map-container .map-title {
       -webkit-box-flex: 1 0 20px;
       -moz-box-flex: 1 0 20px;
@@ -1785,8 +1793,10 @@ b {
       justify-self: flex-start;
       font-size: 22px;
       text-transform: uppercase;
-      color: #11315D;
-      font-family: 'Raleway', sans-serif; }
+      font-family: 'Raleway', sans-serif;
+      color: #11315D; }
+      .home-container .map-container .map-title.dark {
+        color: white; }
     .home-container .map-container .map-buttons {
       -webkit-box-flex: 1 0 20px;
       -moz-box-flex: 1 0 20px;
@@ -1795,11 +1805,11 @@ b {
       flex: 1 0 20px;
       justify-self: flex-start; }
     .home-container .map-container .funding-recipient-map {
-      -webkit-box-flex: 5 0 600px;
-      -moz-box-flex: 5 0 600px;
-      -webkit-flex: 5 0 600px;
-      -ms-flex: 5 0 600px;
-      flex: 5 0 600px; }
+      -webkit-box-flex: 5 0 200px;
+      -moz-box-flex: 5 0 200px;
+      -webkit-flex: 5 0 200px;
+      -ms-flex: 5 0 200px;
+      flex: 5 0 200px; }
     .home-container .map-container .funder-recipient-toggle {
       -webkit-box-flex: 1 0 20px;
       -moz-box-flex: 1 0 20px;
