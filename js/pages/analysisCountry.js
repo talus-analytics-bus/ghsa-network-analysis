@@ -1202,7 +1202,7 @@
             for (const y in fundsByYear) {
                 timeData.push(fundsByYear[y]);
             }
-            App.buildTimeChart('.time-chart-graphic', timeData, {
+            App.buildLineTimeChart('.time-chart-graphic', timeData, {
                 color,
                 lightColor,
                 moneyType,
