@@ -93,19 +93,20 @@ const Map = {};
 
 		zoomTo(d) {
 			// move country to top of layer
-			$(this.parentNode).append(this);
+			// $(this.parentNode).append(this);
 
 			// call zoom
-			const bounds = path.bounds(d);
+			const bounds = this.path.bounds(d);
 			const dx = bounds[1][0] - bounds[0][0];
 			const dy = bounds[1][1] - bounds[0][1];
 			const x = (bounds[0][0] + bounds[1][0]) / 2;
 			const y = (bounds[0][1] + bounds[1][1]) / 2;
-			const s = Math.max(1, Math.min(8, 0.7 / Math.max(dx / width, dy / height)));
-			const t = [width / 2 - s * x, height / 2 - s * y - 90];
-			return svg.transition()
+			const s = Math.max(1, Math.min(8, 0.7 / Math.max(dx / this.width, dy / this.height)));
+			const t = [this.width / 2 - s * x, this.height / 2 - s * y - 90];
+			return this.svg
+				.transition()
 				.duration(750)
-				.call(zoom.transform, d3.zoomIdentity.translate(t[0], t[1]).scale(s));
+				.call(this.zoom.transform, d3.zoomIdentity.translate(t[0], t[1]).scale(s));
 		}
 
 		reset() {

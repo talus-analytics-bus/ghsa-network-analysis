@@ -274,7 +274,8 @@
 				activeCountry = d3.select(this).classed('active', true);
 
 				// zoom in to country
-				mapObj.zoomTo.call(this, d);
+				// mapObj.zoomTo.call(this, d);
+				mapObj.zoomTo(d);
 
 				// display info box
 				displayCountryInfo();
@@ -1138,7 +1139,7 @@
 
 			// zoom in to country
 			if (!nonCountry) {
-				map.zoomTo.call(activeCountry.node(), activeCountry.datum())
+				map.zoomTo(activeCountry.node());
 			}
 			else {
 				scrollToListItem(activeCountry);
