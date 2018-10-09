@@ -17,6 +17,7 @@ const App = {};
 		App.currentTheme = 'light';
 		App.toggleTheme = (to) => {
 			const elementsToChange = [
+				'html',
 				'body',
 				'.navbar',
 				'.navbar a',

@@ -45,14 +45,13 @@ body {
   font-family: 'Open Sans', sans-serif;
   background-color: $lightcolor;
 
-  .dark {
-	  border-bottom: 1px solid #5a5a5a;
-	  background-color: $darkcolor;
-
-	  color: white;
-  }
-
 }
+
+.dark {
+	background-color: $darkcolor;
+	color: white;
+}
+
 
 .toggle-theme {
 	position: fixed !important;

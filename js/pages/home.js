@@ -201,7 +201,7 @@
 
 		// function for initializing the page
 		function init() {
-			App.toggleTheme('dark');
+			$('#theme-toggle').bootstrapToggle('on');
 
 			App.loadFundingData({showGhsaOnly: params.showGhsaOnly === 'true'});
 			App.setSources();
