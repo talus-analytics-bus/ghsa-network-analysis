@@ -24,6 +24,28 @@
       flex-flow: row;
       justify-content: space-between;
       align-items: flex-start;
+
+      .left-pane {
+        @include flex(2);
+
+        height: 100%;
+        @include flexbox();
+        flex-flow: column nowrap;
+        justify-content: space-between;
+        align-items: center;
+
+        .map-container {
+          @include flex(5 0 400px);
+        }
+
+        .legend-container {
+          @include flex(1 1 20px);
+        }
+      }
+
+      .info-container {
+        @include flex(1);
+      }
     }
 
   }
