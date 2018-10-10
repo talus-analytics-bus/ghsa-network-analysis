@@ -24,7 +24,7 @@ const App = {};
 				'label',
 				'.map-container',
 				'.navbar',
-				'.navbar a',
+				'.navbar a li',
 				'#page-content',
 				'.logo',
 			];

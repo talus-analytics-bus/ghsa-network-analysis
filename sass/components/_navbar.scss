@@ -58,7 +58,10 @@
     margin-top: 10px;
     &.active,
     &:hover {
-      @include gradient(#e9e9e9, #e0e0e0);
+      &:not(.dark) {
+        @include gradient(#e9e9e9, #e0e0e0);
+      }
+      background-color: #36404D;
     }
     & > a.light {
       color: #555;
