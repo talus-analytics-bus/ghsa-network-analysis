@@ -49,10 +49,22 @@
           div {
             background: transparent;
           }
+          &.dark {
+            border: $light-border;
+          }
         }
       }
 
-      .info-container,
+      .info-container {
+        background: $lightcolor;
+        color: $darkcolor;
+        width: auto;
+        div {
+          color: $darkcolor;
+          background: transparent;
+        }
+      }
+
       .map-and-search-container {
         @include flex(1 1 100px);
         background: transparent;

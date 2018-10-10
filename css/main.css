@@ -762,70 +762,63 @@ select.form-control {
     .tabs {
       /* This defines the mobile view!! */
       height: 800px; } }
-
-.tab {
-  float: left; }
-
-.tabs > .tab > label {
-  font-weight: 600;
-  text-align: center;
-  width: 150px;
-  padding: 8px 0 8px 15px;
-  border: 0;
-  text-align: left;
-  position: relative;
-  top: -8px;
-  cursor: pointer; }
-  .tabs > .tab > label:hover {
-    background-color: #EDEDED; }
-    .tabs > .tab > label:hover.dark {
+  .tabs .tab {
+    float: left; }
+    .tabs .tab > [type=radio] {
+      display: none; }
+      .tabs .tab > [type=radio]:checked ~ label ~ .content {
+        z-index: 1;
+        visibility: visible;
+        display: block; }
+      .tabs .tab > [type=radio]:checked ~ label {
+        border: 1px solid #ccc;
+        border-bottom: 0;
+        z-index: 2; }
+  .tabs > .tab > label {
+    font-weight: 600;
+    text-align: center;
+    width: 150px;
+    padding: 8px 0 8px 15px;
+    border: 0;
+    text-align: left;
+    position: relative;
+    top: -8px;
+    cursor: pointer; }
+    .tabs > .tab > label:hover {
+      background-color: #EDEDED; }
+      .tabs > .tab > label:hover.dark {
+        background-color: #36404d; }
+  .tabs .content {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 25px;
+    padding-right: 25px;
+    border: 1px solid #ccc;
+    visibility: hidden;
+    display: none;
+    background-color: white; }
+    .tabs .content.dark {
       background-color: #36404d; }
-
-.tab [type=radio] {
-  display: none; }
-
-.content {
-  position: absolute;
-  top: 28px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  padding-left: 25px;
-  padding-right: 25px;
-  border: 1px solid #ccc;
-  visibility: hidden;
-  display: none;
-  background-color: white; }
-  .content.dark {
-    background-color: #36404d; }
-  .content .tab-main-title {
-    padding-top: 20px;
-    font-size: 20px;
-    font-weight: 600; }
-  .content .tab-instruction-text.instruction-text {
-    font-weight: normal; }
-  .content .tab-controls.top-controls {
-    display: inline-block;
-    width: 100%; }
-    .content .tab-controls.top-controls div.header-content {
-      display: inline-block; }
-
-[type=radio]:checked ~ label {
-  border: 1px solid #ccc;
-  border-bottom: 0;
-  z-index: 2; }
-
-.tabs > .tab > [type=radio]:checked + label {
-  background-color: white; }
-  .tabs > .tab > [type=radio]:checked + label.dark {
-    background-color: #36404d; }
-
-[type=radio]:checked ~ label ~ .content {
-  z-index: 1;
-  visibility: visible;
-  display: block; }
+    .tabs .content .tab-main-title {
+      padding-top: 20px;
+      font-size: 20px;
+      font-weight: 600; }
+    .tabs .content .tab-instruction-text.instruction-text {
+      font-weight: normal; }
+    .tabs .content .tab-controls.top-controls {
+      display: inline-block;
+      width: 100%; }
+      .tabs .content .tab-controls.top-controls div.header-content {
+        display: inline-block; }
+  .tabs > .tab > [type=radio]:checked + label {
+    background-color: white; }
+    .tabs > .tab > [type=radio]:checked + label.dark {
+      background-color: #36404d; }
 
 .dataTables_wrapper .row:last-child {
   margin-top: 10px; }
@@ -1107,7 +1100,15 @@ b {
           background: transparent; }
           .map-page-container .map-page-tabs .content .left-pane .legend-container div {
             background: transparent; }
-      .map-page-container .map-page-tabs .content .info-container,
+          .map-page-container .map-page-tabs .content .left-pane .legend-container.dark {
+            border: 1px solid #ccc; }
+      .map-page-container .map-page-tabs .content .info-container {
+        background: white;
+        color: #233343;
+        width: auto; }
+        .map-page-container .map-page-tabs .content .info-container div {
+          color: #233343;
+          background: transparent; }
       .map-page-container .map-page-tabs .content .map-and-search-container {
         -webkit-box-flex: 1 1 100px;
         -moz-box-flex: 1 1 100px;
@@ -1115,9 +1116,7 @@ b {
         -ms-flex: 1 1 100px;
         flex: 1 1 100px;
         background: transparent; }
-        .map-page-container .map-page-tabs .content .info-container div, .map-page-container .map-page-tabs .content .info-container label,
-        .map-page-container .map-page-tabs .content .map-and-search-container div,
-        .map-page-container .map-page-tabs .content .map-and-search-container label {
+        .map-page-container .map-page-tabs .content .map-and-search-container div, .map-page-container .map-page-tabs .content .map-and-search-container label {
           background: transparent; }
 
 .analysis-container {
