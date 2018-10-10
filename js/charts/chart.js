@@ -139,7 +139,8 @@ class Chart {
 
 	static resize(chart) {
 		if (chart === undefined) {
-			return
+			console.log('no chart defined? this should never ever happen')
+			return;
 		}
 		if (chart.dimensions.width !== undefined) {
 			chart.containerwidth = chart.dimensions.width;
@@ -155,12 +156,6 @@ class Chart {
 
 		chart.width = chart.containerwidth - chart.margin.left - chart.margin.right;
 		chart.height = chart.containerheight - chart.margin.top - chart.margin.bottom;
-
-		// if (chart.settings.aspectRatio !== undefined) {
-		// 	chart.height = chart.width / chart.settings.aspectRatio;
-		// }
-
-		// console.log(`Resizing to ${chart.width} x ${chart.height}`);
 
 		chart.svg
 			.attr('width', chart.containerwidth)
