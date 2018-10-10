@@ -56,17 +56,16 @@
   .navbar-nav > li {
     cursor: pointer;
     margin-top: 10px;
+
     &.active,
     &:hover {
-      &:not(.dark) {
-        @include gradient(#e9e9e9, #e0e0e0);
-      }
-      background-color: #36404D;
+      @include gradient(#e9e9e9, #e0e0e0);
     }
-    & > a.light {
+
+    &.light {
       color: #555;
     }
-    & > a.dark {
+    &.dark {
       color: white;
     }
   }

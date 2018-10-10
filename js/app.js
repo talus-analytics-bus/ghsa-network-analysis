@@ -3,7 +3,7 @@ const App = {};
 (() => {
 	App.initialize = (callback) => {
 		// initialize nav menu items
-		$('.nav a').on('click', function () {
+		$('.nav li').on('click', function () {
 			const menuOption = $(this);
 			const page = menuOption.attr('page');
 			const hashArr = hasher.getHash().split('?');
