@@ -26,7 +26,9 @@
       align-items: flex-start;
 
       .left-pane {
-        @include flex(1);
+        @include flex(2 0 100px);
+
+        background: transparent;
 
         height: 100%;
 
@@ -37,17 +39,27 @@
         .map-container {
           @include flex(5 0 200px);
           width: 100%;
+          background: transparent;
         }
 
         .legend-container {
           @include flex(1 1 20px);
           width: 100%;
+          background: transparent;
+          div {
+            background: transparent;
+          }
         }
       }
 
       .info-container,
       .map-and-search-container {
-        @include flex(1);
+        @include flex(1 1 100px);
+        background: transparent;
+
+        div,label {
+          background: transparent;
+        }
       }
     }
 

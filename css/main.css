@@ -593,8 +593,9 @@ select.form-control {
   background-color: white;
   height: 80px;
   max-height: 80px; }
-  .navbar .dark {
-    background-color: #233343; }
+  .navbar.dark {
+    background-color: #233343;
+    border-bottom: none; }
   .navbar .navbar-header .navbar-brand {
     padding-top: 3px;
     cursor: pointer;
@@ -754,7 +755,7 @@ select.form-control {
 
 .tabs {
   position: relative;
-  height: 500px;
+  height: 600px;
   clear: both;
   margin: 25px 0; }
   @media (max-width: 576px) {
@@ -773,11 +774,12 @@ select.form-control {
   border: 0;
   text-align: left;
   position: relative;
-  left: -5px;
-  top: -30px;
+  top: -8px;
   cursor: pointer; }
   .tabs > .tab > label:hover {
     background-color: #EDEDED; }
+    .tabs > .tab > label:hover.dark {
+      background-color: #36404d; }
 
 .tab [type=radio] {
   display: none; }
@@ -795,7 +797,9 @@ select.form-control {
   border: 1px solid #ccc;
   visibility: hidden;
   display: none;
-  background: transparent; }
+  background-color: white; }
+  .content.dark {
+    background-color: #36404d; }
   .content .tab-main-title {
     padding-top: 20px;
     font-size: 20px;
@@ -814,14 +818,9 @@ select.form-control {
   z-index: 2; }
 
 .tabs > .tab > [type=radio]:checked + label {
-  background: -webkit-gradient(linear, left top, left bottom, from(#ececec), to(#ffffff));
-  background: -webkit-linear-gradient(top, #ececec, #ffffff);
-  background: -moz-linear-gradient(top, #ececec, #ffffff);
-  background: -ms-linear-gradient(top, #ececec, #ffffff);
-  background: -o-linear-gradient(top, #ececec, #ffffff);
-  -webkit-box-shadow: inset 0 3.5px 5px rgba(0, 0, 0, 0.125);
-  -moz-box-shadow: inset 0 3.5px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3.5px 5px rgba(0, 0, 0, 0.125); }
+  background-color: white; }
+  .tabs > .tab > [type=radio]:checked + label.dark {
+    background-color: #36404d; }
 
 [type=radio]:checked ~ label ~ .content {
   z-index: 1;
@@ -1075,11 +1074,12 @@ b {
       justify-content: space-between;
       align-items: flex-start; }
       .map-page-container .map-page-tabs .content .left-pane {
-        -webkit-box-flex: 1;
-        -moz-box-flex: 1;
-        -webkit-flex: 1;
-        -ms-flex: 1;
-        flex: 1;
+        -webkit-box-flex: 2 0 100px;
+        -moz-box-flex: 2 0 100px;
+        -webkit-flex: 2 0 100px;
+        -ms-flex: 2 0 100px;
+        flex: 2 0 100px;
+        background: transparent;
         height: 100%;
         display: -webkit-box;
         display: -moz-box;
@@ -1095,21 +1095,30 @@ b {
           -webkit-flex: 5 0 200px;
           -ms-flex: 5 0 200px;
           flex: 5 0 200px;
-          width: 100%; }
+          width: 100%;
+          background: transparent; }
         .map-page-container .map-page-tabs .content .left-pane .legend-container {
           -webkit-box-flex: 1 1 20px;
           -moz-box-flex: 1 1 20px;
           -webkit-flex: 1 1 20px;
           -ms-flex: 1 1 20px;
           flex: 1 1 20px;
-          width: 100%; }
+          width: 100%;
+          background: transparent; }
+          .map-page-container .map-page-tabs .content .left-pane .legend-container div {
+            background: transparent; }
       .map-page-container .map-page-tabs .content .info-container,
       .map-page-container .map-page-tabs .content .map-and-search-container {
-        -webkit-box-flex: 1;
-        -moz-box-flex: 1;
-        -webkit-flex: 1;
-        -ms-flex: 1;
-        flex: 1; }
+        -webkit-box-flex: 1 1 100px;
+        -moz-box-flex: 1 1 100px;
+        -webkit-flex: 1 1 100px;
+        -ms-flex: 1 1 100px;
+        flex: 1 1 100px;
+        background: transparent; }
+        .map-page-container .map-page-tabs .content .info-container div, .map-page-container .map-page-tabs .content .info-container label,
+        .map-page-container .map-page-tabs .content .map-and-search-container div,
+        .map-page-container .map-page-tabs .content .map-and-search-container label {
+          background: transparent; }
 
 .analysis-container {
   padding: 0;
@@ -1948,6 +1957,10 @@ body {
   width: 13px;
   height: 13px;
   margin-left: 3px; }
+  .info-img.dark {
+    -webkit-filter: brightness(0) invert(1);
+    filter: brightness(0) invert(1);
+    background: transparent; }
   .info-img.lower {
     top: 3px; }
 

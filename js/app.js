@@ -20,6 +20,8 @@ const App = {};
 				'html',
 				'body',
 				'body div',
+				'.info-img',
+				'label',
 				'.map-container',
 				'.navbar',
 				'.navbar a',

@@ -13,7 +13,7 @@
                 <div class="content" tab="map">
 
                     <div class="left-pane">
-                        <!--<div class="map-container"></div>-->
+                        <div class="map-container"></div>
 
                         <div class="legend-container">
                             <div class="legend-display-tab">
@@ -187,6 +187,131 @@
             </div><!-- tab content -->
 
             </div><!-- tab content container -->
+
+
+            <div class="tab">
+                <input type="radio" id="org-tab" name="map-tabs">
+                <label for="org-tab">Organizations</label>
+
+                <div class="content" tab="org">
+                    <div class="map-and-search-container">
+                        {{!--                     <div class="map-options-container ghsa-toggle-container">
+                                                <div class="map-options-title">
+                                                    <div class="top-state-toggle-container top-state-toggle-switch toggle-container">
+                                                        <label>
+                                                            <input class="form-check-input ghsa-only-checkbox" type="checkbox" value="" id="ghsa-only-checkbox"> Show GHSA Projects Only
+                                                            <img class="ghsa-info-img info-img" src="img/info.png" />
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div> --}}
+                        <div class="search-container">
+                            <div class="form-group has-feedback">
+                                <input type="text" class="country-search-input form-control" placeholder="search here...">
+                                <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                            </div>
+                            <div class="live-search-results-container reverse">
+                                <div class="live-search-no-results-text">No results found</div>
+                                <div class="live-search-results-contents"></div>
+                            </div>
+                        </div><!-- search container -->
+                        <div class="map-options-container">
+                            <div class="map-options-title main-options-title">
+                                Options
+                                <img class="collapse-arrow rotated" src="img/chevron_down.png" />
+                            </div>
+                            <div class="map-options-content">
+                                <div class="filter-section">
+                                    <div class="filter-box">
+                                        <label>
+                                            <input class="form-check-input ghsa-only-checkbox" type="checkbox" value="" id="ghsa-only-checkbox"> Show GHSA Projects Only
+                                            <img class="ghsa-info-img info-img" src="img/info.png" />
+                                        </label>
+                                        <div class="dropdown-label">Click to show:</div>
+                                        <div class="ind-type-filter">
+                                            <div class="radio-option">
+                                                <input type="radio" name="ind" ind="money" checked/>
+                                                <span>Financial Support</span>
+                                            </div>
+                                            <div class="radio-option multi-line">
+                                                <input type="radio" name="ind" ind="inkind" />
+                                                <div>In-kind Support</div>
+                                                <img class="inkind-support-info-img info-img" src="img/info.png" />
+                                            </div>
+                                            <div class="radio-option">
+                                                <input type="radio" name="ind" ind="score" />
+                                                <span>JEE Score</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- filter-box -->
+                                    <div class="filter-box">
+                                        <div class="money-filters">
+                                            <div class="dropdown-label">Choose:</div>
+                                            <div class="money-flow-type-filter">
+                                                <div class="radio-option">
+                                                    <input type="radio" name="rec-or-fund" ind="received" checked/>
+                                                    <span>Received</span>
+                                                </div>
+                                                <div class="or-text money-flow-or-text">or</div>
+                                                <div class="radio-option d-flow">
+                                                    <input type="radio" name="rec-or-fund" ind="funded" />
+                                                    <span>Funded</span>
+                                                </div>
+                                            </div>
+                                            <div class="money-type-filter">
+                                                <div class="radio-option">
+                                                    <input type="radio" ind="committed" checked/>
+                                                    <span>Committed</span>
+                                                </div>
+                                                <div class="or-text money-type-or-text">or</div>
+                                                <div class="radio-option d-type">
+                                                    <input type="radio" ind="disbursed" />
+                                                    <span>Disbursed</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="score-filters">
+                                            <div class="dropdown-label">Choose:</div>
+                                            <div class="jee-score-filter">
+                                                <div class="radio-option">
+                                                    <input type="radio" ind="score" />
+                                                    <span>JEE Score only</span>
+                                                    <img class="score-info-img info-img lower" src="img/info.png" />
+                                                </div>
+                                                <div class="or-text score-or-text">or</div>
+                                                <div class="radio-option">
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="radio" ind="combined" />
+                                                            </td>
+                                                            <td>
+                                                                <span>Combined Financial Resources and Need as Defined by JEE Score</span>
+                                                                <img class="combined-info-img info-img lower" src="img/info.png" />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- filter-box -->
+                                    <div class="filter-box">
+                                        <div class="dropdown-label">Select time range:</div>
+                                        <input class="time-slider slider" />
+                                    </div>
+                                </div><!-- filter-section -->
+                                <div class="filter-section">
+                                    <div class="filter-box">
+                                        <div class="dropdown-label inline">Core Capacity</div><img class="info-img core-capacity-text small" src="img/info.png" />
+                                        <select class="cc-select form-control" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                            </div><!-- map options content -->
+                        </div><!-- map options container -->
+                    </div
+                </div><!-- org tab content -->
+            </div><!-- org tab -->
+
         </div><!-- map page tabs -->
     </div><!-- map page container -->
 </script>

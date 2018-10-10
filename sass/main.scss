@@ -79,6 +79,12 @@ body {
 	height: 13px;
 	margin-left: 3px;
 
+	&.dark {
+      -webkit-filter: brightness(0) invert(1);
+		filter: brightness(0) invert(1);
+      background: transparent;
+	}
+
 	&.lower {
 		top: 3px;
 	}

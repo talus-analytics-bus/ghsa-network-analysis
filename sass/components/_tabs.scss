@@ -29,7 +29,7 @@
 // Doing this so we can load things at once
 .tabs {
   position: relative;
-  height: 500px; // todo figure out default height
+  height: 600px; // todo figure out default height
   clear: both;
   margin: 25px 0;
   @media (max-width: 576px) { // default *smallest* bootstrap breakpoint
@@ -50,12 +50,15 @@
   border: 0;
   text-align: left;
   position: relative;
-  left: -5px;
-  top: -30px;
+  //left: -5px;
+  top: -8px;
   cursor: pointer;
 
   &:hover {
     background-color: #EDEDED;
+    &.dark {
+      background-color: #36404d;
+    }
   }
 }
 .tab [type=radio] {
@@ -76,7 +79,12 @@
   border: $light-border;
   visibility: hidden;
   display:none;
-  background: transparent;
+  //background: transparent;
+
+  background-color: $lightcolor;
+  &.dark {
+    background-color: #36404d;
+  }
 
   .tab-main-title {
     padding-top: 20px;
@@ -107,14 +115,18 @@
 }
 .tabs > .tab > [type=radio]:checked + label {
   //background-color: #e9e9e9;
-  background: -webkit-gradient(linear, left top, left bottom, from(#ececec), to(#ffffff));
-  background: -webkit-linear-gradient(top, #ececec, #ffffff);
-  background: -moz-linear-gradient(top, #ececec, #ffffff);
-  background: -ms-linear-gradient(top, #ececec, #ffffff);
-  background: -o-linear-gradient(top, #ececec, #ffffff);
-  -webkit-box-shadow: inset 0 3.5px 5px rgba(0, 0, 0, 0.125);
-  -moz-box-shadow: inset 0 3.5px 5px rgba(0, 0, 0, 0.125);
-  box-shadow: inset 0 3.5px 5px rgba(0, 0, 0, 0.125);
+  //background: -webkit-gradient(linear, left top, left bottom, from(#ececec), to(#ffffff));
+  //background: -webkit-linear-gradient(top, #ececec, #ffffff);
+  //background: -moz-linear-gradient(top, #ececec, #ffffff);
+  //background: -ms-linear-gradient(top, #ececec, #ffffff);
+  //background: -o-linear-gradient(top, #ececec, #ffffff);
+  //-webkit-box-shadow: inset 0 3.5px 5px rgba(0, 0, 0, 0.125);
+  //-moz-box-shadow: inset 0 3.5px 5px rgba(0, 0, 0, 0.125);
+  //box-shadow: inset 0 3.5px 5px rgba(0, 0, 0, 0.125);
+  background-color: $lightcolor;
+  &.dark {
+    background-color: #36404d;
+  }
 }
 [type=radio]:checked ~ label ~ .content {
   z-index: 1;

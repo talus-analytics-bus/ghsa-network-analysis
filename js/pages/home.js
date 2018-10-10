@@ -215,11 +215,11 @@
 			if (App.usingFirefox) {
 				initFirefoxScrollBars();
 			}
-			const ccs = $('.cc-select').val();
-			initLeftList('.non-country-list.funder-list', ccs);
-			initRightList('.non-country-list.recipient-list', ccs);
-			initListScaling('.non-country-list-container.right');
-			initListScaling('.non-country-list-container.left');
+			// const ccs = $('.cc-select').val();
+			// initLeftList('.non-country-list.funder-list', ccs);
+			// initRightList('.non-country-list.recipient-list', ccs);
+			// initListScaling('.non-country-list-container.right');
+			// initListScaling('.non-country-list-container.left');
 			updateAll();
 
 			$('.core-capacity-text').tooltipster({
@@ -509,10 +509,10 @@
 				combo,
 			});
 		});
-		initLeftList('.non-country-list.funder-list', ccs);
-		initRightList('.non-country-list.recipient-list', ccs);
-		initListScaling('.non-country-list-container.right');
-		initListScaling('.non-country-list-container.left');
+		// initLeftList('.non-country-list.funder-list', ccs);
+		// initRightList('.non-country-list.recipient-list', ccs);
+		// initListScaling('.non-country-list-container.right');
+		// initListScaling('.non-country-list-container.left');
 	}
 
 	// gets the sum of payments for the years and capacities selected

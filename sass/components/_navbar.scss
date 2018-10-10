@@ -4,8 +4,9 @@
   border-bottom: $light-border;
   background-color: white;
 
-  .dark {
+  &.dark {
     background-color: $darkcolor;
+    border-bottom: none;
   }
 
   height: 80px;
