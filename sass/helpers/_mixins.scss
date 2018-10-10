@@ -97,12 +97,13 @@
   #{$property}: calc(#{$expression});
 }
 /* Define the mixin properties for flexbox */
-@mixin flexbox() {
+@mixin flexbox($flow: row) {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
+  flex-flow: $flow;
 }
 
 @mixin inline-flexbox() {

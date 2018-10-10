@@ -1,0 +1,54 @@
+.map-page-container {
+  @include flexbox(column nowrap);
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .map-page-title {
+    @include flex(0 0 50px);
+    font-size: 28px;
+    text-transform: uppercase;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .map-page-buttons {
+    @include flex(0 0 50px);
+    position: relative;
+    top: 100px;
+    align-self: flex-end;
+  }
+
+  .map-page-tabs {
+    width: 100%;
+
+    .content {
+      @include flexbox(row);
+      justify-content: space-between;
+      align-items: flex-start;
+
+      .left-pane {
+        @include flex(2 1 200px);
+
+        height: 100%;
+        @include flexbox(column nowrap);
+        justify-content: space-between;
+        align-items: center;
+
+        .map-container {
+          @include flex(5 0 400px);
+        }
+
+        .legend-container {
+          @include flex(1 1 20px);
+        }
+      }
+
+      .info-container,
+      .map-and-search-container {
+        @include flex(0 1 200px);
+      }
+    }
+
+  }
+}
+
+
