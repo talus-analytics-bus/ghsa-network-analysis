@@ -3,6 +3,15 @@
 
   .slider-track {
     @include gradient(#a0a0a0, #c0c0c0);
+    &.dark {
+      @include gradient(#a0a0a0, #c0c0c0);
+    }
+
+    .slider-track-low,.slider-track-high {
+      &.dark {
+        @include gradient(#a0a0a0, #c0c0c0);
+      }
+    }
   }
   .slider-selection {
     @include gradient(#fff, #c6c6c6);

@@ -42,17 +42,19 @@
           background: transparent;
         }
 
-        .legend-container {
-          @include flex(1 1 20px);
-          width: 100%;
+      }
+
+      .legend-container {
+        @include flex(1 1 20px);
+        width: auto;
+        background: transparent;
+        div {
           background: transparent;
-          div {
-            background: transparent;
-          }
-          &.dark {
-            border: $light-border;
-          }
         }
+        &.dark {
+          border: $light-border;
+        }
+
       }
 
       .info-container {

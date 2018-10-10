@@ -51,6 +51,9 @@ body {
 .dark {
 	background-color: $darkcolor;
 	color: white;
+   & table {
+	   color: $darkcolor;
+   }
 }
 
 
