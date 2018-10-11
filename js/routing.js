@@ -6,6 +6,7 @@ const Routing = {};
 
 	const hbTemplates = [
 		'home',
+		'data',
 		'about',
 		'analysis-country',
 		'analysis-pair',
@@ -156,6 +157,10 @@ const Routing = {};
 		});
 		crossroads.addRoute('/about', () => {
 			loadPage('about');
+		});
+
+		crossroads.addRoute('/data', () => {
+			loadPage('data', App.initData);
 		});
 
 		// setup hasher for subscribing to hash changes and browser history
