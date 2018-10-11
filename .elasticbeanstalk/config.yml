@@ -2,7 +2,7 @@ branch-defaults:
   add-login-page:
     environment: ghsa-network-analysis-internal-test
   master:
-    environment: ghsa-network-analysis-test2
+    environment: ghsa-network-analysis-master
     group_suffix: null
 environment-defaults:
   ghsa-network-analysis-test2:
