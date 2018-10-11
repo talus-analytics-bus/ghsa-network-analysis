@@ -83,10 +83,29 @@ const App = {};
 		// (blue, red) color scheme
 		App.fundColor = '#053061';
 		App.receiveColor = '#67001f';
-		App.fundColorPalette = ['#053061', '#2166ac', '#4393c3', '#92c5de', '#d1e5f0'];
-		App.receiveColorPalette = ['#67001f', '#b2182b', '#d6604d', '#f4a582', '#fddbc7'];
-		App.jeeColors = ['#c91414', '#ede929', '#ede929', '#ede929',
-			'#ede929', '#0b6422', '#0b6422', '#0b6422'];
+		App.fundColorPalette = [
+			'#053061',
+			'#2166ac',
+			'#4393c3',
+			'#92c5de',
+			'#d1e5f0',
+		];
+		App.receiveColorPalette = [
+			'#67001f',
+			'#b2182b',
+			'#d6604d',
+			'#f4a582',
+			'#fddbc7',
+		];
+		App.jeeColors = [
+			'#c91414',
+			'#ede929',
+			'#ede929',
+			'#ede929',
+			'#ede929',
+			'#0b6422',
+			'#0b6422',
+			'#0b6422'];
 
 		// define global variables used throughout
 		App.geoData = null;  // geographic data of the world

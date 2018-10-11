@@ -268,7 +268,7 @@
   padding: 10px 30px 30px; }
 
 .container-text {
-  max-width: 1000px;
+  max-width: 1200px;
   padding: 0 20px 30px; }
 
 .info-container {
@@ -818,17 +818,6 @@ select.form-control {
     background-color: white; }
     .tabs .content.dark {
       background-color: #36404d; }
-    .tabs .content .tab-main-title {
-      padding-top: 20px;
-      font-size: 20px;
-      font-weight: 600; }
-    .tabs .content .tab-instruction-text.instruction-text {
-      font-weight: normal; }
-    .tabs .content .tab-controls.top-controls {
-      display: inline-block;
-      width: 100%; }
-      .tabs .content .tab-controls.top-controls div.header-content {
-        display: inline-block; }
   .tabs > .tab > [type=radio]:checked + label {
     background-color: white; }
     .tabs > .tab > [type=radio]:checked + label.dark {

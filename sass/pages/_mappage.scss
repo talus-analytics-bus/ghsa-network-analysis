@@ -21,7 +21,7 @@
     width: 100%;
 
     .content {
-      @include flexbox(row);
+      @include flexbox(row );
       justify-content: space-between;
       align-items: flex-start;
 

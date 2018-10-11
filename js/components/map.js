@@ -21,11 +21,9 @@ const Map = {};
 
 			this.data = undefined;
 
-			this.svg
-				.classed('map, true');
+			this.svg.classed('map, true');
 
-			this.chart
-				.on('click', this.stopped, true);
+			// this.chart.on('click', this.stopped, true);
 
 			this.init();
 		}
