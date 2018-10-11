@@ -81,15 +81,17 @@
       }
 
       .paginate_button {
-        &.active {
-          a {
-            background-color: $darkcolor;
+        &.dark {
+          &.active {
+            a {
+              background-color: $darkcolor;
+            }
           }
-        }
-        a {
-          border: none;
-          color: white;
-          background-color: #36404d;
+          a {
+            border: none;
+            color: white;
+            background-color: #36404d;
+          }
         }
       }
 

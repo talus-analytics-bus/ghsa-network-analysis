@@ -1123,9 +1123,9 @@ b {
           background: transparent; }
       .map-page-container .map-page-tabs .content div, .map-page-container .map-page-tabs .content label {
         background: transparent; }
-      .map-page-container .map-page-tabs .content .paginate_button.active a {
+      .map-page-container .map-page-tabs .content .paginate_button.dark.active a {
         background-color: #233343; }
-      .map-page-container .map-page-tabs .content .paginate_button a {
+      .map-page-container .map-page-tabs .content .paginate_button.dark a {
         border: none;
         color: white;
         background-color: #36404d; }
