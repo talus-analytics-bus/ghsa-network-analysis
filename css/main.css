@@ -1937,6 +1937,74 @@ b {
   .submit-form-table input {
     width: 250px; }
 
+.data-container {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  padding-top: 20px; }
+  .data-container .title-container {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center; }
+    .data-container .title-container .title {
+      font-size: 28px;
+      text-transform: uppercase;
+      font-family: 'Raleway', sans-serif;
+      color: #11315D; }
+      .data-container .title-container .title.dark {
+        color: white; }
+  .data-container .filter-container {
+    width: 100%;
+    background-color: #E6E6E6;
+    text-transform: uppercase;
+    padding: 5px;
+    margin: 10px 0; }
+    .data-container .filter-container.dark {
+      background-color: #233343;
+      border: 1px solid #666666; }
+  .data-container .download-container {
+    align-self: flex-end;
+    padding: 10px;
+    margin: 10px 0; }
+  .data-container .paginate_button.dark.active a {
+    background-color: #233343; }
+  .data-container .paginate_button.dark a {
+    border: none;
+    color: white;
+    background-color: #36404d; }
+  .data-container table td, .data-container table tr {
+    border: 1px solid #666666; }
+  .data-container table td:nth-child(1) {
+    border-right: none; }
+  .data-container table td:nth-child(2) {
+    border-left: none;
+    border-right: none; }
+  .data-container table td:nth-child(3) {
+    border-left: none; }
+  .data-container table thead td, .data-container table thead tr {
+    background-color: #eaeaea;
+    color: black; }
+    .data-container table thead td.dark, .data-container table thead tr.dark {
+      background-color: #36404d;
+      color: white; }
+  .data-container table tbody td, .data-container table tbody tr {
+    background-color: white;
+    color: black; }
+    .data-container table tbody td.dark, .data-container table tbody tr.dark {
+      background-color: #233343;
+      color: white; }
+
 body {
   font-family: 'Open Sans', sans-serif;
   background-color: white; }
