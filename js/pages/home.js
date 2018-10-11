@@ -1978,16 +1978,6 @@
 		// rRows.append('td').text(d => formatFunc(d.total_committed));
 		rRows.append('td').text(d => formatFunc(d.total_spent));
 
-		d3.selectAll(`${donorSelector},${recSelector}`)
-			.selectAll('tr,td')
-			.style('background', '#233343')
-			.style('color', 'white');
-
-		d3.selectAll(`${donorSelector},${recSelector}`)
-			.selectAll('thead')
-			.selectAll('tr,td')
-			.style('background', '#36404d');
-
 		$(`${donorSelector}, ${recSelector}`).DataTable({
 			pageLength: 10,
 			scrollCollapse: false,

@@ -1121,6 +1121,32 @@ b {
         background: transparent; }
         .map-page-container .map-page-tabs .content .map-and-search-container div, .map-page-container .map-page-tabs .content .map-and-search-container label {
           background: transparent; }
+      .map-page-container .map-page-tabs .content div, .map-page-container .map-page-tabs .content label {
+        background: transparent; }
+      .map-page-container .map-page-tabs .content .paginate_button.active a {
+        background-color: #233343; }
+      .map-page-container .map-page-tabs .content .paginate_button a {
+        border: none;
+        color: white;
+        background-color: #36404d; }
+      .map-page-container .map-page-tabs .content table td, .map-page-container .map-page-tabs .content table tr {
+        border: 1px solid #666666; }
+      .map-page-container .map-page-tabs .content table td:nth-child(1) {
+        border-right: none; }
+      .map-page-container .map-page-tabs .content table td:nth-child(2) {
+        border-left: none; }
+      .map-page-container .map-page-tabs .content table thead td, .map-page-container .map-page-tabs .content table thead tr {
+        background-color: #eaeaea;
+        color: black; }
+        .map-page-container .map-page-tabs .content table thead td.dark, .map-page-container .map-page-tabs .content table thead tr.dark {
+          background-color: #36404d;
+          color: white; }
+      .map-page-container .map-page-tabs .content table tbody td, .map-page-container .map-page-tabs .content table tbody tr {
+        background-color: white;
+        color: black; }
+        .map-page-container .map-page-tabs .content table tbody td.dark, .map-page-container .map-page-tabs .content table tbody tr.dark {
+          background-color: #233343;
+          color: white; }
 
 .analysis-container {
   padding: 0;

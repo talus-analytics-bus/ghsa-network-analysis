@@ -27,6 +27,7 @@ const App = {};
 				'.navbar a li',
 				'#page-content',
 				'.logo',
+				'td,tr',
 			];
 			let classToAdd;
 			switch (to) {
