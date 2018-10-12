@@ -1,10 +1,13 @@
 (() => {
+	const fundingColor = '#597251';
+	const recipientColor = '#623B63';
+
 	class ArrowToggle extends Chart {
 		constructor(selector, params = {}) {
 			super(selector, params);
 
-			this.fundingColor = '#597251';
-			this.recipientColor = '#623B63';
+			this.fundingColor = fundingColor;
+			this.recipientColor = recipientColor;
 
 			this.funderCallback = () => {};
 			this.recipientCallback = () => {};
@@ -170,17 +173,6 @@
 		}
 	}
 
-	const smallFunder = [
-		"M2.5,25.75A2.25,2.25,0,0,1,.25,23.5V2.5A2.25,2.25,0,0,1,2.5.25H17.72a.24.24,0,0,1,.21.11l8.42,12.9a.26.26,0,0,1,0,.29l-9.42,12.1a.26.26,0,0,1-.2.1Z",
-		"M17.72.5l8.42,12.9L16.72,25.5H2.5a2,2,0,0,1-2-2V2.5a2,2,0,0,1,2-2H17.72m0-.5H2.5A2.5,2.5,0,0,0,0,2.5v21A2.5,2.5,0,0,0,2.5,26H16.72a.51.51,0,0,0,.4-.19l9.41-12.1a.51.51,0,0,0,0-.58L18.14.23A.5.5,0,0,0,17.72,0Z",
-	];
-
-	const smallReceiver = [
-		"M.5,25.75a.23.23,0,0,1-.22-.14.22.22,0,0,1,0-.26L9.48,13.5l-.35-.58C8,11.06,4.53,6,2.44,3,.75.6.75.6.75.5A.25.25,0,0,1,1,.25H24.73a1.34,1.34,0,0,1,1.34,1.34V24.41a1.34,1.34,0,0,1-1.34,1.34Z",
-		"M24.73.5a1.09,1.09,0,0,1,1.09,1.09V24.41a1.09,1.09,0,0,1-1.09,1.09H.5l9.28-12-.44-.73C7.7,10.06,1,.58,1,.5H24.73m0-.5H1A.5.5,0,0,0,.5.5C.5.68.5.68,2.24,3.18c2.08,3,5.56,8,6.67,9.87l.27.44L.1,25.19a.53.53,0,0,0,0,.53A.51.51,0,0,0,.5,26H24.73a1.59,1.59,0,0,0,1.59-1.59V1.59A1.59,1.59,0,0,0,24.73,0Z",
-	];
-
-
 	App.newToggle = (selector,
 					 params = {},
 					 funderCallback = (() => {
@@ -209,6 +201,49 @@
 		toggle.registerRecipientCallback(recipientCallback);
 
 		return toggle;
-	}
+	};
+
+	const smallFunder = "M2.5,25.75A2.25,2.25,0,0,1,.25,23.5V2.5A2.25,2.25,0,0,1,2.5.25H17.72a.24.24,0,0,1,.21.11l8.42,12.9a.26.26,0,0,1,0,.29l-9.42,12.1a.26.26,0,0,1-.2.1Z";
+
+	const smallReceiver = "M.5,25.75a.23.23,0,0,1-.22-.14.22.22,0,0,1,0-.26L9.48,13.5l-.35-.58C8,11.06,4.53,6,2.44,3,.75.6.75.6.75.5A.25.25,0,0,1,1,.25H24.73a1.34,1.34,0,0,1,1.34,1.34V24.41a1.34,1.34,0,0,1-1.34,1.34Z";
+
+	const newIcon = (selector, type) => {
+		let pathData, color, offset;
+		switch(type) {
+			case 'fund':
+				pathData = smallFunder;
+				color = fundingColor;
+				offset = 5;
+				break;
+			default:
+				pathData = smallReceiver;
+				color = recipientColor;
+				offset = 12;
+				break;
+		}
+		const icon = d3.selectAll(selector)
+			.append('svg')
+			.style('position', 'absolute')
+			.style('top', '6px')
+			.style('left', '80px')
+			.attr('width', '30px')
+			.attr('height', '30px');
+		icon.append('path')
+			.attr('d', pathData)
+			.style('fill', color)
+			.style('stroke', 'white')
+			.style('stroke-width', '1px');
+		icon.append('text')
+			.attr('transform', `translate(${offset}, 18)`)
+			.style('font-size', '16px')
+			.style('stroke', 'none')
+			.style('fill', 'white')
+			.text('$');
+		return icon
+	};
+
+	App.fundIcon = (selector) => newIcon(selector, 'fund');
+	App.receiveIcon = (selector) => newIcon(selector, 'receive');
+
 })();
 

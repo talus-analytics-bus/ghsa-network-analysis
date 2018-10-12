@@ -243,6 +243,9 @@
 		initTableSearch();
 		populateTables('.donor-table', '.recipient-table');
 
+		App.fundIcon('.fund-col-name');
+		App.receiveIcon('.receive-col-name');
+
 	};
 
 
