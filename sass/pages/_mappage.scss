@@ -20,13 +20,18 @@
   .map-page-tabs {
     width: 100%;
 
+    height: 920px;
+    @media (max-width: 992px) { height: 1550px; }
+    @media (max-width: 768px) { height: 1940px; }
+    @media (max-width: 496px) { height: 2000px; }
+
     .content {
       @include flexbox(row );
       justify-content: space-between;
       align-items: flex-start;
 
       .left-pane {
-        @include flex(2 0 100px);
+        @include flex(0 0 100px);
 
         background: transparent;
 
@@ -38,14 +43,14 @@
 
         .map-container {
           @include flex(5 0 200px);
-          width: 100%;
+          min-width: 200px;
           background: transparent;
         }
 
       }
 
       .legend-container {
-        @include flex(1 1 20px);
+        @include flex(0 0 20px);
         width: auto;
         background: transparent;
         div {
@@ -68,7 +73,7 @@
       }
 
       .map-and-search-container {
-        @include flex(1 1 100px);
+        @include flex(0 0 100px);
         background: transparent;
 
         div,label {
@@ -92,6 +97,21 @@
             color: white;
             background-color: #36404d;
           }
+        }
+      }
+
+      .table-content {
+        @include flexbox(row wrap);
+        justify-content: space-between;
+        align-items: flex-start;
+
+        .left-table,.right-table {
+          @include flex(1 0 400px);
+
+          @include flexbox(column nowrap);
+          justify-content: flex-start;
+          align-items: center;
+
         }
       }
 

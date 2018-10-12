@@ -1091,7 +1091,17 @@ b {
     top: 100px;
     align-self: flex-end; }
   .map-page-container .map-page-tabs {
-    width: 100%; }
+    width: 100%;
+    height: 920px; }
+    @media (max-width: 992px) {
+      .map-page-container .map-page-tabs {
+        height: 1550px; } }
+    @media (max-width: 768px) {
+      .map-page-container .map-page-tabs {
+        height: 1940px; } }
+    @media (max-width: 496px) {
+      .map-page-container .map-page-tabs {
+        height: 2000px; } }
     .map-page-container .map-page-tabs .content {
       display: -webkit-box;
       display: -moz-box;
@@ -1102,11 +1112,11 @@ b {
       justify-content: space-between;
       align-items: flex-start; }
       .map-page-container .map-page-tabs .content .left-pane {
-        -webkit-box-flex: 2 0 100px;
-        -moz-box-flex: 2 0 100px;
-        -webkit-flex: 2 0 100px;
-        -ms-flex: 2 0 100px;
-        flex: 2 0 100px;
+        -webkit-box-flex: 0 0 100px;
+        -moz-box-flex: 0 0 100px;
+        -webkit-flex: 0 0 100px;
+        -ms-flex: 0 0 100px;
+        flex: 0 0 100px;
         background: transparent;
         height: 100%;
         display: -webkit-box;
@@ -1123,14 +1133,14 @@ b {
           -webkit-flex: 5 0 200px;
           -ms-flex: 5 0 200px;
           flex: 5 0 200px;
-          width: 100%;
+          min-width: 200px;
           background: transparent; }
       .map-page-container .map-page-tabs .content .legend-container {
-        -webkit-box-flex: 1 1 20px;
-        -moz-box-flex: 1 1 20px;
-        -webkit-flex: 1 1 20px;
-        -ms-flex: 1 1 20px;
-        flex: 1 1 20px;
+        -webkit-box-flex: 0 0 20px;
+        -moz-box-flex: 0 0 20px;
+        -webkit-flex: 0 0 20px;
+        -ms-flex: 0 0 20px;
+        flex: 0 0 20px;
         width: auto;
         background: transparent; }
         .map-page-container .map-page-tabs .content .legend-container div {
@@ -1145,11 +1155,11 @@ b {
           color: #233343;
           background: transparent; }
       .map-page-container .map-page-tabs .content .map-and-search-container {
-        -webkit-box-flex: 1 1 100px;
-        -moz-box-flex: 1 1 100px;
-        -webkit-flex: 1 1 100px;
-        -ms-flex: 1 1 100px;
-        flex: 1 1 100px;
+        -webkit-box-flex: 0 0 100px;
+        -moz-box-flex: 0 0 100px;
+        -webkit-flex: 0 0 100px;
+        -ms-flex: 0 0 100px;
+        flex: 0 0 100px;
         background: transparent; }
         .map-page-container .map-page-tabs .content .map-and-search-container div, .map-page-container .map-page-tabs .content .map-and-search-container label {
           background: transparent; }
@@ -1161,6 +1171,29 @@ b {
         border: none;
         color: white;
         background-color: #36404d; }
+      .map-page-container .map-page-tabs .content .table-content {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        align-items: flex-start; }
+        .map-page-container .map-page-tabs .content .table-content .left-table, .map-page-container .map-page-tabs .content .table-content .right-table {
+          -webkit-box-flex: 1 0 400px;
+          -moz-box-flex: 1 0 400px;
+          -webkit-flex: 1 0 400px;
+          -ms-flex: 1 0 400px;
+          flex: 1 0 400px;
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+          flex-flow: column nowrap;
+          justify-content: flex-start;
+          align-items: center; }
       .map-page-container .map-page-tabs .content table td, .map-page-container .map-page-tabs .content table tr {
         border: 1px solid #666666; }
       .map-page-container .map-page-tabs .content table td:nth-child(1) {

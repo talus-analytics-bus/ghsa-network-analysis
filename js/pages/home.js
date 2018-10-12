@@ -762,6 +762,7 @@
 
 		const barHeight = 16;
 		let barWidth = 70;
+		barWidth = 20;
 		const legendPadding = 25;
 
 		// adjust width for JEE score
@@ -1989,6 +1990,10 @@
 			// columnDefs: [
 			// 	{ targets: [1,2,3], orderable: false},
 			// ],
+			columns: [
+				{ width: '80%' },
+				{ width: '20%' }
+			],
 			bLengthChange: false,
 		});
 	}
