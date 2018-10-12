@@ -29,6 +29,7 @@ const App = {};
 				'.logo',
 				'td,tr',
 				'.paginate_button',
+				'button',
 			];
 			let classToAdd;
 			switch (to) {
