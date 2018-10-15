@@ -153,16 +153,15 @@ const App = {};
 
 				// hide unops data until we can fix it
 				fundingData = fundingData.filter(d => d.donor_code !== '41aaa');
-
-				// tag datum if no specific value reported
-				App.tagProjectsWithNoValuesReported(fundingData);
-
 				App.fundingData = fundingData;
 				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
 				
 				// Prepare funding lookup tables, etc.
 				App.loadFundingData({showGhsaOnly: false});
 
+				// tag datum if no specific value reported
+				App.tagProjectsWithNoValuesReported(fundingData);
+				
 				// save indicator scores by country
 				jeeData.forEach((sRow) => {
 					const indId = sRow.indicator.split(' ')[0];
