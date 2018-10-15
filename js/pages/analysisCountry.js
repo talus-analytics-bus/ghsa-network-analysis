@@ -25,6 +25,7 @@
 		const country = (iso === "General Global Benefit") ? ggb : App.countries.find(c => c.ISO2 === iso);
 		let lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
 		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
+        const middleColor = (moneyType === 'd') ? App.fundColorPalette[2] : App.receiveColorPalette[2];
 		const lightColor = (moneyType === 'd') ? App.fundColorPalette[4] : App.receiveColorPalette[4];
 
 		if (iso === "General Global Benefit") {
@@ -33,7 +34,7 @@
 			$('.toggle-type').css('visibility','');
 		}
 
-		// initializes the whole page
+		// initializes the whole page 
 		function init() {
             App.setSources();
 			// fill title
@@ -675,9 +676,10 @@
 							'<div class="name-container">' +
 							`<span onclick="${onClickStr}">${cName}</span>` +
 							'</div>';
+                       
 					});
 				}
-
+                
 				rows.append('td').html((d) => {
 					const recCountry = App.countries.find(c => c.ISO2 === d.iso);
 					const flagHtml = recCountry ? App.getFlagHtml(d.iso) : '';
@@ -1202,11 +1204,15 @@
             for (const y in fundsByYear) {
                 timeData.push(fundsByYear[y]);
             }
-            App.buildTimeChart('.time-chart-graphic', timeData, {
+            
+            const countryName = iso;
+            
+            App.buildLineTimeChart('.time-chart-graphic', timeData, {
                 color,
+                middleColor,
                 lightColor,
                 moneyType,
-            });
+            },countryName);
         }
 		init();
 	};

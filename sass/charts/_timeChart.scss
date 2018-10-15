@@ -4,6 +4,12 @@
 		font-weight: 600;
 		text-anchor: middle;
 	}
+    
+    .point-text {
+		font-size: 0.9em;
+		font-weight: 600;
+		text-anchor: middle;
+	}
 	.chart-label {
 		font-size: 0.9em;
 		text-anchor: middle;
@@ -12,6 +18,22 @@
 		font-size: 0.9em;
 	}
 }
+
+.countName {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 800;
+    text-anchor: middle;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.comOrSpent {
+    font-size: .7em !important;
+    margin-top: 4px; 
+    margin-bottom: 12px;
+}
+
 .time-chart-container {
 	position: relative;
 	//padding-bottom: 20px;
