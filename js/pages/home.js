@@ -1994,12 +1994,12 @@
 			// 	{ targets: [1,2,3], orderable: false},
 			// ],
 			columns: [
-				{ width: '80%' },
-				{ width: '20%' }
+				{width: '80%'},
+				{width: '20%'},
 			],
 			bLengthChange: false,
 			drawCallback: () => {
-				switch(App.currentTheme) {
+				switch (App.currentTheme) {
 					case 'dark':
 						$('#theme-toggle').bootstrapToggle('on');
 						break;
