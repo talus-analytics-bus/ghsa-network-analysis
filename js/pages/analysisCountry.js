@@ -25,6 +25,7 @@
 		const country = (iso === "General Global Benefit") ? ggb : App.countries.find(c => c.ISO2 === iso);
 		let lookup = (moneyType === 'd') ? App.fundingLookup : App.recipientLookup;
 		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
+        const middleColor = (moneyType === 'd') ? App.fundColorPalette[2] : App.receiveColorPalette[2];
 		const lightColor = (moneyType === 'd') ? App.fundColorPalette[4] : App.receiveColorPalette[4];
 
 		if (iso === "General Global Benefit") {
@@ -1204,6 +1205,7 @@
             }
             App.buildLineTimeChart('.time-chart-graphic', timeData, {
                 color,
+                middleColor,
                 lightColor,
                 moneyType,
             });

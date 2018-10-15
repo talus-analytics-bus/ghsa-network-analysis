@@ -3,14 +3,15 @@
         // remove existing
         d3.select(selector).html('');
         
-        console.log(data);
-
         // start building the chart
-        const margin = { top: 25, right: 150, bottom: 35, left: 75 };
-        const width = 630;
-        const height = 150;
-        const color = d3.color(param.color || 'steelblue');
-        const lightColor = param.lightColor || color.brighter(2);
+        const margin = { top: 30, right: 100, bottom: 30, left: 75 };
+        const width = 700;
+        const height = 230;
+        //const color = d3.color(param.color || 'steelblue');
+        //const lightColor = param.lightColor || color.brighter(2);
+        const color = param.color;
+        const middleColor = param.middleColor;
+        const lightColor = param.lightColor;
 
         const chart = d3.select(selector).append('svg')
         .classed('time-chart', true)
@@ -19,9 +20,8 @@
         .append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-        const x = d3.scaleBand()
-        .padding(1)
-        .domain(data.map(d => d.year))
+        const x = d3.scaleLinear()
+        .domain([d3.min(data,d => d.year), .5 + d3.max(data, d => d.year )])
         .range([0, width]);
         
         const maxValue = d3.max(data, d => d3.max([d.total_spent, d.total_committed]));
@@ -31,36 +31,11 @@
         .domain([0, 1.2 * maxValue])
         .range([height, 0])
         .nice();
-
-        const xAxis = d3.axisBottom()
-        .tickSize(0)
-        .tickSizeOuter(3)
-        .tickPadding(10)
-        .scale(x);
-        
-        const yAxis = d3.axisLeft()
-        .ticks(4)
-        .tickSize(3)
-        .tickSizeOuter(3)
-        .tickPadding(10)
-        .tickFormat(App.siFormat)
-        .scale(y);
-        
-        const bandwidth = x.bandwidth();
-
-        chart.append('g')
-        .attr('class', 'x axis')
-        .attr('transform', `translate(0, ${height})`)
-        .call(xAxis);
-        chart.append('g')
-        .attr('class', 'y axis')
-        .call(yAxis);
-        
-        //lines
-
+                 
+        // fill under the curve
         const areaSpent = chart.selectAll('area-const-spent')
             .data([data])
-            .enter().append('g')
+            .enter().append('g');
         
         const area = d3.area()
             .x(d => x(d.year))
@@ -70,9 +45,46 @@
         areaSpent.append('path')
             .attr('class', 'area')
             .attr('d', area)
-            .style('fill', '#c3b3c5');
+            .style('fill', lightColor);
+
+        const xAxis = d3.axisBottom()
+        //.attr('class', 'tickBottom')
+        .ticks(5)
+        .tickSize(4)
+        .tickSizeOuter(4)
+        .tickFormat(d => d.toString())
+        .scale(x);
         
+        const yAxis = d3.axisLeft()
+        //.attr('class', 'tickLeft')
+        .ticks(4)
+        .tickSize(2)
+        .tickSize(2)
+        .tickSizeOuter(3)
+        .tickPadding(10)
+        .tickFormat(App.siFormat)
+        .scale(y);
         
+        //const bandwidth = x.bandwidth();
+
+        chart.append('g')
+        .attr('class', 'x axis')
+        .attr('transform', `translate(0, ${height})`)
+        .call(xAxis);
+        
+        chart.append('g')
+        .attr('class', 'y axis')
+        .call(yAxis);
+        
+        chart.selectAll('.domain')
+        .style('stroke','#c0c0c0');
+        
+        chart.selectAll('g.tick line')
+        .style('stroke','#c0c0c0');
+        
+        // ** lines **
+
+        // committed line 
         const lineConstComm = chart.selectAll('path-const-comm')
                .data([data])
                .enter().append('g'); 
@@ -82,27 +94,27 @@
             .y(d => y(d.total_committed));
         
         lineConstComm.append('path')
-               .attr('d', lineCommitted)
-               .attr('fill', 'none')
-                .attr('stroke', '#9064a4')
-                .attr('stroke-width', 2)
-                .style("stroke-dasharray", ("3, 3"));
+            .attr('d', lineCommitted)
+            .attr('fill', 'none')
+            .attr('stroke', middleColor)
+            .attr('stroke-width', 2)
+            .style("stroke-dasharray", ("3, 3"));
         
-               const lineConstSpent = chart.selectAll('path-const-spent')
-               .data([data])
-               .enter().append('g'); 
+        // spent line
+        const lineConstSpent = chart.selectAll('path-const-spent')
+            .data([data])
+            .enter().append('g'); 
         
         const lineSpent = d3.line()
             .x(d => x(d.year))
             .y(d => y(d.total_spent));
         
         lineConstSpent.append('path')
-               .attr('d', lineSpent)
-               .attr('fill', 'none')
-                .attr('stroke', '#57285a')
-                .attr('stroke-width', 3);
+            .attr('d', lineSpent)
+            .attr('fill', 'none')
+            .attr('stroke', color)
+            .attr('stroke-width', 3);
         
-
           /* const lineStyles = {
             All: {
                 'stroke': 'red',
@@ -131,23 +143,40 @@
             .attr('stroke-width',2)
             .attr('stroke','grey')
         
-        const textGroups = chart.selectAll('.text-group')
+        /*const textGroups = chart.selectAll('.text-group')
             .data(data)
             .enter().append('g');
         
         textGroups.append('text')
-            .attr('class', 'bar-text')
+            .attr('class', 'point-text')
             .attr('x', d => x(d.year))
             .attr('y',d => y(d.total_spent) - 20 )
             .attr('dy', '.35em')
             .text((d) => {
             return App.formatMoneyShort(d.total_spent)
-        });
+        }); */
  
-        // ??? TOOLTIPS ??? 
+        // TOOLTIPS 
         
- 
-               
+        const tooltipGroups = chart.selectAll('.tooltip-group')
+            .data(data)
+            .enter().append('g');
+        
+        tooltipGroups.append('circle')
+            .attr('transform',d => {
+                return `translate (${x(d.year)},${y(d.total_spent)})`;
+            })
+            .attr('r',15)
+            .style('fill','red')
+            .attr('opacity',0)
+            .each(function(d,i) {
+                $(this).tooltipster({
+                    content: `${App.formatMoneyShort(d.total_spent)}`,
+                    trigger: 'hover',
+                    side: 'top',
+                });
+            });
+        
         
         /* // add bars
         const barGroups = chart.selectAll('.bar-group')
@@ -188,44 +217,52 @@
             return App.formatMoneyShort(d.total_spent);
         }); */
 
-        // axis labels
+        //axis labels
         chart.append('text')
         .attr('class', 'chart-label')
         .attr('x', width/2)
-        .attr('y', height + 35)
+        .attr('y', height + 30)
         .style('font-weight', '600')
         .text('Year');
 
         chart.append('text')
         .attr('class', 'chart-label')
         .attr('transform', 'rotate(-90)')
-        .attr('x', -height + 25)
+        .attr('x', - 3* height/4)
         .attr('y', -55)
         .style('text-anchor', 'start')
         .style('font-weight', '600')
         .text('Amount (in USD)');
 
         // add legend
-        const rectWidth = 12;
+        const rectWidth = 50;
         const legend = chart.append('g')
-        .attr('transform', `translate(${width + 25}, 5)`);
+        .attr('transform', `translate(${width - 300}, -20)`);
         const legendGroups = legend.selectAll('g')
-        .data([lightColor, color])
+        .data([color, middleColor])
         .enter().append('g')
-        .attr('transform', (d, i) => `translate(0, ${44 * i})`);
-        legendGroups.append('rect')
-        .attr('width', rectWidth)
-        .attr('height', 30)
-        .style('fill', d => d);
+        .attr('transform', (d, i) => `translate(0, ${22 * i})`);
+        
+        legendGroups.append('line')
+        .attr('x1', 1)
+        .attr('x2', 42)
+        .attr('y1', (d,i) => 25 - 45 * i)
+        .attr('y2', (d,i) => 25 - 45 * i)
+        .attr('stroke-width', (d,i) => 4 - i)
+        //.attr('width', rectWidth)
+        //.attr('height', 4)
+        .style("stroke-dasharray", (d,i) => i * "6")
+        .style('stroke', d => d);
+        
         legendGroups.append('text')
         .attr('class', 'legend-label')
         .attr('x', rectWidth + 8)
-        .attr('y', 11)
+        .attr('y', 6)
         .text((d, i) => (i === 0 ? 'Committed' : 'Disbursed'));
+        
         legendGroups.append('text')
         .attr('class', 'legend-label')
-        .attr('x', rectWidth + 8)
-        .attr('y', 27)
+        .attr('transform', (d, i) => `translate(${rectWidth + 8 + 68 - 6 * i}, 6)`)
         .text((d, i) => {
             if (param.moneyType === 'r') {
                 return (i === 0) ? 'Funds to Receive' : 'Funds Received';

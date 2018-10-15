@@ -1525,6 +1525,11 @@ b {
 }
 
 /* line 21, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.time-chart .axisGrey {
+  stroke: grey;
+}
+
+/* line 25, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
 .time-chart-container {
   position: relative;
   /*.source-text {
@@ -1535,7 +1540,7 @@ b {
 	}*/
 }
 
-/* line 39, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+/* line 43, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
 .time-chart-container .country-summary-label {
   font-weight: 400;
   font-size: 1.2em;
@@ -1874,7 +1879,7 @@ td:nth-child(n+2) ~ .country-table.inkind-table {
 /* line 159, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_analysisCountry.scss */
 .country-flow-summary,
 .progress-circle-section {
-  padding-bottom: 40px;
+  padding-bottom: 20px;
   padding-top: 20px;
   padding-right: 2%;
   padding-left: 20px;
