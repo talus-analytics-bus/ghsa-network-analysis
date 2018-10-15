@@ -765,7 +765,7 @@
 
 		const barHeight = 16;
 		let barWidth = 70;
-		barWidth = 20;
+		// barWidth = 20;
 		const legendPadding = 25;
 
 		// adjust width for JEE score
