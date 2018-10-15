@@ -1162,6 +1162,7 @@ b {
         flex: 0 0 100px;
         background: transparent; }
         .map-page-container .map-page-tabs .content .map-and-search-container div, .map-page-container .map-page-tabs .content .map-and-search-container label {
+          width: 100px;
           background: transparent; }
       .map-page-container .map-page-tabs .content div, .map-page-container .map-page-tabs .content label {
         background: transparent; }

@@ -32,6 +32,7 @@
 
       .left-pane {
         @include flex(0 0 100px);
+        //width: 100px;
 
         background: transparent;
 
@@ -75,8 +76,10 @@
       .map-and-search-container {
         @include flex(0 0 100px);
         background: transparent;
+        //width: 100px;
 
         div,label {
+          width: 100px;
           background: transparent;
         }
       }
