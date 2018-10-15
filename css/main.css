@@ -1130,12 +1130,12 @@ b {
         justify-content: space-between;
         align-items: center; }
         .map-page-container .map-page-tabs .content .left-pane .map-container {
-          -webkit-box-flex: 5 0 200px;
-          -moz-box-flex: 5 0 200px;
-          -webkit-flex: 5 0 200px;
-          -ms-flex: 5 0 200px;
-          flex: 5 0 200px;
-          min-width: 200px;
+          -webkit-box-flex: 0 5 1000px;
+          -moz-box-flex: 0 5 1000px;
+          -webkit-flex: 0 5 1000px;
+          -ms-flex: 0 5 1000px;
+          flex: 0 5 1000px;
+          width: 100%;
           background: transparent; }
       .map-page-container .map-page-tabs .content .legend-container {
         width: auto;

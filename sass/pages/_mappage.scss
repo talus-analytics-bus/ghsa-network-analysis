@@ -43,8 +43,8 @@
         align-items: center;
 
         .map-container {
-          @include flex(5 0 200px);
-          min-width: 200px;
+          @include flex(0 5 1000px);
+          width: 100%;
           background: transparent;
         }
 
