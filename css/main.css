@@ -1093,6 +1093,9 @@ b {
   .map-page-container .map-page-tabs {
     width: 100%;
     height: 920px; }
+    @media (max-width: 1199px) {
+      .map-page-container .map-page-tabs {
+        height: 1100px; } }
     @media (max-width: 992px) {
       .map-page-container .map-page-tabs {
         height: 1550px; } }
