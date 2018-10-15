@@ -1879,6 +1879,15 @@ b {
     flex-flow: row;
     flex-flow: column nowrap;
     justify-content: space-between; }
+    @media (max-width: 720px) {
+      .home-container .left-pane {
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px; } }
+    .home-container .left-pane.dark {
+      border-right: 1px solid #ccc; }
+      @media (max-width: 720px) {
+        .home-container .left-pane.dark {
+          border-right: none; } }
     .home-container .left-pane .welcome-container .welcome-text {
       font-size: 28px;
       text-transform: uppercase;
@@ -1931,6 +1940,9 @@ b {
     flex-flow: row;
     flex-flow: column nowrap;
     justify-content: space-between; }
+    @media (max-width: 720px) {
+      .home-container .map-container {
+        margin-top: 20px; } }
     .home-container .map-container.dark {
       background-color: #233343; }
     .home-container .map-container .map-title {

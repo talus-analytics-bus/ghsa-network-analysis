@@ -30,6 +30,7 @@
 				.attr('width', '200%')
 				.attr('height', '200%');
 
+			const color = '#275480';
 			this.defs
 				.dropShadow
 				.append('feGaussianBlur')
