@@ -43,7 +43,7 @@
         align-items: center;
 
         .map-container {
-          @include flex(0 5 1000px);
+          @include flex(3 0 100px);
           width: 100%;
           background: transparent;
         }
@@ -75,6 +75,7 @@
       .map-and-search-container {
         @include flex(1 0 100px);
         background: transparent;
+        align-self: center;
 
         div,label {
           background: transparent;

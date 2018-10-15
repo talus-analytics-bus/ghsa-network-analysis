@@ -1130,11 +1130,11 @@ b {
         justify-content: space-between;
         align-items: center; }
         .map-page-container .map-page-tabs .content .left-pane .map-container {
-          -webkit-box-flex: 0 5 1000px;
-          -moz-box-flex: 0 5 1000px;
-          -webkit-flex: 0 5 1000px;
-          -ms-flex: 0 5 1000px;
-          flex: 0 5 1000px;
+          -webkit-box-flex: 3 0 100px;
+          -moz-box-flex: 3 0 100px;
+          -webkit-flex: 3 0 100px;
+          -ms-flex: 3 0 100px;
+          flex: 3 0 100px;
           width: 100%;
           background: transparent; }
       .map-page-container .map-page-tabs .content .legend-container {
@@ -1157,7 +1157,8 @@ b {
         -webkit-flex: 1 0 100px;
         -ms-flex: 1 0 100px;
         flex: 1 0 100px;
-        background: transparent; }
+        background: transparent;
+        align-self: center; }
         .map-page-container .map-page-tabs .content .map-and-search-container div, .map-page-container .map-page-tabs .content .map-and-search-container label {
           background: transparent; }
       .map-page-container .map-page-tabs .content div, .map-page-container .map-page-tabs .content label {
