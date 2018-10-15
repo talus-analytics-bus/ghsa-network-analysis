@@ -30,6 +30,7 @@ const App = {};
 				'td,tr',
 				'.paginate_button',
 				'button',
+				'path',
 			];
 			let classToAdd;
 			switch (to) {

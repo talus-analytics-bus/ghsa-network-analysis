@@ -2093,6 +2093,14 @@ body {
   .dark table {
     color: #233343; }
 
+svg .chart .funding path, svg .chart .receiving path {
+  stroke: none;
+  stroke-width: 1px;
+  stroke-opacity: 0; }
+  svg .chart .funding path.dark, svg .chart .receiving path.dark {
+    stroke: white;
+    stroke-opacity: 1; }
+
 .toggle-theme {
   position: fixed !important;
   bottom: 10px !important;

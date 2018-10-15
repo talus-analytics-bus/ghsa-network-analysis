@@ -30,20 +30,35 @@
 				.attr('width', '200%')
 				.attr('height', '200%');
 
-			const color = '#275480';
 			this.defs
 				.dropShadow
 				.append('feGaussianBlur')
 				.attr('in', 'SourceAlpha')
-				.attr('stdDeviation', 1)
+				.attr('stdDeviation', 2)
 				.attr('result', 'blur');
+
+			const r = 39 / 251;
+			const g = 84 / 251;
+			const b = 128 / 251;
+			const darkShadow = `
+				0 0 0 0 ${r} 
+				0 0 0 0 ${g} 
+				0 0 0 0 ${b} 
+				0 0 0 1 0 
+			`;
+			this.defs
+				.dropShadow
+				.append('feColorMatrix')
+				.attr('in', 'blur')
+				.attr('result', 'matrixOut')
+				.attr('values', darkShadow);
 
 			const merge = this.defs
 				.dropShadow
 				.append('feMerge');
 
 			merge.append('feMergeNode')
-				.attr('in', 'blur');
+				.attr('in', 'matrixOut');
 			merge.append('feMergeNode')
 				.attr('in', 'SourceGraphic');
 
@@ -77,7 +92,6 @@
 				.append('path')
 				.attr('d', this.getFundingPath())
 				.style('fill', this.fundingColor)
-				.style('stroke-opacity', 0)
 				.on('click', () => this.toggle('funded'));
 
 			this.newGroup('label', this.funding)
@@ -102,7 +116,6 @@
 				.append('path')
 				.attr('d', this.getReceivingPath())
 				.style('fill', this.recipientColor)
-				.style('stroke-opacity', 0)
 				.on('click', () => this.toggle('received'));
 
 			this.newGroup('label', this.receiving)
