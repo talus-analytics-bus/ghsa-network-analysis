@@ -6,7 +6,125 @@ const Map = {};
 	 * @param {String} selector A selector of the container element the map will be placed in
 	 * @return {Object} An object containing the map and the layer containing drawn items
 	 */
+	class WorldMap extends Chart {
+		constructor(selector, params={}) {
+			super(selector, params);
+
+			this.world = params.world;
+			this.topoworld = topojson.feature(
+				this.world,
+				this.world.objects.countries,
+			);
+
+			this.countryData = this.topoworld.features
+				.filter(d => d.properties.NAME !== 'Antarctica');
+
+			this.data = undefined;
+
+			this.svg.classed('map, true');
+
+			// this.chart.on('click', this.stopped, true);
+
+			this.init();
+		}
+
+		draw() {
+			this.projection = d3.geoNaturalEarth2()
+				.fitSize(
+					[this.width, this.height],
+					this.topoworld,
+				)
+				.precision(0.1);
+
+			this.path = d3.geoPath()
+				.projection(this.projection);
+
+			// define zoom
+			this.zoom = d3.zoom()
+				.translateExtent([[0, 0], [this.containerwidth, this.height + 40]])
+				.scaleExtent([1, 8])
+				.on('zoom', () => this.zoomed());  // need to not overwrite `this`
+
+			this.svg.call(this.zoom);
+
+			this.addOverlay();
+			this.addCountries();
+		}
+
+		addOverlay() {
+			// add overlay: where zoom and pan events are
+			this.newGroup('overlay')
+				.append('rect')
+				.attr('width', this.width)
+				.attr('height', this.height)
+				.on('click', () => this.reset());
+		}
+
+		addCountries() {
+			const countryGroup = this.newGroup('countries')
+				.selectAll('g')
+				.data(this.countryData)
+				.enter()
+				.append('g');
+
+			countryGroup.append('path')
+				.attr('class', 'country')
+				.attr('d', d => this.path(d));
+
+			countryGroup.append('path')
+				.datum(topojson.mesh(this.world, this.world.objects.countries, (a, b) => a !== b))
+				.attr('class', 'boundary')
+				.attr('d', d => this.path(d));
+		}
+
+		stopped() {
+			if (d3.event.defaultPrevented) {
+				d3.event.stopPropagation();
+			}
+		}
+
+		// pan and zoom function
+		zoomed() {
+			this.countries.style('stroke-width', `${1.5 / d3.event.transform.k}px`);
+			this.countries.attr('transform', d3.event.transform);
+		}
+
+		zoomTo(d) {
+			// move country to top of layer
+			// $(this.parentNode).append(this);
+
+			// call zoom
+			const bounds = this.path.bounds(d);
+			const dx = bounds[1][0] - bounds[0][0];
+			const dy = bounds[1][1] - bounds[0][1];
+			const x = (bounds[0][0] + bounds[1][0]) / 2;
+			const y = (bounds[0][1] + bounds[1][1]) / 2;
+			const s = Math.max(1, Math.min(8, 0.7 / Math.max(dx / this.width, dy / this.height)));
+			const t = [this.width / 2 - s * x, this.height / 2 - s * y - 90];
+			return this.svg
+				.transition()
+				.duration(750)
+				.call(this.zoom.transform, d3.zoomIdentity.translate(t[0], t[1]).scale(s));
+		}
+
+		reset() {
+			this.svg
+				.transition()
+				.duration(750)
+				.call(this.zoom.transform, d3.zoomIdentity);
+		}
+
+		update(data) {
+			this.data = data;
+
+		}
+	}
+
 	Map.createWorldMap = (selector, world) => {
+		const map = new WorldMap(selector, { world });
+		return map;
+
+		// --- old ---
 		// prepare map
 		const width = 1200;
 		const height = 640;
@@ -104,8 +222,8 @@ const Map = {};
 		// 	.attr('fill','#222222')
 		// 	.style('pointer-events','none')
 		// 	.attr('mask', 'url(#viewport-cutout)');
-		//
-		// // add viewport edge
+
+		// add viewport edge
 		// svg.append('rect')
 		// 	.attr('class', 'viewport-edge')
 		// 	.attr('x', viewportX)

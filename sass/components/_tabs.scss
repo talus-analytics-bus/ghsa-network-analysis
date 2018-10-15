@@ -1,26 +1,114 @@
-.tab {
-  display: inline-block;
-  padding: 10px 20px 7.5px 20px;
-  border-bottom: none;
-  font-size: 1.1em;
-  cursor: pointer;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  @include border-top-radius(10px);
-  @include gradient(white, #f9f9f9);
-}
-.tab:hover {
-  border-color: #adadad;
-  @include gradient(#e6e6e6, #eee);
-}
-.tab.active {
-  @include gradient(#e9e9e9, #f0f0f0);
-  @include box-shadow(inset 0 3.5px 5px rgba(0,0,0,.125));
-}
-.tab-content-container {
-  border: $light-border;
-  padding: 15px 25px;
-}
-.tab-content {
-  display: none;
+//.tab {
+//  display: inline-block;
+//  padding: 10px 20px 7.5px 20px;
+//  border-bottom: none;
+//  font-size: 1.1em;
+//  cursor: pointer;
+//  border-bottom-left-radius: 0;
+//  border-bottom-right-radius: 0;
+//  @include border-top-radius(10px);
+//  @include gradient(white, #f9f9f9);
+//}
+//.tab:hover {
+//  border-color: #adadad;
+//  @include gradient(#e6e6e6, #eee);
+//}
+//.tab.active {
+//  @include gradient(#e9e9e9, #f0f0f0);
+//  @include box-shadow(inset 0 3.5px 5px rgba(0,0,0,.125));
+//}
+//.tab-content-container {
+//  border: $light-border;
+//  padding: 15px 25px;
+//}
+//.tab-content {
+//  display: none;
+//}
+
+// https://css-tricks.com/functional-css-tabs-revisited/
+// Doing this so we can load things at once
+.tabs {
+  position: relative;
+  height: 600px; // todo figure out default height
+  clear: both;
+  margin: 25px 0;
+  @media (max-width: 576px) { // default *smallest* bootstrap breakpoint
+    /* This defines the mobile view!! */
+    // todo figure out real break
+    height: 800px;   // todo figure out what this actually is
+  }
+
+  .tab {
+    float: left;
+    >[type=radio] {
+      display: none;
+      &:checked {
+        & ~ label ~ .content {
+          z-index: 1;
+          visibility: visible;
+          //display: block;
+        }
+
+        & ~ label {
+          //background: white;
+          border: $light-border;
+          border-bottom: 0;
+          //border-bottom: 1px solid white;
+
+          z-index: 2;
+        }
+      }
+    }
+  }
+
+  & > .tab > label {
+    font-weight: 600;
+    text-align: center;
+    width: 150px;
+    padding: 8px 0 8px 15px;
+    border: 0;
+    text-align: left;
+    position: relative;
+    //left: -5px;
+    top: -8px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #EDEDED;
+      &.dark {
+        background-color: #36404d;
+      }
+    }
+  }
+
+  .content {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    // background: white;
+    right: 0;
+    bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 25px;
+    padding-right: 25px;
+    //border: 1px solid #eee;
+    border: $light-border;
+    visibility: hidden;
+    display:none;
+    //background: transparent;
+
+    background-color: $lightcolor;
+    &.dark {
+      background-color: #36404d;
+    }
+
+  }
+
+  & > .tab > [type=radio]:checked + label {
+    background-color: $lightcolor;
+    &.dark {
+      background-color: #36404d;
+    }
+  }
 }

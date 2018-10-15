@@ -4,7 +4,13 @@ class Chart {
 
 		this.selector = selector;
 
-		this.svg = d3.selectAll(selector).append('svg');
+		this.containerwidth = $(selector).width();
+		this.containerheight = $(selector).height();
+
+		this.svg = d3.selectAll(selector)
+			.append('svg')
+			.attr('preserveAspectRatio', 'xMinYMin meet')
+			.attr('viewBox', `0 0 ${this.containerwidth} ${this.containerheight}`);
 
 		this.params = params;
 		this.margin = this.params.margin || {
@@ -13,6 +19,9 @@ class Chart {
 			left: 0,
 			right: 0,
 		};
+
+		this.width = this.containerwidth - this.margin.left - this.margin.right;
+		this.height = this.containerheight - this.margin.top - this.margin.bottom;
 
 		this.dimensions = this.params.dimensions || {
 			width: undefined,
@@ -116,13 +125,18 @@ class Chart {
 		onResize(this);
 
 		// event listener
-		$(this.selector).resize(() => {
-			onResize(this);
+		// https://css-tricks.com/snippets/jquery/done-resizing-event/
+		let timer;
+		window.addEventListener('resize', () => {
+			clearTimeout(timer);
+			timer = window.setTimeout(() => {
+				onResize(this);
+			}, 250);
 		});
 	}
 
 	init() {
-		this.initSizing();
+		this.draw();
 	}
 
 	getBBox(element) {
@@ -137,46 +151,7 @@ class Chart {
 		};
 	}
 
-	static resize(chart) {
-		if (chart === undefined) {
-			return
-		}
-		if (chart.dimensions.width !== undefined) {
-			chart.containerwidth = chart.dimensions.width;
-		} else {
-			chart.containerwidth = $(chart.selector).width();
-		}
-
-		if (chart.dimensions.height !== undefined) {
-			chart.containerheight = chart.dimensions.height;
-		} else {
-			chart.containerheight = $(chart.selector).height();
-		}
-
-		chart.width = chart.containerwidth - chart.margin.left - chart.margin.right;
-		chart.height = chart.containerheight - chart.margin.top - chart.margin.bottom;
-
-		// if (chart.settings.aspectRatio !== undefined) {
-		// 	chart.height = chart.width / chart.settings.aspectRatio;
-		// }
-
-		// console.log(`Resizing to ${chart.width} x ${chart.height}`);
-
-		chart.svg
-			.attr('width', chart.containerwidth)
-			.attr('height', chart.containerheight);
-
-		chart.draw();
-		if (chart.data) {
-			chart.update(chart.data);
-		}
-	}
-
 	/* CURRENT PROJECT SPECIFIC METHODS */
-}
-
-function onResize(chart) {
-	Chart.resize(chart);
 }
 
 function generateRoundedCorner(x, y, r) {

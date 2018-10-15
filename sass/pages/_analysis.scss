@@ -1,96 +1,101 @@
 .analysis-container {
 	padding: 0;
-	border-left: $border;
-	border-right: $border;
-	border-bottom: $border;
+	//border-left: $border;
+	//border-right: $border;
+	//border-bottom: $border;
 	min-height: calc(100% - 51px);
-	@include gradient(#fff, #f0f0f0);
-}
-.analysis-filter-bar {
-	position: relative;
-	padding: 15px 30px;
-	border-bottom: $border;
-	text-align: center;
-	z-index: 1000;
+	//@include gradient(#fff, #f0f0f0);
+    background-color: $lightcolor;
+	&.dark {
+		background-color: $darkcolor;
+	}
 
-	.filter-box {
-		display: inline-block;
-		margin: 0 15px;
-		text-align: left;
-	}
-	.slider-box {
+	.analysis-filter-bar {
 		position: relative;
-		top: -6px;
-		margin-right: 50px;
-	}
-	.search-container {
-		display: inline-block;
-		position: relative;
-		margin-left: 20px;
-		color: #333;
-	}
-}
-.analysis-content {
-	position: relative;
-	margin: 0;
-	padding: 20px 30px 10px;
-	z-index: 100;
-}
-.flag {
-	position: relative;
-	top: -2px;
-	height: 30px;
-	margin: 0 20px;
-}
-.table {
-	.flag-container {
-		display: inline-block;
-		width: 40px;
-		margin-right: 15px;
-		text-align: right;
-	}
-	.flag {
-		height: 16px;
-		margin: 0;
-	}
-}
-.country-table {
-	@include box-shadow(1px 1px 3px rgba(0,0,0,0.2));
+		padding: 15px 30px;
+		border-bottom: $border;
+		text-align: center;
+		z-index: 1000;
 
-	thead tr { background-color: #fafafa; }
-	thead td { font-weight: 600; }
-	thead td:first-child {
-		padding-left: 62px;
-	}
-	tbody tr {
-		background-color: #fff;
-		cursor: pointer;
-	}
-	td:first-child { 
-		white-space: nowrap;
-	}
-	td:nth-child(n+2) ~ &.inkind-table {
-		white-space: nowrap;
-		text-align: right;
-	}
-	.flag-container {
-		vertical-align: top;
-	}
-	.name-container {
-		display: inline-block;
-		width: 220px;
-		white-space: normal;
-		vertical-align: top;
-		font-weight: 600;
-		cursor: pointer;
-	}
-	&.inkind-table {
-		.name-container {
-			// width: auto;
-			max-width: 75%;
+		.filter-box {
+			display: inline-block;
+			margin: 0 15px;
+			text-align: left;
+		}
+		.slider-box {
+			position: relative;
+			top: -6px;
+			margin-right: 50px;
+		}
+		.search-container {
+			display: inline-block;
+			position: relative;
+			margin-left: 20px;
+			color: #333;
 		}
 	}
-	.name-container span {
-		&:hover { text-decoration: underline; }
+	.analysis-content {
+		position: relative;
+		margin: 0;
+		padding: 20px 30px 10px;
+		z-index: 100;
+	}
+	.flag {
+		position: relative;
+		top: -2px;
+		height: 30px;
+		margin: 0 20px;
+	}
+	.table {
+		.flag-container {
+			display: inline-block;
+			width: 40px;
+			margin-right: 15px;
+			text-align: right;
+		}
+		.flag {
+			height: 16px;
+			margin: 0;
+		}
+	}
+	.country-table {
+		@include box-shadow(1px 1px 3px rgba(0,0,0,0.2));
+
+		thead tr { background-color: #fafafa; }
+		thead td { font-weight: 600; }
+		thead td:first-child {
+			padding-left: 62px;
+		}
+		tbody tr {
+			background-color: #fff;
+			cursor: pointer;
+		}
+		td:first-child {
+			white-space: nowrap;
+		}
+		td:nth-child(n+2) ~ &.inkind-table {
+			white-space: nowrap;
+			text-align: right;
+		}
+		.flag-container {
+			vertical-align: top;
+		}
+		.name-container {
+			display: inline-block;
+			width: 220px;
+			white-space: normal;
+			vertical-align: top;
+			font-weight: 600;
+			cursor: pointer;
+		}
+		&.inkind-table {
+			.name-container {
+				// width: auto;
+				max-width: 75%;
+			}
+		}
+		.name-container span {
+			&:hover { text-decoration: underline; }
+		}
 	}
 }

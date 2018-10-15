@@ -40,3 +40,41 @@
   $fundingColor: #597251;
   $recipientColor: #623B63;
 }
+
+
+.alt-btn {
+  padding: 10px 15px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  color: #999999;
+
+  &.dark {
+    background: transparent;
+    border: 1px solid #ccc;
+    color: #eee;
+  }
+
+  &:hover {
+    @include box-shadow(0 0 5px #275480);
+    color: #999999;
+    border: none;
+    background-color: #eee;
+  }
+}
+
+.ghsa-button {
+  position: relative;
+  padding: 10px 15px 10px 45px;
+  &:before {
+    content: "";
+    background-repeat: no-repeat;
+    background-position: top left;
+    background-size: contain;
+    height: 26px;
+    width: 26px;
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    background-image: url('/img/gida-logo.png');
+  }
+}

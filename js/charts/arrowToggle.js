@@ -1,10 +1,13 @@
 (() => {
+	const fundingColor = '#597251';
+	const recipientColor = '#623B63';
+
 	class ArrowToggle extends Chart {
 		constructor(selector, params = {}) {
 			super(selector, params);
 
-			this.fundingColor = '#597251';
-			this.recipientColor = '#623B63';
+			this.fundingColor = fundingColor;
+			this.recipientColor = recipientColor;
 
 			this.funderCallback = () => {};
 			this.recipientCallback = () => {};
@@ -31,15 +34,31 @@
 				.dropShadow
 				.append('feGaussianBlur')
 				.attr('in', 'SourceAlpha')
-				.attr('stdDeviation', 1)
+				.attr('stdDeviation', 2)
 				.attr('result', 'blur');
+
+			const r = 39 / 251;
+			const g = 84 / 251;
+			const b = 128 / 251;
+			const darkShadow = `
+				0 0 0 0 ${r} 
+				0 0 0 0 ${g} 
+				0 0 0 0 ${b} 
+				0 0 0 1 0 
+			`;
+			this.defs
+				.dropShadow
+				.append('feColorMatrix')
+				.attr('in', 'blur')
+				.attr('result', 'matrixOut')
+				.attr('values', darkShadow);
 
 			const merge = this.defs
 				.dropShadow
 				.append('feMerge');
 
 			merge.append('feMergeNode')
-				.attr('in', 'blur');
+				.attr('in', 'matrixOut');
 			merge.append('feMergeNode')
 				.attr('in', 'SourceGraphic');
 
@@ -73,7 +92,6 @@
 				.append('path')
 				.attr('d', this.getFundingPath())
 				.style('fill', this.fundingColor)
-				.style('stroke-opacity', 0)
 				.on('click', () => this.toggle('funded'));
 
 			this.newGroup('label', this.funding)
@@ -98,7 +116,6 @@
 				.append('path')
 				.attr('d', this.getReceivingPath())
 				.style('fill', this.recipientColor)
-				.style('stroke-opacity', 0)
 				.on('click', () => this.toggle('received'));
 
 			this.newGroup('label', this.receiving)
@@ -198,5 +215,51 @@
 		toggle.registerRecipientCallback(recipientCallback);
 
 		return toggle;
-	}
+	};
+
+	const smallFunder = "M2.5,25.75A2.25,2.25,0,0,1,.25,23.5V2.5A2.25,2.25,0,0,1,2.5.25H17.72a.24.24,0,0,1,.21.11l8.42,12.9a.26.26,0,0,1,0,.29l-9.42,12.1a.26.26,0,0,1-.2.1Z";
+
+	const smallReceiver = "M.5,25.75a.23.23,0,0,1-.22-.14.22.22,0,0,1,0-.26L9.48,13.5l-.35-.58C8,11.06,4.53,6,2.44,3,.75.6.75.6.75.5A.25.25,0,0,1,1,.25H24.73a1.34,1.34,0,0,1,1.34,1.34V24.41a1.34,1.34,0,0,1-1.34,1.34Z";
+
+	const newIcon = (selector, type) => {
+		let pathData, color, offset, thead;
+		switch(type) {
+			case 'fund':
+				pathData = smallFunder;
+				color = fundingColor;
+				offset = 5;
+				thead = '.fund-col-name > .head-text';
+				break;
+			default:
+				pathData = smallReceiver;
+				color = recipientColor;
+				offset = 12;
+				thead = '.receive-col-name > .head-text';
+				break;
+		}
+		const icon = d3.selectAll(selector)
+			.append('svg')
+			.style('position', 'absolute')
+			.style('top', '6px')
+			.style('left', `${$(thead).width() + 15}px`)
+			.attr('width', '30px')
+			.attr('height', '30px');
+		icon.append('path')
+			.attr('d', pathData)
+			.style('fill', color)
+			.style('stroke', 'white')
+			.style('stroke-width', '1px');
+		icon.append('text')
+			.attr('transform', `translate(${offset}, 19)`)
+			.style('font-size', '16px')
+			.style('stroke', 'none')
+			.style('fill', 'white')
+			.text('$');
+		return icon
+	};
+
+	App.fundIcon = (selector) => newIcon(selector, 'fund');
+	App.receiveIcon = (selector) => newIcon(selector, 'receive');
+
 })();
+

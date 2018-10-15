@@ -3,6 +3,12 @@
   padding-right: 25px;
   border-bottom: $light-border;
   background-color: white;
+
+  &.dark {
+    background-color: $darkcolor;
+    border-bottom: none;
+  }
+
   height: 80px;
   max-height: 80px;
   .navbar-header {
@@ -18,10 +24,14 @@
         margin-right: 10px;
 
         width: 300px;
-        background-image: url('/img/logo-light.png');
         background-repeat: no-repeat;
         background-position: top left;
         background-size: contain;
+
+        background-image: url('/img/logo-light.png');
+        &.dark {
+          background-image: url('/img/logo-dark.png');
+        }
 
       }
       span:hover {
@@ -46,12 +56,17 @@
   .navbar-nav > li {
     cursor: pointer;
     margin-top: 10px;
+
     &.active,
     &:hover {
       @include gradient(#e9e9e9, #e0e0e0);
     }
-    & > a {
+
+    &.light {
       color: #555;
+    }
+    &.dark {
+      color: white;
     }
   }
 }

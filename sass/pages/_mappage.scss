@@ -1,0 +1,163 @@
+.map-page-container {
+  @include flexbox(column nowrap);
+  justify-content: space-between;
+  align-items: flex-start;
+
+  .map-page-title {
+    @include flex(0 0 50px);
+    font-size: 28px;
+    text-transform: uppercase;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  .map-page-buttons {
+    @include flex(0 0 50px);
+    position: relative;
+    top: 100px;
+    align-self: flex-end;
+  }
+
+  .map-page-tabs {
+    width: 100%;
+
+    height: 920px;
+    @media (max-width: 1199px) { height: 1100px; }
+    @media (max-width: 992px) { height: 1550px; }
+    @media (max-width: 768px) { height: 1940px; }
+    @media (max-width: 496px) { height: 2000px; }
+
+    .content {
+      @include flexbox(row nowrap);
+      justify-content: space-between;
+      align-items: flex-start;
+
+      .left-pane {
+        @include flex(3 0 100px);
+
+        background: transparent;
+
+        height: 100%;
+
+        @include flexbox(column nowrap);
+        justify-content: space-between;
+        align-items: center;
+
+        .map-container {
+          @include flex(3 0 100px);
+          width: 100%;
+          background: transparent;
+        }
+
+      }
+
+      .legend-container {
+        width: auto;
+        background: transparent;
+        div {
+          background: transparent;
+        }
+        &.dark {
+          border: $light-border;
+        }
+
+      }
+
+      .info-container {
+        background: $lightcolor;
+        color: $darkcolor;
+        width: auto;
+        div {
+          color: $darkcolor;
+          background: transparent;
+        }
+      }
+
+      .map-and-search-container {
+        @include flex(1 0 100px);
+        background: transparent;
+        align-self: center;
+
+        div,label {
+          background: transparent;
+        }
+      }
+
+      div,label {
+        background: transparent;
+      }
+
+      .paginate_button {
+        &.dark {
+          &.active {
+            a {
+              background-color: $darkcolor;
+            }
+          }
+          a {
+            border: 1px solid #ccc;
+            color: #ccc;
+            background-color: #36404d;
+          }
+        }
+      }
+
+      .table-content {
+        @include flexbox(row wrap);
+        justify-content: space-between;
+        align-items: flex-start;
+
+        .left-table,.right-table {
+          padding: 10px;
+          @include flex(1 0 400px);
+
+          @include flexbox(column nowrap);
+          justify-content: flex-start;
+          align-items: center;
+
+          div.dataTables_wrapper {
+            width: 100%;
+          }
+
+        }
+      }
+
+      table {
+        width: 100%;
+
+        td,tr {
+          border: 1px solid #666666;
+        }
+        td:nth-child(1) {
+          border-right: none;
+        }
+        td:nth-child(2) {
+          border-left: none;
+        }
+
+        thead {
+          td,tr {
+            background-color: #eaeaea;
+            color: black;
+            &.dark {
+              background-color: #36404d;
+              color: white;
+            }
+          }
+        }
+        tbody {
+          td,tr {
+            background-color: white;
+            color: black;
+            &.dark {
+              background-color: $darkcolor;
+              color: white;
+            }
+          }
+        }
+      }
+    }
+
+  }
+}
+
+

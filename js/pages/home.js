@@ -27,7 +27,7 @@
 		"#74c476",
 		"#41ab5d",
 		"#238b45",
-		"#005a32"
+		"#005a32",
 	];
 
 	// const purplesOrig = [
@@ -41,8 +41,15 @@
 	//   "#4d004b"
 	// ];
 
-	const orangesReverse = ['#fee391', '#fec44f', '#fe9929',
-		'#ec7014', '#cc4c02', '#993404', '#662506'].reverse();
+	const orangesReverse = [
+		'#fee391',
+		'#fec44f',
+		'#fe9929',
+		'#ec7014',
+		'#cc4c02',
+		'#993404',
+		'#662506',
+	].reverse();
 
 	const jeeColors = App.jeeColors;
 
@@ -54,7 +61,8 @@
 		activeCountry,
 		currentNodeDataMap,
 		startYear,
-		endYear;
+		endYear,
+		supportType;
 
 	const setConstants = (params) => {
 		// state variables for current map indicator
@@ -88,6 +96,8 @@
 			App.mapType = undefined;
 		}
 
+		supportType = 'financial' // 'financial' or 'inkind'
+
 	};
 
 	App.initHome = (params = {}) => {
@@ -95,13 +105,13 @@
 
 		initSearch('.search-box');
 		map = buildMap('.funding-recipient-map');
+		d3.selectAll('.viewport-ellipse,.viewport-edge').remove();
 
 		App.loadFundingData({showGhsaOnly: App.showGhsaOnly});
 
 		// get filter values
 		// const ccs = _.clone(App.capacities);
 		const ccs = [];
-		console.log(App.capacities);
 
 		// clear out current data
 		currentNodeDataMap.clear();
@@ -199,47 +209,43 @@
 	App.initMap = (params = {}) => {
 		setConstants(params);
 
-		// function for initializing the page
-		function init() {
-			$('body').addClass('dark');
+		$('#theme-toggle').bootstrapToggle('on');
 
-			App.loadFundingData({showGhsaOnly: params.showGhsaOnly === 'true'});
-			App.setSources();
+		App.loadFundingData({showGhsaOnly: params.showGhsaOnly === 'true'});
+		App.setSources();
 
-			// build map and initialize search
-			map = buildMap();
-			initMapOptions();
-			initGhsaToggle();
-			initLegend();
-			initCountryInfoBox();
-			if (App.usingFirefox) {
-				initFirefoxScrollBars();
-			}
-			const ccs = $('.cc-select').val();
-			initLeftList('.non-country-list.funder-list', ccs);
-			initRightList('.non-country-list.recipient-list', ccs);
-			initListScaling('.non-country-list-container.right');
-			initListScaling('.non-country-list-container.left');
-			updateAll();
-
-			$('.core-capacity-text').tooltipster({
-				interactive: true,
-				html: true,
-				content: App.coreCapacitiesText,
-			});
-
-			$('.undetermined-info-img').tooltipster({
-				interactive: true,
-				content: 'Unreported funding amounts or in-kind support project counts may occur if the most specific funder or recipient named in a project is a general region or other group of countries.',
-			});
-			$('.inkind-support-info-img').tooltipster({
-				interactive: true,
-				content: App.inKindDefinition,
-			});
+		// build map and initialize search
+		map = buildMap();
+		initMapOptions();
+		initGhsaToggle();
+		initLegend();
+		initCountryInfoBox();
+		if (App.usingFirefox) {
+			initFirefoxScrollBars();
 		}
 
+		updateAll();
 
-		init();
+		$('.core-capacity-text').tooltipster({
+			interactive: true,
+			html: true,
+			content: App.coreCapacitiesText,
+		});
+
+		$('.undetermined-info-img').tooltipster({
+			interactive: true,
+			content: 'Unreported funding amounts or in-kind support project counts may occur if the most specific funder or recipient named in a project is a general region or other group of countries.',
+		});
+		$('.inkind-support-info-img').tooltipster({
+			interactive: true,
+			content: App.inKindDefinition,
+		});
+		initTableSearch();
+		populateTables('.donor-table', '.recipient-table');
+
+		App.fundIcon('.fund-col-name');
+		App.receiveIcon('.receive-col-name');
+
 	};
 
 
@@ -263,17 +269,6 @@
 		// add map to map container
 		const mapObj = Map.createWorldMap(selector, App.geoData);
 
-		const maskHtml = `<pattern id="pattern-stripe" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                        <rect width="3.5" height="4" transform="translate(0,0)" fill="lightgray"></rect>
-                    </pattern>
-                    <mask id="mask-stripe">
-                        <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-stripe)" />
-                    </mask>`;
-		mapObj.element.append('defs').html(maskHtml);
-
-		// clicking overlay resets map
-		mapObj.element.select('.overlay').on('click', resetMap);
-
 		// define country click behavior and attach tooltips
 		d3.selectAll('.country')
 			.on('click', function onClick(d) {
@@ -285,7 +280,8 @@
 				activeCountry = d3.select(this).classed('active', true);
 
 				// zoom in to country
-				mapObj.zoomTo.call(this, d);
+				// mapObj.zoomTo.call(this, d);
+				mapObj.zoomTo(d);
 
 				// display info box
 				displayCountryInfo();
@@ -519,10 +515,10 @@
 				combo,
 			});
 		});
-		initLeftList('.non-country-list.funder-list', ccs);
-		initRightList('.non-country-list.recipient-list', ccs);
-		initListScaling('.non-country-list-container.right');
-		initListScaling('.non-country-list-container.left');
+		// initLeftList('.non-country-list.funder-list', ccs);
+		// initRightList('.non-country-list.recipient-list', ccs);
+		// initListScaling('.non-country-list-container.right');
+		// initListScaling('.non-country-list-container.left');
 	}
 
 	// gets the sum of payments for the years and capacities selected
@@ -585,12 +581,14 @@
 
 
 	// updates map colors and country tooltip
-	function updateMap(updateLegend = true) {
+	function updateMap(updateLegendFlag = true) {
 		const valueAttrName = getValueAttrName();
 		const colorScale = getColorScale();
 
 		// color countries and update tooltip content
-		map.element.selectAll('.country').transition()
+		map.chart
+			.selectAll('.country')
+			.transition()
 			.duration(500)
 			.style('fill', function (d) {
 				const country = d3.select(this);
@@ -714,7 +712,7 @@
 			});
 
 		// update legend
-		if (updateLegend) {
+		if (updateLegendFlag) {
 			updateLegend(colorScale);
 		}
 	}
@@ -767,6 +765,7 @@
 
 		const barHeight = 16;
 		let barWidth = 70;
+		// barWidth = 20;
 		const legendPadding = 25;
 
 		// adjust width for JEE score
@@ -1147,7 +1146,7 @@
 
 			// zoom in to country
 			if (!nonCountry) {
-				map.zoomTo.call(activeCountry.node(), activeCountry.datum())
+				map.zoomTo(activeCountry.node());
 			}
 			else {
 				scrollToListItem(activeCountry);
@@ -1414,10 +1413,10 @@
 		function onChange() {
 			// Scale the size of the content on this page
 			// Scale factor = difference between original viewport height and current viewport height
-			const viewportHeight = $viewport[0].getBoundingClientRect().height;
+			// const viewportHeight = $viewport[0].getBoundingClientRect().height;
 			const origViewportHeight = 640;
 			const heuristicScaleFactorCorrection = 1.3; // Dividing by this value gets the initial size right
-			const scaleFactor = (viewportHeight / origViewportHeight) / heuristicScaleFactorCorrection;
+			const scaleFactor = (origViewportHeight / origViewportHeight) / heuristicScaleFactorCorrection;
 			$box
 				.css('transform', `scale(${scaleFactor})`)
 				.css('-moz-transform', `scale(${scaleFactor})`);
@@ -1432,19 +1431,19 @@
 				.css('-moz-transform', `scale(${scaleFactor})`);
 
 			// Calculate the new position of the box and the map title tops
-			const viewportTop = $viewport.offset().top + 20;
+			// const viewportTop = $viewport.offset().top + 20;
 			const boxHeight = $box[0].getBoundingClientRect().height;
 			const listTitleHeight = $listTitle[0].getBoundingClientRect().height;
 			const heuristicTopPositionCorrection = -10 * scaleFactor / heuristicScaleFactorCorrection;
 			const yShift = 0;
-			const top = viewportTop + yShift;
+			const top = origViewportHeight + yShift;
 
 			// Set the positions of the box and the map title tops
 			$box.css('top', top + 'px');
-			$mapTitle.css('top', (viewportTop + heuristicTopPositionCorrection - 40) + 'px');
+			$mapTitle.css('top', (origViewportHeight + heuristicTopPositionCorrection - 40) + 'px');
 
 			// Set indentations of 'span' elements of list
-			setHorizOffsets($list)
+			setHorizOffsets($list);
 		}
 
 		onChange();
@@ -1870,5 +1869,146 @@
 		const scrollTopTarget = $list.scrollTop() + diff;
 		$list.scrollTop(scrollTopTarget);
 	};
+
+	function initTableSearch() {
+		App.initCountrySearchBar('.table-country-search', (result) => {
+			if (result.item !== undefined) result = result.item;
+			hasher.setHash(`analysis/${result.ISO2}`);
+		}, {
+			width: 400,
+			includeNonCountries: true,
+		});
+	}
+
+	function populateTables(donorSelector, recSelector) {
+		const taBlue = '#082b84';
+		const taRed = '#c91414';
+		const numRows = Infinity;
+		const fundColor = greens;
+		const receiveColor = purples;
+
+		$(`${donorSelector}, ${recSelector}`).DataTable().destroy();
+		$(`${donorSelector} tbody tr, ${recSelector} tbody tr`).remove();
+
+		// get top funded countries
+		const fundedFunc = (supportType === 'financial') ? App.getTotalFunded : App.getInkindFunded;
+		const formatFunc = (supportType === 'financial') ? App.formatMoney : App.formatInkind;
+		const receivedFunc = (supportType === 'financial') ? App.getTotalReceived : App.getInkindReceived;
+		const funderNoun = (supportType === 'financial') ? 'Funder' : 'Provider';
+		const dNoun = (supportType === 'financial') ? 'Disbursed' : 'Provided';
+		$('.fund-table-title .text').text(`Top ${funderNoun}s (${App.dataStartYear} - ${App.dataEndYear})`);
+		$('.rec-table-title .text').text(`Top Recipients (${App.dataStartYear} - ${App.dataEndYear})`);
+		$('.fund-col-name.head-text').text(funderNoun);
+		$('.d-col-name').text(dNoun);
+
+		const countriesByFunding = [];
+		for (const iso in App.fundingLookup) {
+			if (iso !== 'Not reported' && iso !== 'ghsa' && iso !== 'General Global Benefit') {
+				const newObj = {
+					iso,
+					name: App.codeToNameMap.get(iso),
+					total_committed: fundedFunc(iso, {committedOnly: true}),
+					total_spent: fundedFunc(iso),
+				};
+				if (newObj.total_committed !== 0 || newObj.total_spent !== 0) {
+					countriesByFunding.push(newObj);
+				}
+			}
+		}
+		Util.sortByKey(countriesByFunding, 'total_spent', true);
+
+		// get top recipient countries
+		const countriesByReceived = [];
+		for (const iso in App.recipientLookup) {
+			if (iso !== 'Not reported' && iso !== 'ghsa' && iso !== 'General Global Benefit') {
+				const newObj = {
+					iso,
+					name: App.codeToNameMap.get(iso),
+					total_committed: receivedFunc(iso, {committedOnly: true}),
+					total_spent: receivedFunc(iso),
+				};
+				if (newObj.total_committed !== 0 || newObj.total_spent !== 0) {
+					countriesByReceived.push(newObj);
+				}
+			}
+		}
+		Util.sortByKey(countriesByReceived, 'total_spent', true);
+
+		// populate funding table
+		const dRows = d3.select(donorSelector).select('tbody').selectAll('tr')
+			.data(countriesByFunding.slice(0, numRows))
+			.enter().append('tr')
+			// .style('background-color', '#eaeaea')
+			.style('background', 'transparent')
+			// .style('background-color', (d, i) => fundColor[Math.floor(i / 2)])
+			// .style('color', 'black')
+			// .style('color', (d, i) => (i < 4 ? '#fff' : 'black'))
+			.on('click', (d) => {
+				if (d.iso !== 'Not reported') {
+					hasher.setHash(`analysis/${d.iso}/d`);
+				}
+			});
+		dRows.append('td').html((d) => {
+			const country = App.countries.find(c => c.ISO2 === d.iso);
+			const flagHtml = country ? App.getFlagHtml(d.iso) : '';
+			const name = App.codeToNameMap.get(d.iso);
+			return name;
+			return `<div class="flag-container">${flagHtml}</div>` +
+				`<div class="name-container">${name}</div>`;
+		});
+		// dRows.append('td').text(d => formatFunc(d.total_committed));
+		dRows.append('td').text(d => formatFunc(d.total_spent));
+
+		// populate recipient table
+		const rRows = d3.select(recSelector).select('tbody').selectAll('tr')
+			.data(countriesByReceived.slice(0, numRows))
+			.enter().append('tr')
+			// .style('background-color', '#eaeaea')
+			.style('background', 'transparent')
+			// .style('color', 'black')
+			.on('click', (d) => {
+				if (d.iso !== 'Not reported') {
+					hasher.setHash(`analysis/${d.iso}/r`);
+				}
+			});
+		rRows.append('td').html((d) => {
+			const country = App.countries.find(c => c.ISO2 === d.iso);
+			const flagHtml = country ? App.getFlagHtml(d.iso) : '';
+			const name = country ? country.NAME : d.iso;
+			return name;
+			return `<div class="flag-container">${flagHtml}</div>` +
+				`<div class="name-container">${name}</div>`;
+		});
+		// rRows.append('td').text(d => formatFunc(d.total_committed));
+		rRows.append('td').text(d => formatFunc(d.total_spent));
+
+		$(`${donorSelector}, ${recSelector}`).DataTable({
+			pageLength: 10,
+			scrollCollapse: false,
+			autoWidth: false,
+			ordering: false,
+			searching: false,
+			pagingType: 'simple',
+			// order: [[1, 'asc']],
+			// columnDefs: [
+			// 	{ targets: [1,2,3], orderable: false},
+			// ],
+			columns: [
+				{width: '80%'},
+				{width: '20%'},
+			],
+			bLengthChange: false,
+			drawCallback: () => {
+				switch (App.currentTheme) {
+					case 'dark':
+						$('#theme-toggle').bootstrapToggle('on');
+						break;
+					default:
+						$('#theme-toggle').bootstrapToggle('off');
+						break;
+				}
+			}
+		});
+	}
 
 })();

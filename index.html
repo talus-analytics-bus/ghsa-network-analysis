@@ -18,7 +18,7 @@
 
 
     <meta charset="utf-8">
-    <title>GHS Tracking Dashboard</title>
+    <title>GIDA</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="img/favicon.ico">
     <!-- Stylesheets -->
@@ -34,10 +34,11 @@
     <link href="css/datatables.min.css" rel="stylesheet" type="text/css">
     <link href="css/nprogress.min.css" rel="stylesheet" type="text/css">
     <link href="css/main.css" rel="stylesheet" type="text/css">
+    <link href="css/bootstrap-toggle.css" rel="stylesheet" type="text/css">
 
 </head>
 
-<body class="light-theme">
+<body>
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -54,29 +55,41 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle"
-                       href="#"
-                       id="nav-explore-dropdown"
-                       role="button"
-                       data-toggle="dropdown"
-                       aria-haspopup="true"
-                       aria-expanded="false">Explore</a>
-                    <div class="dropdown-menu" aria-labelledby="nav-explore-dropdown">
-                        <a class="dropdown-item" page="map">Map</a>
-                        <a class="dropdown-item" page="map">Organizations</a>
-                    </div>
-                </li>
-                <li class="nav-item"><a page="">Analysis</a></li>
-                <li class="nav-item"><a page="">Data</a></li>
-                <li class="nav-item"><a page="about">About</a></li>
+                <!--<li class="nav-item dropdown">-->
+                    <!--<a class="nav-link dropdown-toggle"-->
+                       <!--href="#"-->
+                       <!--id="nav-explore-dropdown"-->
+                       <!--role="button"-->
+                       <!--data-toggle="dropdown"-->
+                       <!--aria-haspopup="true"-->
+                       <!--aria-expanded="false">Explore</a>-->
+                    <!--<div class="dropdown-menu" aria-labelledby="nav-explore-dropdown">-->
+                        <!--<a class="dropdown-item" page="map">Map</a>-->
+                        <!--<a class="dropdown-item" page="map">Organizations</a>-->
+                    <!--</div>-->
+                <!--</li>-->
+                <li class="nav-item" page="map"><a page="map">Explore</a></li>
+                <li class="nav-item" page="analysis"><a page="analysis">Analysis</a></li>
+                <li class="nav-item" page="data"><a page="data">Data</a></li>
+                <li class="nav-item" page="about"><a page="about">About</a></li>
             </ul>
         </div>
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container-fluid -->
 </nav>
+
 <div id="page-content"></div>
+
+<!-- THEME SWITCHER -->
+<input id="theme-toggle"
+    type="checkbox"
+    data-toggle="toggle"
+    data-size="mini"
+    data-style="toggle-theme"
+    data-on="Dark"
+    data-off="Light"
+/>
 
 
 <!-- General Libraries -->
@@ -132,6 +145,7 @@
 <script src="js/pages/home.js"></script>
 <script src="js/pages/settings.js"></script>
 <script src="js/pages/submit.js"></script>
+<script src="js/pages/datapage.js"></script>
 <script src="js/init.js"></script>
 <!--<script src="build/bundle.min.js"></script>-->
 </body>

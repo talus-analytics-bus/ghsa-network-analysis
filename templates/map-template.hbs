@@ -1,189 +1,434 @@
 <script id="map-template" type="text/x-handlebars-template">
-    <div class="home-container">
-        <div class="map-container"></div>
-        <div class="right-container">
-            <div class="non-country-list-container right">
-                <div class="list-title right">
-                    <span>Non-country Recipients</span>
-                </div>
-                <div class="non-country-list recipient-list"></div>
-            </div>
+    <div class="map-page-container container">
+        <div class="map-page-title"> Explore Countries on a map</div>
+        <div class="map-page-buttons">
 
         </div>
-        <div class="left-container">
-            <div class="non-country-list-container left">
-                <div class="list-title left">
-                    <span>Non-country Funders</span>
-                </div>
-                <div class="non-country-list funder-list"></div>
-            </div>
-        </div>
-        <div class="legend-container">
-            <div class="legend-display-tab">
-                <img class="collapse-arrow" src="img/chevron_down.png" />
-                <span>hide legend</span>
-                <img class="collapse-arrow" src="img/chevron_down.png" />
-            </div>
-            <div class="legend-content">
-                <div class="legend-box">
-                    <svg class="legend">
-                        <g class="legend-group"></g>
-                    </svg>
-                </div>
-            </div>
-        </div>
-        <div class="map-and-search-container">
-            {{!--                     <div class="map-options-container ghsa-toggle-container">
-                                    <div class="map-options-title">
-                                        <div class="top-state-toggle-container top-state-toggle-switch toggle-container">
-                                            <label>
-                                                <input class="form-check-input ghsa-only-checkbox" type="checkbox" value="" id="ghsa-only-checkbox"> Show GHSA Projects Only
-                                                <img class="ghsa-info-img info-img" src="img/info.png" />
-                                            </label>
+        <div class="tabs map-page-tabs">
+
+            <div class="tab">
+                <input type="radio" id="map-tab" name="map-tabs" checked>
+                <label for="map-tab">Map</label>
+
+                <div class="content" tab="map">
+
+                    <div class="left-pane">
+                        <div class="map-container"></div>
+
+                        <div class="legend-container">
+                            <div class="legend-display-tab">
+                                <img class="collapse-arrow" src="img/chevron_down.png"/>
+                                <span>hide legend</span>
+                                <img class="collapse-arrow" src="img/chevron_down.png"/>
+                            </div>
+                            <div class="legend-content">
+                                <div class="legend-box">
+                                    <svg class="legend">
+                                        <g class="legend-group"></g>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div><!-- legend -->
+
+                        <div class="info-container">
+                            <div class="info-box">
+                                <div class="info-close-button">
+                                    <img class="close-icon" src="img/close.png"/>
+                                </div>
+                                <div class="info-title"></div>
+                                <div class="info-profile-type"></div>
+                                <div class="info-score-text-container">
+                                    <span class="info-score-text"></span>
+                                    <img class="score-text-info-img info-img" src="img/info.png"/>
+                                </div>
+                                <div class="row c-and-d">
+                                    <div class="info-value-box col-sm-6">
+                                        <div class="info-committed-value info-value"></div>
+                                        <div class="info-committed-value-label info-value-label"></div>
+                                    </div>
+                                    <div class="info-value-box col-sm-6">
+                                        <div class="info-spent-value info-value"></div>
+                                        <div class="info-spent-value-label info-value-label"></div>
+                                    </div>
+                                </div>
+                                <div class="row undetermined">
+                                    <div class="info-value-box info-inkind-details col-sm-12">
+                                        <div class="undetermined-value info-value">Not Reported <img
+                                                class="undetermined-info-img info-img" src="img/info.png"/></div>
+                                        <div class="undetermined-unit">in-kind contributions</div>
+                                        <div class="undetermined-value-label info-value-label">from 2014 to 2018
+                                            (Recipient)
                                         </div>
                                     </div>
-                                </div> --}}
-            <div class="search-container">
-                <div class="form-group has-feedback">
-                    <input type="text" class="country-search-input form-control" placeholder="search here...">
-                    <i class="glyphicon glyphicon-search form-control-feedback"></i>
-                </div>
-                <div class="live-search-results-container reverse">
-                    <div class="live-search-no-results-text">No results found</div>
-                    <div class="live-search-results-contents"></div>
-                </div>
-            </div>
-            <div class="map-options-container">
-                <div class="map-options-title main-options-title">
-                    Options
-                    <img class="collapse-arrow rotated" src="img/chevron_down.png" />
-                </div>
-                <div class="map-options-content">
-                    <div class="filter-section">
-                        <div class="filter-box">
-                            <label>
-                                <input class="form-check-input ghsa-only-checkbox" type="checkbox" value="" id="ghsa-only-checkbox"> Show GHSA Projects Only
-                                <img class="ghsa-info-img info-img" src="img/info.png" />
-                            </label>
-                            <div class="dropdown-label">Click to show:</div>
-                            <div class="ind-type-filter">
-                                <div class="radio-option">
-                                    <input type="radio" name="ind" ind="money" checked/>
-                                    <span>Financial Support</span>
                                 </div>
-                                <div class="radio-option multi-line">
-                                    <input type="radio" name="ind" ind="inkind" />
-                                    <div>In-kind Support</div>
-                                    <img class="inkind-support-info-img info-img" src="img/info.png" />
+                                <div class="info-button-container">
+                                    <button class="info-analysis-button btn btn-default">View Funding Details</button>
                                 </div>
-                                <div class="radio-option">
-                                    <input type="radio" name="ind" ind="score" />
-                                    <span>JEE Score</span>
+                                <div class="source-text">
+                                    <b>Source:</b> IATI registry via
+                                    <a href="http://d-portal.org" target="_blank">d-portal</a>, 2014-2017.
                                 </div>
                             </div>
-                        </div>
-                        <div class="filter-box">
-                            <div class="money-filters">
-                                <div class="dropdown-label">Choose:</div>
-                                <div class="money-flow-type-filter">
-                                    <div class="radio-option">
-                                        <input type="radio" name="rec-or-fund" ind="received" checked/>
-                                        <span>Received</span>
-                                    </div>
-                                    <div class="or-text money-flow-or-text">or</div>
-                                    <div class="radio-option d-flow">
-                                        <input type="radio" name="rec-or-fund" ind="funded" />
-                                        <span>Funded</span>
-                                    </div>
-                                </div>
-                                <div class="money-type-filter">
-                                    <div class="radio-option">
-                                        <input type="radio" ind="committed" checked/>
-                                        <span>Committed</span>
-                                    </div>
-                                    <div class="or-text money-type-or-text">or</div>
-                                    <div class="radio-option d-type">
-                                        <input type="radio" ind="disbursed" />
-                                        <span>Disbursed</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="score-filters">
-                                <div class="dropdown-label">Choose:</div>
-                                <div class="jee-score-filter">
-                                    <div class="radio-option">
-                                        <input type="radio" ind="score" />
-                                        <span>JEE Score only</span>
-                                        <img class="score-info-img info-img lower" src="img/info.png" />
-                                    </div>
-                                    <div class="or-text score-or-text">or</div>
-                                    <div class="radio-option">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <input type="radio" ind="combined" />
-                                                </td>
-                                                <td>
-                                                    <span>Combined Financial Resources and Need as Defined by JEE Score</span>
-                                                    <img class="combined-info-img info-img lower" src="img/info.png" />
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="filter-box">
-                            <div class="dropdown-label">Select time range:</div>
-                            <input class="time-slider slider" />
-                        </div>
-                    </div>
-                    <div class="filter-section">
-                        <div class="filter-box">
-                            <div class="dropdown-label inline">Core Capacity</div><img class="info-img core-capacity-text small" src="img/info.png" />
-                            <select class="cc-select form-control" multiple="multiple"></select>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                        </div><!-- info container -->
 
-        </div>
-        <div class="info-container">
-            <div class="info-box">
-                <div class="info-close-button">
-                    <img class="close-icon" src="img/close.png" />
-                </div>
-                <div class="info-title"></div>
-                <div class="info-profile-type"></div>
-                <div class="info-score-text-container">
-                    <span class="info-score-text"></span>
-                    <img class="score-text-info-img info-img" src="img/info.png" />
-                </div>
-                <div class="row c-and-d">
-                    <div class="info-value-box col-sm-6">
-                        <div class="info-committed-value info-value"></div>
-                        <div class="info-committed-value-label info-value-label"></div>
+                    </div><!-- Left pane -->
+
+                    <div class="map-and-search-container">
+                        {{!--                     <div class="map-options-container ghsa-toggle-container">
+                                                <div class="map-options-title">
+                                                    <div class="top-state-toggle-container top-state-toggle-switch toggle-container">
+                                                        <label>
+                                                            <input class="form-check-input ghsa-only-checkbox" type="checkbox" value="" id="ghsa-only-checkbox"> Show GHSA Projects Only
+                                                            <img class="ghsa-info-img info-img" src="img/info.png" />
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div> --}}
+                        <div class="search-container">
+                            <div class="form-group has-feedback">
+                                <input type="text" class="country-search-input form-control"
+                                       placeholder="search here...">
+                                <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                            </div>
+                            <div class="live-search-results-container reverse">
+                                <div class="live-search-no-results-text">No results found</div>
+                                <div class="live-search-results-contents"></div>
+                            </div>
+                        </div><!-- search container -->
+                        <div class="map-options-container">
+                            <div class="map-options-title main-options-title">
+                                Options
+                                <img class="collapse-arrow rotated" src="img/chevron_down.png"/>
+                            </div>
+                            <div class="map-options-content">
+                                <div class="filter-section">
+                                    <div class="filter-box">
+                                        <label>
+                                            <input class="form-check-input ghsa-only-checkbox" type="checkbox" value=""
+                                                   id="ghsa-only-checkbox"> Show GHSA Projects Only
+                                            <img class="ghsa-info-img info-img" src="img/info.png"/>
+                                        </label>
+                                        <div class="dropdown-label">Click to show:</div>
+                                        <div class="ind-type-filter">
+                                            <div class="radio-option">
+                                                <input type="radio" name="ind" ind="money" checked/>
+                                                <span>Financial Support</span>
+                                            </div>
+                                            <div class="radio-option multi-line">
+                                                <input type="radio" name="ind" ind="inkind"/>
+                                                <div>In-kind Support</div>
+                                                <img class="inkind-support-info-img info-img" src="img/info.png"/>
+                                            </div>
+                                            <div class="radio-option">
+                                                <input type="radio" name="ind" ind="score"/>
+                                                <span>JEE Score</span>
+                                            </div>
+                                        </div>
+                                    </div><!-- filter-box -->
+                                    <div class="filter-box">
+                                        <div class="money-filters">
+                                            <div class="dropdown-label">Choose:</div>
+                                            <div class="money-flow-type-filter">
+                                                <div class="radio-option">
+                                                    <input type="radio" name="rec-or-fund" ind="received" checked/>
+                                                    <span>Received</span>
+                                                </div>
+                                                <div class="or-text money-flow-or-text">or</div>
+                                                <div class="radio-option d-flow">
+                                                    <input type="radio" name="rec-or-fund" ind="funded"/>
+                                                    <span>Funded</span>
+                                                </div>
+                                            </div>
+                                            <div class="money-type-filter">
+                                                <div class="radio-option">
+                                                    <input type="radio" ind="committed" checked/>
+                                                    <span>Committed</span>
+                                                </div>
+                                                <div class="or-text money-type-or-text">or</div>
+                                                <div class="radio-option d-type">
+                                                    <input type="radio" ind="disbursed"/>
+                                                    <span>Disbursed</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="score-filters">
+                                            <div class="dropdown-label">Choose:</div>
+                                            <div class="jee-score-filter">
+                                                <div class="radio-option">
+                                                    <input type="radio" ind="score"/>
+                                                    <span>JEE Score only</span>
+                                                    <img class="score-info-img info-img lower" src="img/info.png"/>
+                                                </div>
+                                                <div class="or-text score-or-text">or</div>
+                                                <div class="radio-option">
+                                                    <table>
+                                                        <tr>
+                                                            <td>
+                                                                <input type="radio" ind="combined"/>
+                                                            </td>
+                                                            <td>
+                                                                <span>Combined Financial Resources and Need as Defined by JEE Score</span>
+                                                                <img class="combined-info-img info-img lower"
+                                                                     src="img/info.png"/>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- filter-box -->
+                                    <div class="filter-box">
+                                        <div class="dropdown-label">Select time range:</div>
+                                        <input class="time-slider slider"/>
+                                    </div>
+                                </div><!-- filter-section -->
+                                <div class="filter-section">
+                                    <div class="filter-box">
+                                        <div class="dropdown-label inline">Core Capacity</div>
+                                        <img class="info-img core-capacity-text small" src="img/info.png"/>
+                                        <select class="cc-select form-control" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                            </div><!-- map options content -->
+                        </div><!-- map options container -->
+                    </div><!-- Search -->
+
+                </div><!-- tab content -->
+
+            </div><!-- tab content container -->
+
+
+            <div class="tab">
+                <input type="radio" id="org-tab" name="map-tabs">
+                <label for="org-tab">Organizations</label>
+
+                <div class="content" tab="org">
+                    <!--<div class="map-and-search-container">-->
+                    <!--{{!--                     <div class="map-options-container ghsa-toggle-container">-->
+                                                <!--<div class="map-options-title">-->
+                                                    <!--<div class="top-state-toggle-container top-state-toggle-switch toggle-container">-->
+                                                        <!--<label>-->
+                                                            <!--<input class="form-check-input ghsa-only-checkbox" type="checkbox" value="" id="ghsa-only-checkbox"> Show GHSA Projects Only-->
+                                                            <!--<img class="ghsa-info-img info-img" src="img/info.png" />-->
+                                                        <!--</label>-->
+                                                    <!--</div>-->
+                                                <!--</div>-->
+                                            <!--</div> --}}-->
+                    <!--<div class="search-container">-->
+                    <!--<div class="form-group has-feedback">-->
+                    <!--<input type="text" class="country-search-input form-control"-->
+                    <!--placeholder="search here...">-->
+                    <!--<i class="glyphicon glyphicon-search form-control-feedback"></i>-->
+                    <!--</div>-->
+                    <!--<div class="live-search-results-container reverse">-->
+                    <!--<div class="live-search-no-results-text">No results found</div>-->
+                    <!--<div class="live-search-results-contents"></div>-->
+                    <!--</div>-->
+                    <!--</div>&lt;!&ndash; search container &ndash;&gt;-->
+                    <!--<div class="map-options-container">-->
+                    <!--<div class="map-options-title main-options-title">-->
+                    <!--Options-->
+                    <!--<img class="collapse-arrow rotated" src="img/chevron_down.png"/>-->
+                    <!--</div>-->
+                    <!--<div class="map-options-content">-->
+                    <!--<div class="filter-section">-->
+                    <!--<div class="filter-box">-->
+                    <!--<label>-->
+                    <!--<input class="form-check-input ghsa-only-checkbox" type="checkbox" value=""-->
+                    <!--id="ghsa-only-checkbox"> Show GHSA Projects Only-->
+                    <!--<img class="ghsa-info-img info-img" src="img/info.png"/>-->
+                    <!--</label>-->
+                    <!--<div class="dropdown-label">Click to show:</div>-->
+                    <!--<div class="ind-type-filter">-->
+                    <!--<div class="radio-option">-->
+                    <!--<input type="radio" name="ind" ind="money" checked/>-->
+                    <!--<span>Financial Support</span>-->
+                    <!--</div>-->
+                    <!--<div class="radio-option multi-line">-->
+                    <!--<input type="radio" name="ind" ind="inkind"/>-->
+                    <!--<div>In-kind Support</div>-->
+                    <!--<img class="inkind-support-info-img info-img" src="img/info.png"/>-->
+                    <!--</div>-->
+                    <!--<div class="radio-option">-->
+                    <!--<input type="radio" name="ind" ind="score"/>-->
+                    <!--<span>JEE Score</span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>&lt;!&ndash; filter-box &ndash;&gt;-->
+                    <!--<div class="filter-box">-->
+                    <!--<div class="money-filters">-->
+                    <!--<div class="dropdown-label">Choose:</div>-->
+                    <!--<div class="money-flow-type-filter">-->
+                    <!--<div class="radio-option">-->
+                    <!--<input type="radio" name="rec-or-fund" ind="received" checked/>-->
+                    <!--<span>Received</span>-->
+                    <!--</div>-->
+                    <!--<div class="or-text money-flow-or-text">or</div>-->
+                    <!--<div class="radio-option d-flow">-->
+                    <!--<input type="radio" name="rec-or-fund" ind="funded"/>-->
+                    <!--<span>Funded</span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="money-type-filter">-->
+                    <!--<div class="radio-option">-->
+                    <!--<input type="radio" ind="committed" checked/>-->
+                    <!--<span>Committed</span>-->
+                    <!--</div>-->
+                    <!--<div class="or-text money-type-or-text">or</div>-->
+                    <!--<div class="radio-option d-type">-->
+                    <!--<input type="radio" ind="disbursed"/>-->
+                    <!--<span>Disbursed</span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="score-filters">-->
+                    <!--<div class="dropdown-label">Choose:</div>-->
+                    <!--<div class="jee-score-filter">-->
+                    <!--<div class="radio-option">-->
+                    <!--<input type="radio" ind="score"/>-->
+                    <!--<span>JEE Score only</span>-->
+                    <!--<img class="score-info-img info-img lower" src="img/info.png"/>-->
+                    <!--</div>-->
+                    <!--<div class="or-text score-or-text">or</div>-->
+                    <!--<div class="radio-option">-->
+                    <!--<table>-->
+                    <!--<tr>-->
+                    <!--<td>-->
+                    <!--<input type="radio" ind="combined"/>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                    <!--<span>Combined Financial Resources and Need as Defined by JEE Score</span>-->
+                    <!--<img class="combined-info-img info-img lower"-->
+                    <!--src="img/info.png"/>-->
+                    <!--</td>-->
+                    <!--</tr>-->
+                    <!--</table>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>&lt;!&ndash; filter-box &ndash;&gt;-->
+                    <!--<div class="filter-box">-->
+                    <!--<div class="dropdown-label">Select time range:</div>-->
+                    <!--<input class="time-slider slider"/>-->
+                    <!--</div>-->
+                    <!--</div>&lt;!&ndash; filter-section &ndash;&gt;-->
+                    <!--<div class="filter-section">-->
+                    <!--<div class="filter-box">-->
+                    <!--<div class="dropdown-label inline">Core Capacity</div>-->
+                    <!--<img class="info-img core-capacity-text small" src="img/info.png"/>-->
+                    <!--<select class="cc-select form-control" multiple="multiple"></select>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>&lt;!&ndash; map options content &ndash;&gt;-->
+                    <!--</div>&lt;!&ndash; map options container &ndash;&gt;-->
+                    <!--</div>&lt;!&ndash; org tab content &ndash;&gt;-->
+                    <div class="organization-content">
+                        <div class="landing-introduction-section">
+                            <div class="">
+                                {{!--
+                                <h3>International Funding by Funder/Recipient</h3> --}}
+                                <div class="description landing">
+                                    The GHS Tracking Dashboard maps the flow of committed and disbursed funds for global
+                                    health security. The tables below identify the funders that have committed the most
+                                    funds, and the recipients that have recieved the most funds. Click on any entry in
+                                    the
+                                    tables, use the search bar, or click the buttons for additional detail on a funder
+                                    or
+                                    recipient's activities.
+                                </div>
+                                <div class="table-country-search landing-controls">
+                                    <div class="search-container">
+                                        <div class="form-group has-feedback">
+                                            <input type="text" class="country-search-input form-control"
+                                                   placeholder="search for a country or organization...">
+                                            <i class="glyphicon glyphicon-search form-control-feedback"></i>
+                                        </div>
+                                        <div class="live-search-results-container" style="z-index:10000;">
+                                            <div class="live-search-no-results-text">No results found</div>
+                                            <div class="live-search-results-contents"></div>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-primary alt-btn btn-view-ghsa">View GHSA Details</button>
+                                    <button class="btn btn-primary alt-btn btn-view-map">View Map</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="landing-controls-container">
+                            <div class="ghsa-toggle-options landing-page-options">
+                                <div class="dropdown-label">Click to show:</div>
+                                <div class="ind-type-filter-ghsa">
+                                    <div class="radio-option">
+                                        <input type="radio" name="ghsa-toggle-landing" ind="money" checked/>
+                                        <span>All Funding</span>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" name="ghsa-toggle-landing" ind="ghsa"/>
+                                        <span>GHSA Funding Only</span>
+                                        <img class="ghsa-info-img info-img" src="img/info.png"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="support-type-toggle-options landing-page-options">
+                                <div class="dropdown-label">Support type:</div>
+                                <div class="ind-type-filter">
+                                    <div class="radio-option">
+                                        <label>
+                                            <input type="radio" name="supporttype" ind="financial" checked/>
+                                            Financial Support
+                                        </label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <label>
+                                            <input type="radio" name="supporttype" ind="inkind"/>
+                                            In-kind Support <img class="inkind-support-info-img info-img"
+                                                                 src="img/info.png"/></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-content">
+                            <div class="left-table">
+                                <h3 class="fund-table-title"><span class="text">Top Funders</span>
+                                    <!--<button class="btn btn-sm btn-primary alt-btn btn-funders-map">View on Map</button>-->
+                                </h3>
+
+                                <table class="donor-table country-table table table-bordered table-hover">
+                                    <thead>
+                                    <tr class="fund-header-row">
+                                        <td class="fund-col-name"><span class="head-text">Top Funders</span></td>
+                                        <td class="d-col-name">Disbursed</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <div class="right-table">
+                                <h3 class="rec-table-title"><span class="text">Top Recipients</span>
+                                    <!--<button class="btn btn-sm btn-primary alt-btn btn-recipients-map">View on Map</button>-->
+                                </h3>
+                                <table class="recipient-table country-table table table-bordered table-hover">
+                                    <thead>
+                                    <tr class="rec-header-row">
+                                        <td class="receive-col-name"><span class="head-text">Top Recipients</span></td>
+                                        <td class="d-col-name">Disbursed</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="source-text-row row">
+                            <div class="col-sm-12">
+                                <div class="source-text fund-table-source-text">
+                                    <b>Source:</b> International Aid Transparency Initiative (IATI) registry via
+                                    <a href="http://d-portal.org" target="_blank">d-portal</a>, 2014-2017.
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="info-value-box col-sm-6">
-                        <div class="info-spent-value info-value"></div>
-                        <div class="info-spent-value-label info-value-label"></div>
-                    </div>
                 </div>
-                <div class="row undetermined">
-                    <div class="info-value-box info-inkind-details col-sm-12">
-                        <div class="undetermined-value info-value">Not Reported <img class="undetermined-info-img info-img" src="img/info.png" /></div>
-                        <div class="undetermined-unit">in-kind contributions</div>
-                        <div class="undetermined-value-label info-value-label">from 2014 to 2018 (Recipient)</div>
-                    </div>
-                </div>
-                <div class="info-button-container">
-                    <button class="info-analysis-button btn btn-default">View Funding Details</button>
-                </div>
-                <div class="source-text">
-                    <b>Source:</b> IATI registry via
-                    <a href="http://d-portal.org" target="_blank">d-portal</a>, 2014-2017.
-                </div>
-            </div>
-        </div>
-    </div>
+            </div><!-- org tab -->
+
+        </div><!-- map page tabs -->
+    </div><!-- map page container -->
 </script>

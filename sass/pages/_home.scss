@@ -9,6 +9,18 @@
   .left-pane {
     @include flex(1 1 180px);
 
+    @media (max-width: 720px) {
+      border-bottom: $light-border;
+      padding-bottom: 10px;
+    }
+
+    &.dark {
+      border-right: $light-border;
+      @media (max-width: 720px) {
+        border-right: none;
+      }
+    }
+
     padding: 20px 50px 0 0;
 
     @include flexbox();
@@ -21,6 +33,9 @@
         font-size: 28px;
         text-transform: uppercase;
         color: #11315D;
+        &.dark {
+          color: white;
+        }
         font-family: 'Raleway', sans-serif;
       }
 
@@ -29,6 +44,9 @@
         font-size: 18px;
         font-family: 'Open Sans', sans-serif;
         color: #4D4D4D;
+        &.dark {
+          color: #eee;
+        }
       }
     }
 
@@ -40,6 +58,9 @@
         text-transform: uppercase;
         color: #11315D;
         font-family: 'Raleway', sans-serif;
+        &.dark {
+          color: white;
+        }
       }
 
       .search-box {
@@ -60,7 +81,12 @@
   .map-container {
     @include flex(1 1 300px);
 
+    @media (max-width: 720px) { margin-top: 20px; }
+
     background-color: #F2F2F2;
+    &.dark {
+      background-color: $darkcolor;
+    }
 
     padding: 20px;
 
@@ -69,18 +95,28 @@
     justify-content: space-between;
 
     .map-title {
+      @include flex(1 0 20px);
       justify-self: flex-start;
       font-size: 22px;
       text-transform: uppercase;
-      color: #11315D;
       font-family: 'Raleway', sans-serif;
+      color: #11315D;
+      &.dark {
+        color: white;
+      }
     }
 
     .map-buttons {
+      @include flex(1 0 20px);
       justify-self: flex-start;
     }
 
+    .funding-recipient-map {
+      @include flex(5 0 200px);
+    }
+
     .funder-recipient-toggle {
+      @include flex(1 0 20px);
       align-self: flex-end;
     }
   }

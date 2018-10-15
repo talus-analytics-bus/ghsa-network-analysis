@@ -6,6 +6,7 @@ const Routing = {};
 
 	const hbTemplates = [
 		'home',
+		'data',
 		'about',
 		'analysis-country',
 		'analysis-pair',
@@ -158,6 +159,10 @@ const Routing = {};
 			loadPage('about');
 		});
 
+		crossroads.addRoute('/data', () => {
+			loadPage('data', App.initData);
+		});
+
 		// setup hasher for subscribing to hash changes and browser history
 		hasher.prependHash = '';
 		hasher.initialized.add(parseHash);
@@ -168,16 +173,23 @@ const Routing = {};
 	function loadPage(pageName, func, ...data) {
 		let navName = pageName;
 		// let navName = pageName.split('-')[0];
-		if (pageName === "landing") navName = "";
+		if (pageName === "landing") {
+			navName = "";
+		}
+
 		// set nav
-		$('a.active').removeClass('active');
-		$(`a[page="${navName}"]`).addClass('active');
+		$('nav li').removeClass('active');
+		$(`nav li[page="${navName}"]`).addClass('active');
 
 		// load page
-		$('body').removeClass('dark');
 		loadTemplate(pageName);
 		if (func) func(...data);
 		window.scrollTo(0, 0);
+		if (App.currentTheme === 'light') {
+			$('#theme-toggle').bootstrapToggle('off');
+		} else {
+			$('#theme-toggle').bootstrapToggle('on');
+		}
 	}
 	function parseHash(newHash) { crossroads.parse(newHash); }
 	function loadTemplate(page, data) {
