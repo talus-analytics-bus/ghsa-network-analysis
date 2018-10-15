@@ -1898,7 +1898,7 @@
 		const dNoun = (supportType === 'financial') ? 'Disbursed' : 'Provided';
 		$('.fund-table-title .text').text(`Top ${funderNoun}s (${App.dataStartYear} - ${App.dataEndYear})`);
 		$('.rec-table-title .text').text(`Top Recipients (${App.dataStartYear} - ${App.dataEndYear})`);
-		$('.fund-col-name').text(funderNoun);
+		$('.fund-col-name.head-text').text(funderNoun);
 		$('.d-col-name').text(dNoun);
 
 		const countriesByFunding = [];
@@ -1988,7 +1988,7 @@
 			autoWidth: false,
 			ordering: false,
 			searching: false,
-			// pagingType: 'simple',
+			pagingType: 'simple',
 			// order: [[1, 'asc']],
 			// columnDefs: [
 			// 	{ targets: [1,2,3], orderable: false},
@@ -1998,6 +1998,16 @@
 				{ width: '20%' }
 			],
 			bLengthChange: false,
+			drawCallback: () => {
+				switch(App.currentTheme) {
+					case 'dark':
+						$('#theme-toggle').bootstrapToggle('on');
+						break;
+					default:
+						$('#theme-toggle').bootstrapToggle('off');
+						break;
+				}
+			}
 		});
 	}
 

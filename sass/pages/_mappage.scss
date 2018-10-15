@@ -93,8 +93,8 @@
             }
           }
           a {
-            border: none;
-            color: white;
+            border: 1px solid #ccc;
+            color: #ccc;
             background-color: #36404d;
           }
         }
@@ -106,16 +106,23 @@
         align-items: flex-start;
 
         .left-table,.right-table {
+          padding: 10px;
           @include flex(1 0 400px);
 
           @include flexbox(column nowrap);
           justify-content: flex-start;
           align-items: center;
 
+          div.dataTables_wrapper {
+            width: 100%;
+          }
+
         }
       }
 
       table {
+        width: 100%;
+
         td,tr {
           border: 1px solid #666666;
         }

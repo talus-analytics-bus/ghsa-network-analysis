@@ -208,24 +208,26 @@
 	const smallReceiver = "M.5,25.75a.23.23,0,0,1-.22-.14.22.22,0,0,1,0-.26L9.48,13.5l-.35-.58C8,11.06,4.53,6,2.44,3,.75.6.75.6.75.5A.25.25,0,0,1,1,.25H24.73a1.34,1.34,0,0,1,1.34,1.34V24.41a1.34,1.34,0,0,1-1.34,1.34Z";
 
 	const newIcon = (selector, type) => {
-		let pathData, color, offset;
+		let pathData, color, offset, thead;
 		switch(type) {
 			case 'fund':
 				pathData = smallFunder;
 				color = fundingColor;
 				offset = 5;
+				thead = '.fund-col-name > .head-text';
 				break;
 			default:
 				pathData = smallReceiver;
 				color = recipientColor;
 				offset = 12;
+				thead = '.receive-col-name > .head-text';
 				break;
 		}
 		const icon = d3.selectAll(selector)
 			.append('svg')
 			.style('position', 'absolute')
 			.style('top', '6px')
-			.style('left', '80px')
+			.style('left', `${$(thead).width() + 15}px`)
 			.attr('width', '30px')
 			.attr('height', '30px');
 		icon.append('path')
@@ -234,7 +236,7 @@
 			.style('stroke', 'white')
 			.style('stroke-width', '1px');
 		icon.append('text')
-			.attr('transform', `translate(${offset}, 18)`)
+			.attr('transform', `translate(${offset}, 19)`)
 			.style('font-size', '16px')
 			.style('stroke', 'none')
 			.style('fill', 'white')
