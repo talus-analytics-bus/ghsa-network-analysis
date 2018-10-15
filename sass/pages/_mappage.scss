@@ -26,7 +26,7 @@
     @media (max-width: 496px) { height: 2000px; }
 
     .content {
-      @include flexbox(row );
+      @include flexbox(row nowrap);
       justify-content: space-between;
       align-items: flex-start;
 
@@ -51,7 +51,6 @@
       }
 
       .legend-container {
-        @include flex(0 0 20px);
         width: auto;
         background: transparent;
         div {

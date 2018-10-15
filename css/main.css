@@ -1108,7 +1108,7 @@ b {
       display: -ms-flexbox;
       display: -webkit-flex;
       display: flex;
-      flex-flow: row;
+      flex-flow: row nowrap;
       justify-content: space-between;
       align-items: flex-start; }
       .map-page-container .map-page-tabs .content .left-pane {
@@ -1136,11 +1136,6 @@ b {
           min-width: 200px;
           background: transparent; }
       .map-page-container .map-page-tabs .content .legend-container {
-        -webkit-box-flex: 0 0 20px;
-        -moz-box-flex: 0 0 20px;
-        -webkit-flex: 0 0 20px;
-        -ms-flex: 0 0 20px;
-        flex: 0 0 20px;
         width: auto;
         background: transparent; }
         .map-page-container .map-page-tabs .content .legend-container div {
