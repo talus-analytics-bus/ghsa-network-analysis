@@ -34,7 +34,7 @@
 			$('.toggle-type').css('visibility','');
 		}
 
-		// initializes the whole page
+		// initializes the whole page 
 		function init() {
             App.setSources();
 			// fill title
@@ -676,9 +676,10 @@
 							'<div class="name-container">' +
 							`<span onclick="${onClickStr}">${cName}</span>` +
 							'</div>';
+                       
 					});
 				}
-
+                
 				rows.append('td').html((d) => {
 					const recCountry = App.countries.find(c => c.ISO2 === d.iso);
 					const flagHtml = recCountry ? App.getFlagHtml(d.iso) : '';
@@ -1203,12 +1204,15 @@
             for (const y in fundsByYear) {
                 timeData.push(fundsByYear[y]);
             }
+            
+            const countryName = iso;
+            
             App.buildLineTimeChart('.time-chart-graphic', timeData, {
                 color,
                 middleColor,
                 lightColor,
                 moneyType,
-            });
+            },countryName);
         }
 		init();
 	};

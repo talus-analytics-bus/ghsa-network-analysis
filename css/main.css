@@ -1524,12 +1524,24 @@ b {
   font-size: 0.9em;
 }
 
-/* line 21, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.time-chart .axisGrey {
-  stroke: grey;
+/* line 22, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.countName {
+  text-align: center;
+  font-size: 1.5em;
+  font-weight: 800;
+  text-anchor: middle;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
-/* line 25, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+/* line 31, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.comOrSpent {
+  font-size: .7em !important;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+/* line 37, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
 .time-chart-container {
   position: relative;
   /*.source-text {
@@ -1540,7 +1552,7 @@ b {
 	}*/
 }
 
-/* line 43, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+/* line 55, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
 .time-chart-container .country-summary-label {
   font-weight: 400;
   font-size: 1.2em;

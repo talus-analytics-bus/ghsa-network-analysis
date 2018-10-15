@@ -17,11 +17,23 @@
 	.legend-label {
 		font-size: 0.9em;
 	}
-    
-    .axisGrey {
-        stroke: grey;
-    }
 }
+
+.countName {
+    text-align: center;
+    font-size: 1.5em;
+    font-weight: 800;
+    text-anchor: middle;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.comOrSpent {
+    font-size: .7em !important;
+    margin-top: 4px; 
+    margin-bottom: 12px;
+}
+
 .time-chart-container {
 	position: relative;
 	//padding-bottom: 20px;

@@ -1,7 +1,11 @@
 (() => {
-    App.buildLineTimeChart = (selector, data, param = {}) => {
+    App.buildLineTimeChart = (selector, data, param = {},country) => {
         // remove existing
         d3.select(selector).html('');
+        
+        console.log(selector);
+        console.log(data);
+        console.log(param);
         
         // start building the chart
         const margin = { top: 30, right: 100, bottom: 30, left: 75 };
@@ -158,25 +162,68 @@
  
         // TOOLTIPS 
         
-        const tooltipGroups = chart.selectAll('.tooltip-group')
+        const tooltipGroupsSpent = chart.selectAll('.tooltip-group')
             .data(data)
             .enter().append('g');
         
-        tooltipGroups.append('circle')
+        tooltipGroupsSpent.append('circle')
             .attr('transform',d => {
                 return `translate (${x(d.year)},${y(d.total_spent)})`;
             })
-            .attr('r',15)
+            .attr('r',20)
             .style('fill','red')
             .attr('opacity',0)
             .each(function(d,i) {
                 $(this).tooltipster({
-                    content: `${App.formatMoneyShort(d.total_spent)}`,
+                    content: `
+                    <div class = "countName">${country} (${d.year})</div> 
+                    <div class= "amount">
+                        <div> ${App.formatMoneyShort(d.total_committed)} 
+                        USD </div>
+                        <p class = "comOrSpent"> Committed </p>
+                    </div>
+                    <div class = "amount">
+                        <div> ${App.formatMoneyShort(d.total_spent)} 
+                        USD </div> 
+                        <p class = "comOrSpent"> Disbursed </p>
+                    </div>
+                    `,
                     trigger: 'hover',
                     side: 'top',
+                    distance: 0,
                 });
             });
         
+        const tooltipGroupsComm = chart.selectAll('.tooltip-group')
+            .data(data)
+            .enter().append('g');
+        
+        tooltipGroupsComm.append('circle')
+            .attr('transform',d => {
+                return `translate (${x(d.year)},${y(d.total_committed)})`;
+            })
+            .attr('r',20)
+            .style('fill','red')
+            .attr('opacity',0)
+            .each(function(d,i) {
+                $(this).tooltipster({
+                    content: `                   
+                    <div class = "countName">${country} (${d.year})</div> 
+                    <div class= "amount">
+                        <div> ${App.formatMoneyShort(d.total_committed)} 
+                        USD </div>
+                        <p class = "comOrSpent"> Committed </p>
+                    </div>
+                    <div class = "amount">
+                        <div> ${App.formatMoneyShort(d.total_spent)} 
+                        USD </div> 
+                        <p class = "comOrSpent"> Disbursed </p>
+                    </div>`,
+                    trigger: 'hover',
+                    side: 'top',
+                    distance: 0,
+                });
+            });
         
         /* // add bars
         const barGroups = chart.selectAll('.bar-group')
