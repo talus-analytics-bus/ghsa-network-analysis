@@ -814,8 +814,7 @@ select.form-control {
       display: none; }
       .tabs .tab > [type=radio]:checked ~ label ~ .content {
         z-index: 1;
-        visibility: visible;
-        display: block; }
+        visibility: visible; }
       .tabs .tab > [type=radio]:checked ~ label {
         border: 1px solid #ccc;
         border-bottom: 0;
@@ -1115,11 +1114,11 @@ b {
       justify-content: space-between;
       align-items: flex-start; }
       .map-page-container .map-page-tabs .content .left-pane {
-        -webkit-box-flex: 0 0 100px;
-        -moz-box-flex: 0 0 100px;
-        -webkit-flex: 0 0 100px;
-        -ms-flex: 0 0 100px;
-        flex: 0 0 100px;
+        -webkit-box-flex: 3 0 100px;
+        -moz-box-flex: 3 0 100px;
+        -webkit-flex: 3 0 100px;
+        -ms-flex: 3 0 100px;
+        flex: 3 0 100px;
         background: transparent;
         height: 100%;
         display: -webkit-box;
@@ -1153,14 +1152,13 @@ b {
           color: #233343;
           background: transparent; }
       .map-page-container .map-page-tabs .content .map-and-search-container {
-        -webkit-box-flex: 0 0 100px;
-        -moz-box-flex: 0 0 100px;
-        -webkit-flex: 0 0 100px;
-        -ms-flex: 0 0 100px;
-        flex: 0 0 100px;
+        -webkit-box-flex: 1 0 100px;
+        -moz-box-flex: 1 0 100px;
+        -webkit-flex: 1 0 100px;
+        -ms-flex: 1 0 100px;
+        flex: 1 0 100px;
         background: transparent; }
         .map-page-container .map-page-tabs .content .map-and-search-container div, .map-page-container .map-page-tabs .content .map-and-search-container label {
-          width: 100px;
           background: transparent; }
       .map-page-container .map-page-tabs .content div, .map-page-container .map-page-tabs .content label {
         background: transparent; }
