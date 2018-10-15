@@ -131,7 +131,7 @@ const App = {};
 					if (d.assistance_type === undefined) {
 						d.assistance_type = 'Direct financial support'
 					}
-
+					d.core_capacities = []; // DEBUG REMOVE
 					d.core_capacities.forEach(cc => {
 						if (cc === 'General GHSA assistance') {
 							idx = d.core_capacities.indexOf(cc);
