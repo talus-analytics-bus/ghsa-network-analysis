@@ -1142,7 +1142,7 @@ b {
         -ms-flex: 3 0 100px;
         flex: 3 0 100px;
         background: transparent;
-        height: 100%;
+        max-height: 800px;
         display: -webkit-box;
         display: -moz-box;
         display: -ms-flexbox;
@@ -1152,19 +1152,19 @@ b {
         justify-content: space-between;
         align-items: center; }
         .map-page-container .map-page-tabs .content .left-pane .map-container {
-          -webkit-box-flex: 3 0 100px;
-          -moz-box-flex: 3 0 100px;
-          -webkit-flex: 3 0 100px;
-          -ms-flex: 3 0 100px;
-          flex: 3 0 100px;
+          -webkit-box-flex: 0 3 700px;
+          -moz-box-flex: 0 3 700px;
+          -webkit-flex: 0 3 700px;
+          -ms-flex: 0 3 700px;
+          flex: 0 3 700px;
           width: 100%;
           background: transparent; }
       .map-page-container .map-page-tabs .content .legend-container {
-        -webkit-box-flex: 1 0 100px;
-        -moz-box-flex: 1 0 100px;
-        -webkit-flex: 1 0 100px;
-        -ms-flex: 1 0 100px;
-        flex: 1 0 100px;
+        -webkit-box-flex: 0 0 100px;
+        -moz-box-flex: 0 0 100px;
+        -webkit-flex: 0 0 100px;
+        -ms-flex: 0 0 100px;
+        flex: 0 0 100px;
         width: auto;
         background: transparent; }
         .map-page-container .map-page-tabs .content .legend-container div {
