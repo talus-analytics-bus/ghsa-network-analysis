@@ -10,6 +10,8 @@
   }
 
   height: 80px;
+  @media (max-width: 440px) { height: 70px; }
+  @media (max-width: 340px) { height: 60px; }
   max-height: 80px;
   .navbar-header {
     .navbar-brand {
@@ -32,6 +34,9 @@
         &.dark {
           background-image: url('/img/logo-dark.png');
         }
+
+        @media (max-width: 440px) { width: 200px; }
+        @media (max-width: 340px) { width: 150px; }
 
       }
       span:hover {

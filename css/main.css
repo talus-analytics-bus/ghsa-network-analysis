@@ -628,6 +628,12 @@ select.form-control {
   .navbar.dark {
     background-color: #233343;
     border-bottom: none; }
+  @media (max-width: 440px) {
+    .navbar {
+      height: 70px; } }
+  @media (max-width: 340px) {
+    .navbar {
+      height: 60px; } }
   .navbar .navbar-header .navbar-brand {
     padding-top: 3px;
     cursor: pointer;
@@ -644,6 +650,12 @@ select.form-control {
       background-image: url("/img/logo-light.png"); }
       .navbar .navbar-header .navbar-brand .logo.dark {
         background-image: url("/img/logo-dark.png"); }
+      @media (max-width: 440px) {
+        .navbar .navbar-header .navbar-brand .logo {
+          width: 200px; } }
+      @media (max-width: 340px) {
+        .navbar .navbar-header .navbar-brand .logo {
+          width: 150px; } }
     .navbar .navbar-header .navbar-brand span:hover {
       color: #000; }
     .navbar .navbar-header .navbar-brand a:hover {
