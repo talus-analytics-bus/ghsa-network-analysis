@@ -51,15 +51,12 @@
       }
 
       .legend-container {
+        @include flex(1 0 100px);
         width: auto;
         background: transparent;
         div {
           background: transparent;
         }
-        &.dark {
-          border: $light-border;
-        }
-
       }
 
       .info-container {
@@ -76,6 +73,9 @@
         @include flex(1 0 100px);
         background: transparent;
         align-self: center;
+
+        padding: 10px;
+        border: $light-border;
 
         div,label {
           background: transparent;

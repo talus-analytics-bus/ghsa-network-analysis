@@ -1155,12 +1155,15 @@ b {
           width: 100%;
           background: transparent; }
       .map-page-container .map-page-tabs .content .legend-container {
+        -webkit-box-flex: 1 0 100px;
+        -moz-box-flex: 1 0 100px;
+        -webkit-flex: 1 0 100px;
+        -ms-flex: 1 0 100px;
+        flex: 1 0 100px;
         width: auto;
         background: transparent; }
         .map-page-container .map-page-tabs .content .legend-container div {
           background: transparent; }
-        .map-page-container .map-page-tabs .content .legend-container.dark {
-          border: 1px solid #ccc; }
       .map-page-container .map-page-tabs .content .info-container {
         background: white;
         color: #233343;
@@ -1175,7 +1178,9 @@ b {
         -ms-flex: 1 0 100px;
         flex: 1 0 100px;
         background: transparent;
-        align-self: center; }
+        align-self: center;
+        padding: 10px;
+        border: 1px solid #ccc; }
         .map-page-container .map-page-tabs .content .map-and-search-container div, .map-page-container .map-page-tabs .content .map-and-search-container label {
           background: transparent; }
       .map-page-container .map-page-tabs .content div, .map-page-container .map-page-tabs .content label {
