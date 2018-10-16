@@ -70,6 +70,7 @@ svg .chart {
   position: fixed !important;
   bottom: 10px !important;
   left: 10px !important;
+  z-index: 100;
 
   .toggle-off {
     background-color: $lightcolor;

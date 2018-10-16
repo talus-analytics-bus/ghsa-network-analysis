@@ -81,8 +81,18 @@ const App = {};
 		// (purple, green) color scheme
 		App.fundColor = '#762a83';
 		App.receiveColor = '#1b7837';
-		App.fundColorPalette = ['#40004b','#762a83','#9970ab','#c2a5cf','#e7d4e8', '#f7f7f7'];
-		App.receiveColorPalette = ['#00441b', '#1b7837', '#5aae61', '#a6dba0', '#d9f0d3', '#f7f7f7'];
+		App.fundColorPalette = ['#40004b',
+			'#762a83',
+			'#9970ab',
+			'#c2a5cf',
+			'#e7d4e8',
+			 '#f7f7f7'];
+		App.receiveColorPalette = ['#00441b',
+			 '#1b7837',
+			 '#5aae61',
+			 '#a6dba0',
+			 '#d9f0d3',
+			 '#f7f7f7'];
 
 		// (blue, red) color scheme
 		/*App.fundColor = '#053061';

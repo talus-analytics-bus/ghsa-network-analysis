@@ -664,9 +664,10 @@ select.form-control {
       color: white; }
 
 .live-search-results-container {
+  z-index: 100;
   display: none;
   position: absolute;
-  top: 34px;
+  top: 44px;
   width: 280px;
   background-color: white;
   border-left: 1px solid #999;
@@ -1119,7 +1120,7 @@ b {
       display: -ms-flexbox;
       display: -webkit-flex;
       display: flex;
-      flex-flow: row nowrap;
+      flex-flow: row wrap;
       justify-content: space-between;
       align-items: flex-start; }
       .map-page-container .map-page-tabs .content .left-pane {
@@ -1173,6 +1174,8 @@ b {
         align-self: center;
         padding: 10px;
         border: 1px solid #ccc; }
+        .map-page-container .map-page-tabs .content .map-and-search-container .search-container {
+          position: relative; }
         .map-page-container .map-page-tabs .content .map-and-search-container div, .map-page-container .map-page-tabs .content .map-and-search-container label {
           background: transparent; }
       .map-page-container .map-page-tabs .content div, .map-page-container .map-page-tabs .content label {
@@ -1929,7 +1932,8 @@ b {
           color: white; }
       .home-container .left-pane .search-container .search-box {
         padding-top: 10px;
-        padding-bottom: 5px; }
+        padding-bottom: 5px;
+        position: relative; }
       .home-container .left-pane .search-container .search-buttons {
         display: -webkit-box;
         display: -moz-box;
@@ -2120,7 +2124,8 @@ svg .chart .funding path, svg .chart .receiving path {
 .toggle-theme {
   position: fixed !important;
   bottom: 10px !important;
-  left: 10px !important; }
+  left: 10px !important;
+  z-index: 100; }
   .toggle-theme .toggle-off {
     background-color: white; }
   .toggle-theme .toggle-on {

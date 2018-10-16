@@ -27,7 +27,7 @@
     @media (max-width: 496px) { height: 2000px; }
 
     .content {
-      @include flexbox(row nowrap);
+      @include flexbox(row wrap);
       justify-content: space-between;
       align-items: flex-start;
 
@@ -76,6 +76,10 @@
 
         padding: 10px;
         border: $light-border;
+
+        .search-container {
+          position: relative;
+        }
 
         div,label {
           background: transparent;

@@ -1,7 +1,8 @@
 .live-search-results-container {
+  z-index: 100;
   display: none;
   position: absolute;
-  top: 34px;
+  top: 44px;
   &.reverse {
     top: -157px;
     // top: -126px;
