@@ -15,7 +15,7 @@
     .navbar-brand {
       padding-top: 3px;
       cursor: pointer;
-      width: 100%;
+      //width: 100%;
       height: auto;
       .logo {
         display: inline-block;
@@ -43,15 +43,15 @@
       }
     }
 
-    @media (max-width: 576px) {   // default *smallest* bootstrap breakpoint
-      /* This defines the mobile view!! */
-      .navbar-brand {
-        width: auto;
-        .logo {
-          width: 100px;
-        }
-      }
-    }
+    //@media (max-width: 576px) {   // default *smallest* bootstrap breakpoint
+    //  /* This defines the mobile view!! */
+    //  .navbar-brand {
+    //    width: auto;
+    //    .logo {
+    //      width: 100px;
+    //    }
+    //  }
+    //}
   }
   .navbar-nav > li {
     cursor: pointer;

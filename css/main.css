@@ -631,7 +631,6 @@ select.form-control {
   .navbar .navbar-header .navbar-brand {
     padding-top: 3px;
     cursor: pointer;
-    width: 100%;
     height: auto; }
     .navbar .navbar-header .navbar-brand .logo {
       display: inline-block;
@@ -649,13 +648,6 @@ select.form-control {
       color: #000; }
     .navbar .navbar-header .navbar-brand a:hover {
       text-decoration: none; }
-  @media (max-width: 576px) {
-    .navbar .navbar-header {
-      /* This defines the mobile view!! */ }
-      .navbar .navbar-header .navbar-brand {
-        width: auto; }
-        .navbar .navbar-header .navbar-brand .logo {
-          width: 100px; } }
   .navbar .navbar-nav > li {
     cursor: pointer;
     margin-top: 10px; }
