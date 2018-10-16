@@ -15,6 +15,12 @@
 			});
 
 		populateTable();
+
+		$('.filter-contents').hide();
+		$('.filter-header').on('click', () => {
+			$('.filter-contents').slideToggle();
+			$('.filter-glyph').toggleClass('flip');
+		});
 	};
 
 	const download = (filename, text) => {
@@ -39,7 +45,7 @@
 				{ title: 'Funder' },
 				{ title: 'Recipient' },
 			],
-			pageLength: 50,
+			pageLength: 25,
 			scrollCollapse: false,
 			autoWidth: true,
 			ordering: true,

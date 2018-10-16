@@ -24,14 +24,38 @@
 
   .filter-container {
     width: 100%;
-    background-color: #E6E6E6;
-    text-transform: uppercase;
-    padding: 5px;
     margin: 10px 0;
 
-    &.dark {
-      background-color: $darkcolor;
-      border: 1px solid #666666;
+    @include flexbox(column nowrap);
+    justify-content: flex-start;
+    align-items: flex-start;
+
+    .filter-header {
+      background-color: #E6E6E6;
+      width: 100%;
+      padding: 5px 10px 5px 5px;
+      text-transform: uppercase;
+      cursor: pointer;
+
+      @include flexbox(row nowrap);
+      justify-content: space-between;
+      align-items: center;
+
+      &.dark {
+        background-color: #36404d;
+        border: 1px solid #666666;
+      }
+    }
+
+    .filter-contents {
+      background: transparent;
+      padding: 5px;
+      border: $light-border;
+      width: 100%;
+      &.dark {
+        background-color: $darkcolor;
+        border: 1px solid #666666;
+      }
     }
   }
 
@@ -93,4 +117,7 @@
     }
   }
 
+  .flip {
+    transform: rotate(180deg);
+  }
 }

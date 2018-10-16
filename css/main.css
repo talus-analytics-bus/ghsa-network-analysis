@@ -1686,7 +1686,8 @@ b {
   background: transparent;
   -webkit-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
-  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); }
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  width: 360px; }
   .network-map-options .ghsa-toggle-options {
     margin: 0; }
   .network-map-options .search-container {
@@ -2064,13 +2065,40 @@ b {
         color: white; }
   .data-container .filter-container {
     width: 100%;
-    background-color: #E6E6E6;
-    text-transform: uppercase;
-    padding: 5px;
-    margin: 10px 0; }
-    .data-container .filter-container.dark {
-      background-color: #233343;
-      border: 1px solid #666666; }
+    margin: 10px 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: flex-start; }
+    .data-container .filter-container .filter-header {
+      background-color: #E6E6E6;
+      width: 100%;
+      padding: 5px 10px 5px 5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: -webkit-box;
+      display: -moz-box;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center; }
+      .data-container .filter-container .filter-header.dark {
+        background-color: #36404d;
+        border: 1px solid #666666; }
+    .data-container .filter-container .filter-contents {
+      background: transparent;
+      padding: 5px;
+      border: 1px solid #ccc;
+      width: 100%; }
+      .data-container .filter-container .filter-contents.dark {
+        background-color: #233343;
+        border: 1px solid #666666; }
   .data-container .download-container {
     align-self: flex-end;
     padding: 10px;
@@ -2102,6 +2130,8 @@ b {
     .data-container table tbody td.dark, .data-container table tbody tr.dark {
       background-color: #233343;
       color: white; }
+  .data-container .flip {
+    transform: rotate(180deg); }
 
 body {
   font-family: 'Open Sans', sans-serif;
