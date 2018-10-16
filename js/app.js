@@ -152,6 +152,8 @@ const App = {};
 
 				// hide unops data until we can fix it
 				fundingData = fundingData.filter(d => d.donor_code !== '41aaa');
+
+				App.addNonCountryRecipients(fundingData);
 				App.fundingData = fundingData;
 				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
 				
@@ -231,6 +233,24 @@ const App = {};
 
 
 	/* ------------------ Data Functions ------------------- */
+	// adds certain non-country recipients to funding data
+	App.addNonCountryRecipients = (fundingData) => {
+		const gavi = [
+			"CA-3-D002243001",
+			"DAC-1601-OPP1105858",
+			"NL-1-PPR-27598",
+			"US-GOV-1-AID-GH-IO-17-00001",
+			"XI-IATI-EC_DEVCO-2018/395-262",
+		];
+		fundingData
+			.filter(d => gavi.indexOf(d.source.id) > -1)
+			.forEach(d => {
+				d.recipient_country = 'gavi';
+				d.recipient_name = 'Global Alliance for Vaccines and Immunisation (GAVI)';
+				d.recipient_sector = 'International NGO';
+			});
+	};
+
 	// reloads the funding data to use GHSA Only or All
 	App.loadFundingData = (params = {}) => {
 		App.fundingLookup = {ghsa: [], };
