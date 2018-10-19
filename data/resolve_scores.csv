@@ -1,0 +1,76 @@
+country-name,country-code,readyScore,preventScore,detectScore,respondScore,otherScore
+Afghanistan,AF,38,32,48,48,20
+Albania,AL,62,68,73,49,57
+Armenia,AM,90,93,80,98,83
+Australia,AU,92,96,93,85,93
+Bahrain,BH,79,77,87,90,57
+Bangladesh,BD,50,58,70,32,33
+Belgium,BE,85,85,83,83,90
+Benin,BJ,34,31,54,32,20
+Bhutan,BT,44,55,53,31,27
+Botswana,BW,40,40,52,34,37
+Burkina Faso,BF,34,34,53,28,20
+Burundi,BI,30,33,41,25,20
+Cambodia,KH,48,57,54,36,40
+Cameroon,CN,38,38,53,35,27
+Chad,TD,29,32,40,23,20
+Comoros,KM,34,38,46,27,20
+Cote d'Ivoire,CI,42,42,54,37,33
+Democratic Republic of Congo,CD,35,37,53,25,27
+Djibouti,DJ,,,,,
+Eritrea,ER,46,49,58,43,30
+Ethiopia,ET,52,56,59,50,33
+Finland,FI,86,82,85,93,87
+Gambia,GM,32,34,38,30,27
+Ghana,GH,45,48,51,36,47
+Guinea,GN,35,39,52,25,20
+Indonesia,ID,64,60,64,67,63
+Japan,JP,92,95,92,85,97
+Jordan,JO,57,55,62,63,47
+Kenya,KE,50,57,59,40,37
+Kuwait,KW,74,70,73,83,70
+Kyrgyzstan,KG,75,64,73,83,90
+Lao People's Democratic Republic,LA,53,56,67,50,30
+Latvia,LV,73,81,70,71,63
+Lebanon,LB,56,57,56,55,57
+Lesotho,LS,38,41,45,37,20
+Liberia,LR,46,42,48,64,23
+Liechtenstein,LI,,,,,
+Madagascar,MG,37,38,51,33,23
+Maldives ,MV,51,58,58,47,33
+Mali,ML,35,34,52,33,20
+Mauritania,MR,38,39,52,30,33
+Mongolia,MN,59,59,68,54,57
+Morocco,MA,70,65,71,81,60
+Mozambique ,MZ,47,46,51,50,40
+Myanmar ,MM,41,45,56,32,27
+Namibia ,NA,44,49,60,31,30
+Nigera ,NG,39,39,51,31,37
+Oman ,OM,84,86,77,91,80
+Pakistan ,PK,50,46,51,49,60
+Republic of Korea ,KR,92,95,96,82,97
+Rwanda ,RW,59,60,61,60,50
+Qatar ,QA,69,65,73,76,60
+Saudi Arabia ,SA,76,70,72,84,80
+Senegal ,SN,45,41,59,44,37
+Seychelles ,SC,53,63,66,42,33
+Sierra Leone ,SL,43,36,51,51,37
+Slovenia ,SI,82,84,79,83,77
+Somalia ,SO,29,23,37,36,20
+South Africa ,ZA,62,64,65,60,60
+South Sudan ,SS,30,33,42,23,20
+Sri Lanka ,LK,57,59,65,51,50
+Sudan ,SD,57,54,50,75,43
+Swaziland ,SZ,36,36,47,33,27
+Switzerland ,CH,,,,,
+Thailand ,TH,76,79,74,72,77
+Tunisia,TN,59,57,65,62,50
+Turkmenistan ,TM,66,69,60,69,60
+Uganda ,UG,51,52,64,49,33
+United Arab Emirates ,AE,91,89,86,99,90
+United Republic of Tanzania ,TZ,49,51,54,40,50
+United States ,US,87,87,91,88,80
+Viet Nam ,VN,57,65,62,46,47
+Zambia ,ZM,42,48,52,31,37
+Zimbabwe ,ZI,40,42,59,28,30
+Zanzibar (n/a),,NA,NA,NA,NA,NA

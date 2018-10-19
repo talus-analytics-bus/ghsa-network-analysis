@@ -176,7 +176,7 @@ const App = {};
 		App.inKindDefinition = `In-kind support is the contribution of goods or services to a recipient. Examples of in-kind support include providing technical expertise or programming support, or  supporting GHSA action packages.`;
 
 		// front-load all the data
-		NProgress.start();
+		NProgress.start(); 
 		d3.queue()
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
@@ -188,7 +188,8 @@ const App = {};
 			.defer(d3.json, 'data/submitted_data.json') // non-iati data, created 15 June 2018
 			// .defer(d3.json, 'data/who-iati-v15.json') // WHO projects from funding data v15
 			.defer(d3.tsv, 'data/geographic_groupings.tsv')
-			.await((error, worldData, unsdData, donorCodeData, fundingData, jeeData, currencies, submittedData, geographicGroupings) => {
+            .defer(d3.csv,'data/resolve_scores.csv')
+			.await((error, worldData, unsdData, donorCodeData, fundingData, jeeData, currencies, submittedData, geographicGroupings,resolveScoresData) => {
 				if (error) throw error;
 
 				/* -------- Populate global variables -------- */
@@ -197,6 +198,9 @@ const App = {};
 				App.geographicGroupCodes = _.unique(_.pluck(App.geographicGroupings, 'group_code'));
 				App.geoData = worldData;
 				App.codes = donorCodeData;
+                App.resolve_Scores = resolveScoresData;
+            
+                console.log(App.resolve_Scores);
 				App.countries = worldData.objects.countries.geometries
 					.map(c => c.properties);
 
@@ -396,6 +400,35 @@ const App = {};
 			return d3.sum(fundsToAdd, d => d.total_spent);
 		}
 	};
+    
+    /*App.getReadyScores = (iso) => {
+        
+    }*/
+    
+    App.readyColor = (num) => {
+        if (num > 79) {
+             return App.jeeColors[5];
+        } else if (num > 39) {
+            return App.jeeColors[1];
+        }
+        else { 
+            return App.jeeColors[0];
+        }
+    }
+    
+    App.readyText = (num) => {
+        if (num > 79) {
+             return "Better Prepared";
+        } else if (num > 39) {
+            return "Work to Do";
+        }
+        else { 
+            return "Not Ready";
+        }
+    }
+    
+    /*App.jeeColors = ['#c91414', '#ede929', '#ede929', '#ede929',
+		'#ede929', '#0b6422', '#0b6422', '#0b6422'];*/
 
 	App.getInkindFunded = (iso, params = {}) => {
 		if (!App.fundingLookup[iso]) return 0;

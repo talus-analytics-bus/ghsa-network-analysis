@@ -3,7 +3,10 @@
         <div class="analysis-country-content analysis-content">
             <div class="row">
                 <div class="country-header">
+                    <div class="profile"></div>
+                    
                     <div class="analysis-country-title country-page">
+                        <div class="analysis-country-flagAndName"></div> 
                     </div>
                 </div>
                 <div class="ghsa-toggle-options-container">
@@ -23,6 +26,8 @@
                     </div>
                 </div>
                 <div class="switch-type-button btn btn-default">Switch to Recipient Profile</div>
+                <button id="GHSAButton" class="ghsaBut"><img class="ghsaPic" src="img/gida-logo.png" />&nbsp;GHSA</button>
+                <div class="selectCurrency" 
             </div>
             <div class="country-summary-content row">
                 <div class="donor-column column col-sm-6">
@@ -118,24 +123,24 @@
                     </div>
                     <div class="progress-circle-container">
                         <div class="circle-chart-content">
+                            <div class="circle-chart-label1">Prevent</div>
                             <div class="prevent-circle-chart circle-chart"></div>
-                            <div class="circle-chart-label">Prevent</div>
                         </div>
                         <div class="circle-chart-content">
+                            <div class="circle-chart-label1">Detect</div>
                             <div class="detect-circle-chart circle-chart"></div>
-                            <div class="circle-chart-label">Detect</div>
                         </div>
                         <div class="circle-chart-content">
+                            <div class="circle-chart-label1">Respond</div>
                             <div class="respond-circle-chart circle-chart"></div>
-                            <div class="circle-chart-label">Respond</div>
                         </div>
                         <div class="circle-chart-content">
+                            <div class="circle-chart-label1">Other</div>
                             <div class="other-circle-chart circle-chart"></div>
-                            <div class="circle-chart-label">Other</div>
                         </div>
                         <div class="circle-chart-content">
+                            <div class="circle-chart-label2">General&nbsp;IHR&nbsp;&nbsp;<img class="general-ihr-info-img info-img" src="img/info.png" />Implementation</div>
                             <div class="general-circle-chart circle-chart"></div>
-                            <div class="circle-chart-label">General IHR Implementation <img class="general-ihr-info-img info-img" src="img/info.png" /></div>
                         </div>
                     </div>
                     <div class="source-text bump-right">
@@ -143,6 +148,44 @@
                         <a href="http://d-portal.org" target="_blank">d-portal</a>, 2014-2017.
                     </div>
                 </div>
+                
+                
+                <div class="readyscore-circle-section">
+                    <h3 class="readyscore-circle-title">
+                        Resolve ReadyScore Categories
+                        <img class="readyscore-info-img info-img" src="img/info.png" />
+                    </h3>
+                    <div class="readyscore-circle-text">
+                        <div class="readyscore-circle-description description ce-data-area">
+                            Percentage shown for each resolve score.
+                        </div>
+                        <div class="no-data-message core-element"></div>
+                    </div>
+                    <div class="readyscore-circle-container">
+                        <div class="circle-chart-content">
+                            <div class="circle-chart-label">Find and Verify Outbreaks</div>
+                            <div class="find-verify-prevent-circle circle-chart"></div> 
+                        </div>
+                        <div class="circle-chart-content">
+                            <div class="circle-chart-label">Stop <br /> Outbreaks</div>
+                            <div class="stop-outbreaks-circle circle-chart"></div>
+                        </div>
+                        <div class="circle-chart-content">
+                            <div class="circle-chart-label">Prevent Outbreaks</div>
+                            <div class="prevent-outbreaks-circle circle-chart"></div>
+                        </div>
+                        <div class="circle-chart-content">
+                            <div class="circle-chart-label">Protect&nbsp;from&nbsp;Other&nbsp;<br /> Health&nbsp;Threats</div>
+                            <div class="protect-other-circle circle-chart"></div>
+                        </div>
+                    </div>
+                    <div class="source-text bump-right">
+                        <b>Source:</b> IATI registry via
+                        <a href="http://d-portal.org" target="_blank">d-portal</a>, 2014-2017.
+                    </div>
+                </div>
+                
+                
                 <div class="category-chart-section">
                     <h3 class="category-chart-title">
                         Funding by Core Capacity<img class="info-img core-capacity-text" src="img/info.png"/>
@@ -153,6 +196,7 @@
                                 The chart below shows the funds <span class="money-type"></span> by core capacity. Only funded core capacities are shown. Hover over a bar to see additional funding details.
                             </div>
                         </div>
+                        
                         <div class="toggle-disbursed-chart-container category-data-area">
                             <form class="fund-toggle">
                                 <label class="radio-inline">
@@ -164,6 +208,20 @@
                                 </label>
                             </form>
                         </div>
+                        
+                        <div class="toggle-disbursed-chart-container2 category-data-area">
+                            <p class="sort-label">Sort by:</p>
+                            <form class="fund-toggle">
+                                <label class="radio-inline">
+                                    <input id="chart-spent" type="radio" name="fundtype" value="total_spent">Amount
+                                </label>
+                                <br>
+                                <label class="radio-inline">
+                                    <input id="chart-committed" type="radio" name="fundtype" value="total_committed">JEE Score
+                                </label>
+                            </form>
+                        </div>
+                        
                         <div class="jee-sort-options inline">
                             <div class="dropdown-label">Sort by:</div>
                             <div class="ind-type-filter two-line">
@@ -239,6 +297,7 @@
                         <div class="second-country-table-title description">
                             The table below displays funders in order of amount of funds <span class="money-type"></span>. Click on a row to view details.
                         </div>
+                        
                         <div class="toggle-disbursed-chart-container category-data-area">
                             <form class="fund-toggle">
                                 <label class="radio-inline">
@@ -250,6 +309,7 @@
                                 </label>
                             </form>
                         </div>
+                        
                         <div class="table-container second-country-table-container">
                             <table class="country-table second-country-table table table-bordered table-hover">
                                 <thead>
