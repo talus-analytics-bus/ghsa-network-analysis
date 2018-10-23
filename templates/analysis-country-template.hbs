@@ -26,8 +26,14 @@
                     </div>
                 </div>
                 <div class="switch-type-button btn btn-default">Switch to Recipient Profile</div>
+                
                 <button id="GHSAButton" class="ghsaBut"><img class="ghsaPic" src="img/gida-logo.png" />&nbsp;GHSA</button>
-                <div class="selectCurrency" 
+                
+                <div class="selectCurrencyContainer">
+                    <p class="selectCurrency">Select Currency</p>
+                    <button id="currencyChoice" class="currencyOption">&nbsp;US Dollars (USD)</button>
+                </div>
+                
             </div>
             <div class="country-summary-content row">
                 <div class="donor-column column col-sm-6">
@@ -205,19 +211,6 @@
                                 <br>
                                 <label class="radio-inline">
                                     <input id="chart-committed" type="radio" name="fundtype" value="total_committed">Committed Funds
-                                </label>
-                            </form>
-                        </div>
-                        
-                        <div class="toggle-disbursed-chart-container2 category-data-area">
-                            <p class="sort-label">Sort by:</p>
-                            <form class="fund-toggle">
-                                <label class="radio-inline">
-                                    <input id="chart-spent" type="radio" name="fundtype" value="total_spent">Amount
-                                </label>
-                                <br>
-                                <label class="radio-inline">
-                                    <input id="chart-committed" type="radio" name="fundtype" value="total_committed">JEE Score
                                 </label>
                             </form>
                         </div>

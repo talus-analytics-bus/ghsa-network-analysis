@@ -201,6 +201,7 @@ const App = {};
                 App.resolve_Scores = resolveScoresData;
             
                 console.log(App.resolve_Scores);
+            
 				App.countries = worldData.objects.countries.geometries
 					.map(c => c.properties);
 
@@ -401,9 +402,12 @@ const App = {};
 		}
 	};
     
-    /*App.getReadyScores = (iso) => {
-        
-    }*/
+    App.getReadyScores = (iso) => {   
+        function isState(stt) {
+            return stt.countryCode === iso;
+        }
+        return App.resolve_Scores.find(isState);
+    }
     
     App.readyColor = (num) => {
         if (num > 79) {
@@ -427,7 +431,7 @@ const App = {};
         }
     }
     
-    /*App.jeeColors = ['#c91414', '#ede929', '#ede929', '#ede929',
+    /*App.jeeColors = ['#c91414', '#CCCC33', '#ede929', '#ede929',
 		'#ede929', '#0b6422', '#0b6422', '#0b6422'];*/
 
 	App.getInkindFunded = (iso, params = {}) => {

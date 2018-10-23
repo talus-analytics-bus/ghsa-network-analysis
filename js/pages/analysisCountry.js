@@ -527,26 +527,21 @@
         
             const renderReadyScoreCircles = () => {
                 
-            //const readyScores = App.getReadyScores(iso);
-            
-            //const findVerify = readyScores[2];
-            const findVerify = 55;
+            const readyScores = App.getReadyScores(iso);
+                
+            const findVerify = readyScores.detectScore;
             const findVerifyCol = App.readyColor(findVerify);
             const findVerifyText = App.readyText(findVerify);
             
-            //const stopOutbreaks = readyScores[6];
-            const stopOutbreaks = 85;
+            const stopOutbreaks = readyScores.respondScore;
             const stopOutbreaksCol = App.readyColor(stopOutbreaks);
             const stopOutbreaksText = App.readyText(stopOutbreaks);
-
-
-            //const preventOutbreaks = readyScores[4];
-            const preventOutbreaks = 82;
+                
+            const preventOutbreaks = readyScores.preventScore;
             const preventOutbreaksCol = App.readyColor(preventOutbreaks);
             const preventOutbreaksText = App.readyText(preventOutbreaks);
             
-            //const protectFromOther = readyScores[3];
-            const protectFromOther = 10;
+            const protectFromOther = readyScores.otherScore;
             const protectFromOtherCol = App.readyColor(protectFromOther);
             const protectFromOtherText = App.readyText(protectFromOther);
                 

@@ -3,10 +3,6 @@
         // remove existing
         d3.select(selector).html('');
         
-        console.log(selector);
-        console.log(data);
-        console.log(param);
-        
         // start building the chart
         const margin = { top: 30, right: 100, bottom: 30, left: 75 };
         const width = 700;

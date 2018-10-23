@@ -1,4 +1,4 @@
-country-name,country-code,readyScore,preventScore,detectScore,respondScore,otherScore
+countryName,countryCode,readyScore,preventScore,detectScore,respondScore,otherScore
 Afghanistan,AF,38,32,48,48,20
 Albania,AL,62,68,73,49,57
 Armenia,AM,90,93,80,98,83
