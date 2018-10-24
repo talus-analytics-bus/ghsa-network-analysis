@@ -9,8 +9,8 @@
 
     .ghsaBut {
         position: absolute;
-        top: 100px;
-        right: 250px;
+        top: 129px;
+        right: 225px;
         text-align: center;
         vertical-align: middle;
         display: inline-block;
@@ -22,27 +22,78 @@
         border: solid 1px #b3b3b3;
         color: #999999;
     }
+    
+    .ghsaBut p{
+        position: absolute;
+        top:7px;
+    }
 
     .selectCurrencyContainer {
         position: absolute;
         top: 100px;
-        right: 75px;
-        text-align: center;
+        right: 85px;
+        display: inline-block;
     }
-
-    .selectCurrencyContainer.currencyOption {
+    
+    .selectCurrencyContainer a:hover {background-color: #ddd;}
+    
+    .show {display: block;}
+    
+    .selectCurrency {
+        margin-bottom: 5px;
+    }
+    
+    .curDropdownContent {
+        display: none;
+        position: absolute;
+        margin-top: 40px;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        overflow: auto;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+    
+    .curDropdownContent a {
+        color: black;
+        padding: 12px 16px;
+        display: block;
+    }
+    
+    #currencyChoice {
         position: absolute;
         vertical-align: middle;
         display: inline-block;
-        font-size: 7px;
+        font-size: 10px;
         border-radius: 4px;
-        width: 200px;
-        height: 60px;
-        background: #f2f2f2;
+        width: 180px;
+        height: 40px;
+        background: #f9f9f9;
         border: solid 1px #b3b3b3;
-        color: #999999;
+        color: black;
+        //text-align: left;
+        //left:10px;
     }
-
+    
+    #currencyChoice p {
+        position: absolute;
+        top:7px;
+        left: 10px;
+    }
+    
+    .currencyOption {
+        background-color: #3498DB;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .currencyOption:hover, .currencyOption:focus {
+        background-color: #2980B9;
+    }
+    
     .ghsa-toggle-options-container {
         position: absolute;
         top: 80px;
@@ -74,9 +125,7 @@
             font-size: 30px;
             font-weight: 900;
             font-style: "raleway";
-            top: 23%;
-
-
+            top: 30%;
         }
 
         img.ghsa-info-img {
@@ -104,7 +153,7 @@
         display: inline-block;
         color: white;
         margin-left: 30px;
-        margin-top: 20px; //font-family: "raleway";
+        margin-top: 30px; //font-family: "raleway";
         //font-weight:200px;
     }
     .flag {

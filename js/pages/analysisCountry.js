@@ -559,7 +559,28 @@
             renderReadyScoreCircles();
         }
 
+        /* When the user clicks on the button, 
+        toggle between hiding and showing the dropdown content */
+        
+        $(document).ready(function () {
+            $('#currencyChoice').click(function (){
+            $('#currencyDropdown').addClass("show");
+        })
+        });
 
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+          if (!event.target.matches('.currencyOption')) {
+            var dropdowns = document.getElementsByClassName("curDropdownContent");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+          }
+        }
         
         /**
          * Draws the "In-kind Contributions Received" or "In-kind Contributions Made"
