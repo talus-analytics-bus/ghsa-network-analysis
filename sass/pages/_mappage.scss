@@ -27,12 +27,12 @@
     @media (max-width: 496px) { height: 2000px; }
 
     .content {
-      @include flexbox(row wrap);
+      @include flexbox(row nowrap);
       justify-content: space-between;
       align-items: flex-start;
 
       .left-pane {
-        @include flex(3 0 100px);
+        @include flex(0 3 800px);
 
         background: transparent;
 

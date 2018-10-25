@@ -180,6 +180,9 @@ const Routing = {};
 		// set nav
 		$('nav li').removeClass('active');
 		$(`nav li[page="${navName}"]`).addClass('active');
+		$('button.ghsa-button').click(() => {
+			console.log('should nav to GHSA page')
+		});
 
 		// load page
 		loadTemplate(pageName);

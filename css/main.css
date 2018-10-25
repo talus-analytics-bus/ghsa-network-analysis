@@ -1132,15 +1132,15 @@ b {
       display: -ms-flexbox;
       display: -webkit-flex;
       display: flex;
-      flex-flow: row wrap;
+      flex-flow: row nowrap;
       justify-content: space-between;
       align-items: flex-start; }
       .map-page-container .map-page-tabs .content .left-pane {
-        -webkit-box-flex: 3 0 100px;
-        -moz-box-flex: 3 0 100px;
-        -webkit-flex: 3 0 100px;
-        -ms-flex: 3 0 100px;
-        flex: 3 0 100px;
+        -webkit-box-flex: 0 3 800px;
+        -moz-box-flex: 0 3 800px;
+        -webkit-flex: 0 3 800px;
+        -ms-flex: 0 3 800px;
+        flex: 0 3 800px;
         background: transparent;
         max-height: 800px;
         display: -webkit-box;
