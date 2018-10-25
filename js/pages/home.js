@@ -108,7 +108,6 @@
 
 		moneyFlow = 'received';
 
-		initSearch('.search-box');
 		map = buildMap('.funding-recipient-map');
 		d3.selectAll('.viewport-ellipse,.viewport-edge').remove();
 
@@ -227,6 +226,25 @@
 					break;
 			}
 			updatedFlags();
+		});
+
+		let currentSearchSelection = undefined;
+		App.initCountrySearchBar('.search-box', (result) => {
+			$('.country-search-input').val(result.NAME);
+			currentSearchSelection = result;
+		}, {isReverse: true});
+
+		$('#profile-button').click(() => {
+			if (currentSearchSelection !== undefined) {
+				const iso = currentSearchSelection.ISO2;
+				let page;
+				if (moneyFlow === 'funded') {
+					page = 'd';
+				} else {
+					page = 'r';
+				}
+				hasher.setHash(`analysis/${iso}/${page}`);
+			}
 		});
 	};
 
@@ -1143,7 +1161,6 @@
 	// initializes search functionality
 	function initSearch(selector = '.search-container') {
 		App.initCountrySearchBar(selector, (result) => {
-			console.log(result);
 			if (result.item !== undefined) result = result.item;
 			d3.selectAll('.country, .list-item').classed('active', false);
 
