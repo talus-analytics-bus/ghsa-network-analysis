@@ -180,10 +180,6 @@ const Routing = {};
 		// set nav
 		$('nav li').removeClass('active');
 		$(`nav li[page="${navName}"]`).addClass('active');
-		$('button.ghsa-button').click(() => {
-			console.log('should nav to GHSA page')
-		});
-
 		// load page
 		loadTemplate(pageName);
 		if (func) func(...data);
@@ -193,6 +189,11 @@ const Routing = {};
 		} else {
 			$('#theme-toggle').bootstrapToggle('on');
 		}
+
+		$('button.ghsa-button').click(() => {
+			hasher.setHash('analysis/ghsa/d');
+		});
+
 	}
 	function parseHash(newHash) { crossroads.parse(newHash); }
 	function loadTemplate(page, data) {
