@@ -682,6 +682,7 @@ select.form-control {
   top: 44px;
   width: 280px;
   background-color: white;
+  color: black;
   border-left: 1px solid #999;
   border-right: 1px solid #999;
   text-align: left; }
@@ -701,6 +702,7 @@ select.form-control {
   padding: 10px 20px;
   border-bottom: 1px solid #ccc;
   cursor: pointer;
+  color: black !important;
   background-color: #fefefe;
   background: -webkit-gradient(linear, left top, left bottom, from(#fefefe), to(#f3f3f3));
   background: -webkit-linear-gradient(top, #fefefe, #f3f3f3);

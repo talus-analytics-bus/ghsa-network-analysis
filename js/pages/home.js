@@ -232,7 +232,7 @@
 		App.initCountrySearchBar('.search-box', (result) => {
 			$('.country-search-input').val(result.NAME);
 			currentSearchSelection = result;
-		}, {isReverse: true});
+		}, { isReverse: true });
 
 		$('#profile-button').click(() => {
 			if (currentSearchSelection !== undefined) {
