@@ -28,9 +28,6 @@
         const middleColor = (moneyType === 'd') ? App.fundColorPalette[2] : App.receiveColorPalette[2];
 		const lightColor = (moneyType === 'd') ? App.fundColorPalette[4] : App.receiveColorPalette[4];
         
-        
-        
-
 		if (iso === "General Global Benefit") {
 			$('.toggle-type').css('visibility','hidden');
 		} else {
@@ -46,7 +43,7 @@
             
             
 			$('.analysis-country-flagAndName')
-				.html(`${flagHtml} ${name} `);
+				.html(`${flagHtml}${name} `);
 				// .on('click', () => hasher.setHash(`analysis/${iso}`));
 
 			const countryTitleDiv = d3.select('.profile');
@@ -88,6 +85,10 @@
 				content: App.generalIhrText,
 			});
 		}
+        
+        $('.ghsaBut').click(function(){
+				hasher.setHash('analysis/ghsa/d');
+			});
 
 		/**
 		 * If the page shown is a recipient country with published JEE scores, they will be visible in
@@ -558,6 +559,11 @@
             
             renderReadyScoreCircles();
         }
+        
+        const readyText = "ReadyScore is a tool created by Resolve to Save Lives to assess a country's ability to find, stop, and prevent epidemics. The ReadyScore is calculated based on a country's scores on the Joint External Evaluation.";
+			$('.readyscore-info-img').tooltipster({
+				content: readyText,
+			});
 
         /* When the user clicks on the button, 
         toggle between hiding and showing the dropdown content */
