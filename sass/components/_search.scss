@@ -1,13 +1,15 @@
 .live-search-results-container {
+  z-index: 100;
   display: none;
   position: absolute;
-  top: 34px;
+  top: 44px;
   &.reverse {
     top: -157px;
     // top: -126px;
   }
   width: 280px;
   background-color: white;
+  color: black;
   border-left: $border;
   border-right: $border;
   text-align: left;
@@ -27,6 +29,7 @@
   padding: 10px 20px;
   border-bottom: $light-border;
   cursor: pointer;
+  color: black !important;
   @include gradient(#fefefe, #f3f3f3);
   &:hover,
   &.active {

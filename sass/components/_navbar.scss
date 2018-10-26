@@ -10,12 +10,14 @@
   }
 
   height: 80px;
+  @media (max-width: 440px) { height: 70px; }
+  @media (max-width: 340px) { height: 60px; }
   max-height: 80px;
   .navbar-header {
     .navbar-brand {
       padding-top: 3px;
       cursor: pointer;
-      width: 100%;
+      //width: 100%;
       height: auto;
       .logo {
         display: inline-block;
@@ -33,6 +35,9 @@
           background-image: url('/img/logo-dark.png');
         }
 
+        @media (max-width: 440px) { width: 200px; }
+        @media (max-width: 340px) { width: 150px; }
+
       }
       span:hover {
         color: #000;
@@ -43,15 +48,15 @@
       }
     }
 
-    @media (max-width: 576px) {   // default *smallest* bootstrap breakpoint
-      /* This defines the mobile view!! */
-      .navbar-brand {
-        width: auto;
-        .logo {
-          width: 100px;
-        }
-      }
-    }
+    //@media (max-width: 576px) {   // default *smallest* bootstrap breakpoint
+    //  /* This defines the mobile view!! */
+    //  .navbar-brand {
+    //    width: auto;
+    //    .logo {
+    //      width: 100px;
+    //    }
+    //  }
+    //}
   }
   .navbar-nav > li {
     cursor: pointer;

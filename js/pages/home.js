@@ -62,7 +62,8 @@
 		currentNodeDataMap,
 		startYear,
 		endYear,
-		supportType;
+		supportType,
+		page;
 
 	const setConstants = (params) => {
 		// state variables for current map indicator
@@ -101,9 +102,12 @@
 	};
 
 	App.initHome = (params = {}) => {
+		page = 'home';
+
 		setConstants(params);
 
-		initSearch('.search-box');
+		moneyFlow = 'received';
+
 		map = buildMap('.funding-recipient-map');
 		d3.selectAll('.viewport-ellipse,.viewport-edge').remove();
 
@@ -170,8 +174,7 @@
 			}
 
 			if (scoreObj) {
-				const capScores = scoreObj.avgCapScores
-					.filter(d => ccs.includes(d.capId));
+				const capScores = scoreObj.avgCapScores;
 				score = d3.mean(capScores, d => d.score);
 				const numerator = 10 + Math.log10(1 + receivedSpent);
 				const denominator = 5.01 - score;
@@ -195,18 +198,58 @@
 
 		updateMap(false);
 
+		const updatedFlags = () => {
+			map.reset();
+			updateMap(false);
+		};
+
+		// indType = 'money';  // either 'money' or 'score'
+		// moneyFlow = 'funded';  // either 'funded' or 'received'
+		// moneyType = 'committed';  // either 'committed' or 'disbursed'
+		// scoreType = 'score';  // either 'score' or 'combined'
+
 		App.newToggle('.funder-recipient-toggle', {}, () => {
-			moneyFlow = 'funded';
-			map.reset();
-			updateMap(false);
-		}, () => {
 			moneyFlow = 'received';
-			map.reset();
-			updateMap(false);
+			updatedFlags();
+		}, () => {
+			moneyFlow = 'funded';
+			updatedFlags();
+		});
+
+		$('.map-buttons button').click(function() {
+			switch($(this).data('value')) {
+				case 'jee':
+					indType = 'score';
+					break;
+				default:
+					indType = 'money';
+					break;
+			}
+			updatedFlags();
+		});
+
+		let currentSearchSelection = undefined;
+		App.initCountrySearchBar('.search-box', (result) => {
+			$('.country-search-input').val(result.NAME);
+			currentSearchSelection = result;
+		}, { isReverse: true });
+
+		$('#profile-button').click(() => {
+			if (currentSearchSelection !== undefined) {
+				const iso = currentSearchSelection.ISO2;
+				let page;
+				if (moneyFlow === 'funded') {
+					page = 'd';
+				} else {
+					page = 'r';
+				}
+				hasher.setHash(`analysis/${iso}/${page}`);
+			}
 		});
 	};
 
 	App.initMap = (params = {}) => {
+		page = 'map';
 		setConstants(params);
 
 		$('#theme-toggle').bootstrapToggle('on');
@@ -363,9 +406,15 @@
 	 * @return {array}         Array of HEX strings representing a color series.
 	 */
 	function getRangeColors(indType) {
-		if (indType === 'inkind') return greens;
-		else if (indType === 'money' || indType === 'ghsa') return purples;
-		else return orangesReverse;
+		if (moneyFlow === 'received') {
+			return App.receiveColorPalette;
+		} else if (indType === 'inkind') {
+			return greens;
+		} else if (indType === 'money' || indType === 'ghsa') {
+			return purples;
+		} else {
+			return orangesReverse;
+		}
 	}
 
 	// gets the color scale used for the map
@@ -374,7 +423,7 @@
 			// return App.getScoreColor;
 			return d3.scaleThreshold()
 				.domain([1.5, 2, 2.5, 3, 3.5, 4, 4.5])
-				.range(jeeColors);
+				.range(App.jeeColors);
 		} else if (indType === 'inkind') {
 			return d3.scaleThreshold()
 				.domain([5, 10, 15, 20, 25, 30])

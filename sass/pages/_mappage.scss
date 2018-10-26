@@ -32,18 +32,18 @@
       align-items: flex-start;
 
       .left-pane {
-        @include flex(3 0 100px);
+        @include flex(0 3 800px);
 
         background: transparent;
 
-        height: 100%;
+        max-height: 800px;
 
         @include flexbox(column nowrap);
         justify-content: space-between;
         align-items: center;
 
         .map-container {
-          @include flex(3 0 100px);
+          @include flex(0 3 700px);
           width: 100%;
           background: transparent;
         }
@@ -51,15 +51,12 @@
       }
 
       .legend-container {
+        @include flex(0 0 100px);
         width: auto;
         background: transparent;
         div {
           background: transparent;
         }
-        &.dark {
-          border: $light-border;
-        }
-
       }
 
       .info-container {
@@ -76,6 +73,13 @@
         @include flex(1 0 100px);
         background: transparent;
         align-self: center;
+
+        padding: 10px;
+        border: $light-border;
+
+        .search-container {
+          position: relative;
+        }
 
         div,label {
           background: transparent;

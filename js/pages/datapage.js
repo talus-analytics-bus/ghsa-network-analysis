@@ -15,6 +15,12 @@
 			});
 
 		populateTable();
+
+		$('.filter-contents').hide();
+		$('.filter-header').on('click', () => {
+			$('.filter-contents').slideToggle();
+			$('.filter-glyph').toggleClass('flip');
+		});
 	};
 
 	const download = (filename, text) => {
@@ -35,13 +41,13 @@
 		$('table.download-data-table').DataTable({
 			data,
 			columns: [
-				{ title: 'Project' },
-				{ title: 'Funder' },
-				{ title: 'Recipient' },
+				{ title: 'Project', width: '60%' },
+				{ title: 'Funder', width: '20%' },
+				{ title: 'Recipient', width: '20%' },
 			],
-			pageLength: 50,
+			pageLength: 25,
 			scrollCollapse: false,
-			autoWidth: true,
+			autoWidth: false,
 			ordering: true,
 			searching: true,
 			// pagingType: 'simple',
