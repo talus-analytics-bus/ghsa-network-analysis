@@ -107,8 +107,8 @@ const App = {};
 		/*App.jeeColors = ['#c91414', '#ede929', '#ede929', '#ede929',
 		'#ede929', '#0b6422', '#0b6422', '#0b6422'];*/
         
-        // App.jeeColors = ['#a91726', '#f9a510', '#017c47'];
-		App.jeeColors = [
+        App.jeeColors = ['#a91726', '#f9a510', '#017c47'];
+        /*App.jeeColors = [
 			'#c91414',
 			'#ede929',
 			'#ede929',
@@ -117,7 +117,7 @@ const App = {};
 			'#0b6422',
 			'#0b6422',
 			'#0b6422',
-		];
+		];*/
 
 		/* App.fundColorPalette = [
 			'#053061',
