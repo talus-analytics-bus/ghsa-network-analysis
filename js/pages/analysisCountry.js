@@ -101,7 +101,6 @@
 				() => hasher.setHash(`analysis/${iso}/d`),
 				() => hasher.setHash(`analysis/${iso}/r`),
 			);
-			$('#theme-toggle').bootstrapToggle('off');
 		}
 
 		$('.ghsaBut').click(function () {
