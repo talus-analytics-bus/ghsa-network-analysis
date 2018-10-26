@@ -1554,8 +1554,10 @@ b {
   .progress-circle-section .country-summary-value,
   .readyscore-circle-section .country-summary-value {
     margin-top: 5px;
-    font-family: 'Raleway', sans-serif;
-    font-size: 2.2em; }
+    font-size: 2.2em;
+    font-family: 'RawlineRegular';
+    font-weight: normal;
+    font-style: normal; }
   .country-flow-summary .country-summary-text,
   .progress-circle-section .country-summary-text,
   .readyscore-circle-section .country-summary-text {

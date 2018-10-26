@@ -27,8 +27,9 @@
         .style('font-weight', '600')
         .style('font-size','40px')
         .style('fill', 'white')
+		.style('font-family', '\'Pathway Gothic One\', sans-serif')
         .text(value);
-        
+
         chart.append('text')
         .attr('class', 'chart-label2')
         .style('text-anchor', 'middle')
