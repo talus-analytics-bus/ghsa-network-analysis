@@ -113,27 +113,34 @@ const Routing = {};
 	Routing.initializeRoutes = () => {
 		// setup crossroads for routing
 		crossroads.addRoute('/map', () => {
+			$('#theme-toggle').bootstrapToggle('enable');
 			loadPage('map', App.initMap);
 		});
 		// crossroads.addRoute('/', () => {
 		// 	loadPage('landing', App.initLanding, 'country');
 		// });
 		crossroads.addRoute('/', () => {
+			$('#theme-toggle').bootstrapToggle('enable');
 			loadPage('home', App.initHome);
 		});
 		crossroads.addRoute('/analysis', () => {
+			$('#theme-toggle').bootstrapToggle('enable');
 			loadPage('analysis', App.initAnalysis, 'network');
 		});
 		crossroads.addRoute('/analysis/country', () => {
+			$('#theme-toggle').bootstrapToggle('enable');
 			loadPage('analysis', App.initAnalysis, 'country');
 		});
 		crossroads.addRoute('/analysis/{iso}', (iso) => {
+			$('#theme-toggle').bootstrapToggle('disable');
 			loadPage('analysis-country', App.initAnalysisCountry, iso);
 		});
 		crossroads.addRoute('/analysis/{iso}/d', (iso) => {
+			$('#theme-toggle').bootstrapToggle('disable');
 			loadPage('analysis-country', App.initAnalysisCountry, iso, 'd');
 		});
 		crossroads.addRoute('/analysis/{iso}/r', (iso) => {
+			$('#theme-toggle').bootstrapToggle('disable');
 			if (iso !== 'ghsa') {
 				loadPage('analysis-country', App.initAnalysisCountry, iso, 'r');
 			} else {
@@ -141,25 +148,32 @@ const Routing = {};
 			}
 		});
 		crossroads.addRoute('/analysis/{iso}/{type}/table', (iso, type) => {
+			$('#theme-toggle').bootstrapToggle('disable');
 			loadPage('analysis-table', App.initAnalysisTable, iso, type);
 		});
 		crossroads.addRoute('/analysis/{fundIso}/{recIso}', (fundIso, recIso) => {
+			$('#theme-toggle').bootstrapToggle('disable');
 			loadPage('analysis-pair', App.initAnalysisPair, fundIso, recIso);
 		});
 		crossroads.addRoute('/submit', () => {
+			$('#theme-toggle').bootstrapToggle('enable');
 			loadPage('submit', App.initSubmit);
 		});
 		crossroads.addRoute('/glossary', () => {
+			$('#theme-toggle').bootstrapToggle('enable');
 			loadPage('glossary');
 		});
 		crossroads.addRoute('/settings', () => {
+			$('#theme-toggle').bootstrapToggle('enable');
 			loadPage('settings', App.initSettings);
 		});
 		crossroads.addRoute('/about', () => {
+			$('#theme-toggle').bootstrapToggle('enable');
 			loadPage('about');
 		});
 
 		crossroads.addRoute('/data', () => {
+			$('#theme-toggle').bootstrapToggle('enable');
 			loadPage('data', App.initData);
 		});
 
