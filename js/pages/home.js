@@ -252,8 +252,6 @@
 		page = 'map';
 		setConstants(params);
 
-		$('#theme-toggle').bootstrapToggle('on');
-
 		App.loadFundingData({showGhsaOnly: params.showGhsaOnly === 'true'});
 		App.setSources();
 

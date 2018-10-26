@@ -114,6 +114,7 @@ const Routing = {};
 		// setup crossroads for routing
 		crossroads.addRoute('/map', () => {
 			$('#theme-toggle').bootstrapToggle('enable');
+			$('#theme-toggle').bootstrapToggle('on');
 			loadPage('map', App.initMap);
 		});
 		// crossroads.addRoute('/', () => {
@@ -132,14 +133,17 @@ const Routing = {};
 			loadPage('analysis', App.initAnalysis, 'country');
 		});
 		crossroads.addRoute('/analysis/{iso}', (iso) => {
+			$('#theme-toggle').bootstrapToggle('off');
 			$('#theme-toggle').bootstrapToggle('disable');
 			loadPage('analysis-country', App.initAnalysisCountry, iso);
 		});
 		crossroads.addRoute('/analysis/{iso}/d', (iso) => {
+			$('#theme-toggle').bootstrapToggle('off');
 			$('#theme-toggle').bootstrapToggle('disable');
 			loadPage('analysis-country', App.initAnalysisCountry, iso, 'd');
 		});
 		crossroads.addRoute('/analysis/{iso}/r', (iso) => {
+			$('#theme-toggle').bootstrapToggle('off');
 			$('#theme-toggle').bootstrapToggle('disable');
 			if (iso !== 'ghsa') {
 				loadPage('analysis-country', App.initAnalysisCountry, iso, 'r');
@@ -148,10 +152,12 @@ const Routing = {};
 			}
 		});
 		crossroads.addRoute('/analysis/{iso}/{type}/table', (iso, type) => {
+			$('#theme-toggle').bootstrapToggle('off');
 			$('#theme-toggle').bootstrapToggle('disable');
 			loadPage('analysis-table', App.initAnalysisTable, iso, type);
 		});
 		crossroads.addRoute('/analysis/{fundIso}/{recIso}', (fundIso, recIso) => {
+			$('#theme-toggle').bootstrapToggle('off');
 			$('#theme-toggle').bootstrapToggle('disable');
 			loadPage('analysis-pair', App.initAnalysisPair, fundIso, recIso);
 		});
