@@ -1,4 +1,4 @@
-(() => {
+ (() => {
     App.buildLineTimeChart = (selector, data, param = {},country) => {
         // remove existing
         d3.select(selector).html('');
