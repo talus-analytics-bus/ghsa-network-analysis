@@ -20,12 +20,12 @@
             .style('fill',color);
         
         chart.append('text')
-        .attr('class', 'chart-label2')
+        .attr('class', 'chart-label3')
         .style('text-anchor', 'middle')
         .attr('x', 80)
-        .attr('y', 95)
-        .style('font-weight', '600')
-        .style('font-size','40px')
+        .attr('y', 100)
+        .style('font-weight', '300')
+        .style('font-size','60px')
         .style('fill', 'white')
 		.style('font-family', '\'Pathway Gothic One\', sans-serif')
         .text(value);

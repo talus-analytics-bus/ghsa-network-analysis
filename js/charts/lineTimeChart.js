@@ -130,11 +130,13 @@
             },
         }; */ 
         
+        
         const pointGroups = chart.selectAll('.point-group')
             .data(data)
             .enter().append('g');
         
         pointGroups.append('circle')
+            .attr('class', (d,i)=> `point-circle-${i}`)
             .attr('transform',d => {
                 return `translate (${x(d.year)},${y(d.total_spent)})`;
             })
@@ -169,6 +171,13 @@
             .attr('r',20)
             .style('fill','red')
             .attr('opacity',0)
+            .on('mouseover', (d,i)=> {
+            console.log(i);
+                d3.selectAll(`point-circle-${i}`).style('fill','grey')
+            })
+            .on('mouseout', ()=> {
+                d3.selectAll('.point-group circle').style('fill','white')
+            })
             .each(function(d,i) {
                 $(this).tooltipster({
                     content: `
