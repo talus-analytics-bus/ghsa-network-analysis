@@ -53,7 +53,8 @@ body {
 }
 
 svg .chart {
-  .funding, .receiving {
+  .funding,
+  .receiving {
     path {
       stroke: none;
       stroke-width: 1px;
@@ -139,7 +140,8 @@ svg .chart {
     margin-left: 40px;
   }
   .radio-option {
-    span, div {
+    span,
+    div {
       position: relative;
       top: 1px;
     }
@@ -155,7 +157,7 @@ svg .chart {
   .ind-type-filter.two-line {
     position: relative;
     top: -24px;
-    left: 96px;
+    left: 110px;
   }
 }
 
@@ -181,7 +183,7 @@ svg .chart {
   .ind-type-filter.two-line {
     position: relative;
     top: -24px;
-    left: 55px;
+    left: 65px;
   }
 }
 
@@ -190,8 +192,7 @@ svg .chart {
 }
 
 .no-data-message {
-  margin-left: 15px;
-  // margin-top: 20px;
+  margin-left: 15px; // margin-top: 20px;
   font-style: italic;
 
   &.core-element {

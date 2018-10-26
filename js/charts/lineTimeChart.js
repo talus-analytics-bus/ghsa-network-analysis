@@ -3,10 +3,6 @@
         // remove existing
         d3.select(selector).html('');
         
-        console.log(selector);
-        console.log(data);
-        console.log(param);
-        
         // start building the chart
         const margin = { top: 30, right: 100, bottom: 30, left: 75 };
         const width = 700;
@@ -25,7 +21,7 @@
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
         const x = d3.scaleLinear()
-        .domain([d3.min(data,d => d.year), .5 + d3.max(data, d => d.year )])
+        .domain([d3.min(data,d => d.year), d3.max(data, d => d.year )])
         .range([0, width]);
         
         const maxValue = d3.max(data, d => d3.max([d.total_spent, d.total_committed]));
@@ -142,9 +138,9 @@
             .attr('transform',d => {
                 return `translate (${x(d.year)},${y(d.total_spent)})`;
             })
-            .attr('r',3)
+            .attr('r',5)
             .style('fill','white')
-            .attr('stroke-width',2)
+            .attr('stroke-width',3)
             .attr('stroke','grey')
         
         /*const textGroups = chart.selectAll('.text-group')

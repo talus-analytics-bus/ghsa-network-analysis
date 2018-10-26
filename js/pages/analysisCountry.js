@@ -27,6 +27,9 @@
 		const color = (moneyType === 'd') ? App.fundColor : App.receiveColor;
         const middleColor = (moneyType === 'd') ? App.fundColorPalette[2] : App.receiveColorPalette[2];
 		const lightColor = (moneyType === 'd') ? App.fundColorPalette[4] : App.receiveColorPalette[4];
+        
+        
+        
 
 		if (iso === "General Global Benefit") {
 			$('.toggle-type').css('visibility','hidden');
@@ -40,12 +43,14 @@
 			// fill title
 			const name = App.codeToNameMap.get(iso);
 			const flagHtml = country ? App.getFlagHtml(iso) : '';
-			$('.analysis-country-title')
-				.html(`${flagHtml} ${name} ${flagHtml}`);
+            
+            
+			$('.analysis-country-flagAndName')
+				.html(`${flagHtml} ${name} `);
 				// .on('click', () => hasher.setHash(`analysis/${iso}`));
 
-			const countryTitleDiv = d3.select('.analysis-country-title');
-			countryTitleDiv.append('br');
+			const countryTitleDiv = d3.select('.profile');
+			//countryTitleDiv.append('br');
 			countryTitleDiv.append('div')
 				.attr('class','profile-type-container')
 				.append('div')
@@ -66,7 +71,7 @@
 			$('.money-type-cap').text(moneyType === 'd' ? 'Disbursed' : 'Received');
 			$('.money-type-noun').text(moneyType === 'd' ? 'funder' : 'recipient');
 			$('.money-type-noun-cap').text(moneyType === 'd' ? 'Funder' : 'Recipient');
-			$('.money-type-noun-cap-profile').text(moneyType === 'd' ? 'Funder Profile' : 'Recipient Profile');
+			$('.money-type-noun-cap-profile').text(moneyType === 'd' ? 'FUNDER PROFILE' : 'RECIPIENT PROFILE');
 			$('.opp-money-type-noun').text(moneyType === 'd' ? 'recipient' : 'funder');
 			$('.opp-inkind-type-noun').text(moneyType === 'd' ? 'recipient' : 'provider');
 			$('.opp-money-type-verb').text(moneyType === 'd' ? 'received' : 'donated');
@@ -83,8 +88,6 @@
 				content: App.generalIhrText,
 			});
 		}
-
-		
 
 		/**
 		 * If the page shown is a recipient country with published JEE scores, they will be visible in
@@ -270,6 +273,7 @@
 			const totalFundedCommitted = App.getTotalFunded(iso, {committedOnly: true});
 			const totalReceived = App.getTotalReceived(iso);
 			const totalReceivedCommitted = App.getTotalReceived(iso, {committedOnly: true});
+            
 			const projectsIncludingGroups = App.getProjectsIncludingGroups(App.fundingData, moneyType, iso);
 			lookup[iso] = projectsIncludingGroups; // TODO check if this breaks things
 
@@ -370,12 +374,13 @@
 				$('.country-flow-content').slideDown();
 
 			} else if (hasNoData) {
-				$('.country-flow-summary, .progress-circle-section, .country-chart-container, .country-flow-content, .category-chart-section, .circle-pack-container, .inkind-table-section').hide();
+				$('.country-flow-summary, .progress-circle-section, .country-chart-container, .country-flow-content, .category-chart-section, .circle-pack-container, .inkind-table-section,.readyscore-circle-section').hide();
 				$('.country-flow-summary-empty').slideDown();
 				$('.submit-data-btn').click(() => hasher.setHash('submit'))
 			} else {
 				drawTimeChart();
 				drawProgressCircles();
+                drawReadyScoreCircles();
 				drawCountryTable('.country-table-section', moneyType);
 				if (isGhsaPage) {
 					drawCountryTable('.second-country-table-section', (moneyType === 'd') ? 'r' : 'd');
@@ -481,6 +486,8 @@
                 App.drawProgressCircles('.other-circle-chart', fundsByCc.O, totalSpent, totalCommitted, type, color);
                 App.drawProgressCircles('.general-circle-chart', fundsByCc['General IHR Implementation'], totalSpent, totalCommitted, type, color);
             };
+            
+            
 
             const percFormat = d3.format('.0%');
             const fillValueText = (valueSelector, ind, totalSpent, totalCommitted, type) => {
@@ -515,8 +522,66 @@
 				renderProgressCircles(fundTypeChoice);
 			});
         }
+        
+        function drawReadyScoreCircles() {
+        
+            const renderReadyScoreCircles = () => {
+                
+            const readyScores = App.getReadyScores(iso);
+                
+            const findVerify = readyScores.detectScore;
+            const findVerifyCol = App.readyColor(findVerify);
+            const findVerifyText = App.readyText(findVerify);
+            
+            const stopOutbreaks = readyScores.respondScore;
+            const stopOutbreaksCol = App.readyColor(stopOutbreaks);
+            const stopOutbreaksText = App.readyText(stopOutbreaks);
+                
+            const preventOutbreaks = readyScores.preventScore;
+            const preventOutbreaksCol = App.readyColor(preventOutbreaks);
+            const preventOutbreaksText = App.readyText(preventOutbreaks);
+            
+            const protectFromOther = readyScores.otherScore;
+            const protectFromOtherCol = App.readyColor(protectFromOther);
+            const protectFromOtherText = App.readyText(protectFromOther);
+                
+            d3.select('.find-verify-prevent-circle').select('svg').remove();// remove the existing SVGs
+            d3.select('.stop-outbreaks-circle').select('svg').remove();// remove the existing SVGs
+            d3.select('.prevent-outbreaks-circle').select('svg').remove();// remove the existing SVGs
+            d3.select('.protect-other-circle').select('svg').remove();// remove the existing SVGs
+                
+            App.buildReadyScoreChart('.find-verify-prevent-circle',findVerify,findVerifyCol,findVerifyText);
+            App.buildReadyScoreChart('.stop-outbreaks-circle',stopOutbreaks,stopOutbreaksCol,stopOutbreaksText);
+            App.buildReadyScoreChart('.prevent-outbreaks-circle',preventOutbreaks,preventOutbreaksCol,preventOutbreaksText);
+            App.buildReadyScoreChart('.protect-other-circle',protectFromOther,protectFromOtherCol,protectFromOtherText); 
+            };
+            
+            renderReadyScoreCircles();
+        }
 
+        /* When the user clicks on the button, 
+        toggle between hiding and showing the dropdown content */
+        
+        $(document).ready(function () {
+            $('#currencyChoice').click(function (){
+            $('#currencyDropdown').addClass("show");
+        })
+        });
 
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+          if (!event.target.matches('.currencyOption')) {
+            var dropdowns = document.getElementsByClassName("curDropdownContent");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+          }
+        }
+        
         /**
          * Draws the "In-kind Contributions Received" or "In-kind Contributions Made"
          * table that appears on a country analysis page. When on the GHSA special
@@ -1205,7 +1270,7 @@
                 timeData.push(fundsByYear[y]);
             }
             
-            const countryName = iso;
+            const countryName = App.codeToNameMap.get(iso);
             
             App.buildLineTimeChart('.time-chart-graphic', timeData, {
                 color,
@@ -1213,6 +1278,7 @@
                 lightColor,
                 moneyType,
             },countryName);
+            
         }
 		init();
 	};
