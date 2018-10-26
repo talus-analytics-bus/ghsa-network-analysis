@@ -541,6 +541,7 @@
 				const readyScores = App.getReadyScores(iso);
 
 				const findVerify = readyScores.detectScore;
+                
 				const findVerifyCol = App.readyColor(findVerify);
 				const findVerifyText = App.readyText(findVerify);
 

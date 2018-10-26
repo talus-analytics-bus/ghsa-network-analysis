@@ -107,17 +107,17 @@ const App = {};
 		/*App.jeeColors = ['#c91414', '#ede929', '#ede929', '#ede929',
 		'#ede929', '#0b6422', '#0b6422', '#0b6422'];*/
         
-        App.jeeColors = ['#a91726', '#f9a510', '#017c47'];
-        /*App.jeeColors = [
-			'#c91414',
-			'#ede929',
-			'#ede929',
-			'#ede929',
+        //App.jeeColors = ['#a91726', '#f9a510', '#017c47'];
+        App.jeeColors = [
+			'#a91726',
+			'#f9a510',
+			'#f9a510',
+			'#f9a510',
 			// '#ede929',
-			'#0b6422',
-			'#0b6422',
-			'#0b6422',
-		];*/
+			'#017c47',
+			'#017c47',
+			'#017c47',
+		];
 
 		/* App.fundColorPalette = [
 			'#053061',
@@ -225,8 +225,6 @@ const App = {};
 				App.geoData = worldData;
 				App.codes = donorCodeData;
                 App.resolve_Scores = resolveScoresData;
-            
-                console.log(App.resolve_Scores);
             
 				App.countries = worldData.objects.countries.geometries
 					.map(c => c.properties);
@@ -432,12 +430,20 @@ const App = {};
         function isState(stt) {
             return stt.countryCode === iso;
         }
-        return App.resolve_Scores.find(isState);
+        
+        if (typeof App.resolve_Scores.find(isState) == "undefined") {
+            return {countryName : "?", countryCode: iso, preventScore:"?", readyScore:"?", otherScore: "?", respondScore: "?", detectScore:"?"};
+        }
+        else {
+            return App.resolve_Scores.find(isState);
+        }
     }
     
     App.readyColor = (num) => {
-        if (num > 79) {
-             return App.jeeColors[2];
+        if (num === "?"){
+            return '#2d2d34';
+        } else if (num > 79) {
+             return App.jeeColors[4];
         } else if (num > 39) {
             return App.jeeColors[1];
         }
@@ -447,7 +453,9 @@ const App = {};
     }
     
     App.readyText = (num) => {
-        if (num > 79) {
+        if (num === "?"){
+            return 'Unknown';
+        } else if (num > 79) {
              return "Better Prepared";
         } else if (num > 39) {
             return "Work to Do";
