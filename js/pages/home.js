@@ -196,6 +196,7 @@
 			});
 		});
 
+		moneyFlow = 'funded';
 		updateMap(false);
 
 		const updatedFlags = () => {
@@ -209,10 +210,10 @@
 		// scoreType = 'score';  // either 'score' or 'combined'
 
 		App.newToggle('.funder-recipient-toggle', {}, () => {
-			moneyFlow = 'received';
+			moneyFlow = 'funded';
 			updatedFlags();
 		}, () => {
-			moneyFlow = 'funded';
+			moneyFlow = 'received';
 			updatedFlags();
 		});
 
@@ -406,12 +407,8 @@
 	function getRangeColors(indType) {
 		if (moneyFlow === 'received') {
 			return App.receiveColorPalette;
-		} else if (indType === 'inkind') {
-			return greens;
-		} else if (indType === 'money' || indType === 'ghsa') {
-			return purples;
-		} else {
-			return orangesReverse;
+		} else if (moneyFlow === 'funded') {
+			return App.fundColorPalette;
 		}
 	}
 
