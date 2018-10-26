@@ -83,8 +83,8 @@ const App = {};
 		// App.fundColor = '#1b7837';
 		// App.receiveColorPalette = ['#40004b','#762a83','#9970ab','#c2a5cf','#e7d4e8', '#f7f7f7'];
 		// App.fundColorPalette= ['#00441b', '#1b7837', '#5aae61', '#a6dba0', '#d9f0d3', '#f7f7f7'];
-		App.fundColor = '#762a83';
-		App.receiveColor = '#1b7837';
+		App.receiveColor = '#762a83';
+		App.fundColor = '#1b7837';
 		App.receiveColorPalette = ['#40004b',
 			'#762a83',
 			'#9970ab',
