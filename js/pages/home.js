@@ -1162,6 +1162,7 @@
 			if (result.item !== undefined) result = result.item;
 			d3.selectAll('.country, .list-item').classed('active', false);
 
+			$('input.country-search-input').val(result.NAME);
 			// get country element
 			const nonCountry = result.country === false;
 			let match;
