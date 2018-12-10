@@ -54,6 +54,7 @@ $border-width: 2px;
     font-weight: 600;
   }
 
+  &.active,
   &:active {
     font-weight: 400;
     @include box-shadow(0 0 5px black);
@@ -100,6 +101,7 @@ $border-width: 2px;
     color: $primaryColor2;
   }
 
+  &.active,
   &:active {
     @include gradient($primaryColor, $primaryColor2, 'vert', 0%, 100%);
     color: $primaryFont;
@@ -120,6 +122,9 @@ $border-width: 2px;
 
   @include gradient($primaryColor, $primaryColor2, 'vert', 0%, 100%);
   color: $primaryFont;
+  &.dark {
+    color: $primaryFont;
+  }
 
   &:hover {
     @include gradient($secondaryColor, $secondaryColor, 'vert', 0%, 100%);
@@ -127,6 +132,7 @@ $border-width: 2px;
     font-weight: 400;
   }
 
+  &.active,
   &:active {
     @include gradient($primaryColor, $primaryColor2, 'vert', 0%, 100%);
     color: $primaryFont;
@@ -137,6 +143,8 @@ $border-width: 2px;
   position: relative;
   padding: 10px 15px 10px 45px;
   &:before {
+    // this is terrible but it's the best i got
+    // todo -> be a better programmer
     vertical-align: middle;
     white-space: pre;
     content: '          ' attr(value);

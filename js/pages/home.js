@@ -218,6 +218,8 @@
 		});
 
 		$('.map-buttons button').click(function() {
+			$('.map-buttons button').removeClass('active');
+			$(this).addClass('active');
 			switch($(this).data('value')) {
 				case 'jee':
 					indType = 'score';
@@ -228,6 +230,7 @@
 			}
 			updatedFlags();
 		});
+		$('.map-buttons button[value="Funding Map"]').addClass('active');
 
 		let currentSearchSelection = undefined;
 		App.initCountrySearchBar('.search-box', (result) => {
