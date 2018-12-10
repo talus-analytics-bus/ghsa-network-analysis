@@ -7,10 +7,8 @@
 // 	@include border-radius(7.5px);
 // }
 
-.alt-btn {
-  background: rgb(5, 48, 97);
-  border: none;
-}
+//.alt-btn {
+//}
 
 .btn-view-ghsa,
 .btn-view-map {
@@ -42,23 +40,60 @@
 }
 
 
-.alt-btn {
-  padding: 10px 15px;
-  background-color: #eee;
-  border: 1px solid #ccc;
-  color: #999999;
+.talus-primary-btn {
+  $border-width: 2px;
 
+  font-weight: 400;
+  height: 45px;
+
+  padding: 10px 15px;
+  border: $border-width solid transparent;
+  margin: 5px;
+  @include border-radius(5px);
+
+  $primaryColor: #425379;
+  $primaryColor2: #213561;
+  $primaryFont: white;
+
+  $secondaryColor: #e6e6e6;
+  $secondaryColor2: #f2f2f2;
+  $secondaryFont: black;
+
+  @include gradient($primaryColor, $primaryColor2, 'vert', 0%, 100%);
+  color: $primaryFont;
   &.dark {
-    background: transparent;
-    border: 1px solid #ccc;
-    color: #eee;
+    @include gradient($secondaryColor, $secondaryColor2, 'vert', 0%, 100%);
+    color: $secondaryFont;
   }
 
   &:hover {
+    font-weight: 600;
+    &.dark {
+      border: $border-width solid transparent;
+    }
+    border: $border-width solid $primaryColor;
+    @include gradient(white, white, 'vert', 0%, 100%);
+    color: $primaryColor2;
+  }
+
+  &:active {
+    font-weight: 400;
     @include box-shadow(0 0 5px #275480);
-    color: #999999;
-    border: none;
-    background-color: #eee;
+    @include gradient($primaryColor, $primaryColor2, 'vert', 0%, 100%);
+    color: $primaryFont;
+  }
+
+  &:before {
+    content: attr(value);
+  }
+
+  &:after {
+    display: block;
+    visibility: hidden;
+    content: attr(value);
+    font-weight: 600;
+    color: transparent;
+    overflow: hidden;
   }
 }
 

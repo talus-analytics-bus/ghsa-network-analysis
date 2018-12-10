@@ -113,12 +113,14 @@
     }
 
     .funding-recipient-map {
-      @include flex(5 0 200px);
+      @include flex(5 5 auto);
+      justify-self: flex-start;
     }
 
     .funder-recipient-toggle {
       @include flex(1 0 20px);
       align-self: flex-end;
+      justify-self: flex-start;
     }
   }
 }

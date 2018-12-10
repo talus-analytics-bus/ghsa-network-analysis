@@ -62,13 +62,21 @@
   -moz-background-clip: padding;
   background-clip: padding-box; 
 }
-@mixin gradient ($startColor: #eee, $endColor: white) {
+@mixin gradient ($startColor: #eee, $endColor: white, $direction: 'vert', $startPerc: 0%, $endPerc: 100%) {
   background-color: $startColor;
-  background: -webkit-gradient(linear, left top, left bottom, from($startColor), to($endColor));
-  background: -webkit-linear-gradient(top, $startColor, $endColor);
-  background: -moz-linear-gradient(top, $startColor, $endColor);
-  background: -ms-linear-gradient(top, $startColor, $endColor);
-  background: -o-linear-gradient(top, $startColor, $endColor);
+  $webkit1: left-top;
+  $webkit2: right-top;
+  $other: left;
+  @if $direction == 'vert' {
+    $webkit1: left-top;
+    $webkit2: left-bottom;
+    $other: top;
+  }
+  background: -webkit-gradient(linear, $webkit1, $webkit2, from($startColor $startPerc), to($endColor $endPerc));
+  background: -webkit-linear-gradient($other, $startColor $startPerc, $endColor $endPerc);
+  background: -moz-linear-gradient($other, $startColor $startPerc, $endColor $endPerc);
+  background: -ms-linear-gradient($other, $startColor $startPerc, $endColor $endPerc);
+  background: -o-linear-gradient($other, $startColor $startPerc, $endColor $endPerc);
 }
 @mixin hori-gradient ($startColor: #eee, $endColor: white) {
   background-color: $startColor;
