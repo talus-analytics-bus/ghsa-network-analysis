@@ -70,7 +70,7 @@
       }
 
       .map-and-search-container {
-        @include flex(1 0 100px);
+        @include flex(1 0 150px);
         background: transparent;
         align-self: center;
 
@@ -79,6 +79,15 @@
 
         .search-container {
           position: relative;
+
+          .live-search-results-container {
+
+            .live-search-results-contents {
+              background: white;
+              position: absolute;
+              top: 194px;
+            }
+          }
         }
 
         div,label {

@@ -1261,17 +1261,21 @@ b {
           color: #233343;
           background: transparent; }
       .map-page-container .map-page-tabs .content .map-and-search-container {
-        -webkit-box-flex: 1 0 100px;
-        -moz-box-flex: 1 0 100px;
-        -webkit-flex: 1 0 100px;
-        -ms-flex: 1 0 100px;
-        flex: 1 0 100px;
+        -webkit-box-flex: 1 0 150px;
+        -moz-box-flex: 1 0 150px;
+        -webkit-flex: 1 0 150px;
+        -ms-flex: 1 0 150px;
+        flex: 1 0 150px;
         background: transparent;
         align-self: center;
         padding: 10px;
         border: 1px solid #ccc; }
         .map-page-container .map-page-tabs .content .map-and-search-container .search-container {
           position: relative; }
+          .map-page-container .map-page-tabs .content .map-and-search-container .search-container .live-search-results-container .live-search-results-contents {
+            background: white;
+            position: absolute;
+            top: 194px; }
         .map-page-container .map-page-tabs .content .map-and-search-container div, .map-page-container .map-page-tabs .content .map-and-search-container label {
           background: transparent; }
       .map-page-container .map-page-tabs .content div, .map-page-container .map-page-tabs .content label {
