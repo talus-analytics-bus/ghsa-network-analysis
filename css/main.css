@@ -260,7 +260,7 @@
   height: 50px;
   width: 250px; }
 
-.talus-primary-btn {
+.talus-btn {
   font-weight: 400;
   height: 45px;
   padding: 10px 15px;
@@ -271,7 +271,25 @@
   border-radius: 5px;
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding;
-  background-clip: padding-box;
+  background-clip: padding-box; }
+  .talus-btn:hover {
+    font-weight: 600; }
+  .talus-btn:active {
+    font-weight: 400;
+    -webkit-box-shadow: 0 0 5px black;
+    -moz-box-shadow: 0 0 5px black;
+    box-shadow: 0 0 5px black; }
+  .talus-btn:before {
+    content: attr(value); }
+  .talus-btn:after {
+    display: block;
+    visibility: hidden;
+    content: attr(value);
+    font-weight: 600;
+    color: transparent;
+    overflow: hidden; }
+
+.talus-primary-btn {
   background-color: #425379;
   background: -webkit-gradient(linear, left-top, left-bottom, from(#425379 0%), to(#213561 100%));
   background: -webkit-linear-gradient(top, #425379 0%, #213561 100%);
@@ -288,7 +306,6 @@
     background: -o-linear-gradient(top, #e6e6e6 0%, #f2f2f2 100%);
     color: black; }
   .talus-primary-btn:hover {
-    font-weight: 600;
     border: 2px solid #425379;
     background-color: white;
     background: -webkit-gradient(linear, left-top, left-bottom, from(white 0%), to(white 100%));
@@ -298,12 +315,15 @@
     background: -o-linear-gradient(top, white 0%, white 100%);
     color: #213561; }
     .talus-primary-btn:hover.dark {
-      border: 2px solid transparent; }
+      border: 2px solid transparent;
+      color: black;
+      background-color: #f2f2f2;
+      background: -webkit-gradient(linear, left-top, left-bottom, from(#f2f2f2 0%), to(#f2f2f2 100%));
+      background: -webkit-linear-gradient(top, #f2f2f2 0%, #f2f2f2 100%);
+      background: -moz-linear-gradient(top, #f2f2f2 0%, #f2f2f2 100%);
+      background: -ms-linear-gradient(top, #f2f2f2 0%, #f2f2f2 100%);
+      background: -o-linear-gradient(top, #f2f2f2 0%, #f2f2f2 100%); }
   .talus-primary-btn:active {
-    font-weight: 400;
-    -webkit-box-shadow: 0 0 5px #275480;
-    -moz-box-shadow: 0 0 5px #275480;
-    box-shadow: 0 0 5px #275480;
     background-color: #425379;
     background: -webkit-gradient(linear, left-top, left-bottom, from(#425379 0%), to(#213561 100%));
     background: -webkit-linear-gradient(top, #425379 0%, #213561 100%);
@@ -311,21 +331,41 @@
     background: -ms-linear-gradient(top, #425379 0%, #213561 100%);
     background: -o-linear-gradient(top, #425379 0%, #213561 100%);
     color: white; }
-  .talus-primary-btn:before {
-    content: attr(value); }
-  .talus-primary-btn:after {
-    display: block;
-    visibility: hidden;
-    content: attr(value);
-    font-weight: 600;
-    color: transparent;
-    overflow: hidden; }
+
+.talus-secondary-btn {
+  border: 1px solid #cccccc;
+  background-color: #e6e6e6;
+  background: -webkit-gradient(linear, left-top, left-bottom, from(#e6e6e6 0%), to(#f2f2f2 100%));
+  background: -webkit-linear-gradient(top, #e6e6e6 0%, #f2f2f2 100%);
+  background: -moz-linear-gradient(top, #e6e6e6 0%, #f2f2f2 100%);
+  background: -ms-linear-gradient(top, #e6e6e6 0%, #f2f2f2 100%);
+  background: -o-linear-gradient(top, #e6e6e6 0%, #f2f2f2 100%);
+  color: black; }
+  .talus-secondary-btn:hover {
+    background-color: #808080;
+    background: -webkit-gradient(linear, left-top, left-bottom, from(#808080 0%), to(#808080 100%));
+    background: -webkit-linear-gradient(top, #808080 0%, #808080 100%);
+    background: -moz-linear-gradient(top, #808080 0%, #808080 100%);
+    background: -ms-linear-gradient(top, #808080 0%, #808080 100%);
+    background: -o-linear-gradient(top, #808080 0%, #808080 100%);
+    color: white;
+    font-weight: 400; }
+  .talus-secondary-btn:active {
+    background-color: #e6e6e6;
+    background: -webkit-gradient(linear, left-top, left-bottom, from(#e6e6e6 0%), to(#f2f2f2 100%));
+    background: -webkit-linear-gradient(top, #e6e6e6 0%, #f2f2f2 100%);
+    background: -moz-linear-gradient(top, #e6e6e6 0%, #f2f2f2 100%);
+    background: -ms-linear-gradient(top, #e6e6e6 0%, #f2f2f2 100%);
+    background: -o-linear-gradient(top, #e6e6e6 0%, #f2f2f2 100%);
+    color: black; }
 
 .ghsa-button {
   position: relative;
   padding: 10px 15px 10px 45px; }
   .ghsa-button:before {
-    content: "";
+    vertical-align: middle;
+    white-space: pre;
+    content: "          " attr(value);
     background-repeat: no-repeat;
     background-position: top left;
     background-size: contain;

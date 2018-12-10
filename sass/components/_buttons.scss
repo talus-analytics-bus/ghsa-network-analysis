@@ -40,9 +40,8 @@
 }
 
 
-.talus-primary-btn {
-  $border-width: 2px;
-
+$border-width: 2px;
+.talus-btn {
   font-weight: 400;
   height: 45px;
 
@@ -51,36 +50,13 @@
   margin: 5px;
   @include border-radius(5px);
 
-  $primaryColor: #425379;
-  $primaryColor2: #213561;
-  $primaryFont: white;
-
-  $secondaryColor: #e6e6e6;
-  $secondaryColor2: #f2f2f2;
-  $secondaryFont: black;
-
-  @include gradient($primaryColor, $primaryColor2, 'vert', 0%, 100%);
-  color: $primaryFont;
-  &.dark {
-    @include gradient($secondaryColor, $secondaryColor2, 'vert', 0%, 100%);
-    color: $secondaryFont;
-  }
-
   &:hover {
     font-weight: 600;
-    &.dark {
-      border: $border-width solid transparent;
-    }
-    border: $border-width solid $primaryColor;
-    @include gradient(white, white, 'vert', 0%, 100%);
-    color: $primaryColor2;
   }
 
   &:active {
     font-weight: 400;
-    @include box-shadow(0 0 5px #275480);
-    @include gradient($primaryColor, $primaryColor2, 'vert', 0%, 100%);
-    color: $primaryFont;
+    @include box-shadow(0 0 5px black);
   }
 
   &:before {
@@ -97,11 +73,73 @@
   }
 }
 
+.talus-primary-btn {
+  $primaryColor: #425379;
+  $primaryColor2: #213561;
+  $primaryFont: white;
+
+  $secondaryColor: #e6e6e6;
+  $secondaryColor2: #f2f2f2;
+  $secondaryFont: black;
+
+  @include gradient($primaryColor, $primaryColor2, 'vert', 0%, 100%);
+  color: $primaryFont;
+  &.dark {
+    @include gradient($secondaryColor, $secondaryColor2, 'vert', 0%, 100%);
+    color: $secondaryFont;
+  }
+
+  &:hover {
+    &.dark {
+      border: $border-width solid transparent;
+      color: $secondaryFont;
+      @include gradient($secondaryColor2, $secondaryColor2, 'vert', 0%, 100%);
+    }
+    border: $border-width solid $primaryColor;
+    @include gradient(white, white, 'vert', 0%, 100%);
+    color: $primaryColor2;
+  }
+
+  &:active {
+    @include gradient($primaryColor, $primaryColor2, 'vert', 0%, 100%);
+    color: $primaryFont;
+  }
+}
+
+.talus-secondary-btn {
+  $borderColor: #cccccc;
+
+  $primaryColor: #e6e6e6;
+  $primaryColor2: #f2f2f2;
+  $primaryFont: black;
+
+  $secondaryColor: #808080;
+  $secondaryFont: white;
+
+  border: 1px solid $borderColor;
+
+  @include gradient($primaryColor, $primaryColor2, 'vert', 0%, 100%);
+  color: $primaryFont;
+
+  &:hover {
+    @include gradient($secondaryColor, $secondaryColor, 'vert', 0%, 100%);
+    color: $secondaryFont;
+    font-weight: 400;
+  }
+
+  &:active {
+    @include gradient($primaryColor, $primaryColor2, 'vert', 0%, 100%);
+    color: $primaryFont;
+  }
+}
+
 .ghsa-button {
   position: relative;
   padding: 10px 15px 10px 45px;
   &:before {
-    content: "";
+    vertical-align: middle;
+    white-space: pre;
+    content: '          ' attr(value);
     background-repeat: no-repeat;
     background-position: top left;
     background-size: contain;
