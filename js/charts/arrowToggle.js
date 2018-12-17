@@ -6,6 +6,8 @@
 		constructor(selector, params = {}) {
 			super(selector, params);
 
+			this.svg.style('overflow', 'visible');
+
 			this.fundingColor = fundingColor;
 			this.recipientColor = recipientColor;
 
