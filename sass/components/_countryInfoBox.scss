@@ -1,10 +1,14 @@
 .info-container {
 	display: none;
-	position: absolute;
-	top: 20px;
-	left: 0;
+	//position: absolute;
+	//top: 20px;
+	//left: 0;
 	width: 100%;
+	max-width: 288px;
 	pointer-events: none;
+    background-color: #464b5b !important;
+
+	color: white !important;
 
 	.info-box {
 		transform-origin:top;

@@ -447,11 +447,11 @@
 
 .info-container {
   display: none;
-  position: absolute;
-  top: 20px;
-  left: 0;
   width: 100%;
+  max-width: 288px;
   pointer-events: none;
+  background-color: #464b5b !important;
+  color: white !important;
 }
 .info-container .info-box {
   transform-origin: top;
@@ -1562,6 +1562,13 @@ b {
   align-self: center;
   padding: 10px;
   border: 1px solid #ccc;
+}
+.map-page-container .map-page-tabs .content .map-and-search-container .selected-country-container {
+  width: 100%;
+}
+.map-page-container .map-page-tabs .content .map-and-search-container .selected-country-container .selected-country-name {
+  width: 100%;
+  height: auto;
 }
 .map-page-container .map-page-tabs .content .map-and-search-container .search-container {
   position: relative;

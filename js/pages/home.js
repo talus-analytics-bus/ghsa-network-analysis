@@ -295,12 +295,12 @@
 			'.funder-recipient-toggle',
 			{},
 			() => {
-			// moneyFlow = 'funded';
-			// updatedFlags();
+        moneyFlow = 'funded';
+				updateFilters();
 			},
 			() => {
-			// moneyFlow = 'received';
-			// updatedFlags();
+				moneyFlow = 'received';
+				updateFilters();
 		});
 
 	};

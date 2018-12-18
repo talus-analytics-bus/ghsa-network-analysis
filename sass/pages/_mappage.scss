@@ -93,6 +93,15 @@
         padding: 10px;
         border: $light-border;
 
+        .selected-country-container {
+          width: 100%;
+
+          .selected-country-name {
+            width: 100%;
+            height: auto;
+          }
+        }
+
         .search-container {
           position: relative;
 
