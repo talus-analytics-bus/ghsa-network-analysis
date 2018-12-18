@@ -1445,8 +1445,9 @@ b {
   -ms-flex: 0 0 50px;
   flex: 0 0 50px;
   position: relative;
-  top: 28px;
+  top: 50px;
   align-self: flex-end;
+  z-index: 1000;
 }
 .map-page-container .map-page-tabs {
   width: 100%;
@@ -3108,3 +3109,5 @@ a.active {
 .landing-container table.dataTable thead .sorting_asc:after {
   content: "" !important;
 }
+
+/*# sourceMappingURL=main.css.map */
