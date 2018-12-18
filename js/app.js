@@ -90,13 +90,13 @@ const App = {};
 			'#7c3991',
 			'#c2a5cf',
 			'#b89eb7',
-			 '#f7f7f7'];
+			 '#f7f7f7'].reverse();
 		App.fundColorPalette = ['#00441b',
 			 '#1b7837',
 			 '#5aae61',
 			 '#a6dba0',
 			 '#d9f0d3',
-			 '#f7f7f7'];
+			 '#f7f7f7'].reverse();
 
 		// (blue, red) color scheme
 		/*App.fundColor = '#053061';
@@ -106,7 +106,7 @@ const App = {};
 		App.receiveColorPalette = ['#67001f', '#b2182b', '#d6604d', '#f4a582', '#fddbc7'];*/
 		/*App.jeeColors = ['#c91414', '#ede929', '#ede929', '#ede929',
 		'#ede929', '#0b6422', '#0b6422', '#0b6422'];*/
-        
+
         //App.jeeColors = ['#a91726', '#f9a510', '#017c47'];
         App.jeeColors = [
 			'#a91726',
@@ -202,7 +202,7 @@ const App = {};
 		App.inKindDefinition = `In-kind support is the contribution of goods or services to a recipient. Examples of in-kind support include providing technical expertise or programming support, or  supporting GHSA action packages.`;
 
 		// front-load all the data
-		NProgress.start(); 
+		NProgress.start();
 		d3.queue()
 			.defer(d3.json, 'data/world.json')
 			.defer(d3.csv, 'data/unsd_data.csv')
@@ -225,7 +225,7 @@ const App = {};
 				App.geoData = worldData;
 				App.codes = donorCodeData;
                 App.resolve_Scores = resolveScoresData;
-            
+
 				App.countries = worldData.objects.countries.geometries
 					.map(c => c.properties);
 
@@ -425,12 +425,12 @@ const App = {};
 			return d3.sum(fundsToAdd, d => d.total_spent);
 		}
 	};
-    
-    App.getReadyScores = (iso) => {   
+
+    App.getReadyScores = (iso) => {
         function isState(stt) {
             return stt.countryCode === iso;
         }
-        
+
         if (typeof App.resolve_Scores.find(isState) == "undefined") {
             return {countryName : "?", countryCode: iso, preventScore:"?", readyScore:"?", otherScore: "?", respondScore: "?", detectScore:"?"};
         }
@@ -438,7 +438,7 @@ const App = {};
             return App.resolve_Scores.find(isState);
         }
     }
-    
+
     App.readyColor = (num) => {
         if (num === "?"){
             return '#2d2d34';
@@ -447,11 +447,11 @@ const App = {};
         } else if (num > 39) {
             return App.jeeColors[1];
         }
-        else { 
+        else {
             return App.jeeColors[0];
         }
     }
-    
+
     App.readyText = (num) => {
         if (num === "?"){
             return 'Unknown';
@@ -460,11 +460,11 @@ const App = {};
         } else if (num > 39) {
             return "Work to Do";
         }
-        else { 
+        else {
             return "Not Ready";
         }
     }
-    
+
     /*App.jeeColors = ['#c91414', '#CCCC33', '#ede929', '#ede929',
 		'#ede929', '#0b6422', '#0b6422', '#0b6422'];*/
 

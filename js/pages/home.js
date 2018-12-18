@@ -1,5 +1,6 @@
 (() => {
 	// colors
+	const colorIndex = 3;
 	const purples = [
 		// "#e0ecf4",
 		'#bfd3e6',
@@ -291,17 +292,29 @@
 		App.fundIcon('.fund-col-name');
 		App.receiveIcon('.receive-col-name');
 
+		const handleToggle = (key) => {
+			moneyFlow = key;
+
+			updateFilters();
+
+			switch (moneyFlow) {
+				case 'funded':
+					$('.info-title').css('background-color', App.fundColorPalette[colorIndex]);
+					break;
+				case 'received':
+					$('.info-title').css('background-color', App.receiveColorPalette[colorIndex]);
+					break;
+				default:
+					break;
+			}
+		}
+
 		App.newToggle(
 			'.funder-recipient-toggle',
 			{},
-			() => {
-        moneyFlow = 'funded';
-				updateFilters();
-			},
-			() => {
-				moneyFlow = 'received';
-				updateFilters();
-		});
+			() => handleToggle('funded'),
+			() => handleToggle('received'),
+		);
 
 	};
 
@@ -345,6 +358,17 @@
 
 				// deselect all list items
 				d3.selectAll('.list-item').classed('active', false);
+
+				switch (moneyFlow) {
+					case 'funded':
+						$('.info-title').css('background-color', App.fundColorPalette[colorIndex]);
+						break;
+					case 'received':
+						$('.info-title').css('background-color', App.receiveColorPalette[colorIndex]);
+						break;
+					default:
+						break;
+				}
 
 				return true;
 			})

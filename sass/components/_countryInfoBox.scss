@@ -4,7 +4,7 @@
 	//top: 20px;
 	//left: 0;
 	width: 100%;
-	max-width: 288px;
+	max-width: 350px;
 	pointer-events: none;
     background-color: #464b5b !important;
 
@@ -14,15 +14,14 @@
 		transform-origin:top;
 		display: inline-block;
 		position: relative;
-		padding-top: 18px;
-		padding-right: 5px;
-		padding-left: 5px;
-		padding-bottom: 8px;
-		width: 420px;
+		padding: 0;
+        width: 100%;
+		//max-width: 288px;
 		border: $border;
 		background-color: rgba(255,255,255,1);
 		// background-color: rgba(255,255,255,0.96);
 		pointer-events: all;
+      color: white !important;
 	}
 	.info-value-box:first-child {
 		position: relative;
@@ -66,7 +65,7 @@
 
 	.info-close-button {
 		position: absolute;
-		top: 20px;
+		top: 13px;
 		right: 20px;
 		cursor: pointer;
 		@include opacity(0.75);
@@ -80,7 +79,8 @@
 		}
 	}
 	.info-title {
-		padding: 0 50px;
+        color: white !important;
+		padding: 7px 50px;
 		font-size: 1.4em;
 		font-weight: 600;
 		text-align: center;
@@ -111,6 +111,7 @@
 	}
 	.info-button-container {
 		margin-top: 25px;
+      float: right;
 	}
 	img {
 		position: relative;
