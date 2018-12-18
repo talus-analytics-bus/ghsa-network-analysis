@@ -13,7 +13,7 @@
   .map-page-buttons {
     @include flex(0 0 50px);
     position: relative;
-    top: 100px;
+    top: 28px;
     align-self: flex-end;
   }
 
@@ -35,12 +35,27 @@
         @include flex(0 3 800px);
 
         background: transparent;
-
+        padding: 30px 20px;
         max-height: 800px;
 
         @include flexbox(column nowrap);
         justify-content: space-between;
         align-items: center;
+
+        .map-header {
+          @include flex(1);
+          align-self: flex-start;
+          width: 380px;
+
+          @include flexbox(column nowrap);
+          justify-content: flex-start;
+          align-content: flex-start;
+
+          .map-title {
+            font-size: 20px;
+            font-style: italic;
+          }
+        }
 
         .map-container {
           @include flex(0 3 700px);

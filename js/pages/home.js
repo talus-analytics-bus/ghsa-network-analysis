@@ -2,13 +2,13 @@
 	// colors
 	const purples = [
 		// "#e0ecf4",
-		"#bfd3e6",
-		"#9ebcda",
-		"#8c96c6",
-		"#8c6bb1",
-		"#88419d",
-		"#810f7c",
-		"#4d004b",
+		'#bfd3e6',
+		'#9ebcda',
+		'#8c96c6',
+		'#8c6bb1',
+		'#88419d',
+		'#810f7c',
+		'#4d004b',
 		// "#4d004b",
 	];
 
@@ -22,12 +22,12 @@
 	const greens = [
 		// "#f7fcf5",
 		// "#e5f5e0",
-		"#c7e9c0",
-		"#a1d99b",
-		"#74c476",
-		"#41ab5d",
-		"#238b45",
-		"#005a32",
+		'#c7e9c0',
+		'#a1d99b',
+		'#74c476',
+		'#41ab5d',
+		'#238b45',
+		'#005a32',
 	];
 
 	// const purplesOrig = [
@@ -97,7 +97,7 @@
 			App.mapType = undefined;
 		}
 
-		supportType = 'financial' // 'financial' or 'inkind'
+		supportType = 'financial'; // 'financial' or 'inkind'
 
 	};
 
@@ -111,7 +111,7 @@
 		map = buildMap('.funding-recipient-map');
 		d3.selectAll('.viewport-ellipse,.viewport-edge').remove();
 
-		App.loadFundingData({showGhsaOnly: App.showGhsaOnly});
+		App.loadFundingData({ showGhsaOnly: App.showGhsaOnly });
 
 		// get filter values
 		// const ccs = _.clone(App.capacities);
@@ -159,7 +159,7 @@
 					totalCommitted: fundedCommitted,
 					totalSpent: fundedSpent,
 					totalInkindCommitted: providedInkindCommitted,
-					totalInkindProvided: providedInkindProvided
+					totalInkindProvided: providedInkindProvided,
 				} =
 					getPaymentSum(paymentsFunded, ccs));
 			}
@@ -168,7 +168,7 @@
 					totalCommitted: receivedCommitted,
 					totalSpent: receivedSpent,
 					totalInkindCommitted: receivedInkindCommitted,
-					totalInkindProvided: receivedInkindProvided
+					totalInkindProvided: receivedInkindProvided,
 				} =
 					getPaymentSum(paymentsReceived, ccs));
 			}
@@ -217,10 +217,10 @@
 			updatedFlags();
 		});
 
-		$('.map-buttons button').click(function() {
+		$('.map-buttons button').click(function () {
 			$('.map-buttons button').removeClass('active');
 			$(this).addClass('active');
-			switch($(this).data('value')) {
+			switch ($(this).data('value')) {
 				case 'jee':
 					indType = 'score';
 					break;
@@ -256,7 +256,7 @@
 		page = 'map';
 		setConstants(params);
 
-		App.loadFundingData({showGhsaOnly: params.showGhsaOnly === 'true'});
+		App.loadFundingData({ showGhsaOnly: params.showGhsaOnly === 'true' });
 		App.setSources();
 
 		// build map and initialize search
@@ -290,6 +290,18 @@
 
 		App.fundIcon('.fund-col-name');
 		App.receiveIcon('.receive-col-name');
+
+		App.newToggle(
+			'.funder-recipient-toggle',
+			{},
+			() => {
+			// moneyFlow = 'funded';
+			// updatedFlags();
+			},
+			() => {
+			// moneyFlow = 'received';
+			// updatedFlags();
+		});
 
 	};
 
@@ -389,9 +401,13 @@
 		if (mType === 'committed') {
 			noun = 'Committed';
 		} else if (mType === 'disbursed') {
-			if (mFlow === 'funded' && indType === 'inkind') noun = 'Provided';
-			else if (mFlow === 'funded' && indType !== 'inkind') noun = 'Disbursed';
-			else noun = 'Received';
+			if (mFlow === 'funded' && indType === 'inkind') {
+				noun = 'Provided';
+			} else if (mFlow === 'funded' && indType !== 'inkind') {
+				noun = 'Disbursed';
+			} else {
+				noun = 'Received';
+			}
 		} else if (mType === 'inkind') {
 			noun = '';
 			br = ' ';
@@ -430,7 +446,7 @@
 		}
 
 		const valueAttrName = getValueAttrName();
-		const rangeColors = getRangeColors(indType)
+		const rangeColors = getRangeColors(indType);
 		const domain = currentNodeDataMap.values()
 			.map(d => d[valueAttrName])
 			.filter(d => d);
@@ -443,7 +459,7 @@
 	// update everything if any parameters change
 	function updateAll(drawLegend = true) {
 		// update funding data
-		App.loadFundingData({showGhsaOnly: App.showGhsaOnly});
+		App.loadFundingData({ showGhsaOnly: App.showGhsaOnly });
 
 		// update data map and actual map
 		updateDataMaps();
@@ -491,8 +507,8 @@
 				return _.values(groupedById).map(d => d[0]);
 			};
 
-			const paymentsFunded = (App.fundingLookup[c.ISO2] === undefined) ? undefined : App.getMappableProjects(App.fundingLookup[c.ISO2], 'd', c.ISO2)
-			const paymentsReceived = (App.recipientLookup[c.ISO2] === undefined) ? undefined : App.getMappableProjects(App.recipientLookup[c.ISO2], 'r', c.ISO2)
+			const paymentsFunded = (App.fundingLookup[c.ISO2] === undefined) ? undefined : App.getMappableProjects(App.fundingLookup[c.ISO2], 'd', c.ISO2);
+			const paymentsReceived = (App.recipientLookup[c.ISO2] === undefined) ? undefined : App.getMappableProjects(App.recipientLookup[c.ISO2], 'r', c.ISO2);
 			// const paymentsFunded = (App.fundingLookup[c.ISO2] === undefined) ? undefined : App.getFinancialProjectsWithAmounts(App.fundingLookup[c.ISO2], 'd', c.ISO2)
 			// const paymentsReceived = (App.recipientLookup[c.ISO2] === undefined) ? undefined : App.getFinancialProjectsWithAmounts(App.recipientLookup[c.ISO2], 'r', c.ISO2)
 
@@ -525,7 +541,7 @@
 					totalCommitted: fundedCommitted,
 					totalSpent: fundedSpent,
 					totalInkindCommitted: providedInkindCommitted,
-					totalInkindProvided: providedInkindProvided
+					totalInkindProvided: providedInkindProvided,
 				} =
 					getPaymentSum(paymentsFunded, ccs));
 			}
@@ -534,7 +550,7 @@
 					totalCommitted: receivedCommitted,
 					totalSpent: receivedSpent,
 					totalInkindCommitted: receivedInkindCommitted,
-					totalInkindProvided: receivedInkindProvided
+					totalInkindProvided: receivedInkindProvided,
 				} =
 					getPaymentSum(paymentsReceived, ccs));
 			}
@@ -608,7 +624,7 @@
 				}
 			}
 		}
-		return {totalCommitted, totalSpent, totalInkindCommitted, totalInkindProvided};
+		return { totalCommitted, totalSpent, totalInkindCommitted, totalInkindProvided };
 	}
 
 	/**
@@ -651,7 +667,7 @@
 						if (indType !== 'inkind') {
 							const flow = valueAttrName.includes('received') ? 'r' : 'd';
 							const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
-							const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData, flow, d.properties.ISO2)
+							const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData, flow, d.properties.ISO2);
 							if (unmappableFinancials.length > 0) {
 								const someMoney = true;
 								if (someMoney) {
@@ -666,7 +682,7 @@
 						} else {
 							const flow = valueAttrName.includes('received') ? 'r' : 'd';
 							const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
-							const unmappableFinancials = App.getInkindProjectsWithUnmappableAmounts(App.fundingData, flow, d.properties.ISO2)
+							const unmappableFinancials = App.getInkindProjectsWithUnmappableAmounts(App.fundingData, flow, d.properties.ISO2);
 							if (unmappableFinancials.length > 0) {
 								country.classed('hatch', true);
 								d.undetermined = true;
@@ -799,8 +815,11 @@
 	 * @return {array}         The labels for the legend categories (numeric)
 	 */
 	function getLegendThresholds(indType, colorScale) {
-		if (indType === 'score' || indType === 'inkind') return colorScale.domain();
-		else return colorScale.quantiles();
+		if (indType === 'score' || indType === 'inkind') {
+			return colorScale.domain();
+		} else {
+			return colorScale.quantiles();
+		}
 	}
 
 	// update the map legend
@@ -831,7 +850,7 @@
 			.attr('height', barHeight + 50)
 			.select('g')
 			.attr('transform', `translate(${legendPadding}, 0)`);
-		legend.selectAll('g').remove()
+		legend.selectAll('g').remove();
 		let legendGroups = legend.selectAll('g.legend-bar-group')
 			.data(colors);
 		legendGroups.exit().remove();
@@ -925,8 +944,11 @@
 			if (moneyType === 'committed') {
 				titleText = 'Funds Committed';
 			} else {
-				if (moneyFlow === 'funded') titleText = 'Funds Disbursed';
-				else titleText = 'Funds Received';
+				if (moneyFlow === 'funded') {
+					titleText = 'Funds Disbursed';
+				} else {
+					titleText = 'Funds Received';
+				}
 			}
 			titleText += ` (in ${App.currencyIso})`;
 		} else if (indType === 'score') {
@@ -939,8 +961,11 @@
 			if (moneyType === 'committed') {
 				titleText = 'In-kind Support Projects Committed';
 			} else {
-				if (moneyFlow === 'funded') titleText = 'In-kind Support Projects Provided';
-				else titleText = 'In-kind Support Projects Received';
+				if (moneyFlow === 'funded') {
+					titleText = 'In-kind Support Projects Provided';
+				} else {
+					titleText = 'In-kind Support Projects Received';
+				}
 			}
 		}
 
@@ -1011,8 +1036,11 @@
 			const adjective = moneyFlow === 'received' ? 'received' : 'disbursed';
 
 			let message = '';
-			if (hasListItemData) message = listItemData.undetermined_message;
-			else message = d3.select('.country.active').datum().undetermined_message
+			if (hasListItemData) {
+				message = listItemData.undetermined_message;
+			} else {
+				message = d3.select('.country.active').datum().undetermined_message;
+			}
 			// const message = d3.select('.country.active').datum().undetermined_message || '';
 
 			$('.undetermined-value').text(message);
@@ -1137,7 +1165,7 @@
 			} else {
 				App.showGhsaOnly = false;
 			}
-			d3.select('.map-btn').classed('btn-hidden', !App.showGhsaOnly)
+			d3.select('.map-btn').classed('btn-hidden', !App.showGhsaOnly);
 			updateFilters();
 		});
 	}
@@ -1170,10 +1198,10 @@
 				match = d3.selectAll('.country')
 					.filter(c => {
 						if (!c.properties) return false;
-						return result.ISO2 === c.properties.ISO2
+						return result.ISO2 === c.properties.ISO2;
 					});
 			} else {
-				d3.selectAll('.list-item')
+				d3.selectAll('.list-item');
 
 				const matchTmp = d3.selectAll('.list-item')
 					.filter(c => result.ISO2 === c.donor_code);
@@ -1195,13 +1223,12 @@
 			// zoom in to country
 			if (!nonCountry) {
 				map.zoomTo(activeCountry.node());
-			}
-			else {
+			} else {
 				scrollToListItem(activeCountry);
 			}
 			;
 			displayCountryInfo();
-		}, {isReverse: true});
+		}, { isReverse: true });
 	}
 
 	// initializes slider functionality
@@ -1227,7 +1254,7 @@
 	function initFilters() {
 		// populate dropdowns
 		// App.populateCcDropdown('.cc-select', { dropRight: true });
-		App.populateCcDropdown('.cc-select', {dropUp: true, dropLeft: true,});
+		App.populateCcDropdown('.cc-select', { dropUp: true, dropLeft: true });
 
 		d3.select('.dropdown-menu').classed('firefox', App.usingFirefox);
 
@@ -1279,15 +1306,15 @@
 		$('.score-info-img').tooltipster({
 			interactive: true,
 			content: 'The average of each country\'s most recent <b>JEE scores</b>,' +
-			' for all JEE scores selected in the filter below.',
+				' for all JEE scores selected in the filter below.',
 		});
 		$('.combined-info-img').tooltipster({
 			content: 'This metric combines both a country\'s JEE scores and ' +
-			'the amount of disbursed funds that the country has received. ' +
-			'We use JEE scores as a proxy for country-specific needs, ' +
-			'and calculate the ratio of financial resources to need. ' +
-			'The goal of this metric is to highlight areas whose needs may ' +
-			'still be unmet based on their ratio of financial resources to need.',
+				'the amount of disbursed funds that the country has received. ' +
+				'We use JEE scores as a proxy for country-specific needs, ' +
+				'and calculate the ratio of financial resources to need. ' +
+				'The goal of this metric is to highlight areas whose needs may ' +
+				'still be unmet based on their ratio of financial resources to need.',
 		});
 		$('.ghsa-info-img').tooltipster({
 			interactive: true,
@@ -1344,8 +1371,8 @@
 		// populate tooltip for avg JEE score text
 		$('.score-text-info-img').tooltipster({
 			content: 'JEE scores are taken from each country\'s ' +
-			'<a href="http://www.who.int/ihr/procedures/mission-reports/en/" target="_blank">' +
-			'World Health Organization Joint External Evaluation Report</a>, when available.',
+				'<a href="http://www.who.int/ihr/procedures/mission-reports/en/" target="_blank">' +
+				'World Health Organization Joint External Evaluation Report</a>, when available.',
 		});
 	}
 
@@ -1360,12 +1387,12 @@
 				autohidemode: false,
 				sensitiverail: true,
 				zindex: 99,
-				cursorcolor: "#5a5b5b", // change cursor color in hex
-				cursorwidth: "0.75em", // cursor width in pixel (you can also write "5px")
-				cursorborder: "none", // css definition for cursor border
-				cursorborderradius: "3px", // border radius in pixel for cursor
+				cursorcolor: '#5a5b5b', // change cursor color in hex
+				cursorwidth: '0.75em', // cursor width in pixel (you can also write "5px")
+				cursorborder: 'none', // css definition for cursor border
+				cursorborderradius: '3px', // border radius in pixel for cursor
 				horizrailenabled: false,
-			}
+			},
 		);
 
 		$('.non-country-list.recipient-list').niceScroll(
@@ -1375,12 +1402,12 @@
 				autohidemode: false,
 				sensitiverail: true,
 				zindex: 99,
-				cursorcolor: "#5a5b5b", // change cursor color in hex
-				cursorwidth: "0.75em", // cursor width in pixel (you can also write "5px")
-				cursorborder: "none", // css definition for cursor border
-				cursorborderradius: "3px", // border radius in pixel for cursor
+				cursorcolor: '#5a5b5b', // change cursor color in hex
+				cursorwidth: '0.75em', // cursor width in pixel (you can also write "5px")
+				cursorborder: 'none', // css definition for cursor border
+				cursorborderradius: '3px', // border radius in pixel for cursor
 				horizrailenabled: false,
-			}
+			},
 		);
 	};
 
@@ -1439,7 +1466,7 @@
 					const $span = $(this);
 					const horizOffset = getHorizOffset($span);
 					$span.css('left', (directionSign * horizOffset) + 'px');
-				})
+				});
 			});
 		$list.trigger('scroll');
 	}
@@ -1496,7 +1523,7 @@
 
 		onChange();
 		setHorizOffsets($list);
-		window.addEventListener("resize", onChange);
+		window.addEventListener('resize', onChange);
 	}
 
 	function setDotPosition(circleNode) {
@@ -1513,16 +1540,22 @@
 				return circlePosScale(factor);
 				if (factor === 1) return '-15px';
 				if (factor === 2) return '-24px';
-				if (factor === 3) return '-33px';
-				else return '-42px';
+				if (factor === 3) {
+					return '-33px';
+				} else {
+					return '-42px';
+				}
 			}
 		} else {
 			function getTop(factor) {
 				return circlePosScale(factor);
 				if (factor === 1) return '-15px';
 				if (factor === 2) return '-24px';
-				if (factor === 3) return '-33px';
-				else return '-42px';
+				if (factor === 3) {
+					return '-33px';
+				} else {
+					return '-42px';
+				}
 			}
 		}
 		$(circleNode.parentNode.parentNode).css('top', getTop(factor));
@@ -1550,7 +1583,7 @@
 				if (indType !== 'inkind') {
 					const flow = valueAttrName.includes('received') ? 'r' : 'd';
 					const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
-					const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData, flow, isoCode)
+					const unmappableFinancials = App.getFinancialProjectsWithUnmappableAmounts(App.fundingData, flow, isoCode);
 					if (unmappableFinancials.length > 0) {
 						// const someMoney = d3.sum(unmappableFinancials, d => d.total_spent + d.total_committed) > 0;
 						if (true) {
@@ -1565,7 +1598,7 @@
 				} else {
 					const flow = valueAttrName.includes('received') ? 'r' : 'd';
 					const type = valueAttrName.includes('Comm') ? 'total_committed' : 'total_spent';
-					const unmappableFinancials = App.getInkindProjectsWithUnmappableAmounts(App.fundingData, flow, isoCode)
+					const unmappableFinancials = App.getInkindProjectsWithUnmappableAmounts(App.fundingData, flow, isoCode);
 					if (unmappableFinancials.length > 0) {
 						country.classed('hatch', true);
 						d.undetermined = true;
@@ -1595,7 +1628,7 @@
 	 */
 	function initLeftList(selector, ccs = []) {
 		const $list = d3.select(selector).html('');
-		const label = "Non-government Organization ";
+		const label = 'Non-government Organization ';
 		const dNounPlural = indType === 'inkind' ? 'Providers' : 'Funders';
 		d3.select('.list-title.left').html(label + (moneyFlow === 'funded' ? dNounPlural : 'Recipients'));
 		const dFlow = indType === 'inkind' ? 'Provided' : 'Funded';
@@ -1638,10 +1671,13 @@
 			const code = org.donor_code;
 			const projects = lookup[code];
 			if (projects === undefined || projects.length === 0) return false;
-			org.curPayments = getPaymentSum(projects, ccs, {moneyFlow}); // TODO don't check ccs twice
+			org.curPayments = getPaymentSum(projects, ccs, { moneyFlow }); // TODO don't check ccs twice
 			const values = _.values(org.curPayments);
-			if (values.some(d => d > 0)) return true;
-			else return false;
+			if (values.some(d => d > 0)) {
+				return true;
+			} else {
+				return false;
+			}
 		});
 
 		// sort them by amount of funds
@@ -1713,9 +1749,9 @@
 							return {
 								listItemData: d,
 								flow: moneyFlow,
-								properties: App.nonCountries.find(dd => d.donor_code === dd.FIPS)
-							}
-						}
+								properties: App.nonCountries.find(dd => d.donor_code === dd.FIPS),
+							};
+						},
 					};
 
 					// display info box
@@ -1724,7 +1760,7 @@
 				})
 				.style('fill', function (d) {
 					checkHatchStatus(d, d3.select(this), colorScale);
-					return 'green;'
+					return 'green;';
 				})
 				// .each(d => {checkHatchStatus(d, colorScale)})
 				.insert('div')
@@ -1740,10 +1776,10 @@
 				.style('fill', d => {
 					if (d.curPayments[sortField] === 0) return 'red';
 					// if (d.curPayments[sortField] === 0) return 'rgb(204, 204, 204)';
-					return colorScale(d.curPayments[sortField])
+					return colorScale(d.curPayments[sortField]);
 				})
 				.each(function () {
-					setDotPosition(this)
+					setDotPosition(this);
 				});
 			// .insert('br');
 		} else {
@@ -1764,7 +1800,7 @@
 	function initRightList(selector, ccs = []) {
 
 		const $list = d3.select(selector).html('');
-		const label = "Foundations, Philanthropies, and Private Sector";
+		const label = 'Foundations, Philanthropies, and Private Sector';
 		const dNounPlural = indType === 'inkind' ? 'Providers' : 'Funders';
 		d3.select('.list-title.right').text(label + (moneyFlow === 'funded' ? ' ' + dNounPlural : ' Recipients'));
 
@@ -1804,8 +1840,11 @@
 			if (projects === undefined || projects.length === 0) return false;
 			org.curPayments = getPaymentSum(projects, ccs); // TODO don't check ccs twice
 			const values = _.values(org.curPayments);
-			if (values.some(d => d > 0)) return true;
-			else return false;
+			if (values.some(d => d > 0)) {
+				return true;
+			} else {
+				return false;
+			}
 		});
 
 		// sort them by amount of funds
@@ -1844,9 +1883,9 @@
 							return {
 								listItemData: d,
 								flow: moneyFlow,
-								properties: App.nonCountries.find(dd => d.donor_code === dd.FIPS)
-							}
-						}
+								properties: App.nonCountries.find(dd => d.donor_code === dd.FIPS),
+							};
+						},
 					};
 
 					// display info box
@@ -1855,7 +1894,7 @@
 				})
 				.style('fill', function (d) {
 					checkHatchStatus(d, d3.select(this), colorScale);
-					return 'green;'
+					return 'green;';
 				})
 				.insert('div')
 				.attr('class', 'circle-container right')
@@ -1868,10 +1907,10 @@
 				.attr('cy', 6)
 				.style('fill', d => {
 					if (d.curPayments[sortField] === 0) return 'rgb(204, 204, 204)';
-					return colorScale(d.curPayments[sortField])
+					return colorScale(d.curPayments[sortField]);
 				})
 				.each(function () {
-					setDotPosition(this)
+					setDotPosition(this);
 				});
 			// .insert('br');
 		} else {
@@ -1955,7 +1994,7 @@
 				const newObj = {
 					iso,
 					name: App.codeToNameMap.get(iso),
-					total_committed: fundedFunc(iso, {committedOnly: true}),
+					total_committed: fundedFunc(iso, { committedOnly: true }),
 					total_spent: fundedFunc(iso),
 				};
 				if (newObj.total_committed !== 0 || newObj.total_spent !== 0) {
@@ -1972,7 +2011,7 @@
 				const newObj = {
 					iso,
 					name: App.codeToNameMap.get(iso),
-					total_committed: receivedFunc(iso, {committedOnly: true}),
+					total_committed: receivedFunc(iso, { committedOnly: true }),
 					total_spent: receivedFunc(iso),
 				};
 				if (newObj.total_committed !== 0 || newObj.total_spent !== 0) {
@@ -2042,8 +2081,8 @@
 			// 	{ targets: [1,2,3], orderable: false},
 			// ],
 			columns: [
-				{width: '80%'},
-				{width: '20%'},
+				{ width: '80%' },
+				{ width: '20%' },
 			],
 			bLengthChange: false,
 			drawCallback: () => {
