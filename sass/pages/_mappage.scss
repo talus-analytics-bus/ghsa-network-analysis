@@ -88,7 +88,9 @@
       .map-and-search-container {
         @include flex(1 0 350px);
         background: transparent;
-        align-self: center;
+        align-self: flex-start;
+
+        margin-top: 100px;
 
         padding: 10px;
         border: $light-border;
