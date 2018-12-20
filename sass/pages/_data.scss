@@ -42,8 +42,8 @@
       align-items: center;
 
       &.dark {
-        background-color: #36404d;
-        border: 1px solid #666666;
+        background-color: #555;
+        border: 1px solid #ddd;
       }
     }
 
@@ -100,7 +100,7 @@
         background-color: #eaeaea;
         color: black;
         &.dark {
-          background-color: #36404d;
+          background-color: #555;
           color: white;
         }
       }

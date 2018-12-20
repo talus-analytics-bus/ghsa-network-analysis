@@ -32,6 +32,8 @@
   height: 600px; // todo figure out default height
   clear: both;
   margin: 25px 0;
+
+  
   @media (max-width: 576px) { // default *smallest* bootstrap breakpoint
     /* This defines the mobile view!! */
     // todo figure out real break
@@ -52,6 +54,7 @@
         & ~ label {
           //background: white;
           border: $light-border;
+          border-radius: 6px 6px 0px 0px; 
           border-bottom: 0;
           //border-bottom: 1px solid white;
 
@@ -65,13 +68,13 @@
     font-weight: 600;
     text-align: center;
     width: 150px;
-    padding: 8px 0 8px 15px;
+    padding: 8px 0 8px 0px;
     border: 0;
-    text-align: left;
     position: relative;
     //left: -5px;
     top: -8px;
     cursor: pointer;
+    font-size:20px;
 
     &:hover {
       background-color: #EDEDED;
@@ -83,7 +86,7 @@
 
   .content {
     position: absolute;
-    top: 28px;
+    top: 36px;
     left: 0;
     // background: white;
     right: 0;
@@ -100,7 +103,7 @@
 
     background-color: $lightcolor;
     &.dark {
-      background-color: #36404d;
+      background-color: #555;
     }
 
   }
@@ -108,7 +111,7 @@
   & > .tab > [type=radio]:checked + label {
     background-color: $lightcolor;
     &.dark {
-      background-color: #36404d;
+      background-color: #555;
     }
   }
 }

@@ -30,6 +30,9 @@
     .welcome-container {
 
       .welcome-text {
+        margin-top: 30px;
+        font-weight: 600;
+        line-height: 35px;
         font-size: 28px;
         text-transform: uppercase;
         color: #11315D;
@@ -54,7 +57,10 @@
       margin-top: 100px;
 
       .search-title {
+        font-weight: 600;
+        line-height: 27px;
         font-size: 22px;
+        margin-bottom:15px;
         text-transform: uppercase;
         color: #11315D;
         font-family: 'Raleway', sans-serif;
@@ -99,9 +105,12 @@
       @include flex(1 0 20px);
       justify-self: flex-start;
       font-size: 22px;
+      font-weight:600;
       text-transform: uppercase;
       font-family: 'Raleway', sans-serif;
       color: #11315D;
+      margin-top: 35px;
+      margin-left:20px;
       &.dark {
         color: white;
       }
@@ -110,6 +119,8 @@
     .map-buttons {
       @include flex(1 0 20px);
       justify-self: flex-start;
+      margin-left: 17px;
+      margin-bottom: 50px;
     }
 
     .funding-recipient-map {

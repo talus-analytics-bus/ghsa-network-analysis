@@ -34,6 +34,8 @@
 
   height: 50px;
   width: 250px;
+    
+  margin-left: -7px;
 
   $fundingColor: #597251;
   $recipientColor: #623B63;
@@ -45,7 +47,7 @@ $border-width: 2px;
   font-weight: 400;
   height: 45px;
 
-  padding: 10px 15px;
+  padding: 10px 35px;
   border: $border-width solid transparent;
   margin: 5px;
   @include border-radius(5px);
