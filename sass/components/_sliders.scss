@@ -4,7 +4,7 @@
   .slider-track {
     @include gradient(#a0a0a0, #c0c0c0);
     &.dark {
-      @include gradient(#a0a0a0, #c0c0c0);
+      @include gradient(#cccccc  !important, #808080 !important);
     }
 
     .slider-track-low,.slider-track-high {
@@ -24,7 +24,7 @@
     margin-left: -8px;
     z-index: 10;
     cursor: pointer;
-    @include gradient(#ccc, #666);
+    @include gradient (#666666 !important, #666666 !important, vert !important, 100% !important, 100% !important);
   }
   .slider-tick-box {
     position: absolute;

@@ -1247,12 +1247,12 @@ select.form-control {
 
 /* line 6, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_sliders.scss */
 .slider.slider-horizontal .slider-track.dark {
-  background-color: #a0a0a0;
-  background: -webkit-gradient(linear, left-top, left-bottom, from(#a0a0a0 0%), to(#c0c0c0 100%));
-  background: -webkit-linear-gradient(top, #a0a0a0 0%, #c0c0c0 100%);
-  background: -moz-linear-gradient(top, #a0a0a0 0%, #c0c0c0 100%);
-  background: -ms-linear-gradient(top, #a0a0a0 0%, #c0c0c0 100%);
-  background: -o-linear-gradient(top, #a0a0a0 0%, #c0c0c0 100%);
+  background-color: #cccccc !important;
+  background: -webkit-gradient(linear, left-top, left-bottom, from(#cccccc !important 0%), to(#808080 !important 100%));
+  background: -webkit-linear-gradient(top, #cccccc !important 0%, #808080 !important 100%);
+  background: -moz-linear-gradient(top, #cccccc !important 0%, #808080 !important 100%);
+  background: -ms-linear-gradient(top, #cccccc !important 0%, #808080 !important 100%);
+  background: -o-linear-gradient(top, #cccccc !important 0%, #808080 !important 100%);
 }
 
 /* line 11, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_sliders.scss */
@@ -1284,12 +1284,12 @@ select.form-control {
   margin-left: -8px;
   z-index: 10;
   cursor: pointer;
-  background-color: #ccc;
-  background: -webkit-gradient(linear, left-top, left-bottom, from(#ccc 0%), to(#666 100%));
-  background: -webkit-linear-gradient(top, #ccc 0%, #666 100%);
-  background: -moz-linear-gradient(top, #ccc 0%, #666 100%);
-  background: -ms-linear-gradient(top, #ccc 0%, #666 100%);
-  background: -o-linear-gradient(top, #ccc 0%, #666 100%);
+  background-color: #666666 !important;
+  background: -webkit-gradient(linear, left-top, right-top, from(#666666 !important 100% !important), to(#666666 !important 100% !important));
+  background: -webkit-linear-gradient(left, #666666 !important 100% !important, #666666 !important 100% !important);
+  background: -moz-linear-gradient(left, #666666 !important 100% !important, #666666 !important 100% !important);
+  background: -ms-linear-gradient(left, #666666 !important 100% !important, #666666 !important 100% !important);
+  background: -o-linear-gradient(left, #666666 !important 100% !important, #666666 !important 100% !important);
 }
 
 /* line 29, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_sliders.scss */
@@ -3513,6 +3513,7 @@ td:nth-child(n+2) ~ .analysis-container .country-table.inkind-table {
   flex-flow: row;
   justify-content: end;
   padding: 0;
+  margin-left: -5px;
 }
 
 /* line 88, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_home.scss */
