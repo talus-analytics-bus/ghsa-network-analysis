@@ -111,14 +111,15 @@
                                     <!--</div>-->
                                 </div>
                             </div><!-- info container -->
-
+                            {{!
                             <div class="map-options-title main-options-title">
                                 Options
                                 <img class="collapse-arrow rotated" src="img/chevron_down.png"/>
-                            </div>
+                            </div>}}
                             <div class="map-options-content">
                                 <div class="filter-section">
                                     <div class="filter-box">
+                                        <br>
                                         <label>
                                             <input class="form-check-input ghsa-only-checkbox" type="checkbox" value=""
                                                    id="ghsa-only-checkbox"> Show GHSA Projects Only
@@ -207,6 +208,15 @@
                                     <div class="filter-box">
                                         <div class="dropdown-label inline">Core Capacity</div>
                                         <img class="info-img core-capacity-text small" src="img/info.png"/>
+                                        <br>
+                                        <select class="cc-select form-control" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="filter-section">
+                                    <div class="filter-box">
+                                        <div class="dropdown-label inline">Select Currency</div>
+                                        <img class="info-img small" src="img/info.png"/>
                                         <br>
                                         <select class="cc-select form-control" multiple="multiple"></select>
                                     </div>

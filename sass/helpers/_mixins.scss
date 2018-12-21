@@ -11,6 +11,11 @@
   -moz-box-shadow: $string;
   box-shadow: $string;
 }
+@mixin border ($color) {
+    -webkit-border: $color;
+  -moz-border: $color;
+  border: $color;  
+}
 @mixin box-sizing ($type: border-box) {
     -webkit-box-sizing: $type;
     -moz-box-sizing: $type;
