@@ -86,19 +86,24 @@
       .info-container {
         background: $lightcolor;
         color: $darkcolor;
+        border: 1px solid #ccc;
         width: auto;
         div {
           color: $darkcolor;
           background: transparent;
         }
       }
-
+        
+      .country-option-column {
+        margin-top:40px; 
+        width:auto;
+      }
+        
       .map-and-search-container {
         @include flex(1 0 350px);
         background: transparent;
         align-self: flex-start;
 
-        margin-top: 100px;
         padding:100px;
 
         padding: 20px;

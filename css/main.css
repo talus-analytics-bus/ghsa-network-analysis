@@ -537,7 +537,7 @@
   width: 100%;
   max-width: 350px;
   pointer-events: none;
-  background-color: #464b5b !important;
+  background-color: #a0a0a0 !important;
   color: white !important;
 }
 
@@ -548,28 +548,27 @@
   position: relative;
   padding: 0;
   width: 100%;
-  border: 1px solid #999;
   background-color: white;
   pointer-events: all;
   color: white !important;
 }
 
-/* line 26, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 25, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-value-box:first-child {
   position: relative;
 }
 
-/* line 30, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 29, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-value-box:last-child {
   position: relative;
 }
 
-/* line 35, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 34, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-inkind-details {
   display: block;
 }
 
-/* line 37, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 36, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-inkind-details .info-inkind-unit {
   font-family: 'Raleway', sans-serif;
   font-size: 1.25em;
@@ -578,12 +577,12 @@
   /* text-align: center; */
 }
 
-/* line 45, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 44, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-inkind-details .info-inkind-value, .info-container .info-inkind-details .undetermined-value {
   display: inline-block;
 }
 
-/* line 48, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 47, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-inkind-details .undetermined-value {
   font-family: 'Raleway', sans-serif;
   font-size: 1.5em;
@@ -593,13 +592,13 @@
   text-align: center;
 }
 
-/* line 59, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 58, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-inkind-details .info-inkind-value-label, .info-container .info-inkind-details .undetermined-label {
   max-width: 100px;
   margin: 10px auto 0 auto;
 }
 
-/* line 66, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 65, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-close-button {
   position: absolute;
   top: 13px;
@@ -610,36 +609,36 @@
   opacity: 0.75;
 }
 
-/* line 73, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 72, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-close-button:hover {
   -webkit-opacity: 1;
   -moz-opacity: 1;
   opacity: 1;
 }
 
-/* line 76, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 75, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-close-button img {
   width: 20px;
   height: 20px;
 }
 
-/* line 81, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 80, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-title {
   color: white !important;
   padding: 7px 50px;
   font-size: 1.4em;
   font-weight: 600;
-  text-align: center;
+  text-align: left;
 }
 
-/* line 88, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 87, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-profile-type {
   margin-top: 5px;
   text-align: center;
   font-size: 1.2em;
 }
 
-/* line 93, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 92, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-score-text-container {
   margin-top: 10px;
   text-align: center;
@@ -647,30 +646,34 @@
   font-size: 1.2em;
 }
 
-/* line 99, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 98, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-value {
   font-family: 'Raleway', sans-serif;
-  font-size: 2.2em;
+  font-size: 18px;
+  font-weight: 600;
   margin-top: 20px;
   text-align: center;
+  color: white !important;
 }
 
-/* line 105, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 106, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-value-label {
-  text-align: center;
-  font-size: 1.1em;
-  margin: 10px auto 0;
+  text-align: left;
+  margin-left: 10px;
+  margin-top: 10px;
+  color: white !important;
+  font-size: 10px;
   max-width: 350px;
 }
 
-/* line 112, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 115, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container .info-button-container {
   margin-top: 25px;
   float: right;
   border: #cccccc;
 }
 
-/* line 117, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 120, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-container img {
   position: relative;
   top: -1px;
@@ -679,7 +682,7 @@
   height: 16px;
 }
 
-/* line 133, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 136, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .undetermined-value {
   font-family: 'Raleway', sans-serif;
   font-size: 1.1em;
@@ -690,20 +693,20 @@
   line-height: 20px;
 }
 
-/* line 145, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 148, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .undetermined-label {
   max-width: 100px;
   margin: 10px auto 0 auto;
 }
 
-/* line 149, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 152, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-value {
   font-family: 'Raleway', sans-serif;
   margin-top: 10px;
   text-align: center;
 }
 
-/* line 155, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
+/* line 158, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_countryInfoBox.scss */
 .info-value-label {
   text-align: center;
   font-size: .8em;
@@ -1987,16 +1990,23 @@ b {
 .map-page-container .map-page-tabs .content .info-container {
   background: white;
   color: black;
+  border: 1px solid #ccc;
   width: auto;
 }
 
-/* line 90, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 91, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content .info-container div {
   color: black;
   background: transparent;
 }
 
-/* line 96, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 97, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+.map-page-container .map-page-tabs .content .country-option-column {
+  margin-top: 40px;
+  width: auto;
+}
+
+/* line 102, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content .map-and-search-container {
   -webkit-box-flex: 1 0 350px;
   -moz-box-flex: 1 0 350px;
@@ -2005,58 +2015,57 @@ b {
   flex: 1 0 350px;
   background: transparent;
   align-self: flex-start;
-  margin-top: 100px;
   padding: 100px;
   padding: 20px;
   border: 1px solid #ccc;
 }
 
-/* line 107, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 112, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content .map-and-search-container .selected-country-container {
   width: 100%;
 }
 
-/* line 110, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 115, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content .map-and-search-container .selected-country-container .selected-country-name {
   width: 100%;
   height: auto;
 }
 
-/* line 116, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 121, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content .map-and-search-container .search-container {
   position: relative;
 }
 
-/* line 121, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 126, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content .map-and-search-container .search-container .live-search-results-container .live-search-results-contents {
   background: white;
   position: absolute;
   top: 194px;
 }
 
-/* line 129, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 134, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content .map-and-search-container div, .map-page-container .map-page-tabs .content .map-and-search-container label {
   background: transparent;
 }
 
-/* line 134, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 139, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content div, .map-page-container .map-page-tabs .content label {
   background: transparent;
 }
 
-/* line 141, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 146, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content .paginate_button.dark.active a {
   background-color: black;
 }
 
-/* line 145, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 150, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content .paginate_button.dark a {
   border: 1px solid #ccc;
   color: #ccc;
   background-color: #36404d;
 }
 
-/* line 153, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 158, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content .table-content {
   display: -webkit-box;
   display: -moz-box;
@@ -2068,7 +2077,7 @@ b {
   align-items: flex-start;
 }
 
-/* line 158, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 163, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content .table-content .left-table, .map-page-container .map-page-tabs .content .table-content .right-table {
   padding: 10px;
   -webkit-box-flex: 1 0 400px;
@@ -2086,50 +2095,50 @@ b {
   align-items: center;
 }
 
-/* line 166, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 171, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content .table-content .left-table div.dataTables_wrapper, .map-page-container .map-page-tabs .content .table-content .right-table div.dataTables_wrapper {
   width: 100%;
 }
 
-/* line 173, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 178, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content table {
   width: 100%;
 }
 
-/* line 176, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 181, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content table td, .map-page-container .map-page-tabs .content table tr {
   border: 1px solid #666666;
 }
 
-/* line 179, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 184, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content table td:nth-child(1) {
   border-right: none;
 }
 
-/* line 182, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 187, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content table td:nth-child(2) {
   border-left: none;
 }
 
-/* line 187, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 192, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content table thead td, .map-page-container .map-page-tabs .content table thead tr {
   background-color: #eaeaea;
   color: black;
 }
 
-/* line 190, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 195, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content table thead td.dark, .map-page-container .map-page-tabs .content table thead tr.dark {
   background-color: #36404d;
   color: white;
 }
 
-/* line 197, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 202, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content table tbody td, .map-page-container .map-page-tabs .content table tbody tr {
   background-color: white;
   color: black;
 }
 
-/* line 200, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
+/* line 205, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/pages/_mappage.scss */
 .map-page-container .map-page-tabs .content table tbody td.dark, .map-page-container .map-page-tabs .content table tbody tr.dark {
   background-color: black;
   color: white;

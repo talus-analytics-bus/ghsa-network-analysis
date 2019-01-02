@@ -36,7 +36,48 @@
                         </div><!-- legend -->
 
                     </div><!-- Left pane -->
-
+                    <div class="country-option-column">
+                    <div class="info-container">
+                        <div class="info-box">
+                            <div class="info-close-button">
+                                <img class="close-icon" src="img/close.png"/>
+                            </div>
+                            <div class="info-title"></div>
+                            <!--<div class="info-profile-type"></div>-->
+                            <div class="info-score-text-container">
+                                <span class="info-score-text"></span>
+                                <img class="score-text-info-img info-img" src="img/info.png"/>
+                            </div>
+                            <div class="row c-and-d">
+                                <div class="info-value-box col-sm-6">
+                                    <div class="info-committed-value info-value"></div>
+                                    <div class="info-committed-value-label info-value-label"></div>
+                                </div>
+                                <div class="info-value-box col-sm-6">
+                                    <div class="info-spent-value info-value"></div>
+                                    <div class="info-spent-value-label info-value-label"></div>
+                                </div>
+                            </div>
+                            <div class="row undetermined">
+                                <div class="info-value-box info-inkind-details col-sm-12">
+                                    <div class="undetermined-value info-value">Not Reported <img
+                                            class="undetermined-info-img info-img" src="img/info.png"/></div>
+                                    <div class="undetermined-unit">in-kind contributions</div>
+                                    <div class="undetermined-value-label info-value-label">from 2014 to 2018
+                                        (Recipient)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-button-container">
+                                <button class="info-analysis-button talus-btn talus-primary-btn" value="View Funding Details"></button>
+                            </div>
+                            <!--<div class="source-text">-->
+                                <!--<b>Source:</b> IATI registry via-->
+                                <!--<a href="http://d-portal.org" target="_blank">d-portal</a>, 2014-2017.-->
+                            <!--</div>-->
+                        </div>
+                    </div><!-- info container -->
+                    
                     <div class="map-and-search-container">
                         {{!--                     <div class="map-options-container ghsa-toggle-container">
                                                 <div class="map-options-title">
@@ -70,47 +111,8 @@
                                 <!--<button class="talus-btn talus-secondary-btn" value="View Details"></button>-->
                             <!--</div>-->
                         <!--</div>-->
+
                         <div class="map-options-container">
-                            <div class="info-container">
-                                <div class="info-box">
-                                    <div class="info-close-button">
-                                        <img class="close-icon" src="img/close.png"/>
-                                    </div>
-                                    <div class="info-title"></div>
-                                    <!--<div class="info-profile-type"></div>-->
-                                    <div class="info-score-text-container">
-                                        <span class="info-score-text"></span>
-                                        <img class="score-text-info-img info-img" src="img/info.png"/>
-                                    </div>
-                                    <div class="row c-and-d">
-                                        <div class="info-value-box col-sm-6">
-                                            <div class="info-committed-value info-value"></div>
-                                            <div class="info-committed-value-label info-value-label"></div>
-                                        </div>
-                                        <div class="info-value-box col-sm-6">
-                                            <div class="info-spent-value info-value"></div>
-                                            <div class="info-spent-value-label info-value-label"></div>
-                                        </div>
-                                    </div>
-                                    <div class="row undetermined">
-                                        <div class="info-value-box info-inkind-details col-sm-12">
-                                            <div class="undetermined-value info-value">Not Reported <img
-                                                    class="undetermined-info-img info-img" src="img/info.png"/></div>
-                                            <div class="undetermined-unit">in-kind contributions</div>
-                                            <div class="undetermined-value-label info-value-label">from 2014 to 2018
-                                                (Recipient)
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="info-button-container">
-                                        <button class="info-analysis-button talus-btn talus-primary-btn" value="View Funding Details"></button>
-                                    </div>
-                                    <!--<div class="source-text">-->
-                                        <!--<b>Source:</b> IATI registry via-->
-                                        <!--<a href="http://d-portal.org" target="_blank">d-portal</a>, 2014-2017.-->
-                                    <!--</div>-->
-                                </div>
-                            </div><!-- info container -->
                             {{!
                             <div class="map-options-title main-options-title">
                                 Options
@@ -119,7 +121,6 @@
                             <div class="map-options-content">
                                 <div class="filter-section">
                                     <div class="filter-box">
-                                        <br>
                                         <label>
                                             <input class="form-check-input ghsa-only-checkbox" type="checkbox" value=""
                                                    id="ghsa-only-checkbox"> Show GHSA Projects Only
@@ -224,6 +225,7 @@
                             </div><!-- map options content -->
                         </div><!-- map options container -->
                     </div><!-- Search -->
+                </div>
 
                 </div><!-- tab content -->
 

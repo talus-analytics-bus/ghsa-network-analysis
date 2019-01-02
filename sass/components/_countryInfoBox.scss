@@ -6,7 +6,7 @@
 	width: 100%;
 	max-width: 350px;
 	pointer-events: none;
-    background-color: #464b5b !important;
+    background-color: #a0a0a0 !important;
 
 	color: white !important;
 
@@ -17,7 +17,6 @@
 		padding: 0;
         width: 100%;
 		//max-width: 288px;
-		border: $border;
 		background-color: rgba(255,255,255,1);
 		// background-color: rgba(255,255,255,0.96);
 		pointer-events: all;
@@ -83,7 +82,7 @@
 		padding: 7px 50px;
 		font-size: 1.4em;
 		font-weight: 600;
-		text-align: center;
+		text-align: left;
 	}
 	.info-profile-type {
 		margin-top: 5px;
@@ -98,15 +97,19 @@
 	}
 	.info-value {
 		font-family: 'Raleway', sans-serif;
-		font-size: 2.2em;
+		font-size: 18px;
+        font-weight: 600;
 		margin-top: 20px;
 		text-align: center;
+        color: white !important;
 	}
 	.info-value-label {
 		// margin-top: 10px;
-		text-align: center;
-		font-size: 1.1em;
-		margin: 10px auto 0;
+		text-align: left;
+        margin-left:10px;
+        margin-top: 10px;
+        color: white !important;
+		font-size: 10px;
 		max-width: 350px;
 	}
 	.info-button-container {
