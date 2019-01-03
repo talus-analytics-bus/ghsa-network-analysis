@@ -134,7 +134,12 @@
         }
 
         div,label {
-          background: transparent;
+          &:not(.slider-handle) {
+            background: transparent;
+          }
+          .slider-handle {
+            background-image: linear-gradient(to bottom,#337ab7 0,#2e6da4 100%);
+          }
         }
       }
 
