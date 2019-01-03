@@ -74,10 +74,12 @@
       }
 
       .legend-container {
-        @include flex(0 0 100px);
+        @include flex(0 0 0px);
         width: auto;
-        background: transparent;
+        background: grey;
         border: white;
+        position: relative;
+        bottom: 171px;
         div {
           background: transparent;
         }
