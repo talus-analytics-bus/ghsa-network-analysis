@@ -36,12 +36,13 @@
       @include flexbox(row nowrap);
       justify-content: space-between;
       align-items: flex-start;
+      height: 76%;
 
       .left-pane {
         @include flex(0 3 800px);
 
         background: transparent;
-        padding: 30px 20px 30px 0px;
+        padding: 30px 0px 30px 0px;
         max-height: 800px;
 
         @include flexbox(column nowrap);
@@ -65,7 +66,7 @@
         }
 
         .map-container {
-          @include flex(0 3 700px);
+          @include flex(0 3 460px);
           width: 100%;
           background: transparent;
           margin-top:35px;
@@ -76,12 +77,23 @@
       .legend-container {
         @include flex(0 0 0px);
         width: auto;
-        background: grey;
+        background: transparent;
         border: white;
         position: relative;
-        bottom: 171px;
+        bottom: 45px;
         div {
           background: transparent;
+        }
+        .legend-display-tab {
+          background: #555; 
+          width: 140px;
+          margin-left: auto;
+          margin-right: auto;
+          border: 1px solid #ccc;
+        }
+        .legend-content{
+          padding: 13px;
+          border: 1px solid #ccc;
         }
       }
 
@@ -97,7 +109,7 @@
       }
         
       .country-option-column {
-        margin-top:40px; 
+        margin-top:-1px; 
         width:auto;
       }
         
