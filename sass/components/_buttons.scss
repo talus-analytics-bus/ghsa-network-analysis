@@ -43,6 +43,8 @@
 
 
 $border-width: 2px;
+
+
 .talus-btn {
   font-weight: 400;
   height: 45px;
@@ -51,6 +53,12 @@ $border-width: 2px;
   border: $border-width solid transparent;
   margin: 5px;
   @include border-radius(5px);
+  vertical-align: middle;    
+    
+    &.map-funding-details-btn {
+        padding: 5px 10px;
+        height:35px;
+    }
 
   &:hover {
     font-weight: 600;
