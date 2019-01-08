@@ -1,3 +1,8 @@
+table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting:after {
+   position: static;
+   display: inline;
+}
+
 .data-container {
   @include flexbox(column nowrap);
   justify-content: flex-start;

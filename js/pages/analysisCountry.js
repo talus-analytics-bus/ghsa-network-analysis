@@ -174,13 +174,13 @@
 		 */
 		function toggleGhsaContent(isGhsaPage) {
 			if (isGhsaPage) {
-				$(`.ghsa-toggle-options, .switch-type-button, .profile-type-container, .analysis-country-title > br`)
+				$(`.ghsa-toggle-options, .switch-type-button, .profile-type-container, #GHSAButton, .analysis-country-title > br`)
 					.remove();
 				// .css('visibility','hidden');
 				$('.analysis-country-title').addClass('ghsa');
 
 				d3.select('.analysis-country-title.ghsa').select('img').remove();
-				d3.select('.analysis-country-title.ghsa').append('img')
+				d3.select('.analysis-country-flagAndName').append('img')
 					.attr('class', 'ghsa-info-img info-img')
 					.attr('src', 'img/info.png');
 
