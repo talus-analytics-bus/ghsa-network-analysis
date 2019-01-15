@@ -3,10 +3,30 @@
   padding-right: 25px;
   border-bottom: $light-border;
   background-color: white;
-
+   //editing the nav bar on light 
+  .navbar-nav>li>a{
+    color: #777;
+    }
+  .navbar-nav>.active>a {
+    background-color: white !important;
+    font-weight: 1000;
+    color: #777; 
+    text-decoration: underline;   
+    }
+    //end editing nav bar on light
+    
   &.dark {
     background-color: $darkcolor;
     border-bottom: none;
+    //editing nav bar on dark
+    .navbar-nav>.active>a {
+      background-color: #222222 !important;
+      color: white;
+    }
+    .navbar-nav>li>a{
+      color: white;
+    }
+    //end editing navbar on white
   }
 
   height: 80px;
@@ -64,7 +84,7 @@
 
     &.active,
     &:hover {
-      @include gradient(#e9e9e9, #e0e0e0);
+      //@include gradient(#e9e9e9, #e0e0e0);
     }
 
     &.light {

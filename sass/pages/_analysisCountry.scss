@@ -7,25 +7,10 @@
 
 .analysis-country-content {
 
-    .ghsaBut {
+    #GHSAButton {
         position: absolute;
-        top: 105px;
+        top: 104px;
         right: 30px;
-        text-align: center;
-        vertical-align: middle;
-        display: inline-block;
-        font-size: 16px;
-        border-radius: 4px;
-        width: 100px;
-        height: 40px;
-        background: #f2f2f2;
-        border: solid 1px #b3b3b3;
-        color: #999999;
-    }
-    
-    .ghsaBut p{
-        position: absolute;
-        top:7px;
     }
 
     .selectCurrencyContainer {
@@ -155,7 +140,7 @@
         display: inline-block;
         color: white;
         margin-left: 30px;
-        margin-top: 30px; 
+        margin-top: 27px; 
         font-family: "raleway";
         font-weight:150px;
         font-size: 18px;
@@ -164,7 +149,7 @@
     .flag {
         border: 2px solid #999999;
         border-radius: 5px;
-        margin-right: 30px;
+        margin: 0px 30px 0px 0px !important;
     }
     
 
@@ -240,8 +225,8 @@
 
 .switch-type-button {
     position: absolute;
-    top: 29px;
-    right: 30px;
+    top: 19px;
+    right: 19px;
     width: 250px;
     height: 60px;
 }

@@ -1021,7 +1021,7 @@ const App = {};
 			return '';
 		} else {
 			return `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
-		}
+		}//change ${iso.toLowerCase()} to something that is like countryoobject.fullname or something
 	};
 
 	App.getScoreNameHtml = (score) => {

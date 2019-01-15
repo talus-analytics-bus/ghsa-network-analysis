@@ -26,7 +26,10 @@
     width: 100%;
     margin-top: -35px;
       
-    height: 920px;
+    /*height: 920px;*/
+      /*new*/
+      height: 648px;
+      /*new*/
     @media (max-width: 1199px) { height: 1100px; }
     @media (max-width: 992px) { height: 1550px; }
     @media (max-width: 768px) { height: 1940px; }
@@ -36,14 +39,21 @@
       @include flexbox(row nowrap);
       justify-content: space-between;
       align-items: flex-start;
-      height: 76%;
+      /*height: 76%;*/
+      /*new*/
+        height: 100%;
+      /*new*/
 
       .left-pane {
-        @include flex(0 3 800px);
+        /*@include flex(0 3 800px);*/
+        @include flex(1 3 800px);
 
         background: transparent;
-        padding: 30px 0px 30px 0px;
+        /*padding: 30px 0px 30px 0px;*/
         max-height: 800px;
+        /*new*/
+        padding: 30px 0px 0px 0px;
+        /*new*/
 
         @include flexbox(column nowrap);
         justify-content: space-between;
@@ -53,6 +63,9 @@
           @include flex(1);
           align-self: flex-start;
           width: 380px;
+            //new
+            margin-left:20px;
+            //new
 
           @include flexbox(column nowrap);
           justify-content: flex-start;
@@ -66,10 +79,13 @@
         }
 
         .map-container {
-          @include flex(0 3 460px);
+          @include flex(0 3 543px);
           width: 100%;
           background: transparent;
-          margin-top:35px;
+          //margin-top:35px;
+            /*new*/
+            margin-top:0px;
+            /*new*/
         }
 
       }
@@ -79,14 +95,24 @@
         width: auto;
         background: transparent;
         border: white;
-        position: relative;
-        bottom: 45px;
+        /*bottom: 45px;*/
+        /*new*/
+        position: absolute;
+        left:95px;
+        bottom: 0px;
+        /*new*/
+       
         div {
-          background: transparent;
+          //background: transparent;
+            //new    
         }
+          
         .legend-display-tab {
-          background: #555; 
-          width: 140px;
+          //background: #555; 
+         //new
+            background-color: rgba(160, 160, 160, 0.85);
+         //new 
+        width: 140px;
           margin-left: auto;
           margin-right: auto;
           border: 1px solid #ccc;
@@ -94,6 +120,9 @@
         .legend-content{
           padding: 13px;
           border: 1px solid #ccc;
+        //new 
+            background-color: rgba(160, 160, 160, 0.85);
+            //
         }
       }
 
@@ -101,7 +130,10 @@
         background: $lightcolor;
         color: $darkcolor;
         border: 1px solid #ccc;
-        width: auto;
+        /*width: auto;*/
+        /*new*/
+        width:100%;
+        /*new*/
         div {
           color: $darkcolor;
           background: transparent;
@@ -110,13 +142,23 @@
         
       .country-option-column {
         margin-top:-1px; 
-        width:auto;
+        /*width: auto;*/
+        /*new*/
+        width:25%;
+        position:absolute;
+        right: 25px;
+        /*new*/
       }
         
       .map-and-search-container {
         @include flex(1 0 350px);
-        background: transparent;
+        //background: transparent;
         align-self: flex-start;
+        /*width: auto;*/
+        /*new*/
+        width:100%;
+        background-color: rgba(160, 160, 160, 0.85);
+        /*new*/
 
         padding:100px;
 

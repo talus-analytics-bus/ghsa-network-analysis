@@ -92,8 +92,12 @@
     bottom: 0;
     padding-top: 0;
     padding-bottom: 0;
-    padding-left: 25px;
-    padding-right: 25px;
+    /*padding-left: 25px;*/
+    /*padding-right: 25px;*/
+    /*new*/
+    padding-left: 0px;
+    padding-right: 0px;
+    /*new*/
     //border: 1px solid #eee;
     border: $light-border;
     visibility: hidden;

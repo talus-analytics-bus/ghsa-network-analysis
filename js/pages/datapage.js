@@ -41,9 +41,9 @@
 		$('table.download-data-table').DataTable({
 			data,
 			columns: [
-				{ title: 'Project', width: '60%' },
-				{ title: 'Funder', width: '20%' },
-				{ title: 'Recipient', width: '20%' },
+				{ title: 'Project&nbsp;&nbsp;', width: '60%' },
+				{ title: '<img style="width:25px;" src="/img/logo-tableFunder.svg" alt="">&nbsp;&nbsp;Funder&nbsp;&nbsp;', width: '20%' },
+				{ title: '<img style="width:25px;" src="/img/logo-tableRecipient.svg" alt="">&nbsp;&nbsp;Recipient&nbsp;&nbsp;', width: '20%' },
 			],
 			pageLength: 25,
 			scrollCollapse: false,

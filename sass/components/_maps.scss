@@ -4,6 +4,10 @@
 .overlay {
 	fill: none;
 	pointer-events: all;
+    
+    rect {
+       box-sizing: content-box; 
+    }
 }
 .country {
   fill: #ccc;

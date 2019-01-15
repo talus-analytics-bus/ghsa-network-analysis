@@ -120,6 +120,8 @@ const Map = {};
 		}
 	}
 
+    
+    
 	Map.createWorldMap = (selector, world) => {
 		const map = new WorldMap(selector, { world });
 		return map;
@@ -269,4 +271,5 @@ const Map = {};
 
 		return { element: svg, projection, path, zoomTo, reset };
 	};
+     
 })();

@@ -67,6 +67,16 @@ svg .chart {
   }
 }
 
+.toggleForPrint {
+    position: fixed !important;
+    bottom: 40px;
+    left: 10px;
+    font-size: 11px;
+    &.dark {
+        display: none;
+    }
+}
+
 .toggle-theme {
   position: fixed !important;
   bottom: 10px !important;

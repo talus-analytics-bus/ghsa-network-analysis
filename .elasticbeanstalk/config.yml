@@ -1,11 +1,16 @@
 branch-defaults:
   add-login-page:
     environment: ghsa-network-analysis-internal-test
+  gida:
+    environment: gida
   master:
     environment: ghsa-network-analysis-master
     group_suffix: null
 environment-defaults:
   ghsa-network-analysis-test2:
+    branch: null
+    repository: null
+  gida:
     branch: null
     repository: null
 global:

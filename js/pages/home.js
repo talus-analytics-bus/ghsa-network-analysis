@@ -437,8 +437,8 @@
 			br = ' ';
 		}
 		return `Total <b>${noun}</b>` +
-			`${br}from ${startYear} to ${endYear - 1}` +
-			`${br}${flowNoun}`;
+			`&nbsp;from ${br}${startYear} to ${endYear - 1}` +
+			`&nbsp;${flowNoun}`;
 	}
 
 	/**

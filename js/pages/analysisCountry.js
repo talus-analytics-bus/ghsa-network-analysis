@@ -174,13 +174,21 @@
 		 */
 		function toggleGhsaContent(isGhsaPage) {
 			if (isGhsaPage) {
-				$(`.ghsa-toggle-options, .switch-type-button, .profile-type-container, .analysis-country-title > br`)
+<<<<<<< HEAD
+<<<<<<< HEAD
+				$(`.ghsa-toggle-options, .switch-type-button, .profile-type-container, .analysis-country-title > br, #GHSAButton`)
+=======
+				$(`.ghsa-toggle-options, .switch-type-button, .profile-type-container, #GHSAButton, .analysis-country-title > br`)
+>>>>>>> 9660c2b0e4c547d93f4696c66d75a8f73c61ef5d
+=======
+				$(`.ghsa-toggle-options, .switch-type-button, .profile-type-container, #GHSAButton, .analysis-country-title > br`)
+>>>>>>> 9660c2b0e4c547d93f4696c66d75a8f73c61ef5d
 					.remove();
 				// .css('visibility','hidden');
 				$('.analysis-country-title').addClass('ghsa');
 
 				d3.select('.analysis-country-title.ghsa').select('img').remove();
-				d3.select('.analysis-country-title.ghsa').append('img')
+				d3.select('.analysis-country-flagAndName').append('img')
 					.attr('class', 'ghsa-info-img info-img')
 					.attr('src', 'img/info.png');
 
