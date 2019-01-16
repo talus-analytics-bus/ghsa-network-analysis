@@ -36,9 +36,12 @@
     margin-bottom: 12px;
 }
 
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-box {
+  padding: 0;
+}
 
-.tooltipster-content {
-    padding: 0px;}
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content {
+  padding: 0;
 
   .tooltip-contents {
     @include flexbox();
@@ -61,7 +64,39 @@
         font-weight: 400;
       }
     }
-      
+
+    .tooltip-list {
+      @include flex(2);
+
+      @include flexbox();
+      flex-flow: column nowrap;
+      justify-content: space-between;
+      align-items: flex-start;
+
+      white-space: normal;
+
+      .tooltip-list-item {
+        @include flex(1);
+        width: 100%;
+        padding-top: 5px;
+        padding-right: 5px;
+        padding-left: 10px;
+        padding-bottom: 5px;
+
+        .tooltip-list-item-title {
+          width: 100%;
+          font-size: 11px;
+          font-weight: 600;
+        }
+
+        .tooltip-list-item-detail {
+          width: 100%;
+          font-size: 11px;
+          font-weight: 400;
+        }
+      }
+    }
+
     .tooltip-row {
       @include flex(1);
       width: 100%;
@@ -88,7 +123,23 @@
         text-align: right;
       }
     }
+
+
+    .tooltip-button {
+      align-self: flex-end;
+      margin-top: 10px;
+      //border-radius: 5px;
+      //background-color: #4264a0;
+      //color: white;
+      //padding: 5px;
+      //cursor: pointer;
+
+      //&:hover {
+      //  @include drop-shadow(0 0 3px #888);
+      //}
+    }
   }
+}
 
 .time-chart-container {
 	position: relative;

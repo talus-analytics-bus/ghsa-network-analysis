@@ -1019,9 +1019,14 @@ const App = {};
 		const match = App.countries.find(d => d.ISO2 === iso);
 		if (match === undefined || match.country === false) {
 			return '';
-		} else {
+		} //older flags that have different shapes sometimes
+         else {
 			return `<img class="flag" src="img/flags/${iso.toLowerCase()}.png" />`;
-		}//change ${iso.toLowerCase()} to something that is like countryoobject.fullname or something
+		}
+        //newer flags that are all the same size but still not good
+        /*else {
+			return `<img class="flag" src="img/newFlags/${App.codeToNameMap.get(iso)}.png" />`;
+		}*/
 	};
 
 	App.getScoreNameHtml = (score) => {

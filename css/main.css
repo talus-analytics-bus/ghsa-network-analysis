@@ -1874,13 +1874,18 @@ b {
   margin-bottom: 12px;
 }
 
-/* line 40, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-content {
-  padding: 0px;
+/* line 39, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-box {
+  padding: 0;
 }
 
 /* line 43, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltip-contents {
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content {
+  padding: 0;
+}
+
+/* line 46, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents {
   display: -webkit-box;
   display: -moz-box;
   display: -ms-flexbox;
@@ -1892,8 +1897,8 @@ b {
   align-items: flex-start;
 }
 
-/* line 49, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltip-contents .tooltip-header {
+/* line 52, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-header {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   -webkit-flex: 1;
@@ -1904,20 +1909,67 @@ b {
   background-color: #eee;
 }
 
-/* line 55, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltip-contents .tooltip-header .tooltip-primary-header {
+/* line 58, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-header .tooltip-primary-header {
   font-size: 14px;
   font-weight: 600;
 }
 
-/* line 59, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltip-contents .tooltip-header .tooltip-sub-header {
+/* line 62, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-header .tooltip-sub-header {
   font-size: 11px;
   font-weight: 400;
 }
 
-/* line 65, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltip-contents .tooltip-row {
+/* line 68, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list {
+  -webkit-box-flex: 2;
+  -moz-box-flex: 2;
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  white-space: normal;
+}
+
+/* line 78, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list .tooltip-list-item {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  width: 100%;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-left: 10px;
+  padding-bottom: 5px;
+}
+
+/* line 86, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list .tooltip-list-item .tooltip-list-item-title {
+  width: 100%;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* line 92, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list .tooltip-list-item .tooltip-list-item-detail {
+  width: 100%;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+/* line 100, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-row {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   -webkit-flex: 1;
@@ -1938,8 +1990,8 @@ b {
   justify-content: space-between;
 }
 
-/* line 77, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltip-contents .tooltip-row .tooltip-row-title {
+/* line 112, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-row .tooltip-row-title {
   -webkit-box-flex: 1 1 auto;
   -moz-box-flex: 1 1 auto;
   -webkit-flex: 1 1 auto;
@@ -1950,8 +2002,8 @@ b {
   font-weight: 600;
 }
 
-/* line 84, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltip-contents .tooltip-row .tooltip-row-detail {
+/* line 119, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-row .tooltip-row-detail {
   -webkit-box-flex: 1 1 auto;
   -moz-box-flex: 1 1 auto;
   -webkit-flex: 1 1 auto;
@@ -1962,7 +2014,13 @@ b {
   text-align: right;
 }
 
-/* line 93, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+/* line 128, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-button {
+  align-self: flex-end;
+  margin-top: 10px;
+}
+
+/* line 144, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
 .time-chart-container {
   position: relative;
   /*.source-text {
@@ -1973,7 +2031,7 @@ b {
 	}*/
 }
 
-/* line 111, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
+/* line 162, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
 .time-chart-container .country-summary-label {
   font-weight: 400;
   font-size: 1.2em;

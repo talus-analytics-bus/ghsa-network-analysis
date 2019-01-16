@@ -199,7 +199,7 @@
                     trigger: 'click',
                     side: 'top',
                     distance: 0,
-
+                    theme: ['tooltipster-shadow', 'tooltipster-talus'],
                 });
             });
         
@@ -235,6 +235,7 @@
                     trigger: 'hover',
                     side: 'top',
                     distance: 0,
+                    theme: ['tooltipster-shadow', 'tooltipster-talus'], 
                 });
             });
         
