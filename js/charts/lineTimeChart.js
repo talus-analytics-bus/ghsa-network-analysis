@@ -181,21 +181,25 @@
             .each(function(d,i) {
                 $(this).tooltipster({
                     content: `
-                    <div class = "countName">${country} (${d.year})</div> 
-                    <div class= "amount">
-                        <div> ${App.formatMoneyShort(d.total_committed)} 
-                        USD </div>
-                        <p class = "comOrSpent"> Committed </p>
-                    </div>
-                    <div class = "amount">
-                        <div> ${App.formatMoneyShort(d.total_spent)} 
-                        USD </div> 
-                        <p class = "comOrSpent"> Disbursed </p>
+                    <div class="tooltip-contents">
+                        <div class="tooltip-header">
+                            <div class="tooltip-primary-header">${country}</div> <div class="tooltip-sub-header">(${d.year})</div>
+                        </div>
+
+                        <div class="tooltip-row">
+                            <div class="tooltip-row-title"> Committed </div>
+                            <div class="tooltip-row-detail"> ${App.formatMoneyShort(d.total_committed)}&nbsp;USD </div> 
+                        </div>
+                        <div class="tooltip-row">
+                            <div class="tooltip-row-title"> Disbursed </div>
+                            <div class="tooltip-row-detail"> ${App.formatMoneyShort(d.total_spent)}&nbsp;USD </div>
+                        </div>
                     </div>
                     `,
-                    trigger: 'hover',
+                    trigger: 'click',
                     side: 'top',
                     distance: 0,
+
                 });
             });
         
@@ -212,18 +216,22 @@
             .attr('opacity',0)
             .each(function(d,i) {
                 $(this).tooltipster({
-                    content: `                   
-                    <div class = "countName">${country} (${d.year})</div> 
-                    <div class= "amount">
-                        <div> ${App.formatMoneyShort(d.total_committed)} 
-                        USD </div>
-                        <p class = "comOrSpent"> Committed </p>
+                    content: `
+                    <div class="tooltip-contents">
+                        <div class="tooltip-header">
+                            <div class="tooltip-primary-header">${country}</div> <div class="tooltip-sub-header">(${d.year})</div>
+                        </div>
+
+                        <div class= "tooltip-row">
+                            <div class="tooltip-row-title"> Committed </div>
+                            <div class="tooltip-row-detail"> ${App.formatMoneyShort(d.total_committed)}USD </div> 
+                        </div>
+                        <div class="tooltip-row">
+                            <div class="tooltip-row-title"> Disbursed </div>
+                            <div class="tooltip-row-detail"> ${App.formatMoneyShort(d.total_spent)}USD </div>
+                        </div>
                     </div>
-                    <div class = "amount">
-                        <div> ${App.formatMoneyShort(d.total_spent)} 
-                        USD </div> 
-                        <p class = "comOrSpent"> Disbursed </p>
-                    </div>`,
+                    `,
                     trigger: 'hover',
                     side: 'top',
                     distance: 0,
