@@ -98,37 +98,6 @@ const Map = {};
 			}
 		}
 
-		// pan and zoom function
-		zoomed() {
-			this.countries.style('stroke-width', `${1.5 / d3.event.transform.k}px`);
-			this.countries.attr('transform', d3.event.transform);
-		}
-
-		zoomTo(d) {
-			// move country to top of layer
-			// $(this.parentNode).append(this);
-
-			// call zoom
-			const bounds = this.path.bounds(d);
-			const dx = bounds[1][0] - bounds[0][0];
-			const dy = bounds[1][1] - bounds[0][1];
-			const x = (bounds[0][0] + bounds[1][0]) / 2;
-			const y = (bounds[0][1] + bounds[1][1]) / 2;
-			const s = Math.max(1, Math.min(8, 0.7 / Math.max(dx / this.width, dy / this.height)));
-			const t = [this.width / 2 - s * x, this.height / 2 - s * y - 90];
-			return this.svg
-				.transition()
-				.duration(750)
-				.call(this.zoom.transform, d3.zoomIdentity.translate(t[0], t[1]).scale(s));
-		}
-
-		reset() {
-			this.svg
-				.transition()
-				.duration(750)
-				.call(this.zoom.transform, d3.zoomIdentity);
-		}
-
 		update(data) {
 			this.data = data;
 
@@ -265,6 +234,7 @@ const Map = {};
             });
         }
 
+
         //zoom settings? 
         zoomed() {
             this.zoomLevel = d3.event.transform.k;
@@ -274,12 +244,34 @@ const Map = {};
                 d3.event.transform.y = 0;
             }
 
-            this.chart.selectAll('.zoomable').style('stroke-width', `${1.5 / this.zoomLevel}px`);
-            this.chart.selectAll('.zoomable').attr('transform', d3.event.transform);
-            this.chart.selectAll('circle.zoomable').attr('r', `${7 / this.zoomLevel}px`);
+			this.countries.style('stroke-width', `${1.5 / d3.event.transform.k}px`);
+			this.countries.attr('transform', d3.event.transform);
+
+            // this.chart.selectAll('.zoomable').style('stroke-width', `${1.5 / this.zoomLevel}px`);
+            // this.chart.selectAll('.zoomable').attr('transform', d3.event.transform);
+            // this.chart.selectAll('circle.zoomable').attr('r', `${7 / this.zoomLevel}px`);
 
             this.toggleResetButton();
         }
+
+		zoomTo(d) {
+			// move country to top of layer
+			// $(this.parentNode).append(this);
+
+			// call zoom
+			const bounds = this.path.bounds(d);
+			const dx = bounds[1][0] - bounds[0][0];
+			const dy = bounds[1][1] - bounds[0][1];
+			const x = (bounds[0][0] + bounds[1][0]) / 2;
+			const y = (bounds[0][1] + bounds[1][1]) / 2;
+			const s = Math.max(1, Math.min(8, 0.7 / Math.max(dx / this.width, dy / this.height)));
+			const t = [this.width / 2 - s * x, this.height / 2 - s * y - 90];
+			return this.svg
+				.transition()
+				.duration(750)
+				.call(this.zoom.transform, d3.zoomIdentity.translate(t[0], t[1]).scale(s));
+		}
+
 
         zoomIncrementally(value) {
             this.svg
@@ -294,6 +286,7 @@ const Map = {};
                 .duration(750)
                 .call(this.zoom.transform, d3.zoomIdentity);
         }
+
 	}
    
 	Map.createWorldMap = (selector, world) => {
