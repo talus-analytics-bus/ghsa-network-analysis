@@ -196,7 +196,7 @@
                         </div>
                     </div>
                     `,
-                    trigger: 'click',
+                    trigger: 'hover',
                     side: 'top',
                     distance: 0,
                     theme: ['tooltipster-shadow', 'tooltipster-talus'],

@@ -4,27 +4,47 @@
   border-bottom: $light-border;
   background-color: white;
    //editing the nav bar on light 
+  .nav-item{
+    padding: 15px; 
+  }
   .navbar-nav>li>a{
     color: #777;
+    padding: 0px !important;
     }
-  .navbar-nav>.active>a {
+  .navbar-nav>li>a:hover{
+    color:#52a8e6;
+    font-weight: 900;
+    }
+  .navbar-nav>.active>a{
     background-color: white !important;
-    font-weight: 1000;
+    font-weight: 900;
     color: #777; 
-    text-decoration: underline;   
+    border-bottom: 2px solid #777; 
     }
-    //end editing nav bar on light
+    .navbar-nav>.active>a:hover{
+    color: #777;   
+    }
+  //end editing nav bar on light
+
     
   &.dark {
     background-color: $darkcolor;
     border-bottom: none;
     //editing nav bar on dark
-    .navbar-nav>.active>a {
-      background-color: #222222 !important;
-      color: white;
-    }
     .navbar-nav>li>a{
       color: white;
+    }
+    .navbar-nav>li>a:hover{
+      color:#52a8e6;
+      font-weight: 900;
+    }
+    .navbar-nav>.active>a{
+      background-color: #222222 !important;
+      color: white;
+      border-bottom: 2px solid white;
+    }
+    .navbar-nav>.active>a:hover{
+    color: white;   
     }
     //end editing navbar on white
   }

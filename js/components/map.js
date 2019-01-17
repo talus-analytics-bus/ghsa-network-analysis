@@ -6,10 +6,23 @@ const Map = {};
 	 * @param {String} selector A selector of the container element the map will be placed in
 	 * @return {Object} An object containing the map and the layer containing drawn items
 	 */
+    
+    /* Notes for adding the zoom buttons: Zoom buttons, reset, zoom incremental 
+        Most zooming will probably already be done for me */ 
+    
 	class WorldMap extends Chart {
 		constructor(selector, params={}) {
 			super(selector, params);
 
+            //new
+            this.transform = {
+				k: 1,
+				x: 0,
+				y: 0,
+			};
+			this.zoomLevel = 1;
+            //end new
+            
 			this.world = params.world;
 			this.topoworld = topojson.feature(
 				this.world,
@@ -45,12 +58,14 @@ const Map = {};
 				.scaleExtent([1, 8])
 				.on('zoom', () => this.zoomed());  // need to not overwrite `this`
 
-			this.svg.call(this.zoom);
+			this.svg
+                .call(this.zoom);
+                //.on('wheel.zoom',null);
 
 			this.addOverlay();
 			this.addCountries();
 		}
-
+        
 		addOverlay() {
 			// add overlay: where zoom and pan events are
 			this.newGroup('overlay')
@@ -118,15 +133,175 @@ const Map = {};
 			this.data = data;
 
 		}
-	}
+        
+        //putting the buttons on there. Good. Nothing to break here. 
+        addButtons() {
+            this.newGroup('buttons');
 
-    
-    
+            this.buttons
+                .style('font-family', 'Open Sans, sans-serif');
+
+            this.addResetButton();
+            this.addZoomButtons();
+        }
+
+        //reset buttons 
+        addResetButton() {
+            this.newGroup('resetButton', this.buttons);
+
+            const resetWidth = 50;
+            const resetHeight = 25;
+
+            this.buttons
+                .resetButton
+                .attr('transform', `translate(${this.width - resetWidth}, ${-resetHeight})`)
+                .style('visibility', 'hidden');
+
+            this.buttons
+                .resetButton
+                .append('rect')
+                .attr('width', resetWidth)
+                .attr('height', resetHeight)
+                .attr('fill', '#ffffff')
+                .attr('fill-opacity', 0.9)
+                .attr('rx', 3)
+                .attr('ry', 3)
+                .style('stroke', 'black')
+                .style('stroke-opacity', 0.6);
+
+            this.buttons
+                .resetButton
+                .append('text')
+                .attr('transform', `translate(6, ${resetHeight / 2 + 5})`)
+                .text('Reset');
+
+            this.buttons
+                .resetButton
+                .style('cursor', 'pointer')
+                .on('click', () => {
+                    this.reset();
+                })
+        }
+
+        toggleResetButton() {
+            if (this.zoomLevel > 1) {
+                this.buttons
+                    .resetButton
+                    .style('visibility', 'visible');
+            } else {
+                this.buttons
+                    .resetButton
+                    .style('visibility', 'hidden');
+            }
+        }
+
+        //add zoom buttons 
+        addZoomButtons() {
+            this.newGroup('zoomButtons', this.buttons);
+
+            const width = 25;
+            const height = 50;
+
+            this.buttons
+                .zoomButtons
+                .attr('transform', `translate(${this.width - width})`)
+                .style('cursor', 'pointer');
+
+            this.buttons
+                .zoomButtons
+                .append('rect')
+                .attr('width', width)
+                .attr('height', height)
+                .attr('rx', 3)
+                .attr('ry', 3)
+                .attr('fill', 'white')
+                .attr('fill-opacity', 0.9)
+                .style('stroke', 'black')
+                .style('stroke-opacity', 0.6);
+
+            this.buttons
+                .zoomButtons
+                .append('rect')
+                .attr('y', height / 2)
+                .attr('width', width)
+                .attr('height', 1)
+                .attr('fill', 'black')
+                .attr('fill-opacity', 0.6);
+
+            this.newGroup('zoomIn', this.buttons.zoomButtons);
+            const zoomIn = this.buttons.zoomButtons.zoomIn;
+
+            this.newGroup('zoomOut', this.buttons.zoomButtons);
+            const zoomOut = this.buttons.zoomButtons.zoomOut;
+
+            // https://stackoverflow.com/questions/25969496/d3-js-append-a-span-with-glyphicon-class
+
+            //DO I WANT TO APPEND svg:foreignObject
+            // or xhtml:span 
+
+            const zoomInButton = zoomIn.append("svg:foreignObject")
+                .attr("width", width)
+                .attr("height", width)
+                .style('text-align', 'center')
+                .append("xhtml:span")
+                .style('vertical-align', 'middle')
+                .attr("class", "control glyphicon glyphicon-zoom-in");
+
+            zoomInButton.on('click', () => {
+                this.zoomIncrementally(1.75);
+            });
+
+            const zoomOutButton = zoomOut.attr('transform', `translate(0, ${0.5 * height})`)
+                .append("svg:foreignObject")
+                .style('text-align', 'center')
+                .attr("width", width)
+                .attr("height", width)
+                .append("xhtml:span")
+                .style('vertical-align', 'middle')
+                .attr("class", "control glyphicon glyphicon-zoom-out");
+
+            zoomOutButton.on('click', () => {
+                this.zoomIncrementally(.5);
+            });
+        }
+
+        //zoom settings? 
+        zoomed() {
+            this.zoomLevel = d3.event.transform.k;
+
+            if (this.zoomLevel === 1) {
+                d3.event.transform.x = 0;
+                d3.event.transform.y = 0;
+            }
+
+            this.chart.selectAll('.zoomable').style('stroke-width', `${1.5 / this.zoomLevel}px`);
+            this.chart.selectAll('.zoomable').attr('transform', d3.event.transform);
+            this.chart.selectAll('circle.zoomable').attr('r', `${7 / this.zoomLevel}px`);
+
+            this.toggleResetButton();
+        }
+
+        zoomIncrementally(value) {
+            this.svg
+                .transition()
+                .duration(600)
+                .call(this.zoom.scaleBy, value);
+        }
+
+        reset() {
+            this.svg
+                .transition()
+                .duration(750)
+                .call(this.zoom.transform, d3.zoomIdentity);
+        }
+	}
+   
 	Map.createWorldMap = (selector, world) => {
 		const map = new WorldMap(selector, { world });
 		return map;
 
 		// --- old ---
+        //not used anymore below this
 		// prepare map
 		const width = 1200;
 		const height = 640;

@@ -1091,32 +1091,61 @@ select.form-control {
 }
 
 /* line 7, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
-.navbar .navbar-nav > li > a {
-  color: #777;
+.navbar .nav-item {
+  padding: 15px;
 }
 
 /* line 10, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
-.navbar .navbar-nav > .active > a {
-  background-color: white !important;
-  font-weight: 1000;
+.navbar .navbar-nav > li > a {
   color: #777;
-  text-decoration: underline;
+  padding: 0px !important;
+}
+
+/* line 14, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+.navbar .navbar-nav > li > a:hover {
+  color: #52a8e6;
+  font-weight: 900;
 }
 
 /* line 18, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+.navbar .navbar-nav > .active > a {
+  background-color: white !important;
+  font-weight: 900;
+  color: #777;
+  border-bottom: 2px solid #777;
+}
+
+/* line 24, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+.navbar .navbar-nav > .active > a:hover {
+  color: #777;
+}
+
+/* line 30, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
 .navbar.dark {
   background-color: #222222;
   border-bottom: none;
 }
 
-/* line 22, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
-.navbar.dark .navbar-nav > .active > a {
-  background-color: #222222 !important;
+/* line 34, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+.navbar.dark .navbar-nav > li > a {
   color: white;
 }
 
-/* line 26, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
-.navbar.dark .navbar-nav > li > a {
+/* line 37, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+.navbar.dark .navbar-nav > li > a:hover {
+  color: #52a8e6;
+  font-weight: 900;
+}
+
+/* line 41, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+.navbar.dark .navbar-nav > .active > a {
+  background-color: #222222 !important;
+  color: white;
+  border-bottom: 2px solid white;
+}
+
+/* line 46, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+.navbar.dark .navbar-nav > .active > a:hover {
   color: white;
 }
 
@@ -1134,14 +1163,14 @@ select.form-control {
   }
 }
 
-/* line 37, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+/* line 57, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
 .navbar .navbar-header .navbar-brand {
   padding-top: 3px;
   cursor: pointer;
   height: auto;
 }
 
-/* line 42, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+/* line 62, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
 .navbar .navbar-header .navbar-brand .logo {
   display: inline-block;
   max-height: 70px;
@@ -1154,47 +1183,47 @@ select.form-control {
   background-image: url("/img/logo-light.png");
 }
 
-/* line 54, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+/* line 74, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
 .navbar .navbar-header .navbar-brand .logo.dark {
   background-image: url("/img/logo-dark.png");
 }
 
 @media (max-width: 440px) {
-  /* line 42, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+  /* line 62, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
   .navbar .navbar-header .navbar-brand .logo {
     width: 200px;
   }
 }
 
 @media (max-width: 340px) {
-  /* line 42, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+  /* line 62, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
   .navbar .navbar-header .navbar-brand .logo {
     width: 150px;
   }
 }
 
-/* line 62, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+/* line 82, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
 .navbar .navbar-header .navbar-brand span:hover {
   color: #000;
 }
 
-/* line 66, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+/* line 86, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
 .navbar .navbar-header .navbar-brand a:hover {
   text-decoration: none;
 }
 
-/* line 81, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+/* line 101, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
 .navbar .navbar-nav > li {
   cursor: pointer;
   margin-top: 10px;
 }
 
-/* line 90, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+/* line 110, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
 .navbar .navbar-nav > li.light {
   color: #555;
 }
 
-/* line 93, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
+/* line 113, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_navbar.scss */
 .navbar .navbar-nav > li.dark {
   color: white;
 }
@@ -1607,6 +1636,152 @@ b {
   margin-top: 10px;
 }
 
+/* line 38, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-box {
+  padding: 0;
+}
+
+/* line 42, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content {
+  padding: 0;
+}
+
+/* line 45, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* line 51, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-header {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  width: 100%;
+  padding: 10px;
+  background-color: #eee;
+}
+
+/* line 57, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-header .tooltip-primary-header {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* line 61, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-header .tooltip-sub-header {
+  font-size: 11px;
+  font-weight: 400;
+}
+
+/* line 67, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list {
+  -webkit-box-flex: 2;
+  -moz-box-flex: 2;
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  white-space: normal;
+}
+
+/* line 77, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list .tooltip-list-item {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  width: 100%;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-left: 10px;
+  padding-bottom: 5px;
+}
+
+/* line 85, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list .tooltip-list-item .tooltip-list-item-title {
+  width: 100%;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* line 91, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list .tooltip-list-item .tooltip-list-item-detail {
+  width: 100%;
+  font-size: 11px;
+  font-weight: 400;
+}
+
+/* line 99, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-row {
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  width: 100%;
+  padding-top: 5px;
+  padding-right: 5px;
+  padding-left: 10px;
+  padding-bottom: 5px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  flex-flow: row;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+/* line 111, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-row .tooltip-row-title {
+  -webkit-box-flex: 1 1 auto;
+  -moz-box-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  margin-right: 20px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* line 118, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-row .tooltip-row-detail {
+  -webkit-box-flex: 1 1 auto;
+  -moz-box-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  -ms-flex: 1 1 auto;
+  flex: 1 1 auto;
+  font-size: 11px;
+  font-weight: 400;
+  text-align: right;
+}
+
+/* line 127, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_tooltips.scss */
+.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-button {
+  align-self: flex-end;
+  margin-top: 10px;
+}
+
 /* line 1, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/components/_sources.scss */
 .source-text {
   margin-bottom: 0px;
@@ -1874,152 +2049,110 @@ b {
   margin-bottom: 12px;
 }
 
-/* line 39, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-box {
+/*.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-box {
   padding: 0;
 }
 
-/* line 43, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
 .tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content {
   padding: 0;
-}
 
-/* line 46, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  flex-flow: row;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  align-items: flex-start;
-}
+  .tooltip-contents {
+    @include flexbox();
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
 
-/* line 52, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-header {
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  width: 100%;
-  padding: 10px;
-  background-color: #eee;
-}
+    .tooltip-header {
+      @include flex(1);
+      width: 100%;
+      padding: 10px;
+      background-color: #eee;
 
-/* line 58, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-header .tooltip-primary-header {
-  font-size: 14px;
-  font-weight: 600;
-}
+      .tooltip-primary-header {
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .tooltip-sub-header {
+        font-size: 11px;
+        font-weight: 400;
+      }
+    }
 
-/* line 62, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-header .tooltip-sub-header {
-  font-size: 11px;
-  font-weight: 400;
-}
+    .tooltip-list {
+      @include flex(2);
 
-/* line 68, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list {
-  -webkit-box-flex: 2;
-  -moz-box-flex: 2;
-  -webkit-flex: 2;
-  -ms-flex: 2;
-  flex: 2;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  flex-flow: row;
-  flex-flow: column nowrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  white-space: normal;
-}
+      @include flexbox();
+      flex-flow: column nowrap;
+      justify-content: space-between;
+      align-items: flex-start;
 
-/* line 78, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list .tooltip-list-item {
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  width: 100%;
-  padding-top: 5px;
-  padding-right: 5px;
-  padding-left: 10px;
-  padding-bottom: 5px;
-}
+      white-space: normal;
 
-/* line 86, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list .tooltip-list-item .tooltip-list-item-title {
-  width: 100%;
-  font-size: 11px;
-  font-weight: 600;
-}
+      .tooltip-list-item {
+        @include flex(1);
+        width: 100%;
+        padding-top: 5px;
+        padding-right: 5px;
+        padding-left: 10px;
+        padding-bottom: 5px;
 
-/* line 92, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-list .tooltip-list-item .tooltip-list-item-detail {
-  width: 100%;
-  font-size: 11px;
-  font-weight: 400;
-}
+        .tooltip-list-item-title {
+          width: 100%;
+          font-size: 11px;
+          font-weight: 600;
+        }
 
-/* line 100, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-row {
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  width: 100%;
-  padding-top: 5px;
-  padding-right: 5px;
-  padding-left: 10px;
-  padding-bottom: 5px;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  flex-flow: row;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-}
+        .tooltip-list-item-detail {
+          width: 100%;
+          font-size: 11px;
+          font-weight: 400;
+        }
+      }
+    }
 
-/* line 112, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-row .tooltip-row-title {
-  -webkit-box-flex: 1 1 auto;
-  -moz-box-flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  margin-right: 20px;
-  font-size: 11px;
-  font-weight: 600;
-}
+    .tooltip-row {
+      @include flex(1);
+      width: 100%;
+      padding-top: 5px;
+      padding-right: 5px;
+      padding-left: 10px;
+      padding-bottom: 5px;
 
-/* line 119, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-row .tooltip-row-detail {
-  -webkit-box-flex: 1 1 auto;
-  -moz-box-flex: 1 1 auto;
-  -webkit-flex: 1 1 auto;
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  font-size: 11px;
-  font-weight: 400;
-  text-align: right;
-}
+      @include flexbox();
+      flex-flow: row nowrap;
+      justify-content: space-between;
 
-/* line 128, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
-.tooltipster-sidetip.tooltipster-shadow.tooltipster-talus .tooltipster-content .tooltip-contents .tooltip-button {
-  align-self: flex-end;
-  margin-top: 10px;
-}
+      .tooltip-row-title {
+        @include flex(1 1 auto);
+        margin-right: 20px;
+        font-size: 11px;
+        font-weight: 600;
+      }
 
+      .tooltip-row-detail {
+        @include flex(1 1 auto);
+        font-size: 11px;
+        font-weight: 400;
+        text-align: right;
+      }
+    }
+
+
+    .tooltip-button {
+      align-self: flex-end;
+      margin-top: 10px;
+      //border-radius: 5px;
+      //background-color: #4264a0;
+      //color: white;
+      //padding: 5px;
+      //cursor: pointer;
+
+      //&:hover {
+      //  @include drop-shadow(0 0 3px #888);
+      //}
+    }
+  }
+}*/
 /* line 144, /Users/logandavidson/Documents/GitHub/ghsa-network-analysis/sass/charts/_timeChart.scss */
 .time-chart-container {
   position: relative;
