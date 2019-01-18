@@ -9,7 +9,16 @@
 				(d.recipient_name || 'Not Reported').toString(),
 			]);
 
-		$('.download-container').text(`Download all available data (${Util.comma(data.length)} records)`)
+        
+        var downloadImg = document.createElement("img");
+        downloadImg.src = '/img/logo-download-light.svg';
+        
+        var downloadBtn = document.getElementsByClassName('download-container');
+        console.log('downloadBtn');
+        //downloadBtn.appendChild(downloadImg);
+        
+		//$('.download-container').text(`HERE Download all available data (${Util.comma(data.length)} records)`)
+        $('.download-container').html(`<span class="glyphicon glyphicon-download-alt"></span>&nbsp;&nbsp;Download all available data (${Util.comma(data.length)} records)`)
 			.on('click', () => {
 				download("fundingData.json", JSON.stringify(App.fundingData));
 			});
