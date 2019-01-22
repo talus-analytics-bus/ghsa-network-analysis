@@ -33,7 +33,6 @@
   clear: both;
   margin: 25px 0;
 
-  
   @media (max-width: 576px) { // default *smallest* bootstrap breakpoint
     /* This defines the mobile view!! */
     // todo figure out real break
@@ -92,12 +91,8 @@
     bottom: 0;
     padding-top: 0;
     padding-bottom: 0;
-    /*padding-left: 25px;*/
-    /*padding-right: 25px;*/
-    /*new*/
-    padding-left: 0px;
-    padding-right: 0px;
-    /*new*/
+    padding-left: 25px;
+    padding-right: 25px;
     //border: 1px solid #eee;
     border: $light-border;
     visibility: hidden;

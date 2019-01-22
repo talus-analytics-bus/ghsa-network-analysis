@@ -1,7 +1,7 @@
-table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting:after {
+/*table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting:after {
    position: static;
    display: inline;
-}
+}*/
 
 .data-container {
   @include flexbox(column nowrap);
@@ -69,21 +69,6 @@ table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting:after {
     align-self: flex-end;
     padding: 10px;
     margin: 10px 0;
-    &:before {
-        // taken from the ghsa-button css in the _buttons.scss
-        vertical-align: middle;
-        white-space: pre;
-        content: '          ' attr(value);
-        background-repeat: no-repeat;
-        background-position: top left;
-        background-size: contain;
-        height: 26px;
-        width: 26px;
-        position: absolute;
-        left: 10px;
-        top: 10px;
-        background-image: url('/img/logo-download-light.svg');
-  }
   }
 
   .paginate_button {

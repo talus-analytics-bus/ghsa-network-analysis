@@ -21,27 +21,38 @@
     align-self: flex-end;
     z-index: 1000;
   }
-
+    
   .map-page-tabs {
     width: 100%;
     margin-top: -35px;
       
     /*height: 920px;*/
       /*new*/
-      height: 648px;
+      //height: 648px;
       /*new*/
     @media (max-width: 1199px) { height: 1100px; }
     @media (max-width: 992px) { height: 1550px; }
     @media (max-width: 768px) { height: 1940px; }
     @media (max-width: 496px) { height: 2000px; }
 
+    .org-content{
+    height: 750px !important;
+    margin-bottom: 45px;
+    }
+      
+    .map-content{
+    height: 648px !important;
+    padding: 0px;
+    margin-bottom: -100px;
+    }
+      
     .content {
       @include flexbox(row nowrap);
       justify-content: space-between;
       align-items: flex-start;
       /*height: 76%;*/
       /*new*/
-        height: 100%;
+        //height: 100%;
       /*new*/
 
       .left-pane {

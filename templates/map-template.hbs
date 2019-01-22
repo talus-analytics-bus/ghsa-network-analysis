@@ -10,7 +10,7 @@
                 <input type="radio" id="map-tab" name="map-tabs" checked>
                 <label for="map-tab">Countries</label>
 
-                <div class="content" tab="map">
+                <div class="content map-content" tab="map">
 
                     <div class="left-pane">
                         <div class="map-header">
@@ -236,7 +236,7 @@
                 <input type="radio" id="org-tab" name="map-tabs">
                 <label for="org-tab">Organizations</label>
 
-                <div class="content" tab="org">
+                <div class="content org-content" tab="org">
                     <!--<div class="map-and-search-container">-->
                     <!--{{!--                     <div class="map-options-container ghsa-toggle-container">-->
                                                 <!--<div class="map-options-title">-->
@@ -382,44 +382,52 @@
                                             <div class="live-search-results-contents"></div>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary alt-btn btn-view-ghsa">View GHSA Details</button>
-                                    <button class="btn btn-primary alt-btn btn-view-map">View Map</button>
+                                        
+                                    <div class="sectionTwo">
+                                        <button class="btn btn-primary alt-btn btn-view-ghsa">View GHSA Details</button>
+                                        <button class="btn btn-primary alt-btn btn-view-map">View Map</button>
+                                    </div>
+
+                                    <div class="sectionThree">
+                                    <!--<div class="landing-controls-container">-->
+                                        <div class="ghsa-toggle-options landing-page-options">
+                                            <div class="dropdown-label">Click to show:</div>
+                                            <div class="ind-type-filter-ghsa">
+                                                <div class="radio-option">
+                                                    <input type="radio" name="ghsa-toggle-landing" ind="money" checked/>
+                                                    <span>All Funding</span>
+                                                </div>
+                                                <div class="radio-option">
+                                                    <input type="radio" name="ghsa-toggle-landing" ind="ghsa"/>
+                                                    <span>GHSA Funding Only</span>
+                                                    <img class="ghsa-info-img info-img" src="img/info.png"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="support-type-toggle-options landing-page-options">
+                                            <div class="dropdown-label">Support type:</div>
+                                            <div class="ind-type-filter">
+                                                <div class="radio-option">
+                                                    <label>
+                                                        <input type="radio" name="supporttype" ind="financial" checked/>
+                                                        Financial Support
+                                                    </label>
+                                                </div>
+                                                <div class="radio-option">
+                                                    <label>
+                                                        <input type="radio" name="supporttype" ind="inkind"/>
+                                                        In-kind Support <img class="inkind-support-info-img info-img" src="img/info.png"/
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
-                        <div class="landing-controls-container">
-                            <div class="ghsa-toggle-options landing-page-options">
-                                <div class="dropdown-label">Click to show:</div>
-                                <div class="ind-type-filter-ghsa">
-                                    <div class="radio-option">
-                                        <input type="radio" name="ghsa-toggle-landing" ind="money" checked/>
-                                        <span>All Funding</span>
-                                    </div>
-                                    <div class="radio-option">
-                                        <input type="radio" name="ghsa-toggle-landing" ind="ghsa"/>
-                                        <span>GHSA Funding Only</span>
-                                        <img class="ghsa-info-img info-img" src="img/info.png"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="support-type-toggle-options landing-page-options">
-                                <div class="dropdown-label">Support type:</div>
-                                <div class="ind-type-filter">
-                                    <div class="radio-option">
-                                        <label>
-                                            <input type="radio" name="supporttype" ind="financial" checked/>
-                                            Financial Support
-                                        </label>
-                                    </div>
-                                    <div class="radio-option">
-                                        <label>
-                                            <input type="radio" name="supporttype" ind="inkind"/>
-                                            In-kind Support <img class="inkind-support-info-img info-img"
-                                                                 src="img/info.png"/></label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="table-content">
                             <div class="left-table">
                                 <h3 class="fund-table-title"><span class="text">Top Funders</span>
@@ -429,7 +437,7 @@
                                 <table class="donor-table country-table table table-bordered table-hover">
                                     <thead>
                                     <tr class="fund-header-row">
-                                        <td class="fund-col-name"><span class="head-text">Top Funders</span></td>
+                                        <td class="fund-col-name"><span class="head-text">Top Funders&nbsp;&nbsp</span></td>
                                         <td class="d-col-name">Disbursed</td>
                                     </tr>
                                     </thead>
@@ -443,7 +451,7 @@
                                 <table class="recipient-table country-table table table-bordered table-hover">
                                     <thead>
                                     <tr class="rec-header-row">
-                                        <td class="receive-col-name"><span class="head-text">Top Recipients</span></td>
+                                        <td class="receive-col-name"><span class="head-text">Top Recipients&nbsp;&nbsp</span></td>
                                         <td class="d-col-name">Disbursed</td>
                                     </tr>
                                     </thead>
