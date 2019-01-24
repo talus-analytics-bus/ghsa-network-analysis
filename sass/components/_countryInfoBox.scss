@@ -1,18 +1,13 @@
 .info-container {
 	display: none;
-	//position: absolute;
-	//top: 20px;
-	//left: 0;
 	width: 100%;
 	max-width: 350px;
 	pointer-events: none;
-    background-color: white !important;
     color: black !important;
+    background-color: $overlayLightColor !important;
+    
     &.dark {
-        /*background-color: #a0a0a0 !important;*/
-        /*new*/
-        /*background-color: rgba(160, 160, 160, 0.9);*/
-        /*new*/
+        background-color: $overlayDarkColor !important;
     }
 
 	.info-box {
@@ -21,12 +16,6 @@
 		position: relative;
 		padding: 0;
         width: 100%;
-		//max-width: 288px;
-		//background-color: rgba(255,255,255,1);
-        /*new*/
-        background-color: rgba(160, 160, 160, 0.9) !important;
-        /*new*/
-		// background-color: rgba(255,255,255,0.96);
 		pointer-events: all;
           color: white !important;
 	}

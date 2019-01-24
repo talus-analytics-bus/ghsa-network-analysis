@@ -52,7 +52,7 @@
 
         & ~ label {
           //background: white;
-          border: $light-border;
+          //border: $light-border;
           border-radius: 6px 6px 0px 0px; 
           border-bottom: 0;
           //border-bottom: 1px solid white;
@@ -94,22 +94,22 @@
     padding-left: 25px;
     padding-right: 25px;
     //border: 1px solid #eee;
-    border: $light-border;
+    //border: $light-border;
     visibility: hidden;
     display:none;
     //background: transparent;
 
-    background-color: $lightcolor;
+    background-color: $lightColorContainer;
     &.dark {
-      background-color: #555;
+      background-color: $darkColorContainer;
     }
 
   }
 
   & > .tab > [type=radio]:checked + label {
-    background-color: $lightcolor;
+    background-color: $lightColorContainer;
     &.dark {
-      background-color: #555;
+      background-color: $darkColorContainer;
     }
   }
 }

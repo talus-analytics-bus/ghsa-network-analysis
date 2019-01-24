@@ -10,12 +10,12 @@
     @include flex(1 1 180px);
 
     @media (max-width: 720px) {
-      border-bottom: $light-border;
+      border-bottom: $lightpage-border;
       padding-bottom: 10px;
     }
 
     &.dark {
-      border-right: $light-border;
+      border-right: $lightpage-border;
       @media (max-width: 720px) {
         border-right: none;
       }
