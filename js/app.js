@@ -54,7 +54,7 @@ const App = {};
 		App.currencyIso = 'USD';  // the default currency
 		App.fundingLookup = {};  // a lookup of money funded for each country
 		App.recipientLookup = {};  // a lookup of money received for each country
-		App.capacities = [{"id":"P.1","name":"P.1 - National Legislation, Policy, and Financing","idx":0},{"id":"P.2","name":"P.2 - IHR Coordination, Communicaton and Advocacy","idx":1},{"id":"P.3","name":"P.3 - Antimicrobial Resistance (AMR)","idx":2},{"id":"P.4","name":"P.4 - Zoonotic Disease","idx":3},{"id":"P.5","name":"P.5 - Food Safety","idx":4},{"id":"P.6","name":"P.6 - Biosafety and Biosecurity","idx":5},{"id":"P.7","name":"P.7 - Immunization","idx":6},{"id":"D.1","name":"D.1 - National Laboratory System","idx":7},{"id":"D.2","name":"D.2 - Real Time Surveillance","idx":8},{"id":"D.3","name":"D.3 - Reporting","idx":9},{"id":"D.4","name":"D.4 - Workforce Development","idx":10},{"id":"R.1","name":"R.1 - Preparedness","idx":11},{"id":"R.2","name":"R.2 - Emergency Response Operations","idx":12},{"id":"R.3","name":"R.3 - Linking Public Health and Security Authorities","idx":13},{"id":"R.4","name":"R.4 - Medical Countermeasures and Personnel Deployment","idx":14},{"id":"R.5","name":"R.5 - Risk Communication","idx":15},{"id":"PoE","name":"PoE - Point of Entry (PoE)","idx":16},{"id":"CE","name":"CE - Chemical Events","idx":17},{"id":"RE","name":"RE - Radiation Emergencies","idx":18},{"id":"General IHR Implementation","name":"General IHR Implementation","idx":19}];
+		App.capacities = [{"id":"P.1","name":"P.1 - National Legislation, Policy, and Financing","idx":0},{"id":"P.2","name":"P.2 - IHR Coordination, Communication and Advocacy","idx":1},{"id":"P.3","name":"P.3 - Antimicrobial Resistance (AMR)","idx":2},{"id":"P.4","name":"P.4 - Zoonotic Disease","idx":3},{"id":"P.5","name":"P.5 - Food Safety","idx":4},{"id":"P.6","name":"P.6 - Biosafety and Biosecurity","idx":5},{"id":"P.7","name":"P.7 - Immunization","idx":6},{"id":"D.1","name":"D.1 - National Laboratory System","idx":7},{"id":"D.2","name":"D.2 - Real Time Surveillance","idx":8},{"id":"D.3","name":"D.3 - Reporting","idx":9},{"id":"D.4","name":"D.4 - Workforce Development","idx":10},{"id":"R.1","name":"R.1 - Preparedness","idx":11},{"id":"R.2","name":"R.2 - Emergency Response Operations","idx":12},{"id":"R.3","name":"R.3 - Linking Public Health and Security Authorities","idx":13},{"id":"R.4","name":"R.4 - Medical Countermeasures and Personnel Deployment","idx":14},{"id":"R.5","name":"R.5 - Risk Communication","idx":15},{"id":"PoE","name":"PoE - Point of Entry (PoE)","idx":16},{"id":"CE","name":"CE - Chemical Events","idx":17},{"id":"RE","name":"RE - Radiation Emergencies","idx":18},{"id":"General IHR Implementation","name":"General IHR Implementation","idx":19}];
 		App.coreCapacitiesText = 'Core capacities were tagged based on names and descriptions of commitments and disbursements. A single commitment or disbursement may support more than one core capacity. Additional information on how core capacities were tagged can be found on the <a href="#glossary" onlick="function(){hasher.setHash(`#glossary`)}">data definitions</a> page.';
 		App.generalIhrText = 'Funds or support for "General IHR Implementation" are not associated with any specific core capacities, but instead provide general support for capacity-building under the International Health Regulations (e.g., supporting JEE missions, overall capacity building).';
 		App.inKindDefinition = `In-kind support is the contribution of goods or services to a recipient. Examples of in-kind support include providing technical expertise or programming support, or  supporting GHSA action packages.`;
@@ -96,7 +96,7 @@ const App = {};
 					  "intermediateRegionName": ""
 					}
 				);
-				
+
 				// save region names to countries
 				const regionMap = d3.map();
 				unsdData.forEach((d) => {
@@ -123,7 +123,7 @@ const App = {};
 				// Append WHO IATI data from v15 and IATI data from v16
 				// because WHO data are no longer accessible on D-Portal or IATI
 				// fundingData = fundingData.concat(whoIatiData);
-				
+
 				fundingData = fundingData.concat(submittedData);
 
 				// Set undefined assistance types to financial
@@ -138,11 +138,11 @@ const App = {};
 						} else if (cc === 'O.1') {
 							idx = d.core_capacities.indexOf(cc);
 							d.core_capacities[idx] = 'PoE';
-						
+
 						} else if (cc === 'O.2') {
 							idx = d.core_capacities.indexOf(cc);
 							d.core_capacities[idx] = 'CE';
-						
+
 						} else if (cc === 'O.3') {
 							idx = d.core_capacities.indexOf(cc);
 							d.core_capacities[idx] = 'RE';
@@ -156,13 +156,13 @@ const App = {};
 				App.addNonCountryRecipients(fundingData);
 				App.fundingData = fundingData;
 				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
-				
+
 				// Prepare funding lookup tables, etc.
 				App.loadFundingData({showGhsaOnly: false});
 
 				// tag datum if no specific value reported
 				App.tagProjectsWithNoValuesReported(fundingData);
-				
+
 				// save indicator scores by country
 				jeeData.forEach((sRow) => {
 					const indId = sRow.indicator.split(' ')[0];
@@ -267,7 +267,7 @@ const App = {};
 			App.fundingLookup[donor].push(p);
 			if (!App.recipientLookup[recipient]) App.recipientLookup[recipient] = [];
 			App.recipientLookup[recipient].push(p);
-		
+
 			// GHSA funding: store in 'ghsa' key
 			// for both dictionaries
 			if (p.ghsa_funding === true) {
@@ -363,7 +363,7 @@ const App = {};
 		const transactions = project.transactions;
 		const spendTrans = transactions.filter(d => { return d.type === "disbursement" || d.type === "expenditure"; });
 		const commitmentTrans = transactions.filter(d => { return d.type === "commitment"; });
-		
+
 		project.total_spent = 0.0;
 		project.total_committed = 0.0;
 		// const curYear = new Date().getFullYear();
@@ -423,7 +423,7 @@ const App = {};
 
 	/**
 	 * Given a set of projects, the type (funder/recipient), and the
-	 * code of the funder/recipient, returns anything that would be 
+	 * code of the funder/recipient, returns anything that would be
 	 * classified as "Inkind Support", one object per "table row".
 	 * @param  {array} projects Array of projects (objects)
 	 * @param  {string} type     'd' or 'r'
@@ -438,7 +438,7 @@ const App = {};
 			const codeField = typeIsFunded ? 'donor_code' : 'recipient_country';
 			const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
 			const groupsPartOf = App.getEntityGroups(code);
-			const filterIsCode = (project) => { 
+			const filterIsCode = (project) => {
 				const isSoloProject = project[codeField] === code;
 				const isGroupProject = groupsPartOf.indexOf(project[codeField]) > -1;
 				return isSoloProject || isGroupProject;
@@ -475,7 +475,7 @@ const App = {};
 		const codeField = typeIsFunded ? 'donor_code' : 'recipient_country';
 		const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
 
-		const filterIsCode = (project) => { 
+		const filterIsCode = (project) => {
 			return isSoloProject = project[codeField] === code;
 		};
 
@@ -488,7 +488,7 @@ const App = {};
 			return _.values(groupedById).map(d => d[0]);
 		};
 
-		return filterCountOnce(projects.filter(filterIsCode).filter(filterHasAmount));		
+		return filterCountOnce(projects.filter(filterIsCode).filter(filterHasAmount));
 	};
 
 	/**
@@ -531,7 +531,7 @@ const App = {};
 				return _.values(groupedById).map(d => d[0]);
 			};
 
-			return filterCountOnce(data);	
+			return filterCountOnce(data);
 		}
 	};
 
@@ -558,7 +558,7 @@ const App = {};
 			recipientGroups.push(recipientCode);
 
 			let data = [];
-			
+
 			data = projects.filter(project => {
 				const isFunder = funderGroups.indexOf(project.donor_code) > -1;
 				const isRecipient = recipientGroups.indexOf(project.recipient_country) > -1;
@@ -570,7 +570,7 @@ const App = {};
 				return _.values(groupedById).map(d => d[0]);
 			};
 
-			return filterCountOnce(data);	
+			return filterCountOnce(data);
 		}
 	};
 
@@ -615,7 +615,7 @@ const App = {};
 			const isMultilateralEffort = App.codes.find(d => d.donor_name === nameListed) === undefined;
 			if (isMultilateralEffort) nameListed = 'multilateral group';
 			namesList.push(nameListed);
-		});		
+		});
 		namesList = _.unique(namesList);
 		let nameString;
 		if (length > 2) {
@@ -645,7 +645,7 @@ const App = {};
 	App.getNonIatiProjectWithinYears = (projects, startYear, endYear) => {
 		return projects.filter(p => {
 			return p.years.some(year => startYear <= year && endYear >= year);
-		}); 
+		});
 	}
 
 
@@ -724,7 +724,7 @@ const App = {};
 			return _.values(groupedById).map(d => d[0]);
 		};
 
-		return filterCountOnce(projects.filter(filterAmountUnmappable));		
+		return filterCountOnce(projects.filter(filterAmountUnmappable));
 	};
 
 	/**
@@ -779,7 +779,7 @@ const App = {};
 			return _.values(groupedById).map(d => d[0]);
 		};
 
-		return filterCountOnce(projects.filter(filterAmountUnmappable));		
+		return filterCountOnce(projects.filter(filterAmountUnmappable));
 	};
 
 
@@ -788,7 +788,7 @@ const App = {};
 		const codeField = typeIsFunded ? 'donor_code' : 'recipient_country';
 		const unspecAmountField = typeIsFunded ? 'donor_amount_unspec' : 'recipient_amount_unspec';
 
-		const filterIsCode = (project) => { 
+		const filterIsCode = (project) => {
 			return project[codeField] === code;
 		};
 
@@ -801,7 +801,7 @@ const App = {};
 			return _.values(groupedById).map(d => d[0]);
 		};
 
-		return filterCountOnce(projects.filter(filterIsCode).filter(filterHasAmount));		
+		return filterCountOnce(projects.filter(filterIsCode).filter(filterHasAmount));
 	};
 
 
@@ -836,7 +836,7 @@ const App = {};
 	};
 
 	App.getFlagHtml = (iso) => {
-		
+
 		// If GGB, return the global image
 		if (iso === "General Global Benefit") {
 			return `<img class="flag globe" src="img/flags/ggb.png" />`;
@@ -931,16 +931,16 @@ const App = {};
 					project.donor_name = donorCode.donor_name;
 					project.donor_sector = donorCode.donor_sector;
 					project.donor_code = donorCode.donor_country || donorCode.donor_code;
-					
+
 				});
-				
+
 			});
 		// Save it out
 		console.log('projects');
 		console.log(projects);
 		Util.save(projects);
 	};
-    
+
 
 	/* ------------------ Format Functions ------------------- */
 	App.siFormat = (num) => {
