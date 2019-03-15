@@ -51,7 +51,7 @@
 					.attr('class','profile-type-text')
 					.append('span')
 						.attr('class','money-type-noun-cap-profile');
-						
+
 
 			$('.return-button').on('click', () => hasher.setHash('/'));
 
@@ -83,7 +83,7 @@
 			});
 		}
 
-		
+
 
 		/**
 		 * If the page shown is a recipient country with published JEE scores, they will be visible in
@@ -185,7 +185,7 @@
 				// Load correct funding data
 				indType = $(this).find('input').attr('ind');
 				App.showGhsaOnly = indType === 'ghsa';
-				
+
 				// Reload profile graphics and data
 				crossroads.parse(hasher.getHash());
 			});
@@ -621,7 +621,7 @@
 
 			// remove duplicates
 			fundedData = Util.uniqueCollection2(fundedData, 'project_name', 'iso');
-			
+
 			// draw table
 			const drawTable = (type) => {
 				const typeFilter = type === "total_spent" ? 'disbursement' : 'commitment';
@@ -642,7 +642,7 @@
 					header.append('td').html('Provider');
 					header.append('td').html('Recipient')
 						.style('padding-left','63px');
-							
+
 				}
 				header.append('td').html('Purpose of contribution');
 				const body = table.append('tbody');
@@ -741,7 +741,7 @@
 			// get table data
 			const countryInd = (moneyTypeForTable === 'd') ? 'recipient_country' : 'donor_code';
 			const countryIndOther = (moneyTypeForTable === 'd') ? 'donor_code' : 'recipient_country';
-			
+
 			// If "Top Funders" table:
 			let fundedData = [];
 			const fundedByCountry = {};
@@ -753,8 +753,8 @@
             const unspecFieldOther = moneyType === 'r' ? 'donor_amount_unspec' : 'recipient_amount_unspec';
 
 
-			// nameField is the original 
-			// name field for the recipient if hte table is 
+			// nameField is the original
+			// name field for the recipient if hte table is
 			// "Top Recipients" or the donor if its "Top Funders"
 			const nameFieldOrig = (moneyTypeForTable === 'd') ? 'recipient_name_orig' : 'donor_name_orig';
 			const nameFieldOrigOther = (moneyTypeForTable === 'd') ? 'donor_name_orig' : 'recipient_name_orig';
@@ -796,11 +796,13 @@
 							spent_on_respond: 0,
 							spent_on_other: 0,
 							spent_on_general: 0,
+							spent_on_unspec: 0,
 							committed_on_prevent: 0,
 							committed_on_detect: 0,
 							committed_on_respond: 0,
 							committed_on_other: 0,
 							committed_on_general: 0,
+							committed_on_unspec: 0,
 							all_unspec_amounts: true, // will always show full proj value for GHSA page
 						};
 					}
@@ -836,7 +838,7 @@
 							}
 						});
 					}
-					
+
 				});
 
 			// Map data for display in table
@@ -872,6 +874,9 @@
 					fundedByCountry[recIso].total_spent += p.total_spent;
 					const isoMatch = (p[countryIndOther] === iso || iso === 'ghsa');
 					if (isoMatch && !p.no_value_reported) fundedByCountry[recIso].all_unspec_amounts = false;
+
+					// get value for each core capacity breakdown
+					// TODO Here is where we need to add "Unspecified (i)"
 					p.core_capacities.forEach(cc => {
 						const ccAbbrev = cc.split('.')[0];
 						if (ccAbbrev === 'P') {
