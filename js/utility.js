@@ -51,43 +51,43 @@ const Util = {};
 	};
 
 	Util.uniqueCollection = (collection, key) => {
-	    const output = [];
-	    const groupedCollection = _.groupBy(collection, key);
+		const output = [];
+		const groupedCollection = _.groupBy(collection, key);
 
-	    _.mapObject(groupedCollection, (val) => {
-	        output.push(val[0]);
-	    });
-	    return output;
+		_.mapObject(groupedCollection, (val) => {
+			output.push(val[0]);
+		});
+		return output;
 	};
 
 
 	Util.uniqueCollection2 = (collection, key1, key2) => {
-	    const output = [];
-	    const groupedCollection = _.groupBy(collection, d => {
-	    	return d[key1] + d[key2];
-	    });
+		const output = [];
+		const groupedCollection = _.groupBy(collection, d => {
+			return d[key1] + d[key2];
+		});
 
-	    _.mapObject(groupedCollection, (val) => {
-	        output.push(val[0]);
-	    });
-	    return output;
+		_.mapObject(groupedCollection, (val) => {
+			output.push(val[0]);
+		});
+		return output;
 	};
 
 	// populates a select element with the given data using d3
 	Util.populateSelect = (selector, data, param = {}) => {
 		let options = d3.selectAll(selector).selectAll('option')
-			.data(data);
+		.data(data);
 		options.exit().remove();
 		const newOptions = options.enter().append('option');
 		options = newOptions.merge(options)
-			.attr('value', (d) => {
-				if (typeof param.valKey === 'function') return param.valKey(d);
-				return param.valKey ? d[param.valKey] : d;
-			})
-			.text((d) => {
-				if (typeof param.nameKey === 'function') return param.nameKey(d);
-				return param.nameKey ? d[param.nameKey] : d;
-			});
+		.attr('value', (d) => {
+			if (typeof param.valKey === 'function') return param.valKey(d);
+			return param.valKey ? d[param.valKey] : d;
+		})
+		.text((d) => {
+			if (typeof param.nameKey === 'function') return param.nameKey(d);
+			return param.nameKey ? d[param.nameKey] : d;
+		});
 		if (param.selected) {
 			if (typeof param.selected === 'boolean') {
 				options.attr('selected', param.selected);
@@ -101,14 +101,14 @@ const Util = {};
 	};
 
 	// Save output for the console as JSON
-Util.save = function(data, filename){
+	Util.save = function(data, filename){
 
-	if(!data) {
-		console.error('Console.save: No data')
-		return;
-	}
+		if(!data) {
+			console.error('Console.save: No data')
+			return;
+		}
 
-	if(!filename) filename = 'console.json'
+		if(!filename) filename = 'console.json'
 
 		if(typeof data === "object"){
 			data = JSON.stringify(data, undefined, 4)
@@ -129,27 +129,116 @@ Util.save = function(data, filename){
 	// from 0 to π
 	Util.sineScale = (domain) => {
 		const scaleTmp = d3.scaleLinear()
-			.domain([domain.min, domain.max])
-			.range([0, 3.1415]);
+		.domain([domain.min, domain.max])
+		.range([0, 3.1415]);
 		const scale = (val) => {
 			return Math.sin(scaleTmp(val));
 		};
 		return scale;
 	};
 	Util.clone_d3_selection = (selection, i) => {
-            // Assume the selection contains only one object, or just work
-            // on the first object. 'i' is an index to add to the id of the
-            // newly cloned DOM element.
-    var attr = selection.node().attributes;
-    var length = attr.length;
-    var node_name = selection.property("nodeName");
-    var parent = d3.select(selection.node().parentNode);
-    var cloned = parent.append(node_name)
-                 .attr("id", selection.attr("id") + i);
-    for (var j = 0; j < length; j++) { // Iterate on attributes and skip on "id"
-        if (attr[j].nodeName == "id") continue;
-        cloned.attr(attr[j].name,attr[j].value);
-    }
-    return cloned;
+		// Assume the selection contains only one object, or just work
+		// on the first object. 'i' is an index to add to the id of the
+		// newly cloned DOM element.
+		var attr = selection.node().attributes;
+		var length = attr.length;
+		var node_name = selection.property("nodeName");
+		var parent = d3.select(selection.node().parentNode);
+		var cloned = parent.append(node_name)
+		.attr("id", selection.attr("id") + i);
+		for (var j = 0; j < length; j++) { // Iterate on attributes and skip on "id"
+		if (attr[j].nodeName == "id") continue;
+		cloned.attr(attr[j].name,attr[j].value);
+	}
+	return cloned;
 }
+
+/**
+* Reformats App.fundingData into a more user-friendly format, amenable to
+* manual analysis and comprehension by humans.
+* @param  {collection} data Collection of funding data (projects)
+* @return {collection}      Prettier collection of funding data
+*/
+Util.formatFundingDataForSharing = (data) => {
+	// copy data
+	const prettyData = JSON.parse(JSON.stringify(data));
+
+	// isolate data that are duplicate projects
+	const getDupeData = (prettyData) => {
+		const groupedData = _.values(_.groupBy(prettyData, 'project_id'));
+		// const output = [];
+		// groupedData.forEach(d => {
+		// 	if (d.length > 1) output.push(d);
+		// })
+		return groupedData;
+	};
+
+	// For each set of duplicate projects, iterate through to create single record
+	// version of donors and recipients
+	// const dupeData = prettyData;
+	const dupeData = getDupeData(prettyData);
+	const output = [];
+	// console.log(dupeData);
+	dupeData.forEach(projectSet => {
+		// console.log(projectSet)
+		const codes = {
+			donor_code: [],
+			recipient_country: [],
+		};
+		const entities = {
+			donor_code: [],
+			recipient_country: [],
+		};
+		const keyList = ['donor_code', 'recipient_country'];
+		for (nKey in keyList) {
+			const key = keyList[nKey];
+			const drList = [];
+			projectSet.forEach(p => {
+				const curKey = p[key];
+				if (!codes[key].includes(curKey)) {
+					codes[key].push(curKey);
+					if (key === 'donor_code') {
+						drList.push(
+							{
+								donor_name: p['donor_name'],
+								donor_sector: p['donor_sector'],
+								donor_code: p['donor_code'],
+							}
+						)
+					} else {
+						drList.push(
+							{
+								recipient_name: p['recipient_name'],
+								recipient_sector: p['recipient_sector'],
+								recipient_country: p['recipient_country'],
+							}
+						)
+					}
+				}
+			});
+			entities[key] = drList;
+		}
+
+		const deleteList = [
+			'recipient_name',
+			'recipient_sector',
+			'recipient_country',
+			'donor_name',
+			'donor_sector',
+			'donor_code',
+			'donor_name_orig',
+			'recipient_name_orig',
+		];
+
+		projectSet = projectSet[0];
+		deleteList.forEach(key => {
+			delete projectSet[key];
+		});
+		projectSet.donors = entities['donor_code'];
+		projectSet.recipients = entities['recipient_country'];
+		output.push(projectSet);
+	});
+
+	return output;
+};
 })();
