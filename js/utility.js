@@ -125,6 +125,71 @@ const Util = {};
 		a.dispatchEvent(e)
 	};
 
+	Util.JSONToCSVConvertor = (JSONData,fileName,ShowLabel) => {
+		// var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+		// var CSV = '';
+		// if (ShowLabel) {
+		// 	var row = "";
+		// 	for (var index in arrData[0]) {
+		// 		row += index + ',';
+		// 	}
+		// 	row = row.slice(0, -1);
+		// 	CSV += row + '\r\n';
+		// }
+		// for (var i = 0; i < arrData.length; i++) {
+		// 	var row = "";
+		// 	for (var index in arrData[i]) {
+		// 		var arrValue = arrData[i][index] == null ? "" : '"' + arrData[i][index] + '"';
+		// 		row += arrValue + ',';
+		// 	}
+		// 	row.slice(0, row.length - 1);
+		// 	CSV += row + '\r\n';
+		// }
+		// if (CSV == '') {
+		// 	growl.error("Invalid data");
+		// 	return;
+		// }
+		const items = JSONData
+		const replacer = (key, value) => value === null ? '' : value // specify how you want to handle null values here
+		const header = Object.keys(items[0])
+		let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join('\t'))
+		csv.unshift(header.join('\t'))
+		csv = csv.join('\r\n')
+
+		Util.save(csv,'log.tsv')
+
+		// var fn = fileName || "Result";
+		// if(Util.msieversion()){
+		// 	var IEwindow = window.open();
+		// 	IEwindow.document.write('sep=,\r\n' + csv);
+		// 	IEwindow.document.close();
+		// 	IEwindow.document.execCommand('SaveAs', true, fn + ".tsv");
+		// 	IEwindow.close();
+		// } else {
+		// 	// var uri = 'data:application/csv;charset=utf-8,' + escape(CSV);
+		// 	// var link = document.createElement("a");
+		// 	// link.href = uri;
+		// 	// link.style = "visibility:hidden";
+		// 	// link.download = fn + ".csv";
+		// 	// document.body.appendChild(link);
+		// 	// link.click();
+		// 	// document.body.removeChild(link);
+
+		// 	Util.saveText(csv, 'call-log.tsv');
+
+		// 	//  // var blob = new Blob([CSV], {type: 'text/csv'}),
+	 //  //       e = document.createEvent('MouseEvents'),
+	 //  //       a = document.createElement('a')
+		// 	// a.download = fn + ".csv";
+	 //  //       a.href = window.URL.createObjectURL(uri)
+	 //  //       a.dataset.downloadurl =  uri;
+	 //  //       // a.dataset.downloadurl =  ['text/csv', a.download, a.href].join(':')
+	 //  //       e.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+	 //  //       a.dispatchEvent(e)
+		// }
+
+	}
+
 	// Creates a scale that maps a domain to the domain of the sine function
 	// from 0 to π
 	Util.sineScale = (domain) => {
@@ -153,6 +218,12 @@ const Util = {};
 	return cloned;
 }
 
+
+Util.getUniqueProjects = (prettyData) => {
+	const groupedData = _.values(_.groupBy(prettyData, 'project_id'));
+	return groupedData;
+};
+
 /**
 * Reformats App.fundingData into a more user-friendly format, amenable to
 * manual analysis and comprehension by humans.
@@ -163,20 +234,10 @@ Util.formatFundingDataForSharing = (data) => {
 	// copy data
 	const prettyData = JSON.parse(JSON.stringify(data));
 
-	// isolate data that are duplicate projects
-	const getDupeData = (prettyData) => {
-		const groupedData = _.values(_.groupBy(prettyData, 'project_id'));
-		// const output = [];
-		// groupedData.forEach(d => {
-		// 	if (d.length > 1) output.push(d);
-		// })
-		return groupedData;
-	};
-
 	// For each set of duplicate projects, iterate through to create single record
 	// version of donors and recipients
 	// const dupeData = prettyData;
-	const dupeData = getDupeData(prettyData);
+	const dupeData = Util.getUniqueProjects(prettyData);
 	const output = [];
 	// console.log(dupeData);
 	dupeData.forEach(projectSet => {
