@@ -862,11 +862,13 @@
 							spent_on_respond: 0,
 							spent_on_other: 0,
 							spent_on_general: 0,
+							spent_on_unspec: 0,
 							committed_on_prevent: 0,
 							committed_on_detect: 0,
 							committed_on_respond: 0,
 							committed_on_other: 0,
 							committed_on_general: 0,
+							committed_on_unspec: 0,
 							all_unspec_amounts: true,
 						};
 					}
@@ -877,25 +879,32 @@
 
 					// get value for each core capacity breakdown
 					// TODO Here is where we need to add "Unspecified (i)"
-					p.core_capacities.forEach(cc => {
-						const ccAbbrev = cc.split('.')[0];
-						if (ccAbbrev === 'P') {
-							fundedByCountry[recIso].spent_on_prevent += p.total_spent;
-							fundedByCountry[recIso].committed_on_prevent += p.total_committed;
-						} else if (ccAbbrev === 'D') {
-							fundedByCountry[recIso].spent_on_detect += p.total_spent;
-							fundedByCountry[recIso].committed_on_detect += p.total_committed;
-						} else if (ccAbbrev === 'R') {
-							fundedByCountry[recIso].spent_on_respond += p.total_spent;
-							fundedByCountry[recIso].committed_on_respond += p.total_committed;
-						} else if (ccAbbrev === 'General IHR Implementation') {
-							fundedByCountry[recIso].spent_on_general += p.total_spent;
-							fundedByCountry[recIso].committed_on_general += p.total_committed;
-						} else {
-							fundedByCountry[recIso].spent_on_other += p.total_spent;
-							fundedByCountry[recIso].committed_on_other += p.total_committed;
-						}
-					})
+					const someTags = p.core_capacities.length > 0;
+					if (someTags) {
+						p.core_capacities.forEach(cc => {
+							const ccAbbrev = cc.split('.')[0];
+							if (ccAbbrev === 'P') {
+								fundedByCountry[recIso].spent_on_prevent += p.total_spent;
+								fundedByCountry[recIso].committed_on_prevent += p.total_committed;
+							} else if (ccAbbrev === 'D') {
+								fundedByCountry[recIso].spent_on_detect += p.total_spent;
+								fundedByCountry[recIso].committed_on_detect += p.total_committed;
+							} else if (ccAbbrev === 'R') {
+								fundedByCountry[recIso].spent_on_respond += p.total_spent;
+								fundedByCountry[recIso].committed_on_respond += p.total_committed;
+							} else if (ccAbbrev === 'General IHR Implementation') {
+								fundedByCountry[recIso].spent_on_general += p.total_spent;
+								fundedByCountry[recIso].committed_on_general += p.total_committed;
+							} else {
+								fundedByCountry[recIso].spent_on_other += p.total_spent;
+								fundedByCountry[recIso].committed_on_other += p.total_committed;
+							}
+						})
+					} else {
+						// Add to "Unspecified" table column if no CC tags on project.
+						fundedByCountry[recIso].spent_on_unspec += p.total_spent;
+						fundedByCountry[recIso].committed_on_unspec += p.total_committed;
+					}
 				}
 			});
 
