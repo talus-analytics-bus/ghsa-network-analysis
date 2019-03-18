@@ -749,9 +749,8 @@
 			const codeField = (moneyTypeForTable === 'd') ? 'recipient_country' : 'donor_code';
 			const codeFieldOther = (moneyTypeForTable === 'd') ? 'donor_code' : 'recipient_country';
 
-            const unspecField = moneyType === 'r' ? 'recipient_amount_unspec' : 'donor_amount_unspec';
-            const unspecFieldOther = moneyType === 'r' ? 'donor_amount_unspec' : 'recipient_amount_unspec';
-
+      const unspecField = moneyType === 'r' ? 'recipient_amount_unspec' : 'donor_amount_unspec';
+      const unspecFieldOther = moneyType === 'r' ? 'donor_amount_unspec' : 'recipient_amount_unspec';
 
 			// nameField is the original
 			// name field for the recipient if hte table is
@@ -769,7 +768,6 @@
 			const projectArrays = _.values(_.groupBy(tableDataTmp, 'project_id'));
 
 			const tableRowsByCodeOrName = {};
-
 
 			// GHSA special code:
 				// keep only first project in each array
@@ -818,27 +816,33 @@
 						tableRowsByCodeOrName[codeOrName].total_committed += p.total_committed;
 						tableRowsByCodeOrName[codeOrName].total_spent += p.total_spent;
 
-						p.core_capacities.forEach(cc => {
-							const ccAbbrev = cc.split('.')[0];
-							if (ccAbbrev === 'P') {
-								tableRowsByCodeOrName[codeOrName].spent_on_prevent += p.total_spent;
-								tableRowsByCodeOrName[codeOrName].committed_on_prevent += p.total_committed;
-							} else if (ccAbbrev === 'D') {
-								tableRowsByCodeOrName[codeOrName].spent_on_detect += p.total_spent;
-								tableRowsByCodeOrName[codeOrName].committed_on_detect += p.total_committed;
-							} else if (ccAbbrev === 'R') {
-								tableRowsByCodeOrName[codeOrName].spent_on_respond += p.total_spent;
-								tableRowsByCodeOrName[codeOrName].committed_on_respond += p.total_committed;
-							} else if (ccAbbrev === 'General IHR Implementation') {
-								tableRowsByCodeOrName[codeOrName].spent_on_general += p.total_spent;
-								tableRowsByCodeOrName[codeOrName].committed_on_general += p.total_committed;
-							} else {
-								tableRowsByCodeOrName[codeOrName].spent_on_other += p.total_spent;
-								tableRowsByCodeOrName[codeOrName].committed_on_other += p.total_committed;
-							}
-						});
+						const someTags = p.core_capacities.length > 0;
+						if (someTags) {
+							p.core_capacities.forEach(cc => {
+								const ccAbbrev = cc.split('.')[0];
+								if (ccAbbrev === 'P') {
+									tableRowsByCodeOrName[codeOrName].spent_on_prevent += p.total_spent;
+									tableRowsByCodeOrName[codeOrName].committed_on_prevent += p.total_committed;
+								} else if (ccAbbrev === 'D') {
+									tableRowsByCodeOrName[codeOrName].spent_on_detect += p.total_spent;
+									tableRowsByCodeOrName[codeOrName].committed_on_detect += p.total_committed;
+								} else if (ccAbbrev === 'R') {
+									tableRowsByCodeOrName[codeOrName].spent_on_respond += p.total_spent;
+									tableRowsByCodeOrName[codeOrName].committed_on_respond += p.total_committed;
+								} else if (ccAbbrev === 'General IHR Implementation') {
+									tableRowsByCodeOrName[codeOrName].spent_on_general += p.total_spent;
+									tableRowsByCodeOrName[codeOrName].committed_on_general += p.total_committed;
+								} else {
+									tableRowsByCodeOrName[codeOrName].spent_on_other += p.total_spent;
+									tableRowsByCodeOrName[codeOrName].committed_on_other += p.total_committed;
+								}
+							});
+						} else {
+							// Add to "Unspecified" table column if no CC tags on project.
+							tableRowsByCodeOrName[codeOrName].spent_on_unspec += p.total_spent;
+							tableRowsByCodeOrName[codeOrName].committed_on_unspec += p.total_committed;
+						}
 					}
-
 				});
 
 			// Map data for display in table
@@ -936,6 +940,7 @@
 				header.append('td').html('Respond');
 				header.append('td').html('Other');
 				header.append('td').html('General IHR <img class="general-ihr-info-img info-img" src="img/info.png" />');
+				header.append('td').html('Unspecified <img class="general-ihr-info-img info-img" src="img/info.png" />');
 
 				const body = table.append('tbody');
 				fundedData = tableData2;
@@ -992,12 +997,14 @@
 					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.spent_on_respond));
 					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.spent_on_other));
 					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.spent_on_general));
+					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.spent_on_unspec));
 				} else {
 					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.committed_on_prevent));
 					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.committed_on_detect));
 					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.committed_on_respond));
 					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.committed_on_other));
 					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.committed_on_general));
+					rows.append('td').attr('class', 'slightly-dark').text(d => getCellText(d, d.committed_on_unspec));
 				}
 
 				// initialize DataTables plugin
