@@ -1,7 +1,7 @@
 (() => {
 	// populates core capacity filter dropdown
 	App.populateCcDropdown = (selector, param = {}) => {
-		const emptyObj = { id: '', name: 'None - No core capacity tagged' };
+		const emptyObj = { id: '', name: 'Unspecified - No core capacity tagged' };
 		const capacities = App.capacities.concat(emptyObj);
 		Util.populateSelect(selector, capacities, {
 			valKey: 'id',
