@@ -9,6 +9,12 @@
 		// Is this a page for a country with a JEE score set available?
 		const showJee = App.scoresByCountry[iso] !== undefined && moneyType === 'r';
 
+		if (showJee) {
+			$('.only-funded-shown').hide();
+		} else {
+			$('.only-funded-shown').show();
+		}
+
 		// define "country" parameters for General Global Benefit recipient
 		const ggb = {
 		  "FIPS": "ggb",
@@ -80,6 +86,12 @@
 			$('.general-ihr-info-img').tooltipster({
 				interactive: true,
 				content: App.generalIhrText,
+			});
+
+			// Tooltip for unspecified CC
+			$('.unspec-ihr-info-img').tooltipster({
+				interactive: true,
+				content: `Funds or support marked "Unspecified" are not associated with any specific IHR core capacities or with general IHR implementation.`,
 			});
 		}
 
@@ -940,7 +952,7 @@
 				header.append('td').html('Respond');
 				header.append('td').html('Other');
 				header.append('td').html('General IHR <img class="general-ihr-info-img info-img" src="img/info.png" />');
-				header.append('td').html('Unspecified <img class="general-ihr-info-img info-img" src="img/info.png" />');
+				header.append('td').html('Unspecified <img class="unspec-ihr-info-img info-img" src="img/info.png" />');
 
 				const body = table.append('tbody');
 				fundedData = tableData2;
@@ -1021,6 +1033,12 @@
 				$tableContainer.find('.general-ihr-info-img').tooltipster({
 					interactive: true,
 					content: App.generalIhrText,
+				});
+
+				// Tooltip for unspecified CC
+				$tableContainer.find('.unspec-ihr-info-img').tooltipster({
+					interactive: true,
+					content: `Funds or support marked "Unspecified" are not associated with any specific IHR core capacities or with general IHR implementation.`,
 				});
 			};
 
