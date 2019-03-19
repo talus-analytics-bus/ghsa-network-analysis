@@ -69,7 +69,7 @@ const App = {};
 			.defer(d3.json, 'data/funding_data.json') // VERSION 17, created 11 June 2018, with old WHO data
 			.defer(d3.json, 'data/jee_score_data.json')
 			.defer(d3.json, 'data/currencies.json')
-			.defer(d3.json, 'data/submitted_data-031919.json') // non-iati data, created 15 June 2018
+			.defer(d3.json, 'data/submitted_data-031919-v3.json') // non-iati data, created 15 June 2018
 			// .defer(d3.json, 'data/who-iati-v15.json') // WHO projects from funding data v15
 			.defer(d3.tsv, 'data/geographic_groupings.tsv')
 			.await((error, worldData, unsdData, donorCodeData, fundingData, jeeData, currencies, submittedData, geographicGroupings) => {
