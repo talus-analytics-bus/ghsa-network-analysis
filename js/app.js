@@ -153,8 +153,14 @@ const App = {};
 				// hide unops data until we can fix it
 				fundingData = fundingData.filter(d => d.donor_code !== '41aaa');
 
+				// Don't show data if it's not 2019 yet
+				fundingData = fundingData.filter(d => {
+					return !(!d.source.name.includes('IATI') && +d3.min(d.years) > App.dataEndYear)
+				});
+
 				App.addNonCountryRecipients(fundingData);
 				App.fundingData = fundingData;
+
 				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
 
 				// Prepare funding lookup tables, etc.
