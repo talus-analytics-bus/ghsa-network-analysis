@@ -69,7 +69,7 @@ const App = {};
 			.defer(d3.json, 'data/funding_data.json') // VERSION 17, created 11 June 2018, with old WHO data
 			.defer(d3.json, 'data/jee_score_data.json')
 			.defer(d3.json, 'data/currencies.json')
-			.defer(d3.json, 'data/submitted_data.json') // non-iati data, created 15 June 2018
+			.defer(d3.json, 'data/submitted_data-031919-v3.json') // non-iati data, created 15 June 2018
 			// .defer(d3.json, 'data/who-iati-v15.json') // WHO projects from funding data v15
 			.defer(d3.tsv, 'data/geographic_groupings.tsv')
 			.await((error, worldData, unsdData, donorCodeData, fundingData, jeeData, currencies, submittedData, geographicGroupings) => {
@@ -153,8 +153,14 @@ const App = {};
 				// hide unops data until we can fix it
 				fundingData = fundingData.filter(d => d.donor_code !== '41aaa');
 
+				// Don't show data if it's not 2019 yet
+				fundingData = fundingData.filter(d => {
+					return !(!d.source.name.includes('IATI') && +d3.min(d.years) > App.dataEndYear)
+				});
+
 				App.addNonCountryRecipients(fundingData);
 				App.fundingData = fundingData;
+
 				App.fundingDataFull = fundingData.map(d => $.extend(true, {}, d));
 
 				// Prepare funding lookup tables, etc.

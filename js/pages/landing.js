@@ -203,6 +203,68 @@
 			return true;
 		};
 
+		function exportTotals (role = 'd', type = 'd') {
+			const roleField = role === 'd' ? 'donor_code' : 'recipient_country';
+			const roleName  = role === 'd' ? 'Funder' : 'Recipient';
+			const multName  = role === 'd' ? 'Multiple funders' : 'Multiple recipients';
+			const roleSectr = role === 'd' ? 'donor_sector' : 'recipient_sector';
+			const unspField = role === 'd' ? 'donor_amount_unspec' : 'recipient_amount_unspec';
+			const typeField = type === 'd' ? 'spent_by_year' : 'committed_by_year';
+			const typeTotal = type === 'd' ? 'total_spent' : 'total_committed';
+			const typeName  = type === 'd' ? 'Disbursed' : 'Committed';
+			const uniqProjs = Util.uniqueCollection(App.fundingData, 'project_id');
+			// TODO create a funder/recipient called Multiple here
+			const projRoles = _.groupBy(uniqProjs, roleField);
+			const roleLists = _.keys(projRoles);
+			let output = [];
+			roleLists.forEach(role => {
+				const row = {};
+				const roleProjs = projRoles[role].filter(d => d[unspField] !== true);
+				if (roleProjs.length === 0) return;
+					console.log('role = ' + role)
+				if (role !== 'undefined') {
+					row[roleName] = App.codeToNameMap.get(role);
+					row.Sector = roleProjs[0][roleSectr];
+				} else {
+					row[roleName] = 'Unspecified';
+					row.Sector = 'Unspecified';
+				}
+				for (let year = App.dataStartYear; year <= App.dataEndYear; year++) {
+					row['CY' + year.toString()] = d3.sum(roleProjs, d => d[typeField][year]);
+				}
+				row[`Total (CY${App.dataStartYear} - CY${App.dataEndYear})`] = d3.sum(roleProjs, d => d[typeTotal]);
+				if (row[`Total (CY${App.dataStartYear} - CY${App.dataEndYear})`] > 0) output.push(row);
+			});
+			// Add mult funder/recip row
+			const multProjs = Util.uniqueCollection(App.fundingData.filter(d => d[unspField]),'project_id');
+			const multRow = {};
+			multRow[roleName] = multName;
+			multRow.Sector = 'n/a';
+			for (let year = App.dataStartYear; year <= App.dataEndYear; year++) {
+				multRow['CY' + year.toString()] = d3.sum(multProjs, d => d[typeField][year]);
+			}
+			multRow[`Total (CY${App.dataStartYear} - CY${App.dataEndYear})`] = d3.sum(multProjs, d => d[typeTotal]);
+			if (multRow[`Total (CY${App.dataStartYear} - CY${App.dataEndYear})`] > 0) output.push(multRow);
+
+			// Sort from most to least $
+			output = _.sortBy(output, 'total');
+
+			// Add total row
+			const totalRow = {};
+			totalRow[roleName] = "Total";
+			totalRow.Sector = 'n/a';
+			for (let year = App.dataStartYear; year <= App.dataEndYear; year++) {
+				totalRow['CY' + year.toString()] = d3.sum(output, d => d['CY' + year]);
+			}
+			totalRow[`Total (CY${App.dataStartYear} - CY${App.dataEndYear})`] = d3.sum(output, d => d[`Total (CY${App.dataStartYear} - CY${App.dataEndYear})`]);
+			output.push(totalRow);
+			console.log(output);
+			Util.JSONToCSVConvertor(output);
+		}
+		App.exportTotals = exportTotals;
+
+
+
 		function populateTables(donorSelector, recSelector) {
 			const taBlue = '#082b84';
 			const taRed = '#c91414';
