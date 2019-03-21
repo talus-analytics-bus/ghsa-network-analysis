@@ -1234,8 +1234,8 @@
             projects.forEach((p) => {
             	if (iso !== 'ghsa' && (iso !== p[codeField] || p[unspecField] === true)) return;
                 for (let i = App.dataStartYear; i <= App.dataEndYear; i++) {
-                    fundsByYear[i].total_committed += p.committed_by_year[i];
-                    fundsByYear[i].total_spent += p.spent_by_year[i];
+                    fundsByYear[i].total_committed += p.committed_by_year[i] || 0.0;
+                    fundsByYear[i].total_spent += p.spent_by_year[i] || 0.0;
                 }
             });
             for (const y in fundsByYear) {

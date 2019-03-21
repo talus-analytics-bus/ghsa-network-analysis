@@ -16,7 +16,7 @@ const App = {};
 
 		// data definition variables
 		App.dataStartYear = 2014;
-		App.dataEndYear = 2018;
+		App.dataEndYear = 2019;
 
 		// Settings
 		App.showGhsaOnly = false;
