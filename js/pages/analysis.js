@@ -269,7 +269,7 @@
 				// get total for years
 				let total = 0;
 				for (let i = startYear; i < endYear; i++) {
-					total += p[indName][i];
+					total += p[indName][i] || 0;
 				}
 				return total;
 			};
@@ -322,7 +322,7 @@
 			//     }
 			//   ]
 			// }
-			
+
 			const entityData = {};
 			const getTotalForProject = getTotalFunc();
 			// const allowedFunds = App.fundingData.filter(d => d.assistance_type.includes('financial'));
@@ -340,9 +340,9 @@
 				// get all funds provided by this entity
 				let rawFunds = fundsByProvider[iso] || [];
 
-				// get unique ones only 
+				// get unique ones only
 				// Already done above
-				
+
 				// filter out anything provided to an entity not in 'entities'
 				rawFunds = rawFunds.filter(p => {
 					return allowedEntityIsos.indexOf(p.recipient_country) > -1;
@@ -377,7 +377,7 @@
 
 				// group by recipient ISOs (recipient_country)
 				const rawFundsByRecipientIso = _.groupBy(rawFunds, 'recipient_country');
-				
+
 
 				const noFundsToAdd = Object.keys(rawFundsByRecipientIso).length === 0;
 				if (noFundsToAdd) {
@@ -442,7 +442,7 @@
 			// PART 3: Map to chord arc structure.
 			// Get region totals
 			const fundsByRegion = _.groupBy(_.values(entityData), 'region');
-			
+
 			const chordData = _.mapObject(fundsByRegion, (regionFunds, region) => {
 				// First: get totalFunded, totalReceived, and totalFlow by subregion
 				const fundsBySubregion = _.groupBy(regionFunds, 'subregion');
@@ -482,9 +482,9 @@
 			for (let i = 0; i < App.countries.length; i++) {
 				const c = App.countries[i];
 				const iso = c.ISO2;
-				
+
 				// remove general global benefit
-				
+
 				const fundedPaymentsTmp = Util.uniqueCollection(App.fundingLookup[iso], 'project_id');
 				const receivedPayments = Util.uniqueCollection(App.recipientLookup[iso], 'project_id');
 
