@@ -318,11 +318,15 @@
 						total_other_d: getDisplayValForCc(totalByCe[ce], 'total_other_d'),
 						total_other_c: getDisplayValForCc(totalByCe[ce], 'total_other_c'),
 					});
+					console.log('paymentTableData');
+					console.log(paymentTableData);
 				}
 			} else if (currentInfoTab === 'cc') {
 				const totalByCc = {};
 				allPayments.forEach((p) => {
 					p.core_capacities.forEach((cc) => {
+						console.log('p')
+						console.log(p)
 						if (!totalByCc[cc]) {
 							totalByCc[cc] = {
 								total_committed: 0,
@@ -355,7 +359,8 @@
 				};
 
 				for (const cc in totalByCc) {
-					console.log(cc);
+					console.log('totalByCc');
+					console.log(totalByCc);
 					paymentTableData.push({
 						cc: cc || "Unspecified",
 						total_committed: getDisplayValForCc(totalByCc[cc], 'total_committed'),
