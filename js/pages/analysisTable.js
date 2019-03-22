@@ -110,9 +110,12 @@
 
 			const expectedName = App.codeToNameMap.get(iso);
 			const expectedNameField = moneyFlow === 'd' ? 'donor_name' : 'recipient_name';
+			const expectedCodeField = moneyFlow === 'd' ? 'donor_code' : 'recipient_country';
 			const expectedNameOrigField = moneyFlow === 'd' ? 'donor_name_orig' : 'recipient_name_orig';
 
 			function getMoneyCellValue (d, moneyField, param = {}) {
+				console.log('d')
+				console.log(d)
 				const allValuesUnspec = d.all_unspec === true;
 				const noValueReported = d.no_value_reported === true;
 				const unspecified = param.unspecifiedIsZero === true ? 0 : 'Specific amount unknown';
@@ -130,13 +133,14 @@
 						};
 					}
 				}
+
 				if (noValueReported || allValuesUnspec) return unspecified;
 				else if (iso === 'ghsa')
-					return returnFunc(d);
+				return returnFunc(d);
 				else if (d[expectedNameOrigField] && d[expectedNameOrigField] !== expectedName)
-					return unspecified;
-				else if (expectedName !== d[expectedNameField])
-					return unspecified;
+				return unspecified;
+				else if (expectedName !== App.codeToNameMap.get(d[expectedCodeField]))
+				return unspecified;
 				else return returnFunc(d);
 			};
 
