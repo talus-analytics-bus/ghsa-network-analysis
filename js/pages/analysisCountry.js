@@ -830,21 +830,34 @@
 
 						const someTags = p.core_capacities.length > 0;
 						if (someTags) {
+							const ccAbbrevs = ['P','D','R','General IHR Implementation'];
+							const alreadyCounted = {
+								'P': false,
+								'D': false,
+								'R': false,
+								'General IHR Implementation': false,
+								'Other': false,
+							};
 							p.core_capacities.forEach(cc => {
 								const ccAbbrev = cc.split('.')[0];
-								if (ccAbbrev === 'P') {
+								if (ccAbbrev === 'P' && !alreadyCounted[ccAbbrev]) {
+									alreadyCounted[ccAbbrev] = true;
 									tableRowsByCodeOrName[codeOrName].spent_on_prevent += p.total_spent;
 									tableRowsByCodeOrName[codeOrName].committed_on_prevent += p.total_committed;
-								} else if (ccAbbrev === 'D') {
+								} else if (ccAbbrev === 'D' && !alreadyCounted[ccAbbrev]) {
+									alreadyCounted[ccAbbrev] = true;
 									tableRowsByCodeOrName[codeOrName].spent_on_detect += p.total_spent;
 									tableRowsByCodeOrName[codeOrName].committed_on_detect += p.total_committed;
-								} else if (ccAbbrev === 'R') {
+								} else if (ccAbbrev === 'R' && !alreadyCounted[ccAbbrev]) {
+									alreadyCounted[ccAbbrev] = true;
 									tableRowsByCodeOrName[codeOrName].spent_on_respond += p.total_spent;
 									tableRowsByCodeOrName[codeOrName].committed_on_respond += p.total_committed;
-								} else if (ccAbbrev === 'General IHR Implementation') {
+								} else if (ccAbbrev === 'General IHR Implementation' && !alreadyCounted[ccAbbrev]) {
+									alreadyCounted[ccAbbrev] = true;
 									tableRowsByCodeOrName[codeOrName].spent_on_general += p.total_spent;
 									tableRowsByCodeOrName[codeOrName].committed_on_general += p.total_committed;
-								} else {
+								} else if (!ccAbbrevs.includes(ccAbbrev) && !alreadyCounted['Other']) {
+									alreadyCounted['Other'] = true;
 									tableRowsByCodeOrName[codeOrName].spent_on_other += p.total_spent;
 									tableRowsByCodeOrName[codeOrName].committed_on_other += p.total_committed;
 								}
@@ -897,21 +910,34 @@
 					// TODO Here is where we need to add "Unspecified (i)"
 					const someTags = p.core_capacities.length > 0;
 					if (someTags) {
+						const ccAbbrevs = ['P','D','R','General IHR Implementation'];
+						const alreadyCounted = {
+							'P': false,
+							'D': false,
+							'R': false,
+							'General IHR Implementation': false,
+							'Other': false,
+						};
 						p.core_capacities.forEach(cc => {
 							const ccAbbrev = cc.split('.')[0];
 							if (ccAbbrev === 'P') {
+								alreadyCounted[ccAbbrev] = true;
 								fundedByCountry[recIso].spent_on_prevent += p.total_spent;
 								fundedByCountry[recIso].committed_on_prevent += p.total_committed;
 							} else if (ccAbbrev === 'D') {
+								alreadyCounted[ccAbbrev] = true;
 								fundedByCountry[recIso].spent_on_detect += p.total_spent;
 								fundedByCountry[recIso].committed_on_detect += p.total_committed;
 							} else if (ccAbbrev === 'R') {
+								alreadyCounted[ccAbbrev] = true;
 								fundedByCountry[recIso].spent_on_respond += p.total_spent;
 								fundedByCountry[recIso].committed_on_respond += p.total_committed;
 							} else if (ccAbbrev === 'General IHR Implementation') {
+								alreadyCounted[ccAbbrev] = true;
 								fundedByCountry[recIso].spent_on_general += p.total_spent;
 								fundedByCountry[recIso].committed_on_general += p.total_committed;
-							} else {
+							} else if (!ccAbbrevs.includes(ccAbbrev) && !alreadyCounted['Other']) {
+								alreadyCounted['Other'] = true;
 								fundedByCountry[recIso].spent_on_other += p.total_spent;
 								fundedByCountry[recIso].committed_on_other += p.total_committed;
 							}

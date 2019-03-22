@@ -66,12 +66,12 @@ const App = {};
 			.defer(d3.csv, 'data/unsd_data.csv')
 			.defer(d3.csv, 'data/donor_codes_live.csv')
 			// .defer(d3.json, 'data/donor_codes.json')
-			.defer(d3.json, 'data/funding_data.json') // VERSION 17, created 11 June 2018, with old WHO data
+			.defer(d3.json, 'data/funding_data-032119.json') // VERSION 17, created 11 June 2018, with old WHO data
 			.defer(d3.json, 'data/jee_score_data.json')
 			.defer(d3.json, 'data/currencies.json')
-			.defer(d3.json, 'data/submitted_data-031919-v3.json') // non-iati data, created 15 June 2018
+			.defer(d3.json, 'data/submitted_data-032119-v2.json') // non-iati data, created 15 June 2018
 			// .defer(d3.json, 'data/who-iati-v15.json') // WHO projects from funding data v15
-			.defer(d3.tsv, 'data/geographic_groupings.tsv')
+			.defer(d3.tsv, 'data/geographic_groupings-032219.tsv')
 			.await((error, worldData, unsdData, donorCodeData, fundingData, jeeData, currencies, submittedData, geographicGroupings) => {
 				if (error) throw error;
 
