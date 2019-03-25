@@ -215,13 +215,15 @@
 			const totalReceived = App.getTotalReceived(iso, {includeCommitments: true});
 
 			if (totalFunded > totalReceived) {
-				hasher.setHash(`analysis/${iso}/d`);
-				return;
+				moneyType = 'd';
+				// hasher.setHash(`analysis/${iso}/d`);
+				// return;
 			}
 			else {
-				hasher.setHash(`analysis/${iso}/r`);
-				return;
+				moneyType = 'r';
 			}
+			hasher.setHash(`analysis/${iso}/${moneyType}`);
+			return;
 
 			// fill details
 			$('.country-region').text(country.regionName);
