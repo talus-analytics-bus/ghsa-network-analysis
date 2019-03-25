@@ -740,7 +740,10 @@
 
 			// clicking the "show more" button takes user to country page
 			$('.nci-more-button').off('click').on('click', () => {
-				hasher.setHash(`analysis/${data.iso}`);
+				// determine whether entity receives more or funds more,
+				// and show the appropriate profile type on the entity-
+				// specific page
+				hasher.setHash(`analysis/${data.iso}/${data.primaryMoneyFlow}`);
 			});
 
 			// display country info

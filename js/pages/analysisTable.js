@@ -26,14 +26,15 @@
 			const flagHtml = country ? App.getFlagHtml(iso) : '';
 			$('.analysis-country-title')
 			.html(`${flagHtml} ${name} ${flagHtml}`)
-			.on('click', () => hasher.setHash(`analysis/${iso}`));
+			.on('click', () => hasher.setHash(`analysis/${iso}/${moneyFlow}`));
 
 			// fill in other text
 			$('.money-type-noun').text(moneyFlow === 'd' ? 'Funder' : 'Recipient');
 			$('.opp-money-type-noun').text(moneyFlow === 'd' ? 'Recipient' : 'Funder');
 			$('.money-type-cap').text(moneyFlow === 'd' ? 'Disbursed' : 'Received');
+
 			$('.commit-noun').text(moneyFlow === 'd' ? 'Committed Funds' :
-				'Committed Funds to Receive');
+			'Committed Funds to Receive');
 			$('.start-year').text(App.dataStartYear);
 			$('.end-year').text(App.dataEndYear);
 
@@ -148,64 +149,64 @@
 			let headerData = [];
 			if (currentInfoTab === 'all') {
 				headerData = [
-				{ name: 'Funder', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
-				{ name: 'Recipient', value: 'recipient_name', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; } },
-				{ name: 'Project Name', value: 'project_name' },
-				{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_committed'); } },
-				{ name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_spent'); } },
+					{ name: 'Funder', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
+					{ name: 'Recipient', value: 'recipient_name', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; } },
+					{ name: 'Project Name', value: 'project_name' },
+					{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_committed'); } },
+					{ name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_spent'); } },
 				];
 			} else if (currentInfoTab === 'country') {
 				headerData = [
-				{ name: 'Funder', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
-				{ name: 'Recipient', value: (d) => {
-					return d.recipient_name_orig || d.recipient_name;
-					if (App.codeToNameMap.has(d.recipient_country)) {
-						return App.codeToNameMap.get(d.recipient_country);
-					}
-					return d.recipient_country;
-				} },
-				{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_committed'); } },
-				{ name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_spent'); } },
+					{ name: 'Funder', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
+					{ name: 'Recipient', value: (d) => {
+						return d.recipient_name_orig || d.recipient_name;
+						if (App.codeToNameMap.has(d.recipient_country)) {
+							return App.codeToNameMap.get(d.recipient_country);
+						}
+						return d.recipient_country;
+					} },
+					{ name: 'Committed', value: 'total_committed', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_committed'); } },
+					{ name: 'Disbursed', value: 'total_spent', type: 'money', valueFunc: (d) => { return getMoneyCellValue(d, 'total_spent'); } },
 				];
 			} else if (currentInfoTab === 'ce') {
 				headerData = [
-				{
-					name: 'Core Element',
-					value: (d) => {
-						if (d.ce === 'P') return 'Prevent';
-						if (d.ce === 'D') return 'Detect';
-						if (d.ce === 'R') return 'Respond';
-						if (d.ce === 'O') return 'Other';
-						if (d.ce === 'General IHR Implementation') return 'General IHR Implementation <img class="general-ihr-info-img info-img" src="img/info.png" />';
-						return 'Unspecified';
+					{
+						name: 'Core Element',
+						value: (d) => {
+							if (d.ce === 'P') return 'Prevent';
+							if (d.ce === 'D') return 'Detect';
+							if (d.ce === 'R') return 'Respond';
+							if (d.ce === 'O') return 'Other';
+							if (d.ce === 'General IHR Implementation') return 'General IHR Implementation <img class="general-ihr-info-img info-img" src="img/info.png" />';
+							return 'Unspecified';
+						},
 					},
-				},
-				{ name: 'Committed Funds', value: 'total_committed', type: 'money' },
-				{ name: 'Disbursed Funds', value: 'total_spent', type: 'money' },
-				{ name: 'Committed In-kind Projects', value: 'total_other_c', type: 'num' },
-				{ name: 'Disbursed In-kind Projects', value: 'total_other_d', type: 'num' },
+					{ name: 'Committed Funds', value: 'total_committed', type: 'money' },
+					{ name: 'Disbursed Funds', value: 'total_spent', type: 'money' },
+					{ name: 'Committed In-kind Projects', value: 'total_other_c', type: 'num' },
+					{ name: 'Disbursed In-kind Projects', value: 'total_other_d', type: 'num' },
 				];
 			} else if (currentInfoTab === 'cc') {
 				headerData = [
-				{
-					name: 'Core Capacity',
-					value: (d) => {
-						const cap = App.capacities.find(cc => cc.id === d.cc);
-						if (cap && cap.name === 'General IHR Implementation') return cap.name + ' <img class="general-ihr-info-img info-img" src="img/info.png" />';
-						return cap ? cap.name : d.cc;
+					{
+						name: 'Core Capacity',
+						value: (d) => {
+							const cap = App.capacities.find(cc => cc.id === d.cc);
+							if (cap && cap.name === 'General IHR Implementation') return cap.name + ' <img class="general-ihr-info-img info-img" src="img/info.png" />';
+							return cap ? cap.name : d.cc;
+						},
 					},
-				},
-				{ name: 'Committed Funds', value: 'total_committed', type: 'money', valueFunc: (d) => { if (d.unspecified) return 'Specific amount unknown'; else return d.total_committed; }},
-				{ name: 'Disbursed Funds', value: 'total_spent', type: 'money' },
-				{ name: 'Committed In-kind Projects', value: 'total_other_c', type: 'num' },
-				{ name: 'Disbursed In-kind Projects', value: 'total_other_d', type: 'num' },
+					{ name: 'Committed Funds', value: 'total_committed', type: 'money', valueFunc: (d) => { if (d.unspecified) return 'Specific amount unknown'; else return d.total_committed; }},
+					{ name: 'Disbursed Funds', value: 'total_spent', type: 'money' },
+					{ name: 'Committed In-kind Projects', value: 'total_other_c', type: 'num' },
+					{ name: 'Disbursed In-kind Projects', value: 'total_other_d', type: 'num' },
 				];
 			} else if (currentInfoTab === 'inkind') {
 				headerData = [
-				{ name: 'Provider', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
-				{ name: 'Recipient', value: 'recipient_name', value2: 'recipient_name_orig', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; }  },
-				{ name: 'Commitment or Disbursement', value: 'commitment_disbursements', valueFunc: (p) => { const lower = p.commitment_disbursements; return lower.charAt(0).toUpperCase() + lower.substr(1); }},
-				{ name: 'Description', value: 'project_name' },
+					{ name: 'Provider', value: 'donor_name', valueFunc: (p) => { return p.donor_name_orig || p.donor_name; } },
+					{ name: 'Recipient', value: 'recipient_name', value2: 'recipient_name_orig', valueFunc: (p) => { return p.recipient_name_orig || p.recipient_name; }  },
+					{ name: 'Commitment or Disbursement', value: 'commitment_disbursements', valueFunc: (p) => { const lower = p.commitment_disbursements; return lower.charAt(0).toUpperCase() + lower.substr(1); }},
+					{ name: 'Description', value: 'project_name' },
 				];
 				// headerData = [
 				// { name: 'Provider', value: 'donor_name', value2: 'donor_name_orig' },
@@ -218,11 +219,11 @@
 			// define row data
 			const unspecified = 'Specific amount unknown';
 			function getDisplayValForCc (val, key) {
-					if (val[key] > 0) return val[key];
-					if (key.includes('other') && !val.had_no_unspecified_inkind_projects) return unspecified;
-					if (!key.includes('other') && !val.had_no_unspecified_money_projects) return unspecified;
-					else return 0;
-				};
+				if (val[key] > 0) return val[key];
+				if (key.includes('other') && !val.had_no_unspecified_inkind_projects) return unspecified;
+				if (!key.includes('other') && !val.had_no_unspecified_money_projects) return unspecified;
+				else return 0;
+			};
 			let paymentTableData = [];
 			allPayments = App.getProjectsIncludingGroups(App.fundingData, moneyFlow, iso);
 			if (iso === 'ghsa') {
@@ -243,7 +244,7 @@
 					const recipient_country = p.recipient_country;
 					if (rc === 'Not reported') rc = p.recipient_name;
 					if (p.recipient_name_orig !== undefined) rc = p.recipient_name_orig
-						else rc = p.recipient_name;
+					else rc = p.recipient_name;
 					if (!totalByCountry[dc]) totalByCountry[dc] = {};
 					if (!totalByCountry[dc][rc]) {
 						totalByCountry[dc][rc] = {
@@ -436,14 +437,14 @@
 			let columnDefs = [];
 			if (currentInfoTab === 'all') {
 				columnDefs = [
-				{ targets: [0, 1], width: '140px' },
-				{ type: 'money', targets: [3, 4], width: '110px' },
+					{ targets: [0, 1], width: '140px' },
+					{ type: 'money', targets: [3, 4], width: '110px' },
 				];
 			} else if (currentInfoTab === 'country') {
 				order = [3, 'desc'];
 				columnDefs = [
-				{ targets: [0, 1], width: '150px' },
-				{ type: 'money', targets: [2, 3], width: '120px' },
+					{ targets: [0, 1], width: '150px' },
+					{ type: 'money', targets: [2, 3], width: '120px' },
 				];
 			} else if (currentInfoTab === 'ce' || currentInfoTab === 'cc') {
 				order = [2, 'desc'];
