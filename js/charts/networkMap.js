@@ -1,7 +1,5 @@
 (() => {
 	App.buildNetworkMap = (selector, initData, param = {}) => {
-		console.log('initData');
-		console.log(initData);
 		// define colors
 		const fundColor = App.fundColor;
 		const receiveColor = App.receiveColor;
@@ -266,7 +264,7 @@
 
 		function drawLinks(moneyType) {
 			funds = funds.filter(d => countryMapByIso.get(d.recipient) !== undefined);
-			
+
 			// create links
 			const links = linkG.selectAll('.link')
 				.data(funds);
